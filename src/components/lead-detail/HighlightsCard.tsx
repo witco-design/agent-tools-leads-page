@@ -1,0 +1,85 @@
+import { CollapsibleCard } from './CollapsibleCard';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { TruncatedText } from './TruncatedText';
+import { ChannelIcon } from './ChannelIcon';
+
+export function HighlightsCard() {
+  return (
+    <TooltipProvider delayDuration={200}>
+      <CollapsibleCard title="Highlights">
+        <div className="space-y-spacing-3">
+          <div className="flex items-center justify-between py-spacing-1">
+            <span className="text-text-3 font-normal text-text-secondary">
+              Online Status
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-success-bg px-2.5 py-0.5">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success-text opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-success-text"></span>
+              </span>
+              <span className="text-text-2 font-semibold text-success-text">Online Now</span>
+            </span>
+          </div>
+          <div className="flex items-center py-spacing-1">
+            <span className="text-text-3 font-normal text-text-secondary flex-1">
+              Lead Created
+            </span>
+            <span className="text-text-3 font-normal text-text-default min-w-0">
+              <TruncatedText>8/4/2025 10:46 am</TruncatedText>
+            </span>
+          </div>
+          <div className="flex items-center py-spacing-1">
+            <span className="text-text-3 font-normal text-text-secondary flex-1">
+              Last Contacted
+            </span>
+            <span className="inline-flex items-center gap-1.5 text-text-3 font-normal text-text-default min-w-0">
+              <TruncatedText>Nov 5, 2025</TruncatedText>
+              <ChannelIcon channel="call" />
+            </span>
+          </div>
+          <div className="flex items-center py-spacing-1">
+            <span className="text-text-3 font-normal text-text-secondary flex-1">
+              Last Email Update
+            </span>
+            <span className="text-text-3 font-normal text-text-default min-w-0">
+              <TruncatedText>12/8/2025 11:49 am</TruncatedText>
+            </span>
+          </div>
+          <div className="flex items-center py-spacing-1">
+            <span className="text-text-3 font-normal text-text-secondary flex-1">
+              Last Login
+            </span>
+            <span className="inline-flex items-center gap-1.5 text-text-3 font-normal text-text-default min-w-0">
+              <TruncatedText>14 days ago</TruncatedText>
+              <ChannelIcon channel="website" />
+            </span>
+          </div>
+          <div className="flex items-center py-spacing-1">
+            <span className="text-text-3 font-normal text-text-secondary flex-1">
+              Location
+            </span>
+            <span className="text-text-3 font-normal text-text-default min-w-0">
+              <TruncatedText>California</TruncatedText>
+            </span>
+          </div>
+          <div className="flex items-center py-spacing-1">
+            <span className="text-text-3 font-normal text-text-secondary flex-1">
+              Avg. Price
+            </span>
+            <span className="text-text-3 font-normal text-text-default min-w-0">
+              <TruncatedText>$750,000</TruncatedText>
+            </span>
+          </div>
+          <div className="flex items-center py-spacing-1">
+            <span className="text-text-2 font-normal text-text-secondary flex-1">
+              IP Location
+            </span>
+            <span className="text-text-2 font-normal text-text-secondary min-w-0">
+              <TruncatedText>San Jose, CA</TruncatedText>
+            </span>
+          </div>
+        </div>
+      </CollapsibleCard>
+    </TooltipProvider>
+  );
+}
