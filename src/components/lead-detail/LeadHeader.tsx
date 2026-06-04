@@ -50,8 +50,6 @@ import {
   AlertDialogAction,
 } from '@/components/ui/alert-dialog';
 import { TruncatedText } from './TruncatedText';
-import { SIGNALS } from './LeadSignalsStrip';
-import { TagOverflowList } from './TagOverflowList';
 
 interface ActionButton {
   label: string;
@@ -143,9 +141,8 @@ export function LeadHeader() {
 
   return (
     <TooltipProvider delayDuration={200}>
-      <div className="bg-bg-card rounded-3 border border-border-default shadow-sm overflow-hidden">
-      {/* ROW 1: Lead identity + actions */}
-      <div className="px-spacing-5 py-spacing-3 flex flex-wrap items-center gap-x-spacing-4 gap-y-spacing-3">
+      {/* Lead identity + actions */}
+      <div className="py-spacing-2 flex flex-wrap items-center gap-x-spacing-4 gap-y-spacing-3">
         {/* Avatar + Name + Pencil — group for hover reveal */}
         <div className="group flex items-center gap-3 shrink-0">
           {/* Lock icon */}
@@ -226,7 +223,7 @@ export function LeadHeader() {
           {/* More button — DropdownMenu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-border-default bg-transparent text-icon-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring focus:ring-offset-2 focus:ring-offset-white transition-colors duration-150 cursor-pointer">
+              <button className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-border-default bg-white text-icon-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring focus:ring-offset-2 focus:ring-offset-white transition-colors duration-150 cursor-pointer">
                 <MoreHorizontal className="w-4 h-4" />
               </button>
             </DropdownMenuTrigger>
@@ -288,7 +285,7 @@ export function LeadHeader() {
                 <button
                   type="button"
                   aria-label="Previous lead"
-                  className="h-9 w-9 inline-flex items-center justify-center border border-border-default rounded-2 text-text-secondary hover:bg-bg-muted transition-colors cursor-pointer"
+                  className="h-9 w-9 inline-flex items-center justify-center bg-white border border-border-default rounded-2 text-text-secondary hover:bg-bg-muted transition-colors cursor-pointer"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
@@ -306,7 +303,7 @@ export function LeadHeader() {
                       window.location.href = '/leads';
                     }
                   }}
-                  className="h-9 px-spacing-3 inline-flex items-center gap-spacing-1 border border-border-default rounded-2 text-text-4 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+                  className="h-9 px-spacing-3 inline-flex items-center gap-spacing-1 bg-white border border-border-default rounded-2 text-text-4 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
                 >
                   <List className="w-4 h-4 xl:hidden" />
                   <span className="hidden xl:inline">Back to List</span>
@@ -319,7 +316,7 @@ export function LeadHeader() {
                 <button
                   type="button"
                   aria-label="Next lead"
-                  className="h-9 w-9 inline-flex items-center justify-center border border-border-default rounded-2 text-text-secondary hover:bg-bg-muted transition-colors cursor-pointer"
+                  className="h-9 w-9 inline-flex items-center justify-center bg-white border border-border-default rounded-2 text-text-secondary hover:bg-bg-muted transition-colors cursor-pointer"
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>
@@ -328,18 +325,6 @@ export function LeadHeader() {
             </Tooltip>
           </div>
         </div>
-
-      </div>
-
-      {/* Hairline between rows (inset to match content padding) */}
-      <div className="px-spacing-5">
-        <div className="border-t border-border-default" />
-      </div>
-
-      {/* ROW 2: Lead Signal tags (unified badge system) */}
-      <div className="px-spacing-5 py-spacing-3">
-        <TagOverflowList tags={SIGNALS} />
-      </div>
 
       </div>
 

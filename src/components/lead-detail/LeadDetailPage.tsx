@@ -9,6 +9,7 @@ import { ContactInfoCard } from './ContactInfoCard';
 import { RobinAISummaryCard } from './RobinAISummaryCard';
 import { ActivityHistoryCard } from './ActivityHistoryCard';
 import { RightColumn } from './RightColumn';
+import { LeadSignalTagsCard } from './LeadSignalTagsCard';
 import { ActivityFilterProvider } from './ActivityFilterContext';
 import {
   LeadHeaderSkeleton,
@@ -68,7 +69,7 @@ export default function LeadDetailPage() {
 
         {/* Main content area — offset for header + sidebar */}
         <main
-          className="min-h-screen pt-20 p-spacing-6"
+          className="min-h-screen pt-20 p-spacing-8"
           style={{
             marginLeft: collapsed ? 72 : 220,
             transition: 'margin-left 180ms ease',
@@ -96,9 +97,10 @@ export default function LeadDetailPage() {
                 </div>
 
                 {/* BOTTOM TWO-COLUMN LAYOUT */}
-                <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-spacing-4 mt-spacing-4">
+                <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-spacing-4 mt-spacing-10">
                   {/* Left column: Data Snapshot → Robin AI → Activity History */}
                   <div className="flex flex-col gap-spacing-4 min-w-0 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both" style={{ animationDelay: '120ms' }}>
+                    <LeadSignalTagsCard />
                     <ContactInfoCard />
                     <RobinAISummaryCard />
                     <ActivityHistoryCard />

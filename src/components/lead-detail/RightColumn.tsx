@@ -156,8 +156,6 @@ export function RightColumn() {
 
   return (
     <div className="space-y-spacing-4">
-      {/* Tabs — pinned at top of right column */}
-      <div className="bg-white rounded-3 border border-border-default shadow-sm overflow-hidden">
       <Tabs defaultValue="info" className="w-full">
         <TabsList className="w-full h-auto p-0 bg-transparent rounded-none border-b border-border-default">
           <TabsTrigger
@@ -175,7 +173,7 @@ export function RightColumn() {
         </TabsList>
 
         {/* Info Tab */}
-        <TabsContent value="info" className="p-spacing-4">
+        <TabsContent value="info" className="mt-spacing-4 space-y-spacing-4">
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -200,7 +198,7 @@ export function RightColumn() {
         </TabsContent>
 
         {/* Engagement Tab */}
-        <TabsContent value="engagement" className="p-spacing-4">
+        <TabsContent value="engagement" className="mt-spacing-4 space-y-spacing-4">
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -217,7 +215,6 @@ export function RightColumn() {
           </DndContext>
         </TabsContent>
       </Tabs>
-      </div>
     </div>
   );
 }
