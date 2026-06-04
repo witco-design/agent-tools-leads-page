@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { MessageCircle, Send, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Toaster } from 'sonner';
 import { Sidebar } from '@/components/shell/Sidebar';
@@ -12,12 +12,6 @@ import { RightColumn } from './RightColumn';
 import { LeadSignalTagsCard } from './LeadSignalTagsCard';
 import { ActivityFilterProvider } from './ActivityFilterContext';
 import {
-  LeadHeaderSkeleton,
-  ContactInfoCardSkeleton,
-  ActivityHistoryCardSkeleton,
-  RightColumnSkeleton,
-} from './LeadDetailSkeletons';
-import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -25,17 +19,9 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 
-const LOADING_MS = 800;
-
 export default function LeadDetailPage() {
   const [chatOpen, setChatOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const { collapsed, toggle } = useSidebar();
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), LOADING_MS);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <ActivityFilterProvider>
@@ -76,42 +62,23 @@ export default function LeadDetailPage() {
           }}
         >
           <div className="space-y-spacing-4 max-w-[1284px]">
-            {isLoading ? (
-              <>
-                <LeadHeaderSkeleton />
-                <ContactInfoCardSkeleton />
-                <div className="flex flex-col xl:flex-row gap-spacing-6">
-                  <div className="flex-1 min-w-0 max-w-full xl:max-w-[880px] w-full">
-                    <ActivityHistoryCardSkeleton />
-                  </div>
-                  <div className="w-full xl:w-[380px] xl:shrink-0">
-                    <RightColumnSkeleton />
-                  </div>
-                </div>
-              </>
-            ) : (
-              <>
-                {/* TOP: Lead Header only */}
-                <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both" style={{ animationDelay: '0ms' }}>
-                  <LeadHeader />
-                </div>
+            {/* TOP: Lead Header (skeleton) */}
+            <LeadHeader />
 
-                {/* BOTTOM TWO-COLUMN LAYOUT */}
-                <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-spacing-4 mt-spacing-10">
-                  {/* Left column: Data Snapshot → Robin AI → Activity History */}
-                  <div className="flex flex-col gap-spacing-4 min-w-0 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both" style={{ animationDelay: '120ms' }}>
-                    <LeadSignalTagsCard />
-                    <ContactInfoCard />
-                    <RobinAISummaryCard />
-                    <ActivityHistoryCard />
-                  </div>
-                  {/* Right column */}
-                  <div className="flex flex-col gap-spacing-4 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both" style={{ animationDelay: '200ms' }}>
-                    <RightColumn />
-                  </div>
-                </div>
-              </>
-            )}
+            {/* BOTTOM TWO-COLUMN LAYOUT */}
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-spacing-4 mt-spacing-10">
+              {/* Left column */}
+              <div className="flex flex-col gap-spacing-4 min-w-0">
+                <LeadSignalTagsCard />
+                <ContactInfoCard />
+                <RobinAISummaryCard />
+                <ActivityHistoryCard />
+              </div>
+              {/* Right column */}
+              <div className="flex flex-col gap-spacing-4">
+                <RightColumn />
+              </div>
+            </div>
           </div>
         </main>
       </div>

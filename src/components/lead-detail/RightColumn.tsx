@@ -1,220 +1,345 @@
-import { useState } from 'react';
-import { Info } from 'lucide-react';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import {
-  DndContext,
-  closestCenter,
-  PointerSensor,
-  KeyboardSensor,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core';
-import type { DragEndEvent } from '@dnd-kit/core';
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-  arrayMove,
-  sortableKeyboardCoordinates,
-} from '@dnd-kit/sortable';
+import { Skeleton } from './Skeleton';
 
-// OnlineNowBanner removed — Online Status consolidated to HighlightsCard
-import { ActivityStatsCard } from './ActivityStatsCard';
-import { ImportantNotesCard } from './ImportantNotesCard';
-import { HighlightsCard } from './HighlightsCard';
-import { ContactInfoSection } from './ContactInfoSection';
-import { SearchCriteriaCard } from './SearchCriteriaCard';
-import { ImportantDatesCard } from './ImportantDatesCard';
-import { TagsCard } from './TagsCard';
-import { SecondaryContactCard } from './SecondaryContactCard';
-import { LeadAssignmentCard } from './LeadAssignmentCard';
-import { SourceCard } from './SourceCard';
-import { FollowUpsCard } from './FollowUpsCard';
-import { WorkflowsCard } from './WorkflowsCard';
-import { SavedSearchesCard } from './SavedSearchesCard';
-import { MarketReportsCard } from './MarketReportsCard';
-import { HomeValuationReportsCard } from './HomeValuationReportsCard';
-import { SmsEmailOptOutsCard } from './SmsEmailOptOutsCard';
-import { SortableCard } from './SortableCard';
+/* ── Skeleton wrappers for each card section ──────────────────── */
 
-// ── Default orderings ──────────────────────────────────────────
-const INFO_DEFAULT_ORDER = [
-  'important-notes',
-  'activity-stats',
-  'highlights',
-  'contact-info',
-  'search-criteria',
-  'important-dates',
-  'tags',
-  'secondary-contact',
-  'lead-assignment',
-  'source',
-];
-
-const ENGAGEMENT_DEFAULT_ORDER = [
-  'follow-ups',
-  'workflows',
-  'saved-searches',
-  'market-reports',
-  'home-valuation-reports',
-  'sms-email-opt-outs',
-];
-
-// ── Card component maps ────────────────────────────────────────
-const INFO_CARD_MAP: Record<string, React.FC> = {
-  'activity-stats': ActivityStatsCard,
-  'important-notes': ImportantNotesCard,
-  highlights: HighlightsCard,
-  'contact-info': ContactInfoSection,
-  'search-criteria': SearchCriteriaCard,
-  'important-dates': ImportantDatesCard,
-  tags: TagsCard,
-  'secondary-contact': SecondaryContactCard,
-  'lead-assignment': LeadAssignmentCard,
-  source: SourceCard,
-};
-
-const ENGAGEMENT_CARD_MAP: Record<string, React.FC> = {
-  'follow-ups': FollowUpsCard,
-  workflows: WorkflowsCard,
-  'saved-searches': SavedSearchesCard,
-  'market-reports': MarketReportsCard,
-  'home-valuation-reports': HomeValuationReportsCard,
-  'sms-email-opt-outs': SmsEmailOptOutsCard,
-};
-
-// ── Subscriptions heading insertion helper ─────────────────────
-// Rendered as a static element just before saved-searches (if present)
-function renderEngagementCards(order: string[]) {
-  const elements: React.ReactNode[] = [];
-
-  for (const id of order) {
-    // Insert Subscriptions heading before saved-searches
-    if (id === 'saved-searches') {
-      elements.push(
-        <div
-          key="subscriptions-heading"
-          className="flex items-center gap-spacing-2 mt-4"
-        >
-          <h2 className="text-text-4 font-semibold text-text-default">
-            Subscriptions
-          </h2>
-          <Info className="w-3.5 h-3.5 text-icon-default" />
-        </div>,
-      );
-    }
-
-    const Component = ENGAGEMENT_CARD_MAP[id];
-    if (Component) {
-      elements.push(
-        <SortableCard key={id} id={id}>
-          <Component />
-        </SortableCard>,
-      );
-    }
-  }
-
-  return elements;
+/** CollapsibleCard skeleton shell: title bar + content rows */
+function SkeletonCard({
+  titleWidth = 'w-28',
+  children,
+}: {
+  titleWidth?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="bg-white border border-[#E4E7EC] rounded-3 shadow-sm overflow-hidden">
+      {/* Header */}
+      <div className="px-spacing-4 py-spacing-3 flex items-center justify-between">
+        <Skeleton className={`h-4 ${titleWidth} rounded-full`} />
+        <Skeleton className="h-5 w-5 rounded-2" />
+      </div>
+      {/* Body */}
+      <div className="border-t border-[#E4E7EC]" />
+      <div className="px-spacing-4 py-spacing-3">{children}</div>
+    </div>
+  );
 }
 
-// ── Main component ─────────────────────────────────────────────
+/** Label + value row used in many cards */
+function LabelValueRow({
+  labelW = 'w-20',
+  valueW = 'w-28',
+}: {
+  labelW?: string;
+  valueW?: string;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-spacing-2 min-h-[28px]">
+      <Skeleton className={`h-3 ${labelW} rounded-full`} />
+      <Skeleton className={`h-3.5 ${valueW} rounded-full`} />
+    </div>
+  );
+}
+
+/* ── Important Notes ────────────────────────────────────────────── */
+function ImportantNotesSkeleton() {
+  return (
+    <SkeletonCard titleWidth="w-32">
+      <div className="border-l-2 border-[#EAECF0] pl-spacing-3 space-y-2">
+        <Skeleton className="h-3 w-12 rounded-full" />
+        <Skeleton className="h-3.5 w-full rounded-full" />
+        <Skeleton className="h-3.5 w-4/5 rounded-full" />
+        <Skeleton className="h-3.5 w-3/5 rounded-full" />
+      </div>
+    </SkeletonCard>
+  );
+}
+
+/* ── Activity Stats ─────────────────────────────────────────────── */
+function ActivityStatsSkeleton() {
+  return (
+    <SkeletonCard titleWidth="w-28">
+      <div className="space-y-spacing-2">
+        {Array.from({ length: 7 }).map((_, i) => (
+          <LabelValueRow
+            key={i}
+            labelW={i % 2 === 0 ? 'w-20' : 'w-24'}
+            valueW="w-8"
+          />
+        ))}
+      </div>
+    </SkeletonCard>
+  );
+}
+
+/* ── Highlights ─────────────────────────────────────────────────── */
+function HighlightsSkeleton() {
+  return (
+    <SkeletonCard titleWidth="w-24">
+      <div className="space-y-spacing-2">
+        {/* Online Status row with badge */}
+        <div className="flex items-center justify-between gap-spacing-2 min-h-[28px]">
+          <Skeleton className="h-3 w-24 rounded-full" />
+          <Skeleton className="h-6 w-20 rounded-full" />
+        </div>
+        <LabelValueRow labelW="w-24" valueW="w-24" />
+        <LabelValueRow labelW="w-28" valueW="w-20" />
+        <LabelValueRow labelW="w-28" valueW="w-24" />
+        <LabelValueRow labelW="w-20" valueW="w-20" />
+        <LabelValueRow labelW="w-16" valueW="w-28" />
+        <LabelValueRow labelW="w-20" valueW="w-24" />
+        <LabelValueRow labelW="w-20" valueW="w-24" />
+      </div>
+    </SkeletonCard>
+  );
+}
+
+/* ── Contact Info Section ──────────────────────────────────────── */
+function ContactInfoSkeleton() {
+  return (
+    <SkeletonCard titleWidth="w-24">
+      <div className="space-y-spacing-3 divide-y divide-[#E4E7EC]">
+        {[0, 1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className={`flex items-center gap-spacing-3 ${i > 0 ? 'pt-spacing-3' : ''}`}
+          >
+            <Skeleton className="h-5 w-5 rounded-full shrink-0" />
+            <Skeleton className="h-3.5 w-32 rounded-full flex-1" />
+            <Skeleton className="h-6 w-16 rounded-full" />
+          </div>
+        ))}
+      </div>
+    </SkeletonCard>
+  );
+}
+
+/* ── Search Criteria ───────────────────────────────────────────── */
+function SearchCriteriaSkeleton() {
+  return (
+    <SkeletonCard titleWidth="w-28">
+      <div className="space-y-spacing-2">
+        {Array.from({ length: 7 }).map((_, i) => (
+          <LabelValueRow
+            key={i}
+            labelW={i % 2 === 0 ? 'w-16' : 'w-20'}
+            valueW="w-24"
+          />
+        ))}
+      </div>
+      {/* Footer: Run search button */}
+      <div className="mt-spacing-3 pt-spacing-3 border-t border-[#E4E7EC]">
+        <Skeleton className="h-9 w-24 rounded-2" />
+      </div>
+    </SkeletonCard>
+  );
+}
+
+/* ── Important Dates ───────────────────────────────────────────── */
+function ImportantDatesSkeleton() {
+  return (
+    <SkeletonCard titleWidth="w-28">
+      <div className="space-y-spacing-2">
+        <LabelValueRow labelW="w-20" valueW="w-28" />
+      </div>
+      <div className="mt-spacing-3 pt-spacing-3 border-t border-[#E4E7EC]">
+        <Skeleton className="h-3.5 w-20 rounded-full" />
+      </div>
+    </SkeletonCard>
+  );
+}
+
+/* ── Tags ──────────────────────────────────────────────────────── */
+function TagsSkeleton() {
+  return (
+    <SkeletonCard titleWidth="w-12">
+      <div className="flex flex-wrap gap-spacing-2">
+        <Skeleton className="h-6 w-20 rounded-full" />
+        <Skeleton className="h-6 w-24 rounded-full" />
+        <Skeleton className="h-6 w-16 rounded-full" />
+      </div>
+      <div className="mt-spacing-3">
+        <Skeleton className="h-9 w-full rounded-2" />
+      </div>
+    </SkeletonCard>
+  );
+}
+
+/* ── Secondary Contact ─────────────────────────────────────────── */
+function SecondaryContactSkeleton() {
+  return (
+    <SkeletonCard titleWidth="w-36">
+      <div className="space-y-spacing-2">
+        <Skeleton className="h-4 w-32 rounded-full" />
+        <Skeleton className="h-3 w-20 rounded-full" />
+        <Skeleton className="h-3.5 w-28 rounded-full" />
+        <Skeleton className="h-3.5 w-36 rounded-full" />
+      </div>
+    </SkeletonCard>
+  );
+}
+
+/* ── Lead Assignment ───────────────────────────────────────────── */
+function LeadAssignmentSkeleton() {
+  return (
+    <SkeletonCard titleWidth="w-32">
+      <div className="space-y-spacing-3">
+        <div className="flex items-center justify-between gap-spacing-2 min-h-9">
+          <Skeleton className="h-3 w-14 rounded-full" />
+          <Skeleton className="h-9 w-40 rounded-2" />
+        </div>
+        <div className="flex items-center justify-between gap-spacing-2 min-h-9">
+          <Skeleton className="h-3 w-14 rounded-full" />
+          <Skeleton className="h-9 w-40 rounded-2" />
+        </div>
+      </div>
+      <div className="mt-spacing-3 pt-spacing-3 border-t border-[#E4E7EC]">
+        <Skeleton className="h-9 w-28 rounded-2" />
+      </div>
+    </SkeletonCard>
+  );
+}
+
+/* ── Source ─────────────────────────────────────────────────────── */
+function SourceSkeleton() {
+  return (
+    <SkeletonCard titleWidth="w-16">
+      <LabelValueRow labelW="w-14" valueW="w-32" />
+    </SkeletonCard>
+  );
+}
+
+/* ── Follow-Ups ────────────────────────────────────────────────── */
+function FollowUpsSkeleton() {
+  return (
+    <SkeletonCard titleWidth="w-24">
+      <div className="space-y-spacing-3 divide-y divide-[#E4E7EC]">
+        {[0, 1].map((i) => (
+          <div key={i} className={`space-y-2 ${i > 0 ? 'pt-spacing-3' : ''}`}>
+            <div className="flex items-start gap-spacing-2">
+              <Skeleton className="h-4 w-4 rounded-2 shrink-0 mt-0.5" />
+              <div className="flex-1 space-y-1.5">
+                <Skeleton className="h-3.5 w-3/4 rounded-full" />
+                <Skeleton className="h-3 w-full rounded-full" />
+              </div>
+            </div>
+            <div className="flex items-center gap-spacing-2 pl-6">
+              <Skeleton className="h-3 w-20 rounded-full" />
+              <Skeleton className="h-6 w-20 rounded-full" />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-spacing-3 pt-spacing-3 border-t border-[#E4E7EC] flex items-center justify-between">
+        <Skeleton className="h-3.5 w-24 rounded-full" />
+        <Skeleton className="h-3.5 w-28 rounded-full" />
+      </div>
+    </SkeletonCard>
+  );
+}
+
+/* ── Workflows ─────────────────────────────────────────────────── */
+function WorkflowsSkeleton() {
+  return (
+    <SkeletonCard titleWidth="w-24">
+      <div className="space-y-spacing-2">
+        <Skeleton className="h-3.5 w-40 rounded-full" />
+        <Skeleton className="h-3.5 w-36 rounded-full" />
+      </div>
+      <div className="mt-spacing-3 pt-spacing-3 border-t border-[#E4E7EC] flex items-center gap-spacing-2">
+        <Skeleton className="h-9 flex-1 rounded-2" />
+        <Skeleton className="h-9 w-16 rounded-2" />
+      </div>
+    </SkeletonCard>
+  );
+}
+
+/* ── Saved Searches ────────────────────────────────────────────── */
+function SavedSearchesSkeleton() {
+  return (
+    <SkeletonCard titleWidth="w-28">
+      <div className="space-y-spacing-2">
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-3.5 w-36 rounded-full" />
+          <Skeleton className="h-3.5 w-3.5 rounded-2" />
+        </div>
+      </div>
+      <div className="mt-spacing-3 pt-spacing-3 border-t border-[#E4E7EC]">
+        <Skeleton className="h-3.5 w-32 rounded-full" />
+      </div>
+    </SkeletonCard>
+  );
+}
+
+/* ── Market Reports ────────────────────────────────────────────── */
+function MarketReportsSkeleton() {
+  return (
+    <SkeletonCard titleWidth="w-28">
+      <Skeleton className="h-3.5 w-40 rounded-full" />
+      <div className="mt-spacing-3 pt-spacing-3 border-t border-[#E4E7EC]">
+        <Skeleton className="h-3.5 w-24 rounded-full" />
+      </div>
+    </SkeletonCard>
+  );
+}
+
+/* ── Home Valuation Reports ─────────────────────────────────────── */
+function HomeValuationReportsSkeleton() {
+  return (
+    <SkeletonCard titleWidth="w-44">
+      <Skeleton className="h-3.5 w-40 rounded-full" />
+      <div className="mt-spacing-3 pt-spacing-3 border-t border-[#E4E7EC]">
+        <Skeleton className="h-3.5 w-24 rounded-full" />
+      </div>
+    </SkeletonCard>
+  );
+}
+
+/* ── SMS/Email Opt-Outs ─────────────────────────────────────────── */
+function SmsEmailOptOutsSkeleton() {
+  return (
+    <SkeletonCard titleWidth="w-36">
+      <div className="space-y-spacing-3">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="flex items-center gap-spacing-3">
+            <Skeleton className="h-5 w-9 rounded-full shrink-0" />
+            <div className="flex-1 space-y-1">
+              <Skeleton className="h-3.5 w-32 rounded-full" />
+              <Skeleton className="h-3 w-full rounded-full" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </SkeletonCard>
+  );
+}
+
+/* ── Main RightColumn ──────────────────────────────────────────── */
 export function RightColumn() {
-  const [infoOrder, setInfoOrder] = useState(INFO_DEFAULT_ORDER);
-  const [engagementOrder, setEngagementOrder] = useState(
-    ENGAGEMENT_DEFAULT_ORDER,
-  );
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: { distance: 5 },
-    }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
-  );
-
-  const handleInfoDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (over && active.id !== over.id) {
-      setInfoOrder((order) => {
-        const oldIndex = order.indexOf(active.id as string);
-        const newIndex = order.indexOf(over.id as string);
-        return arrayMove(order, oldIndex, newIndex);
-      });
-    }
-  };
-
-  const handleEngagementDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (over && active.id !== over.id) {
-      setEngagementOrder((order) => {
-        const oldIndex = order.indexOf(active.id as string);
-        const newIndex = order.indexOf(over.id as string);
-        return arrayMove(order, oldIndex, newIndex);
-      });
-    }
-  };
-
   return (
     <div className="space-y-spacing-4">
-      <Tabs defaultValue="info" className="w-full">
-        <TabsList className="w-full h-auto p-0 bg-transparent rounded-none border-b border-border-default">
-          <TabsTrigger
-            value="info"
-            className="flex-1 py-4 rounded-none bg-transparent text-text-4 font-semibold text-gray-80 shadow-none border-b-2 border-transparent data-[state=active]:text-blue-110 data-[state=active]:border-blue-110 data-[state=active]:shadow-none data-[state=active]:bg-transparent"
-          >
-            Info
-          </TabsTrigger>
-          <TabsTrigger
-            value="engagement"
-            className="flex-1 py-4 rounded-none bg-transparent text-text-4 font-semibold text-gray-80 shadow-none border-b-2 border-transparent data-[state=active]:text-blue-110 data-[state=active]:border-blue-110 data-[state=active]:shadow-none data-[state=active]:bg-transparent"
-          >
-            Engagement
-          </TabsTrigger>
-        </TabsList>
+      {/* Tab bar */}
+      <div className="w-full border-b border-border-default flex">
+        <div className="flex-1 py-4 flex justify-center">
+          <Skeleton className="h-3.5 w-10 rounded-full" />
+        </div>
+        <div className="flex-1 py-4 flex justify-center">
+          <Skeleton className="h-3.5 w-24 rounded-full" />
+        </div>
+      </div>
 
-        {/* Info Tab */}
-        <TabsContent value="info" className="mt-spacing-4 space-y-spacing-4">
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleInfoDragEnd}
-          >
-            <SortableContext
-              items={infoOrder}
-              strategy={verticalListSortingStrategy}
-            >
-              <div className="space-y-spacing-4">
-                {infoOrder.map((id) => {
-                  const Component = INFO_CARD_MAP[id];
-                  return (
-                    <SortableCard key={id} id={id}>
-                      <Component />
-                    </SortableCard>
-                  );
-                })}
-              </div>
-            </SortableContext>
-          </DndContext>
-        </TabsContent>
-
-        {/* Engagement Tab */}
-        <TabsContent value="engagement" className="mt-spacing-4 space-y-spacing-4">
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleEngagementDragEnd}
-          >
-            <SortableContext
-              items={engagementOrder}
-              strategy={verticalListSortingStrategy}
-            >
-              <div className="space-y-spacing-4">
-                {renderEngagementCards(engagementOrder)}
-              </div>
-            </SortableContext>
-          </DndContext>
-        </TabsContent>
-      </Tabs>
+      {/* Info tab cards (default view) */}
+      <div className="space-y-spacing-4">
+        <ImportantNotesSkeleton />
+        <ActivityStatsSkeleton />
+        <HighlightsSkeleton />
+        <ContactInfoSkeleton />
+        <SearchCriteriaSkeleton />
+        <ImportantDatesSkeleton />
+        <TagsSkeleton />
+        <SecondaryContactSkeleton />
+        <LeadAssignmentSkeleton />
+        <SourceSkeleton />
+      </div>
     </div>
   );
 }
