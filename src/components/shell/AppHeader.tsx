@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Search,
   Bell,
@@ -8,14 +8,26 @@ import {
   Globe,
   ChevronDown,
   ExternalLink,
-  Keyboard,
-  MessageSquare,
-  Sparkles,
   LogOut,
   Settings,
   Check,
+  BookOpen,
+  Trophy,
+  Users,
+  Newspaper,
+  Share2,
+  Key,
+  CreditCard,
+  FileText,
+  Shield,
+  Accessibility,
+  CircleUserRound,
+  MoreHorizontal,
+  X,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
+import { Input } from '@/components/ui/input';
 import {
   Popover,
   PopoverContent,
@@ -25,337 +37,552 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from '@/components/ui/dialog';
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 // ── Data ─────────────────────────────────────────────────────────
-const NOTIFICATIONS = [
-  { id: '1', title: 'Camille Dubois is online now', time: '2 min ago', read: false },
-  { id: '2', title: 'New lead assigned: Mike Chen', time: '15 min ago', read: false },
-  { id: '3', title: 'Follow-up reminder: Call Sarah Lee', time: '1 hour ago', read: true },
+const WEBSITES = [
+  { domain: 'www.totallynotrealgeeks.com' },
+  { domain: 'www.luxuryhomes.com' },
+  { domain: 'www.beachfrontrealty.com' },
 ];
 
-const SITES = [
-  { id: '1', name: 'www.testsite.com', active: true },
-  { id: '2', name: 'www.myrealestate.com', active: false },
-  { id: '3', name: 'www.luxuryhomes.com', active: false },
-];
+const USER_NAME = 'Alina Kāne';
+const USER_EMAIL = 'alina.kane@realgeeks.com';
+
+function stripWww(domain: string) {
+  return domain.replace(/^www\./, '');
+}
+
+// ── Idle detection hook ──────────────────────────────────────────
+function useIdleDetection(thresholdMs: number, onIdle: () => void) {
+  const stableOnIdle = useCallback(onIdle, [onIdle]);
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+
+    const resetTimer = () => {
+      clearTimeout(timer);
+      timer = setTimeout(stableOnIdle, thresholdMs);
+    };
+
+    const events = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
+    events.forEach((e) => window.addEventListener(e, resetTimer, { passive: true }));
+    resetTimer();
+
+    return () => {
+      clearTimeout(timer);
+      events.forEach((e) => window.removeEventListener(e, resetTimer));
+    };
+  }, [thresholdMs, stableOnIdle]);
+}
 
 // ── Component ────────────────────────────────────────────────────
 export function AppHeader() {
-  const [notifications, setNotifications] = useState(NOTIFICATIONS);
-  const [activeSite, setActiveSite] = useState('www.testsite.com');
-  const [shortcutsOpen, setShortcutsOpen] = useState(false);
-  const [feedbackOpen, setFeedbackOpen] = useState(false);
-  const [feedbackText, setFeedbackText] = useState('');
+  const [currentDomain, setCurrentDomain] = useState(WEBSITES[0].domain);
+  const [unreadCount, setUnreadCount] = useState(1);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [searchFocused, setSearchFocused] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const mobileSearchRef = useRef<HTMLInputElement>(null);
 
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  // Chat with Support animations
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
+  const [isIdle, setIsIdle] = useState(false);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setIsFirstLoad(false), 3200); // 2 pulses × 1.6s
+    return () => clearTimeout(timer);
+  }, []);
+
+  useIdleDetection(
+    20000,
+    useCallback(() => {
+      setIsIdle(true);
+      setTimeout(() => setIsIdle(false), 600);
+    }, []),
+  );
+
+  // Focus mobile search input when overlay opens
+  useEffect(() => {
+    if (mobileSearchOpen && mobileSearchRef.current) {
+      mobileSearchRef.current.focus();
+    }
+  }, [mobileSearchOpen]);
+
+  const openChat = () => toast('Opening support chat…');
+  const signOut = () => toast('Signing out…');
   const markAllRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-    toast('All notifications marked as read');
+    setUnreadCount(0);
   };
-
-  const handleSiteSwitch = (siteName: string) => {
-    setActiveSite(siteName);
-    toast(`Switched to ${siteName}`);
-  };
-
-  const handleFeedbackSubmit = () => {
-    if (!feedbackText.trim()) return;
-    setFeedbackOpen(false);
-    setFeedbackText('');
-    toast.success('Thank you for your feedback!');
+  const switchTo = (domain: string) => {
+    setCurrentDomain(domain);
+    toast(`Switched to ${stripWww(domain)}`);
   };
 
   return (
-    <>
-      <header
-        className="shrink-0 flex items-center px-4 bg-bg-card border-b border-border-default"
-        style={{ height: 56 }}
+    <header className="h-14 sticky top-0 z-40 bg-white border-b border-[#E4E7EC] flex items-center px-spacing-4 md:px-spacing-6 gap-spacing-3 md:gap-spacing-4">
+
+      {/* ── LEFT: CRM Breadcrumb ──────────────────────────── */}
+      <a
+        href="/leads"
+        className="inline-flex items-center gap-spacing-2 text-sm font-medium text-[#3E60C9] hover:text-[#3840A9] transition shrink-0 whitespace-nowrap"
       >
-        {/* 1. Back button + section label */}
-        <button
-          type="button"
-          onClick={() => {
-            if (window.history.length > 1) {
-              window.history.back();
-            } else {
-              window.location.href = '/leads';
-            }
-          }}
-          className="flex items-center gap-2 px-4 py-2 rounded-2 hover:bg-bg-muted transition-colors cursor-pointer shrink-0"
-          aria-label="Back"
-        >
-          <ArrowLeft className="w-4 h-4 shrink-0 text-text-link" strokeWidth={2.25} />
-          <span className="text-text-4 font-semibold whitespace-nowrap text-text-link">
-            CRM / Lead Manager
-          </span>
-        </button>
+        <ArrowLeft className="w-4 h-4 shrink-0" />
+        {/* Stage D (<md): arrow only. Stage A/B/C (md+): full breadcrumb */}
+        <span className="hidden md:inline">CRM / Lead Manager</span>
+      </a>
 
-        {/* 2. Spacer */}
-        <div className="flex-1" />
+      {/* ── SPACER ────────────────────────────────────────── */}
+      <div className="flex-1 min-w-0" />
 
-        {/* 4. Search */}
-        <div className="relative hidden md:block w-full max-w-[420px] mx-4">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
-          <input
-            type="text"
+      {/* ── RIGHT CLUSTER (search + utilities) ──────────── */}
+      <div className="flex items-center gap-spacing-2 md:gap-spacing-3 shrink-0">
+
+        {/* ────────────────────────────────────────────────── */}
+        {/* Search                                            */}
+        {/* ────────────────────────────────────────────────── */}
+
+        {/* Search — Stage D (<md): icon button that opens overlay */}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              aria-label="Search"
+              className="md:hidden h-9 w-9 inline-flex items-center justify-center text-[#475467] hover:bg-[#F9FAFB] rounded-1 transition cursor-pointer shrink-0"
+              onClick={() => setMobileSearchOpen(true)}
+            >
+              <Search className="w-5 h-5" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom" sideOffset={6}>Search</TooltipContent>
+        </Tooltip>
+
+        {/* Search — Stage A/B/C (md+): focus-expanding input */}
+        {/* xl: 320→440, lg: 260→400, md: 200→360 */}
+        <div className="hidden md:flex justify-end relative shrink-0">
+          <Search className="absolute left-spacing-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#667085] pointer-events-none z-10" />
+          <Input
+            type="search"
             placeholder="Search your CRM"
-            className="w-full h-9 pl-9 pr-3 bg-bg-card rounded-full text-text-4 font-normal placeholder:text-text-muted focus:outline-none focus:ring-1 focus:ring-border-focus border border-border-default text-text-default"
+            className={cn(
+              'h-10 pl-9 pr-spacing-3 rounded-2 border border-[#E4E7EC] bg-white text-sm text-[#101828] placeholder:text-[#667085] focus:outline-none focus:border-[#3E60C9] focus:ring-1 focus:ring-[#3E60C9] transition-[width] duration-300 ease-out',
+              searchFocused
+                ? 'w-[360px] lg:w-[400px] xl:w-[440px]'
+                : 'w-[200px] lg:w-[260px] xl:w-[320px]',
+            )}
+            onFocus={() => setSearchFocused(true)}
+            onBlur={() => setSearchFocused(false)}
           />
         </div>
 
-        {/* 5. Right cluster */}
-        <div className="flex items-center gap-2 ml-auto shrink-0">
-          {/* Chat with Support pill */}
-          <button
-            type="button"
-            onClick={() => toast('Opening support chat…')}
-            className="hidden lg:inline-flex items-center gap-1.5 h-8 px-3 rounded-2 border border-border-default bg-bg-card text-text-default text-text-4 font-normal hover:bg-bg-muted transition-colors cursor-pointer"
-          >
-            <MessageCircle className="w-4 h-4 text-text-muted" />
-            <span>Chat with Support</span>
-          </button>
-
-          {/* Bell icon with badge */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <button
-                type="button"
-                className="relative w-8 h-8 flex items-center justify-center rounded-2 hover:bg-bg-muted transition-colors cursor-pointer"
-              >
-                <Bell className="w-4 h-4 text-text-muted" />
-                {unreadCount > 0 && (
-                  <span
-                    className="absolute flex items-center justify-center rounded-full text-white font-semibold leading-none bg-error-text"
-                    style={{
-                      top: 2,
-                      right: 2,
-                      width: 16,
-                      height: 16,
-                      fontSize: 10,
-                    }}
-                  >
-                    {unreadCount}
-                  </span>
-                )}
-              </button>
-            </PopoverTrigger>
-            <PopoverContent align="end" className="w-[320px] p-0">
-              <div className="p-spacing-3 border-b border-border-default flex items-center justify-between">
-                <h4 className="text-text-4 font-semibold text-text-default">Notifications</h4>
-                <button
-                  type="button"
-                  onClick={markAllRead}
-                  className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
-                >
-                  Mark all as read
-                </button>
-              </div>
-              <div className="max-h-[300px] overflow-y-auto">
-                {notifications.map((notif) => (
-                  <div
-                    key={notif.id}
-                    className={`px-spacing-3 py-spacing-2 border-b border-border-default last:border-b-0 hover:bg-gray-30 transition-colors cursor-pointer ${
-                      !notif.read ? 'bg-blue-20/50' : ''
-                    }`}
-                  >
-                    <div className="flex items-start gap-spacing-2">
-                      {!notif.read && (
-                        <div className="w-2 h-2 rounded-round bg-blue-110 mt-1.5 shrink-0" />
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <p className="text-text-4 font-normal text-text-default">{notif.title}</p>
-                        <p className="text-text-4 text-text-muted">{notif.time}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="p-spacing-3 border-t border-border-default">
-                <button
-                  type="button"
-                  onClick={() => toast('Navigating to all notifications…')}
-                  className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer w-full text-center"
-                >
-                  View all notifications
-                </button>
-              </div>
-            </PopoverContent>
-          </Popover>
-
-          {/* Help icon */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button
-                type="button"
-                className="w-8 h-8 flex items-center justify-center rounded-2 hover:bg-bg-muted transition-colors cursor-pointer"
-              >
-                <HelpCircle className="w-4 h-4 text-text-muted" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="min-w-[200px]">
-              <DropdownMenuItem className="cursor-pointer" onClick={() => toast('Opening documentation…')}>
-                <ExternalLink className="w-3.5 h-3.5 mr-2" />
-                Documentation
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer" onClick={() => setShortcutsOpen(true)}>
-                <Keyboard className="w-3.5 h-3.5 mr-2" />
-                Keyboard Shortcuts
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer" onClick={() => setFeedbackOpen(true)}>
-                <MessageSquare className="w-3.5 h-3.5 mr-2" />
-                Submit Feedback
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer" onClick={() => toast('Opening release notes…')}>
-                <Sparkles className="w-3.5 h-3.5 mr-2" />
-                What&apos;s New
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {/* Separator */}
-          <div className="hidden lg:block w-px h-6 bg-border-default mx-1" />
-
-          {/* "Logged in as {Name}" — user menu trigger */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="hidden lg:flex items-center gap-1 px-2 py-1 rounded-2 hover:bg-bg-muted transition-colors cursor-pointer whitespace-nowrap">
-                <span className="text-text-4 text-text-muted">Logged in as</span>
-                <span className="text-text-4 font-semibold text-text-default">Alina Kāne</span>
-                <ChevronDown className="w-3.5 h-3.5 ml-0.5 shrink-0 text-text-muted" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="min-w-[200px]">
-              <DropdownMenuItem className="cursor-pointer" onClick={() => toast('Opening account settings…')}>
-                <Settings className="w-3.5 h-3.5 mr-2" />
-                Account Settings
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer text-red-80" onClick={() => toast('Signing out…')}>
-                <LogOut className="w-3.5 h-3.5 mr-2" />
-                Sign Out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {/* Site selector */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button
-                className="hidden md:flex items-center gap-1 text-text-4 font-normal text-text-link hover:opacity-80 transition-opacity cursor-pointer"
-              >
-                <Globe className="w-4 h-4 shrink-0" />
-                <span className="truncate max-w-[150px]">{activeSite}</span>
-                <ChevronDown className="w-3.5 h-3.5 shrink-0" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="min-w-[220px]">
-              {SITES.map((site) => (
-                <DropdownMenuItem
-                  key={site.id}
-                  className="cursor-pointer flex items-center justify-between"
-                  onClick={() => handleSiteSwitch(site.name)}
-                >
-                  <span>{site.name}</span>
-                  {activeSite === site.name && <Check className="w-4 h-4 text-blue-110" />}
-                </DropdownMenuItem>
-              ))}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                className="cursor-pointer text-text-link font-semibold"
-                onClick={() => toast('Opening site creation wizard…')}
-              >
-                + Add site…
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </header>
-
-      {/* ── Keyboard Shortcuts Dialog ─────────────────────── */}
-      <Dialog open={shortcutsOpen} onOpenChange={setShortcutsOpen}>
-        <DialogContent className="sm:max-w-[440px]">
-          <DialogHeader>
-            <DialogTitle>Keyboard Shortcuts</DialogTitle>
-            <DialogDescription>Quick actions to speed up your workflow.</DialogDescription>
-          </DialogHeader>
-          <div className="space-y-spacing-3 py-spacing-2">
-            {[
-              ['⌘ + K', 'Quick search'],
-              ['⌘ + N', 'New note'],
-              ['⌘ + Shift + E', 'Compose email'],
-              ['⌘ + Shift + C', 'Start call'],
-              ['Esc', 'Close dialog / cancel'],
-              ['⌘ + /', 'Toggle keyboard shortcuts'],
-            ].map(([key, desc]) => (
-              <div key={key} className="flex items-center justify-between">
-                <span className="text-text-4 text-text-default">{desc}</span>
-                <kbd className="inline-flex items-center h-6 px-2 rounded-2 bg-gray-40 text-text-3 font-mono text-text-secondary border border-border-default"> {/* text-text-3 OK: keyboard shortcut hint */}
-                  {key}
-                </kbd>
-              </div>
-            ))}
-          </div>
-          <DialogFooter>
+        {/* ────────────────────────────────────────────────── */}
+        {/* Chat with Support                                 */}
+        {/* Visible at md+, hidden below md (moves to kebab)  */}
+        {/* xl: icon + label. lg/md: icon only                */}
+        {/* ────────────────────────────────────────────────── */}
+        <Tooltip>
+          <TooltipTrigger asChild>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
-              onClick={() => setShortcutsOpen(false)}
+              aria-label="Chat with Support"
+              onClick={openChat}
+              className={cn(
+                'hidden md:inline-flex h-9 w-9 items-center justify-center gap-spacing-2 text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] rounded-1 text-sm font-medium transition cursor-pointer shrink-0',
+                'xl:w-auto xl:px-spacing-4 xl:border xl:border-[#E4E7EC] xl:bg-white xl:text-[#101828] xl:shadow-sm',
+                isFirstLoad && 'animate-pulse-blue',
+                isIdle && 'animate-shake',
+              )}
             >
-              Close
+              <MessageCircle className="w-5 h-5 shrink-0" />
+              {/* Label only at xl */}
+              <span className="hidden xl:inline whitespace-nowrap">Chat with Support</span>
             </button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          </TooltipTrigger>
+          {/* Tooltip shows when label is hidden (below xl) */}
+          <TooltipContent side="bottom" sideOffset={6} className="xl:hidden">Chat with Support</TooltipContent>
+        </Tooltip>
 
-      {/* ── Submit Feedback Dialog ────────────────────────── */}
-      <Dialog open={feedbackOpen} onOpenChange={setFeedbackOpen}>
-        <DialogContent className="sm:max-w-[440px]">
-          <DialogHeader>
-            <DialogTitle>Submit Feedback</DialogTitle>
-            <DialogDescription>Help us improve your experience.</DialogDescription>
-          </DialogHeader>
-          <div className="py-spacing-2">
-            <textarea
-              rows={5}
-              value={feedbackText}
-              onChange={(e) => setFeedbackText(e.target.value)}
-              placeholder="Tell us what you think…"
-              className="w-full px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
-              autoFocus
+        {/* ────────────────────────────────────────────────── */}
+        {/* Notification Bell                                 */}
+        {/* Visible at md+, hidden below md (moves to kebab)  */}
+        {/* ────────────────────────────────────────────────── */}
+        <Popover
+          open={isNotifOpen}
+          onOpenChange={(open) => {
+            setIsNotifOpen(open);
+            if (open) markAllRead();
+          }}
+          modal={false}
+        >
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <PopoverTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Notifications"
+                  className="hidden md:inline-flex relative h-9 w-9 items-center justify-center text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] rounded-1 transition cursor-pointer shrink-0"
+                >
+                  <Bell className="w-5 h-5" />
+                  {unreadCount > 0 && (
+                    <span className="absolute top-0.5 right-0.5 min-w-4 h-4 px-1 inline-flex items-center justify-center text-[10px] font-semibold text-white bg-[#D92D20] rounded-round ring-2 ring-white">
+                      {unreadCount}
+                    </span>
+                  )}
+                </button>
+              </PopoverTrigger>
+            </TooltipTrigger>
+            <TooltipContent side="bottom" sideOffset={6}>Notifications</TooltipContent>
+          </Tooltip>
+
+          <PopoverContent className="w-[360px] p-0 bg-white border border-[#E4E7EC] rounded-2 shadow-lg" align="end">
+            {/* Popover header */}
+            <div className="px-spacing-4 py-spacing-3 border-b border-[#E4E7EC] bg-[#F9FAFB]">
+              <h3 className="text-sm font-semibold text-[#101828]">Refer-A-Friend Program</h3>
+            </div>
+            {/* Popover body */}
+            <div className="px-spacing-4 py-spacing-4 space-y-spacing-3">
+              <p className="text-sm text-[#3E60C9] font-medium">
+                Refer Real Geeks. Earn $200.
+              </p>
+              <div className="flex items-center justify-between">
+                <button
+                  type="button"
+                  className="h-8 px-spacing-3 inline-flex items-center bg-[#039855] hover:bg-[#027A48] text-white rounded-1 text-sm font-medium transition cursor-pointer"
+                  onClick={() => toast('Opening referral form…')}
+                >
+                  Earn $200
+                </button>
+                <button
+                  type="button"
+                  className="text-xs text-[#D92D20] hover:text-[#B42318] transition cursor-pointer"
+                  onClick={() => {
+                    setIsNotifOpen(false);
+                    toast('Notification deleted');
+                  }}
+                >
+                  Delete Notification
+                </button>
+              </div>
+            </div>
+            {/* Popover footer */}
+            <div className="px-spacing-4 py-spacing-3 border-t border-[#E4E7EC] text-center">
+              <button
+                type="button"
+                onClick={() => setIsNotifOpen(false)}
+                className="text-sm font-medium text-[#3E60C9] hover:text-[#3840A9] transition cursor-pointer"
+              >
+                Close Notifications
+              </button>
+            </div>
+          </PopoverContent>
+        </Popover>
+
+        {/* ────────────────────────────────────────────────── */}
+        {/* Help & Support                                    */}
+        {/* Visible at md+, hidden below md (moves to kebab)  */}
+        {/* ────────────────────────────────────────────────── */}
+        <DropdownMenu modal={false}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Help & Support"
+                  className="hidden md:inline-flex h-9 w-9 items-center justify-center text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] rounded-1 transition cursor-pointer shrink-0"
+                >
+                  <HelpCircle className="w-5 h-5" />
+                </button>
+              </DropdownMenuTrigger>
+            </TooltipTrigger>
+            <TooltipContent side="bottom" sideOffset={6}>Help &amp; Support</TooltipContent>
+          </Tooltip>
+
+          <DropdownMenuContent className="w-[280px] bg-white border border-[#E4E7EC] rounded-2 shadow-lg" align="end">
+            <DropdownMenuLabel className="text-sm font-semibold text-[#101828] px-spacing-3 py-spacing-2">
+              Help &amp; Support
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator className="bg-[#E4E7EC]" />
+
+            <DropdownMenuItem onClick={openChat} className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]">
+              <MessageCircle className="w-4 h-4 mr-spacing-2 text-[#3E60C9] shrink-0" />
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-[#101828]">Chat with Support</span>
+                <span className="text-xs text-[#667085]">Get real-time help</span>
+              </div>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]" onClick={() => toast('Opening Product Training…')}>
+              <BookOpen className="w-4 h-4 mr-spacing-2 text-[#667085] shrink-0" />
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-[#101828]">Product Training</span>
+                <span className="text-xs text-[#667085]">Everything you need to know about Real Geeks</span>
+              </div>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]" onClick={() => toast('Opening Live Coaching Events…')}>
+              <Trophy className="w-4 h-4 mr-spacing-2 text-[#667085] shrink-0" />
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-[#101828]">Live Coaching Events</span>
+                <span className="text-xs text-[#667085]">Learn from the best in the business</span>
+              </div>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]" onClick={() => toast('Opening FB Mastermind Group…')}>
+              <Users className="w-4 h-4 mr-spacing-2 text-[#667085] shrink-0" />
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-[#101828]">FB Mastermind Group</span>
+                <span className="text-xs text-[#667085]">Ask and answer questions with the Real Geeks community</span>
+              </div>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]" onClick={() => toast('Opening What\'s New…')}>
+              <Newspaper className="w-4 h-4 mr-spacing-2 text-[#667085] shrink-0" />
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-[#101828]">What&apos;s New</span>
+                <span className="text-xs text-[#667085]">Take a look at new and upcoming features</span>
+              </div>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]" onClick={() => toast('Opening Send a Referral…')}>
+              <Share2 className="w-4 h-4 mr-spacing-2 text-[#667085] shrink-0" />
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-[#101828]">Send a Referral</span>
+                <span className="text-xs text-[#667085]">Earn $200 for each referral</span>
+              </div>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        {/* ────────────────────────────────────────────────── */}
+        {/* Overflow Kebab (Stage D: <md only)                */}
+        {/* Contains Chat, Notifications, Help                */}
+        {/* ────────────────────────────────────────────────── */}
+        <DropdownMenu modal={false}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="More"
+                  className="md:hidden relative h-9 w-9 inline-flex items-center justify-center text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] rounded-1 transition cursor-pointer shrink-0"
+                >
+                  <MoreHorizontal className="w-5 h-5" />
+                  {/* Unread dot on kebab when notifications are collapsed */}
+                  {unreadCount > 0 && (
+                    <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#D92D20] rounded-round ring-2 ring-white" />
+                  )}
+                </button>
+              </DropdownMenuTrigger>
+            </TooltipTrigger>
+            <TooltipContent side="bottom" sideOffset={6}>More</TooltipContent>
+          </Tooltip>
+
+          <DropdownMenuContent className="w-[240px] bg-white border border-[#E4E7EC] rounded-2 shadow-lg" align="end">
+            <DropdownMenuItem onClick={openChat} className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]">
+              <MessageCircle className="w-4 h-4 mr-spacing-2 text-[#475467] shrink-0" />
+              <span className="text-sm font-medium text-[#101828]">Chat with Support</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]"
+              onClick={() => {
+                setIsNotifOpen(true);
+                markAllRead();
+              }}
+            >
+              <Bell className="w-4 h-4 mr-spacing-2 text-[#475467] shrink-0" />
+              <span className="text-sm font-medium text-[#101828] flex-1">Notifications</span>
+              {unreadCount > 0 && (
+                <span className="ml-auto min-w-5 h-5 px-1.5 inline-flex items-center justify-center text-[11px] font-semibold text-white bg-[#D92D20] rounded-round">
+                  {unreadCount}
+                </span>
+              )}
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]" onClick={() => toast('Opening Help & Support…')}>
+              <HelpCircle className="w-4 h-4 mr-spacing-2 text-[#475467] shrink-0" />
+              <span className="text-sm font-medium text-[#101828]">Help &amp; Support</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        {/* ────────────────────────────────────────────────── */}
+        {/* Account Menu                                      */}
+        {/* xl/lg: icon + name + chevron                      */}
+        {/* md: icon only                                     */}
+        {/* <md: icon only (identity = always visible)        */}
+        {/* ────────────────────────────────────────────────── */}
+        <DropdownMenu modal={false}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  aria-label={USER_NAME}
+                  className="inline-flex items-center gap-spacing-2 h-9 px-spacing-2 rounded-1 hover:bg-[#F9FAFB] transition cursor-pointer shrink-0"
+                >
+                  <CircleUserRound className="w-5 h-5 text-[#475467] shrink-0" />
+                  {/* Label visible at lg+, hidden below lg */}
+                  <span className="hidden lg:inline text-sm font-medium text-[#101828] whitespace-nowrap">{USER_NAME}</span>
+                  <ChevronDown className="hidden lg:block w-4 h-4 text-[#667085] shrink-0" />
+                </button>
+              </DropdownMenuTrigger>
+            </TooltipTrigger>
+            {/* Tooltip when label hidden (below lg) */}
+            <TooltipContent side="bottom" sideOffset={6} className="lg:hidden">{USER_NAME}</TooltipContent>
+          </Tooltip>
+
+          <DropdownMenuContent className="w-[280px] bg-white border border-[#E4E7EC] rounded-2 shadow-lg" align="end">
+            {/* User identity */}
+            <div className="px-spacing-3 py-spacing-3 border-b border-[#E4E7EC]">
+              <p className="text-sm font-semibold text-[#101828]">{USER_NAME}</p>
+              <p className="text-xs text-[#667085]">{USER_EMAIL}</p>
+            </div>
+
+            {/* Account actions */}
+            <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]" onClick={() => toast('Opening Account Settings…')}>
+              <Settings className="w-4 h-4 mr-spacing-2 text-[#667085]" />
+              <span className="text-sm text-[#101828] flex-1">Account Settings</span>
+              <ExternalLink className="w-3 h-3 ml-auto text-[#98A2B3]" />
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]" onClick={() => toast('Opening Change Password…')}>
+              <Key className="w-4 h-4 mr-spacing-2 text-[#667085]" />
+              <span className="text-sm text-[#101828] flex-1">Change Password</span>
+              <ExternalLink className="w-3 h-3 ml-auto text-[#98A2B3]" />
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]" onClick={() => toast('Opening Billing…')}>
+              <CreditCard className="w-4 h-4 mr-spacing-2 text-[#667085]" />
+              <span className="text-sm text-[#101828] flex-1">Billing</span>
+              <ExternalLink className="w-3 h-3 ml-auto text-[#98A2B3]" />
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator className="bg-[#E4E7EC]" />
+
+            {/* Legal/info */}
+            <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]" onClick={() => toast('Opening Terms & Conditions…')}>
+              <FileText className="w-4 h-4 mr-spacing-2 text-[#667085]" />
+              <span className="text-sm text-[#101828] flex-1">Terms &amp; Conditions</span>
+              <ExternalLink className="w-3 h-3 ml-auto text-[#98A2B3]" />
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]" onClick={() => toast('Opening Privacy Policy…')}>
+              <Shield className="w-4 h-4 mr-spacing-2 text-[#667085]" />
+              <span className="text-sm text-[#101828] flex-1">Privacy Policy</span>
+              <ExternalLink className="w-3 h-3 ml-auto text-[#98A2B3]" />
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]" onClick={() => toast('Opening California Privacy Notice…')}>
+              <Globe className="w-4 h-4 mr-spacing-2 text-[#667085]" />
+              <span className="text-sm text-[#101828] flex-1">California Privacy Notice</span>
+              <ExternalLink className="w-3 h-3 ml-auto text-[#98A2B3]" />
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]" onClick={() => toast('Opening Accessibility…')}>
+              <Accessibility className="w-4 h-4 mr-spacing-2 text-[#667085]" />
+              <span className="text-sm text-[#101828] flex-1">Accessibility</span>
+              <ExternalLink className="w-3 h-3 ml-auto text-[#98A2B3]" />
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator className="bg-[#E4E7EC]" />
+
+            {/* Sign Out */}
+            <DropdownMenuItem
+              onClick={signOut}
+              className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#FEE4E2] text-[#D92D20]"
+            >
+              <LogOut className="w-4 h-4 mr-spacing-2" />
+              <span className="text-sm font-medium">Sign Out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        {/* ────────────────────────────────────────────────── */}
+        {/* Domain Switcher                                   */}
+        {/* xl/lg: icon + domain + chevron                    */}
+        {/* md: icon only                                     */}
+        {/* <md: icon only (context = always visible)         */}
+        {/* ────────────────────────────────────────────────── */}
+        <DropdownMenu modal={false}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Switch website"
+                  className="inline-flex items-center gap-spacing-2 h-9 px-spacing-2 rounded-1 hover:bg-[#F9FAFB] transition cursor-pointer shrink-0"
+                >
+                  <Globe className="w-5 h-5 text-[#475467] shrink-0" />
+                  {/* Label visible at lg+, hidden below lg */}
+                  <span className="hidden lg:inline text-sm font-medium text-[#101828] truncate max-w-[180px] whitespace-nowrap">
+                    {stripWww(currentDomain)}
+                  </span>
+                  <ChevronDown className="hidden lg:block w-4 h-4 text-[#667085] shrink-0" />
+                </button>
+              </DropdownMenuTrigger>
+            </TooltipTrigger>
+            {/* Tooltip: full domain when label hidden (below lg), "Switch website" at lg+ */}
+            <TooltipContent side="bottom" sideOffset={6} className="lg:hidden">{stripWww(currentDomain)}</TooltipContent>
+          </Tooltip>
+
+          <DropdownMenuContent className="w-[280px] bg-white border border-[#E4E7EC] rounded-2 shadow-lg" align="end">
+            <DropdownMenuLabel className="text-xs font-semibold uppercase tracking-wide text-[#667085] px-spacing-3 py-spacing-2">
+              Switch Website
+            </DropdownMenuLabel>
+
+            {WEBSITES.map((site) => (
+              <DropdownMenuItem
+                key={site.domain}
+                onClick={() => switchTo(site.domain)}
+                className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]"
+              >
+                <span className="text-sm text-[#101828] flex-1">{stripWww(site.domain)}</span>
+                {site.domain === currentDomain && (
+                  <Check className="w-4 h-4 text-[#3E60C9]" />
+                )}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {/* ────────────────────────────────────────────────────── */}
+      {/* Mobile Search Overlay (Stage D: <md)                  */}
+      {/* Full-width input anchored under header                */}
+      {/* ────────────────────────────────────────────────────── */}
+      {mobileSearchOpen && (
+        <div className="md:hidden fixed inset-x-0 top-14 z-50 bg-white border-b border-[#E4E7EC] px-spacing-4 py-spacing-3 flex items-center gap-spacing-3 shadow-md">
+          <div className="relative flex-1">
+            <Search className="absolute left-spacing-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#667085] pointer-events-none z-10" />
+            <Input
+              ref={mobileSearchRef}
+              type="search"
+              placeholder="Search your CRM"
+              className="h-10 w-full pl-9 pr-spacing-3 rounded-2 border border-[#E4E7EC] bg-white text-sm text-[#101828] placeholder:text-[#667085] focus:outline-none focus:border-[#3E60C9] focus:ring-1 focus:ring-[#3E60C9]"
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') setMobileSearchOpen(false);
+              }}
             />
           </div>
-          <DialogFooter>
-            <button
-              type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
-              onClick={() => setFeedbackOpen(false)}
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              disabled={!feedbackText.trim()}
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-              onClick={handleFeedbackSubmit}
-            >
-              Submit
-            </button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </>
+          <button
+            type="button"
+            aria-label="Close search"
+            className="h-9 w-9 inline-flex items-center justify-center text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] rounded-1 transition cursor-pointer shrink-0"
+            onClick={() => setMobileSearchOpen(false)}
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      )}
+    </header>
   );
 }

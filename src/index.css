@@ -105,6 +105,7 @@
   }
   html {
     scroll-behavior: smooth;
+    scrollbar-gutter: stable;
   }
   body {
     @apply font-lato antialiased;
@@ -183,4 +184,23 @@
 .ai-summary-scroll {
   scrollbar-width: thin;
   scrollbar-color: rgba(96, 89, 183, 0.25) transparent;
+}
+
+/* Chat with Support — first-load pulse */
+@keyframes pulse-blue {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(62, 96, 201, 0.4); }
+  50%      { box-shadow: 0 0 0 8px rgba(62, 96, 201, 0); }
+}
+.animate-pulse-blue {
+  animation: pulse-blue 1.6s ease-out 2;
+}
+
+/* Chat with Support — idle shake */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+  20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+.animate-shake {
+  animation: shake 0.6s ease-in-out;
 }
