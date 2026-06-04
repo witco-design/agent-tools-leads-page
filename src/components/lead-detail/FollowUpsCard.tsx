@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Pencil, AlarmClock, Video, Mail, ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Badge } from '@/components/ui/badge';
 import { CollapsibleCard } from './CollapsibleCard';
 import {
   Dialog,
@@ -34,7 +35,7 @@ const initialFollowUps: FollowUpItem[] = [
     id: '1',
     title: 'Call back',
     description: 'Discuss interest level on 2339 Shaughnessy and confirm pre-approval status with lender.',
-    date: 'Nov 9, 10:37 AM',
+    date: 'Nov 9 · 10:37am',
     tagType: 'video',
     hasAlarm: true,
     checked: false,
@@ -43,7 +44,7 @@ const initialFollowUps: FollowUpItem[] = [
     id: '2',
     title: 'Send listings',
     description: 'Email curated list of 3-bed townhomes in San Jose / Santa Clara area, $650K-$750K.',
-    date: 'Nov 12, 9:00 AM',
+    date: 'Nov 12 · 9:00am',
     tagType: 'email',
     hasAlarm: false,
     checked: false,
@@ -124,7 +125,29 @@ export function FollowUpsCard() {
 
   return (
     <>
-      <CollapsibleCard title="FOLLOW UPS" showInfoIcon>
+      <CollapsibleCard
+        title="Follow Ups"
+        showInfoIcon
+        footer={
+          <div className="flex items-center justify-between">
+            <button
+              type="button"
+              onClick={() => setAddOpen(true)}
+              className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+            >
+              + Add Followup
+            </button>
+            <button
+              type="button"
+              onClick={() => toast('Scrolling to follow-ups section…')}
+              className="inline-flex items-center gap-1.5 text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+            >
+              <span>See All Followups</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        }
+      >
         <div className="space-y-spacing-4">
           {followUps.map((item) => (
             <div
@@ -144,13 +167,13 @@ export function FollowUpsCard() {
               <div className="flex-1 min-w-0">
                 {/* Title row */}
                 <div className="flex items-center justify-between gap-spacing-2">
-                  <span className="text-text-3 font-semibold text-text-default truncate">
+                  <span className="text-text-4 font-semibold text-text-default truncate">
                     {item.title}
                   </span>
                   <button
                     type="button"
                     onClick={() => openEdit(item)}
-                    className="inline-flex items-center gap-1 text-text-2 font-semibold text-text-link hover:underline cursor-pointer shrink-0"
+                    className="inline-flex items-center gap-1 text-text-4 font-semibold text-text-link hover:underline cursor-pointer shrink-0"
                   >
                     <Pencil className="w-3.5 h-3.5" />
                     <span>Edit</span>
@@ -158,61 +181,42 @@ export function FollowUpsCard() {
                 </div>
 
                 {/* Description */}
-                <p className="text-text-2 font-normal text-text-secondary mt-1 line-clamp-2">
+                <p className="text-text-4 font-normal text-text-secondary mt-1 line-clamp-2">
                   {item.description}
                 </p>
 
-                {/* Bottom row */}
-                <div className="flex items-center justify-between mt-2">
-                  {/* Left: Date with optional alarm icon */}
+                {/* Bottom meta (stacked) */}
+                <div className="flex flex-col gap-spacing-2 mt-2">
+                  {/* Row 1: Date with optional alarm icon */}
                   <div className="flex items-center gap-spacing-2">
                     {item.hasAlarm && (
-                      <div className="w-6 h-6 rounded-round bg-red-30 flex items-center justify-center">
+                      <div className="w-6 h-6 rounded-round bg-red-30 flex items-center justify-center flex-shrink-0">
                         <AlarmClock className="w-3.5 h-3.5 text-red-80" />
                       </div>
                     )}
-                    <span className="text-text-2 font-normal text-text-secondary">
+                    <span className="text-text-4 font-normal text-text-secondary whitespace-nowrap">
                       {item.date}
                     </span>
                   </div>
 
-                  {/* Right: Tag pill */}
-                  <div className="inline-flex items-center gap-1.5 h-7 px-3 rounded-round bg-tag-bg text-tag-text text-text-2 font-medium">
+                  {/* Row 2: Action pill, left-aligned */}
+                  <Badge variant="communication" className="self-start">
                     {item.tagType === 'video' ? (
                       <>
                         <Video className="w-3.5 h-3.5" />
-                        <span>Video Message</span>
+                        Video Message
                       </>
                     ) : (
                       <>
                         <Mail className="w-3.5 h-3.5" />
-                        <span>Email</span>
+                        Email
                       </>
                     )}
-                  </div>
+                  </Badge>
                 </div>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Footer */}
-        <div className="flex items-center justify-between mt-4">
-          <button
-            type="button"
-            onClick={() => setAddOpen(true)}
-            className="text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
-          >
-            + Add Followup
-          </button>
-          <button
-            type="button"
-            onClick={() => toast('Scrolling to follow-ups section…')}
-            className="inline-flex items-center gap-1 text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
-          >
-            <span>See All Followups</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
         </div>
       </CollapsibleCard>
 
@@ -225,38 +229,38 @@ export function FollowUpsCard() {
           </DialogHeader>
           <div className="space-y-spacing-4 py-spacing-2">
             <div>
-              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Title</label>
+              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Title</label>
               <input
                 type="text"
                 value={addTitle}
                 onChange={(e) => setAddTitle(e.target.value)}
                 placeholder="e.g., Call back"
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
-              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Description</label>
+              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Description</label>
               <textarea
                 rows={3}
                 value={addDescription}
                 onChange={(e) => setAddDescription(e.target.value)}
                 placeholder="What needs to be done?"
-                className="w-full px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+                className="w-full px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               />
             </div>
             <div>
-              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Due Date</label>
+              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Due Date</label>
               <input
                 type="datetime-local"
                 value={addDate}
                 onChange={(e) => setAddDate(e.target.value)}
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
-              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Type</label>
+              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Type</label>
               <Select value={addTagType} onValueChange={(v) => setAddTagType(v as 'video' | 'email')}>
-                <SelectTrigger className="h-9 rounded-2 border-border-default bg-white text-text-3 px-spacing-3 w-full">
+                <SelectTrigger className="h-9 rounded-2 border-border-default bg-white text-text-4 px-spacing-3 w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -269,7 +273,7 @@ export function FollowUpsCard() {
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setAddOpen(false)}
             >
               Cancel
@@ -277,7 +281,7 @@ export function FollowUpsCard() {
             <button
               type="button"
               disabled={!addTitle.trim()}
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-3 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleAdd}
             >
               Add
@@ -295,36 +299,36 @@ export function FollowUpsCard() {
           </DialogHeader>
           <div className="space-y-spacing-4 py-spacing-2">
             <div>
-              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Title</label>
+              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Title</label>
               <input
                 type="text"
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
-              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Description</label>
+              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Description</label>
               <textarea
                 rows={3}
                 value={editDescription}
                 onChange={(e) => setEditDescription(e.target.value)}
-                className="w-full px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+                className="w-full px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               />
             </div>
             <div>
-              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Due Date</label>
+              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Due Date</label>
               <input
                 type="text"
                 value={editDate}
                 onChange={(e) => setEditDate(e.target.value)}
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
-              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Type</label>
+              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Type</label>
               <Select value={editTagType} onValueChange={(v) => setEditTagType(v as 'video' | 'email')}>
-                <SelectTrigger className="h-9 rounded-2 border-border-default bg-white text-text-3 px-spacing-3 w-full">
+                <SelectTrigger className="h-9 rounded-2 border-border-default bg-white text-text-4 px-spacing-3 w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -337,14 +341,14 @@ export function FollowUpsCard() {
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setEditOpen(false)}
             >
               Cancel
             </button>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-3 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
               onClick={handleSaveEdit}
             >
               Save

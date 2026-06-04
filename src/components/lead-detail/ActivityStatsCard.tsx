@@ -31,14 +31,14 @@ export function ActivityStatsCard() {
               }`}
             >
               <span
-                className={`text-text-3 font-normal ${
+                className={`text-text-4 font-normal ${
                   isActive ? 'text-blue-110' : 'text-text-secondary'
                 }`}
               >
                 {s.label}
               </span>
               <span
-                className={`text-text-3 font-semibold ${
+                className={`text-text-4 font-semibold ${
                   isActive ? 'text-blue-110' : 'text-text-default'
                 }`}
               >

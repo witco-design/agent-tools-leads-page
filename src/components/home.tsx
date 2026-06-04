@@ -13,12 +13,12 @@ function Home() {
   const { ref: titleRef, inView: titleInView } = useInView();
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-bg-app">
       {/* Top Navigation */}
       <TopNavigation />
 
       {/* Page Shell */}
-      <main className="pt-sizing-14 px-spacing-8">
+      <main className="pt-sizing-14 px-spacing-8 bg-bg-app">
         <div className="max-w-[1200px] mx-auto py-spacing-10">
           {/* Page Title */}
           <div
@@ -109,7 +109,7 @@ function Home() {
 
           {/* Footer spacing */}
           <div className="border-t border-border-default mt-spacing-8 pt-spacing-6 pb-spacing-10">
-            <p className="text-text-2 font-normal text-text-muted text-center">
+            <p className="text-text-4 font-normal text-text-muted text-center">
               Real Geeks Design System &middot; Built with React, Tailwind CSS, and named tokens
             </p>
           </div>

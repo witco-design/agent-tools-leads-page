@@ -82,7 +82,7 @@ export function SmsEmailOptOutsCard() {
   ];
 
   return (
-    <CollapsibleCard title="SMS/EMAIL OPT OUTS" showInfoIcon>
+    <CollapsibleCard title="SMS/Email Opt Outs" showInfoIcon>
       <div className="space-y-spacing-4">
         {optOutItems.map((item) => (
           <div
@@ -102,14 +102,14 @@ export function SmsEmailOptOutsCard() {
             />
             <div className="flex-1 min-w-0">
               <p
-                className={`text-text-3 font-semibold ${
+                className={`text-text-4 font-semibold ${
                   item.disabled ? 'text-gray-70' : 'text-text-default'
                 }`}
               >
                 {item.label}
               </p>
               <p
-                className={`text-text-2 font-normal mt-0.5 ${
+                className={`text-text-4 font-normal mt-0.5 leading-snug ${
                   item.disabled ? 'text-gray-70' : 'text-text-secondary'
                 }`}
               >

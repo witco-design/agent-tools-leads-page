@@ -86,11 +86,25 @@ export function SearchCriteriaCard() {
   }, []);
 
   return (
-    <CollapsibleCard title="Search Criteria">
+    <CollapsibleCard
+      title="Search Criteria"
+      footer={
+        <div className="flex justify-end">
+          <button
+            type="button"
+            onClick={() => toast('Running search on website with current criteria…')}
+            className="inline-flex items-center gap-1.5 text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+          >
+            <span>Run search</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      }
+    >
       <div className="space-y-spacing-3">
         {fields.map((field) => (
           <div key={field.stateKey} className="flex items-center gap-spacing-2">
-            <span className="text-text-3 font-normal text-text-secondary w-[80px] shrink-0">
+            <span className="text-text-4 font-normal text-text-secondary w-[80px] shrink-0">
               {field.label}
             </span>
             <div className="flex-1">
@@ -98,7 +112,7 @@ export function SearchCriteriaCard() {
                 value={values[field.stateKey]}
                 onValueChange={(v) => handleChange(field.stateKey, v)}
               >
-                <SelectTrigger className="h-8 rounded-2 border-border-default bg-white text-text-3 px-spacing-3 w-full">
+                <SelectTrigger className="h-8 rounded-2 border-border-default bg-white text-text-4 px-spacing-3 w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -115,16 +129,6 @@ export function SearchCriteriaCard() {
             </div>
           </div>
         ))}
-      </div>
-      <div className="flex justify-end mt-spacing-3">
-        <button
-          type="button"
-          onClick={() => toast('Running search on website with current criteria…')}
-          className="inline-flex items-center gap-1 text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
-        >
-          <span>Run search</span>
-          <ExternalLink className="w-3.5 h-3.5" />
-        </button>
       </div>
     </CollapsibleCard>
   );

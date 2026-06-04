@@ -6,8 +6,6 @@ import {
   MessagesSquare,
   LogIn,
   MoreHorizontal,
-  ChevronLeft,
-  ChevronRight,
   Pencil,
   Video,
   Lock,
@@ -15,6 +13,9 @@ import {
   GitMerge,
   Trash2,
   AlertTriangle,
+  ChevronLeft,
+  ChevronRight,
+  List,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -49,6 +50,8 @@ import {
   AlertDialogAction,
 } from '@/components/ui/alert-dialog';
 import { TruncatedText } from './TruncatedText';
+import { SIGNALS } from './LeadSignalsStrip';
+import { TagOverflowList } from './TagOverflowList';
 
 interface ActionButton {
   label: string;
@@ -68,6 +71,13 @@ export function LeadHeader() {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(leadName);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const initials = leadName
+    .split(' ')
+    .map((w) => w[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
 
   // Modal states
   const [callOpen, setCallOpen] = useState(false);
@@ -131,24 +141,15 @@ export function LeadHeader() {
     }
   };
 
-  const initials = leadName
-    .split(' ')
-    .map((w) => w[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
-
   return (
     <TooltipProvider delayDuration={200}>
-      <div className="flex flex-wrap items-center py-spacing-4 gap-x-spacing-4 gap-y-spacing-3">
+      <div className="bg-bg-card rounded-3 border border-border-default shadow-sm overflow-hidden">
+      {/* ROW 1: Lead identity + actions */}
+      <div className="px-spacing-5 py-spacing-3 flex flex-wrap items-center gap-x-spacing-4 gap-y-spacing-3">
         {/* Avatar + Name + Pencil — group for hover reveal */}
-        <div className="group flex items-center gap-spacing-2 shrink-0">
-          {/* Avatar */}
-          <div className="w-12 h-12 rounded-full bg-blue-110 flex items-center justify-center shrink-0">
-            <span className="text-text-4 font-semibold text-white">
-              {initials}
-            </span>
-          </div>
+        <div className="group flex items-center gap-3 shrink-0">
+          {/* Lock icon */}
+          <Lock className="w-6 h-6 text-text-muted shrink-0" strokeWidth={2.25} />
 
           {isEditing ? (
             <input
@@ -209,7 +210,7 @@ export function LeadHeader() {
                 <TooltipTrigger asChild>
                   <button
                     onClick={() => openModal(btn.label)}
-                    className="inline-flex items-center h-9 w-9 xl:w-auto xl:px-spacing-4 rounded-full justify-center xl:justify-start xl:gap-spacing-1 bg-blue-110 text-white text-text-3 font-semibold hover:bg-blue-120 focus:outline-none focus:ring-2 focus:ring-blue-40 focus:ring-offset-2 focus:ring-offset-white transition-colors duration-150 cursor-pointer"
+                    className="inline-flex items-center h-9 w-9 xl:w-auto xl:px-spacing-4 rounded-full justify-center xl:justify-start xl:gap-spacing-1 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 focus:outline-none focus:ring-2 focus:ring-blue-40 focus:ring-offset-2 focus:ring-offset-white transition-colors duration-150 cursor-pointer"
                   >
                     <Icon className="w-4 h-4" />
                     <span className="hidden xl:inline">{btn.label}</span>
@@ -276,25 +277,70 @@ export function LeadHeader() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
+          {/* Vertical separator before nav cluster */}
+          <div className="h-6 w-px bg-border-default mx-spacing-1" />
+
+          {/* Nav cluster — prev / back-to-list / next */}
+          <div className="inline-flex items-center gap-spacing-1">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Previous lead"
+                  className="h-9 w-9 inline-flex items-center justify-center border border-border-default rounded-2 text-text-secondary hover:bg-bg-muted transition-colors cursor-pointer"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent><p>Previous lead</p></TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (window.history.length > 1) {
+                      window.history.back();
+                    } else {
+                      window.location.href = '/leads';
+                    }
+                  }}
+                  className="h-9 px-spacing-3 inline-flex items-center gap-spacing-1 border border-border-default rounded-2 text-text-4 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+                >
+                  <List className="w-4 h-4 xl:hidden" />
+                  <span className="hidden xl:inline">Back to List</span>
+                </button>
+              </TooltipTrigger>
+              <TooltipContent className="xl:hidden"><p>Back to List</p></TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Next lead"
+                  className="h-9 w-9 inline-flex items-center justify-center border border-border-default rounded-2 text-text-secondary hover:bg-bg-muted transition-colors cursor-pointer"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent><p>Next lead</p></TooltipContent>
+            </Tooltip>
+          </div>
         </div>
 
-        {/* Separator gap - hidden below xl */}
-        <div className="hidden xl:block w-px h-9 bg-border-default mx-spacing-2" />
+      </div>
 
-        {/* Navigation outline buttons */}
-        <div className="flex items-center gap-spacing-2 flex-wrap">
-          <button className="inline-flex items-center gap-1 h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 font-normal text-text-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring focus:ring-offset-2 focus:ring-offset-white transition-colors duration-150 cursor-pointer">
-            <ChevronLeft className="w-4 h-4" />
-            <span>Previous</span>
-          </button>
-          <button className="inline-flex items-center h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 font-normal text-text-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring focus:ring-offset-2 focus:ring-offset-white transition-colors duration-150 cursor-pointer">
-            <span>Leads List</span>
-          </button>
-          <button className="inline-flex items-center gap-1 h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 font-normal text-text-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring focus:ring-offset-2 focus:ring-offset-white transition-colors duration-150 cursor-pointer">
-            <span>Next</span>
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
+      {/* Hairline between rows (inset to match content padding) */}
+      <div className="px-spacing-5">
+        <div className="border-t border-border-default" />
+      </div>
+
+      {/* ROW 2: Lead Signal tags (unified badge system) */}
+      <div className="px-spacing-5 py-spacing-3">
+        <TagOverflowList tags={SIGNALS} />
+      </div>
+
       </div>
 
       {/* ── CALL MODAL ──────────────────────────────────────── */}
@@ -310,19 +356,19 @@ export function LeadHeader() {
             </div>
             <h2 className="text-text-5 font-semibold text-text-default">{leadName}</h2>
             <p className="font-mono text-text-4 text-text-default">(415) 555-0142</p>
-            <p className="text-text-3 text-text-secondary">Ready to call</p>
+            <p className="text-text-4 text-text-secondary">Ready to call</p>
           </div>
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setCallOpen(false)}
             >
               Cancel
             </button>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 bg-green-90 text-white text-text-3 font-semibold hover:bg-green-100 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 bg-green-90 text-white text-text-4 font-semibold hover:bg-green-100 transition-colors cursor-pointer"
               onClick={() => {
                 setCallOpen(false);
                 toast.success('Calling Camille Dubois at (415) 555-0142…');
@@ -344,11 +390,11 @@ export function LeadHeader() {
           <div className="space-y-spacing-4 py-spacing-2">
             <div className="flex items-center gap-spacing-3">
               <div className="w-8 h-8 rounded-full bg-blue-110 flex items-center justify-center shrink-0">
-                <span className="text-text-2 font-semibold text-white">{initials}</span>
+                <span className="text-text-3 font-semibold text-white">{initials}</span> {/* text-text-3 OK: avatar initials in 32px circle */}
               </div>
               <div>
-                <p className="text-text-3 font-semibold text-text-default">{leadName}</p>
-                <p className="text-text-2 text-text-secondary">(415) 555-0142</p>
+                <p className="text-text-4 font-semibold text-text-default">{leadName}</p>
+                <p className="text-text-4 text-text-secondary">(415) 555-0142</p>
               </div>
             </div>
             <textarea
@@ -356,21 +402,21 @@ export function LeadHeader() {
               placeholder="Type your message…"
               value={textBody}
               onChange={(e) => setTextBody(e.target.value)}
-              className="w-full min-h-[120px] px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+              className="w-full min-h-[120px] px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
             />
-            <p className="text-right text-text-2 text-text-muted">{textBody.length} / 160</p>
+            <p className="text-right text-text-4 text-text-muted">{textBody.length} / 160</p>
           </div>
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => { setTextOpen(false); setTextBody(''); }}
             >
               Cancel
             </button>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-3 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
               onClick={() => {
                 setTextOpen(false);
                 setTextBody('');
@@ -392,42 +438,42 @@ export function LeadHeader() {
           </DialogHeader>
           <div className="space-y-spacing-4 py-spacing-2">
             <div>
-              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">To</label>
+              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">To</label>
               <input
                 type="text"
                 readOnly
                 value="Camille Dubois <cdubois@realgeeks.com>"
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-gray-30 text-text-3 text-text-secondary"
+                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-gray-30 text-text-4 text-text-secondary"
               />
             </div>
             <div>
-              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Subject</label>
+              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Subject</label>
               <input
                 type="text"
                 placeholder="Subject line"
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
-              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Body</label>
+              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Body</label>
               <textarea
                 rows={8}
                 placeholder="Write your email…"
-                className="w-full min-h-[200px] px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+                className="w-full min-h-[200px] px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               />
             </div>
           </div>
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setEmailOpen(false)}
             >
               Cancel
             </button>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-3 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
               onClick={() => {
                 setEmailOpen(false);
                 toast.success('Email sent to cdubois@realgeeks.com');
@@ -451,7 +497,7 @@ export function LeadHeader() {
               <div className="flex flex-col gap-spacing-3">
                 {/* Agent message */}
                 <div className="self-start max-w-[80%] bg-white rounded-2 rounded-tl-none px-spacing-3 py-spacing-2 shadow-sm">
-                  <p className="text-text-3 text-text-default">
+                  <p className="text-text-4 text-text-default">
                     Hi Camille! Just checking in — have you had a chance to review the listings I sent?
                   </p>
                   <span className="text-text-1 text-text-muted mt-spacing-1 block">
@@ -460,7 +506,7 @@ export function LeadHeader() {
                 </div>
                 {/* Lead message */}
                 <div className="self-end max-w-[80%] bg-blue-30 rounded-2 rounded-tr-none px-spacing-3 py-spacing-2">
-                  <p className="text-text-3 text-text-default">
+                  <p className="text-text-4 text-text-default">
                     Yes! I really liked the one on Shaughnessy. Can we schedule a tour?
                   </p>
                   <span className="text-text-1 text-text-muted mt-spacing-1 block text-right">
@@ -473,14 +519,14 @@ export function LeadHeader() {
               <input
                 type="text"
                 placeholder="Type a message…"
-                className="flex-1 h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="flex-1 h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
           </div>
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => {
                 setChatModalOpen(false);
                 toast('Chat ended');
@@ -502,25 +548,25 @@ export function LeadHeader() {
           <div className="space-y-spacing-4 py-spacing-2">
             <div className="flex items-start gap-spacing-3 bg-orange-10 border border-orange-40 rounded-2 p-spacing-3">
               <AlertTriangle className="w-5 h-5 text-orange-100 shrink-0 mt-0.5" />
-              <p className="text-text-3 text-text-default">
+              <p className="text-text-4 text-text-default">
                 You&apos;re about to view the website as {leadName}. Your activity will not be tracked during this session.
               </p>
             </div>
-            <p className="text-text-3 text-text-secondary">
+            <p className="text-text-4 text-text-secondary">
               This opens a new session showing saved searches, favorites, and property history exactly as the lead sees them.
             </p>
           </div>
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setLoginOpen(false)}
             >
               Cancel
             </button>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 bg-orange-100 text-white text-text-3 font-semibold hover:bg-orange-110 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 bg-orange-100 text-white text-text-4 font-semibold hover:bg-orange-110 transition-colors cursor-pointer"
               onClick={() => {
                 setLoginOpen(false);
                 toast('Viewing as Camille Dubois — your activity will not be tracked');

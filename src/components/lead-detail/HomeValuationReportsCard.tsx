@@ -34,34 +34,32 @@ export function HomeValuationReportsCard() {
 
   return (
     <>
-      <CollapsibleCard title="HOME VALUATION REPORTS">
-        <div>
-          {reports.length === 0 ? (
-            <div className="bg-bg-muted rounded-2 p-3">
-              <p className="text-text-3 text-text-muted">No Home Valuation Reports</p>
-            </div>
-          ) : (
-            <div className="space-y-spacing-2">
-              {reports.map((report) => (
-                <div key={report.id} className="p-spacing-2 rounded-2 border border-border-default">
-                  <p className="text-text-3 font-semibold text-text-default">{report.address}</p>
-                  <p className="text-text-2 text-text-secondary">Home Valuation Report</p>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Add link */}
-          <div className="mt-3">
-            <button
-              type="button"
-              onClick={() => setAddOpen(true)}
-              className="text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
-            >
-              + Add Report
-            </button>
+      <CollapsibleCard
+        title="Home Valuation Reports"
+        footer={
+          <button
+            type="button"
+            onClick={() => setAddOpen(true)}
+            className="text-sm font-semibold text-[#3E60C9] hover:underline cursor-pointer"
+          >
+            + Add Report
+          </button>
+        }
+      >
+        {reports.length === 0 ? (
+          <div className="bg-bg-muted rounded-2 p-3">
+            <p className="text-text-4 text-text-muted">No Home Valuation Reports</p>
           </div>
-        </div>
+        ) : (
+          <div className="space-y-spacing-2">
+            {reports.map((report) => (
+              <div key={report.id} className="p-spacing-2 rounded-2 border border-border-default">
+                <p className="text-text-4 font-semibold text-text-default">{report.address}</p>
+                <p className="text-text-4 text-text-secondary">Home Valuation Report</p>
+              </div>
+            ))}
+          </div>
+        )}
       </CollapsibleCard>
 
       {/* Add Report Dialog */}
@@ -72,19 +70,19 @@ export function HomeValuationReportsCard() {
             <DialogDescription>Create a home valuation report for a specific address.</DialogDescription>
           </DialogHeader>
           <div className="py-spacing-2">
-            <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Property Address</label>
+            <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Property Address</label>
             <input
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               placeholder="e.g., 123 Main St, San Jose, CA"
-              className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
             />
           </div>
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setAddOpen(false)}
             >
               Cancel
@@ -92,7 +90,7 @@ export function HomeValuationReportsCard() {
             <button
               type="button"
               disabled={!address.trim()}
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-3 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleAdd}
             >
               Add Report

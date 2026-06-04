@@ -21,6 +21,7 @@ import {
 import { ActivityStatsCard } from './ActivityStatsCard';
 import { ImportantNotesCard } from './ImportantNotesCard';
 import { HighlightsCard } from './HighlightsCard';
+import { ContactInfoSection } from './ContactInfoSection';
 import { SearchCriteriaCard } from './SearchCriteriaCard';
 import { ImportantDatesCard } from './ImportantDatesCard';
 import { TagsCard } from './TagsCard';
@@ -37,9 +38,10 @@ import { SortableCard } from './SortableCard';
 
 // ── Default orderings ──────────────────────────────────────────
 const INFO_DEFAULT_ORDER = [
-  'activity-stats',
   'important-notes',
+  'activity-stats',
   'highlights',
+  'contact-info',
   'search-criteria',
   'important-dates',
   'tags',
@@ -62,6 +64,7 @@ const INFO_CARD_MAP: Record<string, React.FC> = {
   'activity-stats': ActivityStatsCard,
   'important-notes': ImportantNotesCard,
   highlights: HighlightsCard,
+  'contact-info': ContactInfoSection,
   'search-criteria': SearchCriteriaCard,
   'important-dates': ImportantDatesCard,
   tags: TagsCard,
@@ -154,24 +157,25 @@ export function RightColumn() {
   return (
     <div className="space-y-spacing-4">
       {/* Tabs — pinned at top of right column */}
+      <div className="bg-white rounded-3 border border-border-default shadow-sm overflow-hidden">
       <Tabs defaultValue="info" className="w-full">
         <TabsList className="w-full h-auto p-0 bg-transparent rounded-none border-b border-border-default">
           <TabsTrigger
             value="info"
-            className="flex-1 py-3 rounded-none bg-transparent text-text-3 font-semibold text-gray-80 shadow-none border-b-2 border-transparent data-[state=active]:text-blue-110 data-[state=active]:border-blue-110 data-[state=active]:shadow-none data-[state=active]:bg-transparent"
+            className="flex-1 py-4 rounded-none bg-transparent text-text-4 font-semibold text-gray-80 shadow-none border-b-2 border-transparent data-[state=active]:text-blue-110 data-[state=active]:border-blue-110 data-[state=active]:shadow-none data-[state=active]:bg-transparent"
           >
             Info
           </TabsTrigger>
           <TabsTrigger
             value="engagement"
-            className="flex-1 py-3 rounded-none bg-transparent text-text-3 font-semibold text-gray-80 shadow-none border-b-2 border-transparent data-[state=active]:text-blue-110 data-[state=active]:border-blue-110 data-[state=active]:shadow-none data-[state=active]:bg-transparent"
+            className="flex-1 py-4 rounded-none bg-transparent text-text-4 font-semibold text-gray-80 shadow-none border-b-2 border-transparent data-[state=active]:text-blue-110 data-[state=active]:border-blue-110 data-[state=active]:shadow-none data-[state=active]:bg-transparent"
           >
             Engagement
           </TabsTrigger>
         </TabsList>
 
         {/* Info Tab */}
-        <TabsContent value="info" className="mt-spacing-4">
+        <TabsContent value="info" className="p-spacing-4">
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -196,7 +200,7 @@ export function RightColumn() {
         </TabsContent>
 
         {/* Engagement Tab */}
-        <TabsContent value="engagement" className="mt-spacing-4">
+        <TabsContent value="engagement" className="p-spacing-4">
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -213,6 +217,7 @@ export function RightColumn() {
           </DndContext>
         </TabsContent>
       </Tabs>
+      </div>
     </div>
   );
 }

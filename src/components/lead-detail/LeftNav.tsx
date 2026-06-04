@@ -51,7 +51,7 @@ export function LeftNav() {
               }`}
             >
               <Icon className="w-4 h-4 text-white shrink-0" />
-              <span className="text-text-3 font-normal text-white flex-1">
+              <span className="text-text-4 font-normal text-white flex-1">
                 {item.label}
               </span>
               <ChevronDown className="w-4 h-4 text-white opacity-70 shrink-0" />

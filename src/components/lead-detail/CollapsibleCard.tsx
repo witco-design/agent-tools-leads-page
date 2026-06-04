@@ -9,19 +9,23 @@ import {
 import { useDragHandle } from './DragHandleContext';
 
 interface CollapsibleCardProps {
+  id?: string;
   title: string;
   countBadge?: number;
   showInfoIcon?: boolean;
   rightAction?: React.ReactNode;
+  footer?: React.ReactNode;
   defaultOpen?: boolean;
   children: React.ReactNode;
 }
 
 export function CollapsibleCard({
+  id,
   title,
   countBadge,
   showInfoIcon,
   rightAction,
+  footer,
   defaultOpen = true,
   children,
 }: CollapsibleCardProps) {
@@ -30,9 +34,9 @@ export function CollapsibleCard({
 
   return (
     <TooltipProvider delayDuration={200}>
-      <div className="bg-white rounded-3 border border-border-default shadow-sm overflow-hidden group">
+      <div id={id} className="bg-bg-card rounded-3 border border-border-default shadow-sm overflow-hidden group">
         {/* Header */}
-        <div className="w-full flex items-center p-spacing-5 hover:bg-bg-muted/50 transition-colors">
+        <div className={`w-full flex items-center px-spacing-5 py-spacing-3 hover:bg-bg-muted/50 transition-colors ${open ? 'border-b border-border-default' : ''}`}>
           {/* Drag handle — flush left by default, slides in on hover */}
           <Tooltip>
             <TooltipTrigger asChild>
@@ -61,7 +65,7 @@ export function CollapsibleCard({
               <Info className="w-3.5 h-3.5 ml-spacing-2 text-icon-default" />
             )}
             {countBadge !== undefined && (
-              <span className="ml-spacing-2 inline-flex items-center px-2 py-0.5 rounded-round bg-gray-40 text-gray-90 text-text-2 font-semibold">
+              <span className="ml-spacing-2 inline-flex items-center px-2 py-0.5 rounded-round bg-gray-40 text-gray-90 text-text-3 font-semibold"> {/* text-text-3 OK: badge counter */}
                 {countBadge}
               </span>
             )}
@@ -74,6 +78,7 @@ export function CollapsibleCard({
           <div className="flex-1" />
           <button
             type="button"
+            data-collapse-toggle
             className="cursor-pointer bg-transparent border-none p-0"
             onClick={() => setOpen((prev) => !prev)}
           >
@@ -84,7 +89,14 @@ export function CollapsibleCard({
         </div>
 
         {/* Body */}
-        {open && <div className="p-spacing-5 pt-0">{children}</div>}
+        {open && <div data-collapse-body className="px-spacing-5 py-spacing-4">{children}</div>}
+
+        {/* Footer */}
+        {open && footer && (
+          <div className="px-spacing-5 py-spacing-4 border-t border-border-default">
+            {footer}
+          </div>
+        )}
       </div>
     </TooltipProvider>
   );

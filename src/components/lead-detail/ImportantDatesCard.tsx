@@ -33,7 +33,7 @@ export function ImportantDatesCard() {
 
   const formatDate = (d: string) => {
     const dt = new Date(d + 'T12:00:00');
-    return dt.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+    return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
   const handleAdd = () => {
@@ -57,14 +57,26 @@ export function ImportantDatesCard() {
 
   return (
     <>
-      <CollapsibleCard title="Important Dates" countBadge={dates.length}>
+      <CollapsibleCard
+        title="Important Dates"
+        countBadge={dates.length}
+        footer={
+          <button
+            type="button"
+            onClick={() => setAddOpen(true)}
+            className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+          >
+            + Add Date
+          </button>
+        }
+      >
         <div className="space-y-spacing-3">
           {dates.map((item) => (
             <div key={item.id} className="group flex items-center gap-spacing-2">
-              <span className="text-text-3 font-normal text-text-secondary w-[100px] shrink-0">
+              <span className="text-text-4 font-normal text-text-secondary w-[100px] shrink-0">
                 {item.label}
               </span>
-              <span className="text-text-3 font-normal text-text-default flex-1">
+              <span className="text-text-4 font-normal text-text-default flex-1">
                 {formatDate(item.date)}
               </span>
               <DropdownMenu>
@@ -90,15 +102,6 @@ export function ImportantDatesCard() {
               </DropdownMenu>
             </div>
           ))}
-          <div className="mt-spacing-3">
-            <button
-              type="button"
-              onClick={() => setAddOpen(true)}
-              className="text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
-            >
-              + Add Date
-            </button>
-          </div>
         </div>
       </CollapsibleCard>
 
@@ -110,36 +113,36 @@ export function ImportantDatesCard() {
           </DialogHeader>
           <div className="space-y-spacing-4 py-spacing-2">
             <div>
-              <label className="block text-text-3 font-semibold text-text-default mb-spacing-2">Label</label>
+              <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">Label</label>
               <input
                 type="text"
                 value={newLabel}
                 onChange={(e) => setNewLabel(e.target.value)}
                 placeholder="e.g., Anniversary, Birthday, Closing Date"
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
-              <label className="block text-text-3 font-semibold text-text-default mb-spacing-2">Date</label>
+              <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">Date</label>
               <input
                 type="date"
                 value={newDate}
                 onChange={(e) => setNewDate(e.target.value)}
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
           </div>
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setAddOpen(false)}
             >
               Cancel
             </button>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-3 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
               onClick={handleAdd}
             >
               Save

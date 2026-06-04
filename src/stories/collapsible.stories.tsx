@@ -30,14 +30,14 @@ export const Closed = {
           </Button>
         </CollapsibleTrigger>
       </div>
-      <div className="rounded-md border border-slate-200 px-4 py-3 font-mono text-sm dark:border-slate-700">
+      <div className="rounded-md border border-border-default px-4 py-3 font-mono text-sm dark:border-border-default">
         @radix-ui/primitives
       </div>
       <CollapsibleContent className="space-y-2">
-        <div className="rounded-md border border-slate-200 px-4 py-3 font-mono text-sm dark:border-slate-700">
+        <div className="rounded-md border border-border-default px-4 py-3 font-mono text-sm dark:border-border-default">
           @radix-ui/colors
         </div>
-        <div className="rounded-md border border-slate-200 px-4 py-3 font-mono text-sm dark:border-slate-700">
+        <div className="rounded-md border border-border-default px-4 py-3 font-mono text-sm dark:border-border-default">
           @stitches/react
         </div>
       </CollapsibleContent>
@@ -62,14 +62,14 @@ export const Open = {
           </Button>
         </CollapsibleTrigger>
       </div>
-      <div className="rounded-md border border-slate-200 px-4 py-3 font-mono text-sm dark:border-slate-700">
+      <div className="rounded-md border border-border-default px-4 py-3 font-mono text-sm dark:border-border-default">
         @radix-ui/primitives
       </div>
       <CollapsibleContent className="space-y-2">
-        <div className="rounded-md border border-slate-200 px-4 py-3 font-mono text-sm dark:border-slate-700">
+        <div className="rounded-md border border-border-default px-4 py-3 font-mono text-sm dark:border-border-default">
           @radix-ui/colors
         </div>
-        <div className="rounded-md border border-slate-200 px-4 py-3 font-mono text-sm dark:border-slate-700">
+        <div className="rounded-md border border-border-default px-4 py-3 font-mono text-sm dark:border-border-default">
           @stitches/react
         </div>
       </CollapsibleContent>

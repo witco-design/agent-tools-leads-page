@@ -96,40 +96,11 @@ export function WorkflowsCard() {
 
   return (
     <>
-      <CollapsibleCard title="WORKFLOWS" showInfoIcon>
-        <div className="space-y-spacing-2">
-          {/* Existing workflows */}
-          {workflows.map((workflow) => (
-            <div
-              key={workflow.id}
-              className="flex items-center gap-spacing-2 p-spacing-2 -mx-spacing-2 rounded-2 hover:bg-gray-30 transition-colors group"
-            >
-              <button
-                type="button"
-                onClick={() => openDetail(workflow)}
-                className="flex-1 min-w-0 text-left text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
-              >
-                <TruncatedText>{workflow.name}</TruncatedText>
-              </button>
-              <button
-                type="button"
-                onClick={() => confirmRemove(workflow.id)}
-                className="opacity-0 group-hover:opacity-100 p-1 rounded-2 hover:bg-gray-50 cursor-pointer transition-all"
-                title="Remove workflow"
-              >
-                <X className="w-3.5 h-3.5 text-red-80" />
-              </button>
-            </div>
-          ))}
-
-          {workflows.length === 0 && (
-            <div className="bg-bg-muted rounded-2 p-3">
-              <p className="text-text-3 text-text-muted">No active workflows</p>
-            </div>
-          )}
-
-          {/* Add workflow row */}
-          <div className="flex items-center gap-2 mt-3 pt-1">
+      <CollapsibleCard
+        title="Workflows"
+        showInfoIcon
+        footer={
+          <div className="flex items-center gap-2">
             <Select value={selectedWorkflow} onValueChange={setSelectedWorkflow}>
               <SelectTrigger className="flex-1 h-9">
                 <SelectValue placeholder="Select a Workflow" />
@@ -147,7 +118,7 @@ export function WorkflowsCard() {
               type="button"
               disabled={!isWorkflowSelected}
               onClick={handleStart}
-              className={`inline-flex items-center gap-1.5 h-9 px-4 rounded-2 text-text-3 font-semibold transition-colors cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 h-9 px-4 rounded-2 text-text-4 font-semibold transition-colors cursor-pointer ${
                 isWorkflowSelected
                   ? 'bg-blue-110 text-white hover:bg-blue-120'
                   : 'bg-gray-40 text-text-muted cursor-not-allowed'
@@ -157,6 +128,38 @@ export function WorkflowsCard() {
               <span>Start</span>
             </button>
           </div>
+        }
+      >
+        <div className="space-y-spacing-2">
+          {/* Existing workflows */}
+          {workflows.map((workflow) => (
+            <div
+              key={workflow.id}
+              className="flex items-center gap-spacing-2 p-spacing-2 -mx-spacing-2 rounded-2 hover:bg-gray-30 transition-colors group"
+            >
+              <button
+                type="button"
+                onClick={() => openDetail(workflow)}
+                className="flex-1 min-w-0 text-left text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+              >
+                <TruncatedText>{workflow.name}</TruncatedText>
+              </button>
+              <button
+                type="button"
+                onClick={() => confirmRemove(workflow.id)}
+                className="opacity-0 group-hover:opacity-100 p-1 rounded-2 hover:bg-gray-50 cursor-pointer transition-all"
+                title="Remove workflow"
+              >
+                <X className="w-3.5 h-3.5 text-red-80" />
+              </button>
+            </div>
+          ))}
+
+          {workflows.length === 0 && (
+            <div className="bg-bg-muted rounded-2 p-3">
+              <p className="text-text-4 text-text-muted">No active workflows</p>
+            </div>
+          )}
         </div>
       </CollapsibleCard>
 
@@ -169,29 +172,29 @@ export function WorkflowsCard() {
           </DialogHeader>
           <div className="space-y-spacing-3 py-spacing-2">
             <div className="flex items-center justify-between">
-              <span className="text-text-3 text-text-secondary">Started</span>
-              <span className="text-text-3 font-semibold text-text-default">{detailWorkflow?.startedAt || '—'}</span>
+              <span className="text-text-4 text-text-secondary">Started</span>
+              <span className="text-text-4 font-semibold text-text-default">{detailWorkflow?.startedAt || '—'}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-text-3 text-text-secondary">Progress</span>
-              <span className="text-text-3 font-semibold text-text-default">{detailWorkflow?.currentStep || '—'}</span>
+              <span className="text-text-4 text-text-secondary">Progress</span>
+              <span className="text-text-4 font-semibold text-text-default">{detailWorkflow?.currentStep || '—'}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-text-3 text-text-secondary">Status</span>
-              <span className="inline-flex items-center gap-1.5 h-6 px-2 rounded-round bg-green-30 text-green-90 text-text-2 font-semibold">Active</span>
+              <span className="text-text-4 text-text-secondary">Status</span>
+              <span className="inline-flex items-center gap-1.5 h-6 px-2 rounded-round bg-green-30 text-green-90 text-text-3 font-semibold">Active</span> {/* text-text-3 OK: status badge */}
             </div>
           </div>
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-red-80 text-red-80 text-text-3 font-semibold hover:bg-red-30 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 border border-red-80 text-red-80 text-text-4 font-semibold hover:bg-red-30 transition-colors cursor-pointer"
               onClick={() => detailWorkflow && confirmRemove(detailWorkflow.id)}
             >
               Remove from Lead
             </button>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-3 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
               onClick={() => setDetailOpen(false)}
             >
               Close

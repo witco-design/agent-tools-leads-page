@@ -184,12 +184,7 @@ export function ActivityItem({
     <>
     <div className="group/item p-spacing-5 border-b border-border-default last:border-b-0 hover:bg-gray-30/30 transition-colors">
       {/* METADATA ROW */}
-      <div
-        className={cn(
-          'flex items-center gap-spacing-3 pb-spacing-3',
-          isExpanded && 'border-b border-gray-50',
-        )}
-      >
+      <div className="flex items-center gap-spacing-3 pb-spacing-3">
         {/* Type icon circle */}
         <div
           className={`w-8 h-8 rounded-round ${bg} flex items-center justify-center shrink-0`}
@@ -198,7 +193,7 @@ export function ActivityItem({
         </div>
 
         {/* Meta line: "Logged a call by Kevin McCarthy · 2:17 PM" */}
-        <div className="flex-1 min-w-0 flex items-center gap-spacing-2 text-text-2 leading-none">
+        <div className="flex-1 min-w-0 flex items-center gap-spacing-2 text-text-4 leading-none">
           {isSystem ? (
             <>
               <span className="whitespace-nowrap text-text-default font-medium">
@@ -340,7 +335,7 @@ export function ActivityItem({
             <div className="flex-1 min-w-0">
               {/* Bold title */}
               <h4
-                className={`text-text-3 font-semibold ${
+                className={`text-text-4 font-semibold ${
                   item.isCompleted
                     ? 'text-text-muted line-through'
                     : 'text-text-default'
@@ -354,15 +349,13 @@ export function ActivityItem({
               {/* Body: note text */}
               {item.note && (
                 <div className="mt-spacing-2">
-                  <div className="border border-border-default rounded-2 p-spacing-3">
-                    <TruncatedText
-                      lines={2}
-                      fullText={item.note}
-                      className="text-text-3 font-normal text-text-default italic whitespace-pre-line"
-                    >
-                      &ldquo;{item.note}&rdquo;
-                    </TruncatedText>
-                  </div>
+                  <TruncatedText
+                    lines={2}
+                    fullText={item.note}
+                    className="text-text-4 font-normal text-text-default italic leading-snug whitespace-pre-line"
+                  >
+                    &ldquo;{item.note}&rdquo;
+                  </TruncatedText>
                 </div>
               )}
 
@@ -373,7 +366,7 @@ export function ActivityItem({
                     {item.searchCriteria.map((line, i) => (
                       <p
                         key={i}
-                        className="text-text-3 font-normal text-text-default"
+                        className="text-text-4 font-normal text-text-default leading-snug"
                       >
                         {line}
                       </p>
@@ -382,7 +375,7 @@ export function ActivityItem({
                   {item.addNoteLink && (
                     <a
                       href="#"
-                      className="inline-block mt-spacing-2 text-text-3 font-semibold text-text-link hover:underline"
+                      className="inline-block mt-spacing-2 text-text-4 font-semibold text-text-link hover:underline"
                       onClick={(e) => e.preventDefault()}
                     >
                       + Add a note
@@ -404,7 +397,7 @@ export function ActivityItem({
 
           {/* Inset panel for tasks/follow-ups — outline-only with column dividers */}
           {item.inset && (
-            <div className="mt-spacing-3 rounded-2 border border-gray-50 overflow-hidden">
+            <div className="mt-spacing-3 rounded-2 border border-border-default overflow-hidden">
               <div className="flex">
                 {Object.entries(item.inset.fields).map(([label, value], index) => (
                   <div
@@ -413,13 +406,13 @@ export function ActivityItem({
                       'flex-1 p-spacing-3',
                       index === 0 && 'flex-[1.2]',
                       index === Object.entries(item.inset!.fields).length - 1 && 'flex-[1.2]',
-                      index > 0 && 'border-l border-gray-50',
+                      index > 0 && 'border-l border-border-default',
                     )}
                   >
-                    <div className="text-text-2 text-text-secondary mb-spacing-1">
+                    <div className="text-text-4 text-text-secondary mb-spacing-1">
                       {label}
                     </div>
-                    <div className="text-text-3 font-semibold text-text-default">
+                    <div className="text-text-4 font-semibold text-text-default">
                       {value}
                     </div>
                   </div>
@@ -471,28 +464,28 @@ function PropertyCard({ property }: { property: PropertyData }) {
         className="w-[200px] h-[140px] rounded-2 object-cover shrink-0"
       />
       <div className="flex-1 min-w-0 flex flex-col justify-center">
-        <p className="text-text-3 font-semibold text-text-default min-w-0">
+        <p className="text-text-4 font-semibold text-text-default min-w-0">
           <TruncatedText fullText={property.address}>
             {property.address}
           </TruncatedText>
         </p>
-        <p className="text-text-3 font-normal text-text-secondary">
+        <p className="text-text-4 font-normal text-text-secondary">
           MLS #{property.mls}
         </p>
-        <p className="text-text-3 font-semibold text-text-default">
+        <p className="text-text-4 font-semibold text-text-default">
           {property.price}
         </p>
-        <p className="text-text-3 font-normal text-text-default">
+        <p className="text-text-4 font-normal text-text-default">
           {property.beds} &middot; {property.baths} &middot; {property.type}
         </p>
         {property.year && (
-          <p className="text-text-3 font-normal text-text-secondary">
+          <p className="text-text-4 font-normal text-text-secondary">
             {property.year}
           </p>
         )}
         <a
           href="#"
-          className="mt-spacing-1 text-text-3 font-semibold text-text-link hover:underline"
+          className="mt-spacing-1 text-text-4 font-semibold text-text-link hover:underline"
           onClick={(e) => e.preventDefault()}
         >
           View this property

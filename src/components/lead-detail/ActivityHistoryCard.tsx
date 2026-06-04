@@ -3,6 +3,7 @@ import {
   Search,
   Plus,
   ChevronDown,
+  ChevronUp,
   Phone,
   MessageSquare,
   Mail,
@@ -126,6 +127,7 @@ function groupByDate(items: ActivityItemData[]): DateGroup[] {
 
 // ── Main component ─────────────────────────────────────────────
 export function ActivityHistoryCard() {
+  const [activityOpen, setActivityOpen] = useState(true);
   const [pinnedOpen, setPinnedOpen] = useState(true);
   const [pinnedItems, setPinnedItems] = useState<ActivityItemData[]>([
     pinnedItem,
@@ -375,110 +377,127 @@ export function ActivityHistoryCard() {
 
   return (
     <>
-      <div className="bg-white rounded-3 border border-border-default shadow-sm overflow-hidden">
-        {/* ── Header ──────────────────────────────────────────── */}
-        <div className="p-spacing-5 flex flex-wrap items-center gap-spacing-2">
-          <h3 className="text-text-4 font-semibold text-text-default whitespace-nowrap">
+      <div className="bg-bg-card rounded-3 border border-border-default shadow-sm overflow-hidden">
+        {/* ── BAR 1: Title bar ─────────────────────────────────── */}
+        <div className="px-spacing-5 py-spacing-3 flex items-center justify-between">
+          <h3 className="text-text-5 font-semibold text-text-default">
             Activity History
           </h3>
-          <div className="flex-1 min-w-0" />
+          <button
+            type="button"
+            aria-label={activityOpen ? 'Collapse Activity History' : 'Expand Activity History'}
+            className="p-spacing-1 hover:bg-bg-muted rounded-1 transition-colors cursor-pointer"
+            onClick={() => setActivityOpen((prev) => !prev)}
+          >
+            <ChevronDown
+              className={`w-5 h-5 text-text-secondary transition-transform duration-200 ${activityOpen ? 'rotate-180' : ''}`}
+            />
+          </button>
+        </div>
 
-          {/* Toolbar */}
-          <div className="flex flex-wrap items-center gap-spacing-2">
-            {/* + Note button */}
-            <button
-              onClick={() => setNoteDialogOpen(true)}
-              className="inline-flex items-center gap-1 h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 font-semibold text-text-link hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Note</span>
-            </button>
+        {activityOpen && (
+          <>
+        {/* Hairline between title and toolbar */}
+        <div className="border-t border-border-default" />
 
-            {/* + Log Activity split-button */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="inline-flex items-center gap-1 h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 font-semibold text-text-link hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer">
-                  <Plus className="w-4 h-4" />
-                  <span>Log Activity</span>
-                  <ChevronDown className="w-3.5 h-3.5 ml-0.5" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="min-w-[160px]">
-                {logActivityTypes.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <DropdownMenuItem
-                      key={item.label}
-                      className="flex items-center gap-spacing-2 py-spacing-2 px-spacing-3 cursor-pointer hover:bg-gray-30 text-text-3 text-text-default"
-                      onClick={() => openLogDialog(item.label)}
-                    >
-                      <Icon className={`w-3.5 h-3.5 ${item.color}`} />
-                      <span>{item.label}</span>
-                    </DropdownMenuItem>
-                  );
-                })}
-              </DropdownMenuContent>
-            </DropdownMenu>
+        {/* ── BAR 2: Toolbar ──────────────────────────────────── */}
+        <div className="px-spacing-5 py-spacing-3 flex flex-wrap items-center gap-spacing-2">
+          {/* + Note button */}
+          <button
+            onClick={() => setNoteDialogOpen(true)}
+            className="inline-flex items-center gap-1 h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-link hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Note</span>
+          </button>
 
-            {/* Time range */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="inline-flex items-center gap-1 h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer">
-                  <span>{TIME_RANGE_OPTIONS.find((o) => o.value === timeRange)?.label ?? 'All Time'}</span>
-                  {timeRange !== 'all' ? (
-                    <button
-                      type="button"
-                      className="ml-0.5 p-0.5 hover:bg-gray-50 rounded-full cursor-pointer"
-                      onClick={(e) => { e.stopPropagation(); setTimeRange('all'); }}
-                    >
-                      <X className="w-3 h-3 text-text-muted" />
-                    </button>
-                  ) : (
-                    <ChevronDown className="w-4 h-4 text-text-secondary" />
-                  )}
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="min-w-[160px]">
-                {TIME_RANGE_OPTIONS.map((opt) => (
+          {/* + Log Activity split-button */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="inline-flex items-center gap-1 h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-link hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer">
+                <Plus className="w-4 h-4" />
+                <span>Log Activity</span>
+                <ChevronDown className="w-3.5 h-3.5 ml-0.5" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="min-w-[160px]">
+              {logActivityTypes.map((item) => {
+                const Icon = item.icon;
+                return (
                   <DropdownMenuItem
-                    key={opt.value}
-                    className="cursor-pointer"
-                    onClick={() => setTimeRange(opt.value)}
+                    key={item.label}
+                    className="flex items-center gap-spacing-2 py-spacing-2 px-spacing-3 cursor-pointer hover:bg-gray-30 text-text-4 text-text-default"
+                    onClick={() => openLogDialog(item.label)}
                   >
-                    {opt.label}
+                    <Icon className={`w-3.5 h-3.5 ${item.color}`} />
+                    <span>{item.label}</span>
                   </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+                );
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-            {/* Search */}
-            <div className="relative w-full md:w-[280px] order-2 md:order-none flex-1 md:flex-none">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search Activity"
-                className="w-full h-9 pl-9 pr-3 bg-white rounded-2 text-text-3 font-normal text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-blue-40 focus:border-blue-110 border border-gray-50"
-              />
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 hover:bg-gray-50 rounded-full cursor-pointer"
+          {/* Time range */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="inline-flex items-center gap-1 h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer">
+                <span>{TIME_RANGE_OPTIONS.find((o) => o.value === timeRange)?.label ?? 'All Time'}</span>
+                {timeRange !== 'all' ? (
+                  <button
+                    type="button"
+                    className="ml-0.5 p-0.5 hover:bg-gray-50 rounded-full cursor-pointer"
+                    onClick={(e) => { e.stopPropagation(); setTimeRange('all'); }}
+                  >
+                    <X className="w-3 h-3 text-text-muted" />
+                  </button>
+                ) : (
+                  <ChevronDown className="w-4 h-4 text-text-secondary" />
+                )}
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="min-w-[160px]">
+              {TIME_RANGE_OPTIONS.map((opt) => (
+                <DropdownMenuItem
+                  key={opt.value}
+                  className="cursor-pointer"
+                  onClick={() => setTimeRange(opt.value)}
                 >
-                  <X className="w-3.5 h-3.5 text-text-muted" />
-                </button>
-              )}
-            </div>
+                  {opt.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* Search — fills remaining width */}
+          <div className="relative flex-1 min-w-[160px]">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search Activity"
+              className="w-full h-9 pl-9 pr-3 bg-white rounded-2 text-text-4 font-normal text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-blue-40 focus:border-blue-110 border border-border-default"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 hover:bg-gray-50 rounded-full cursor-pointer"
+              >
+                <X className="w-3.5 h-3.5 text-text-muted" />
+              </button>
+            )}
           </div>
         </div>
+
+        {/* Hairline between toolbar and content */}
+        <div className="border-t border-border-default" />
 
         {/* ── Filter pill ─────────────────────────────────────── */}
         {activeFilter && (
           <div className="px-spacing-5 pb-spacing-3">
             <span className="inline-flex items-center gap-spacing-2 h-7 px-3 bg-blue-30 rounded-round">
-              <span className="text-text-2 font-semibold text-blue-110">
+              <span className="text-text-4 font-semibold text-blue-110">
                 Filtering by: {activeFilter}
               </span>
               <button
@@ -493,13 +512,13 @@ export function ActivityHistoryCard() {
         )}
 
         {/* ── Pinned Section ──────────────────────────────────── */}
-        <div className="border-t border-border-default mt-0">
+        <div className="mt-0">
           <button
             type="button"
-            className="w-full flex items-center p-spacing-5 border-b border-border-default cursor-pointer hover:bg-bg-muted/50 transition-colors"
+            className="w-full flex items-center px-spacing-5 py-spacing-3 border-b border-border-default cursor-pointer hover:bg-bg-muted/50 transition-colors"
             onClick={() => setPinnedOpen((prev) => !prev)}
           >
-            <span className="text-text-3 font-semibold text-text-default">
+            <span className="text-text-4 font-semibold text-text-default">
               Pinned
             </span>
             <div className="flex-1" />
@@ -528,15 +547,15 @@ export function ActivityHistoryCard() {
         </div>
 
         {/* ── Upcoming Section ────────────────────────────────── */}
-        <div className="border-b border-border-default">
-          <div className="flex items-center px-spacing-5 py-spacing-3">
-            <span className="text-text-3 font-semibold text-text-default">
-              Upcoming
+        <div className="border-t border-b border-border-default">
+          <div className="flex items-center px-spacing-5 py-spacing-3 border-b border-border-default">
+            <span className="text-text-4 font-semibold text-text-default">
+              Upcoming Follow-ups
             </span>
             <div className="flex-1" />
             <a
               href="#"
-              className="text-text-2 font-semibold text-text-link hover:underline"
+              className="text-text-4 font-semibold text-text-link hover:underline"
               onClick={(e) => e.preventDefault()}
             >
               See all follow-ups &rarr;
@@ -545,12 +564,12 @@ export function ActivityHistoryCard() {
 
           {upcoming.length > 0 ? (
             <div>
-              {upcoming.slice(0, 3).map((item) => (
+              {upcoming.slice(0, 3).map((item, idx, arr) => (
                 <div
                   key={item.id}
                   className={`transition-opacity duration-300 ${
                     item.isCompleted ? 'opacity-50' : 'opacity-100'
-                  }`}
+                  }${idx < arr.length - 1 ? ' border-b border-border-default' : ''}`}
                 >
                   <ActivityItem
                     item={item}
@@ -565,7 +584,7 @@ export function ActivityHistoryCard() {
             </div>
           ) : (
             <div className="py-spacing-4 flex items-center justify-center">
-              <p className="text-text-3 text-text-muted">
+              <p className="text-text-4 text-text-muted">
                 No upcoming follow-ups
               </p>
             </div>
@@ -578,8 +597,8 @@ export function ActivityHistoryCard() {
             {dateGroups.map((group) => (
               <div key={group.date}>
                 {/* Date heading */}
-                <div className="px-spacing-5 py-spacing-3 border-b border-gray-50">
-                  <span className="text-text-2 font-semibold text-text-secondary uppercase tracking-wide">
+                <div className="px-spacing-5 py-spacing-3 border-b border-border-default">
+                  <span className="text-text-4 font-semibold text-text-secondary uppercase tracking-wide">
                     {group.label}
                   </span>
                 </div>
@@ -598,12 +617,12 @@ export function ActivityHistoryCard() {
           </div>
         ) : (
           <div className="py-spacing-10 flex flex-col items-center justify-center gap-spacing-2">
-            <p className="text-text-3 text-text-muted">
+            <p className="text-text-4 text-text-muted">
               No activity of this type yet
             </p>
             <button
               type="button"
-              className="text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
+              className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
               onClick={() => setActiveFilter(null)}
             >
               Clear filter
@@ -617,11 +636,13 @@ export function ActivityHistoryCard() {
             <button
               type="button"
               onClick={() => setOlderLoaded(true)}
-              className="text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
+              className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
             >
               Load older activity
             </button>
           </div>
+        )}
+          </>
         )}
       </div>
 
@@ -636,37 +657,37 @@ export function ActivityHistoryCard() {
           </DialogHeader>
           <div className="space-y-spacing-4 py-spacing-2">
             <div>
-              <label className="block text-text-3 font-semibold text-text-default mb-spacing-2">
+              <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">
                 Date &amp; Time
               </label>
               <input
                 type="datetime-local"
                 defaultValue={new Date().toISOString().slice(0, 16)}
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
-              <label className="block text-text-3 font-semibold text-text-default mb-spacing-2">
+              <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">
                 Notes
               </label>
               <textarea
                 rows={4}
                 placeholder="Add notes about this activity..."
-                className="w-full px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+                className="w-full px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               />
             </div>
           </div>
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setLogDialogOpen(false)}
             >
               Cancel
             </button>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-3 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
               onClick={() => {
                 setLogDialogOpen(false);
                 toast.success(`${logDialogType} activity logged`);
@@ -693,14 +714,14 @@ export function ActivityHistoryCard() {
               value={noteText}
               onChange={(e) => setNoteText(e.target.value)}
               placeholder="Type your note…"
-              className="w-full px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+              className="w-full px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               autoFocus
             />
           </div>
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setNoteDialogOpen(false)}
             >
               Cancel
@@ -708,7 +729,7 @@ export function ActivityHistoryCard() {
             <button
               type="button"
               disabled={!noteText.trim()}
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-3 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleSaveNote}
             >
               Save Note
@@ -728,18 +749,18 @@ export function ActivityHistoryCard() {
           </DialogHeader>
           <div className="space-y-spacing-4 py-spacing-2">
             <div>
-              <label className="block text-text-3 font-semibold text-text-default mb-spacing-2">
+              <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">
                 Title
               </label>
               <input
                 type="text"
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
-              <label className="block text-text-3 font-semibold text-text-default mb-spacing-2">
+              <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">
                 Notes
               </label>
               <textarea
@@ -747,21 +768,21 @@ export function ActivityHistoryCard() {
                 value={editNote}
                 onChange={(e) => setEditNote(e.target.value)}
                 placeholder="Add notes…"
-                className="w-full px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+                className="w-full px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               />
             </div>
           </div>
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setEditDialogOpen(false)}
             >
               Cancel
             </button>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-3 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
               onClick={handleSaveEdit}
             >
               Save

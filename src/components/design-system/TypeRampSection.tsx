@@ -7,8 +7,8 @@ export function TypeRampSection() {
   return (
     <div className="space-y-spacing-1">
       {typeRamp.map((entry) => {
-        const regularClass = `text-${entry.step} font-normal`;
-        const semiClass = `text-${entry.step} font-semibold`;
+        const regularClass = `${entry.step} font-normal`;
+        const semiClass = `${entry.step} font-semibold`;
 
         return (
           <div

@@ -14,7 +14,7 @@ export default meta;
 
 export const Base = {
   render: () => (
-    <ScrollArea className="h-72 w-48 rounded-md border border-slate-100 dark:border-slate-700">
+    <ScrollArea className="h-72 w-48 rounded-md border border-border-default dark:border-border-default">
       <div className="p-4">
         <h4 className="mb-4 text-sm font-medium leading-none">Tags</h4>
         {Array.from({ length: 50 })

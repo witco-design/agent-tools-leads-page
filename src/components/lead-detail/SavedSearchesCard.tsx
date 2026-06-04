@@ -60,7 +60,20 @@ export function SavedSearchesCard() {
 
   return (
     <>
-      <CollapsibleCard title="SAVED SEARCHES" countBadge={searches.length} showInfoIcon>
+      <CollapsibleCard
+        title="Saved Searches"
+        countBadge={searches.length}
+        showInfoIcon
+        footer={
+          <button
+            type="button"
+            onClick={() => setAddOpen(true)}
+            className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+          >
+            + Add Saved Search
+          </button>
+        }
+      >
         <div>
           {/* Saved search rows */}
           {searches.map((search) => (
@@ -68,7 +81,7 @@ export function SavedSearchesCard() {
               key={search.id}
               type="button"
               onClick={() => openDetail(search)}
-              className="flex items-center gap-1 text-text-3 font-semibold text-text-link hover:underline cursor-pointer p-spacing-2 -mx-spacing-2 rounded-2 hover:bg-gray-30 transition-colors w-full min-w-0"
+              className="flex items-center gap-1 text-text-4 font-semibold text-text-link hover:underline cursor-pointer p-spacing-2 -mx-spacing-2 rounded-2 hover:bg-gray-30 transition-colors w-full min-w-0"
             >
               <span className="flex-1 min-w-0 text-left">
                 <TruncatedText>{search.name}</TruncatedText>
@@ -76,17 +89,6 @@ export function SavedSearchesCard() {
               <ArrowRight className="w-3.5 h-3.5 shrink-0" />
             </button>
           ))}
-
-          {/* Add link */}
-          <div className="mt-3">
-            <button
-              type="button"
-              onClick={() => setAddOpen(true)}
-              className="text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
-            >
-              + Add Saved Search
-            </button>
-          </div>
         </div>
       </CollapsibleCard>
 
@@ -100,7 +102,7 @@ export function SavedSearchesCard() {
           <div className="py-spacing-2">
             <div className="space-y-spacing-2">
               {detailSearch?.criteria.map((line, i) => (
-                <div key={i} className="flex items-center justify-between text-text-3">
+                <div key={i} className="flex items-center justify-between text-text-4">
                   <span className="text-text-secondary">{line.split(':')[0]}</span>
                   <span className="font-semibold text-text-default">{line.split(':').slice(1).join(':').trim()}</span>
                 </div>
@@ -110,7 +112,7 @@ export function SavedSearchesCard() {
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-3 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
               onClick={() => setDetailOpen(false)}
             >
               Close
@@ -127,19 +129,19 @@ export function SavedSearchesCard() {
             <DialogDescription>Create a new saved search for this lead.</DialogDescription>
           </DialogHeader>
           <div className="py-spacing-2">
-            <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Search Name</label>
+            <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Search Name</label>
             <input
               type="text"
               value={addName}
               onChange={(e) => setAddName(e.target.value)}
               placeholder="e.g., 3-bed homes in San Jose"
-              className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
             />
           </div>
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setAddOpen(false)}
             >
               Cancel
@@ -147,7 +149,7 @@ export function SavedSearchesCard() {
             <button
               type="button"
               disabled={!addName.trim()}
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-3 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleAdd}
             >
               Add

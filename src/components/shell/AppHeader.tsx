@@ -3,16 +3,16 @@ import {
   Search,
   Bell,
   HelpCircle,
-  Activity,
-  ChevronDown,
   MessageCircle,
-  LogOut,
-  Settings,
+  ArrowLeft,
+  Globe,
+  ChevronDown,
+  ExternalLink,
   Keyboard,
   MessageSquare,
-  ExternalLink,
   Sparkles,
-  Globe,
+  LogOut,
+  Settings,
   Check,
 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -37,17 +37,11 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 
+// ── Data ─────────────────────────────────────────────────────────
 const NOTIFICATIONS = [
   { id: '1', title: 'Camille Dubois is online now', time: '2 min ago', read: false },
   { id: '2', title: 'New lead assigned: Mike Chen', time: '15 min ago', read: false },
   { id: '3', title: 'Follow-up reminder: Call Sarah Lee', time: '1 hour ago', read: true },
-];
-
-const RECENT_ACTIVITY = [
-  { id: '1', text: 'Camille Dubois viewed 3 properties', time: '5 min ago' },
-  { id: '2', text: 'Email sent to Mike Chen', time: '12 min ago' },
-  { id: '3', text: 'New lead from Zillow: Jenny Park', time: '30 min ago' },
-  { id: '4', text: 'Follow-up completed for Alex Turner', time: '1 hour ago' },
 ];
 
 const SITES = [
@@ -56,7 +50,8 @@ const SITES = [
   { id: '3', name: 'www.luxuryhomes.com', active: false },
 ];
 
-export function TopUtilityBar() {
+// ── Component ────────────────────────────────────────────────────
+export function AppHeader() {
   const [notifications, setNotifications] = useState(NOTIFICATIONS);
   const [activeSite, setActiveSite] = useState('www.testsite.com');
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
@@ -70,7 +65,7 @@ export function TopUtilityBar() {
     toast('All notifications marked as read');
   };
 
-  const handleSiteSwich = (siteName: string) => {
+  const handleSiteSwitch = (siteName: string) => {
     setActiveSite(siteName);
     toast(`Switched to ${siteName}`);
   };
@@ -84,40 +79,73 @@ export function TopUtilityBar() {
 
   return (
     <>
-      <header className="h-16 bg-white border-b border-border-default shadow-sm px-spacing-4 flex items-center shrink-0">
-        {/* Left: Search input */}
-        <div className="relative w-full max-w-[360px] min-w-0">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary" />
+      <header
+        className="shrink-0 flex items-center px-4 bg-bg-card border-b border-border-default"
+        style={{ height: 56 }}
+      >
+        {/* 1. Back button + section label */}
+        <button
+          type="button"
+          onClick={() => {
+            if (window.history.length > 1) {
+              window.history.back();
+            } else {
+              window.location.href = '/leads';
+            }
+          }}
+          className="flex items-center gap-2 px-4 py-2 rounded-2 hover:bg-bg-muted transition-colors cursor-pointer shrink-0"
+          aria-label="Back"
+        >
+          <ArrowLeft className="w-4 h-4 shrink-0 text-text-link" strokeWidth={2.25} />
+          <span className="text-text-4 font-semibold whitespace-nowrap text-text-link">
+            CRM / Lead Manager
+          </span>
+        </button>
+
+        {/* 2. Spacer */}
+        <div className="flex-1" />
+
+        {/* 4. Search */}
+        <div className="relative hidden md:block w-full max-w-[420px] mx-4">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
           <input
             type="text"
             placeholder="Search your CRM"
-            className="w-full h-9 pl-9 pr-3 bg-white rounded-2 text-text-4 font-normal text-text-secondary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-blue-40 focus:border-blue-110 border border-border-default"
+            className="w-full h-9 pl-9 pr-3 bg-bg-card rounded-full text-text-4 font-normal placeholder:text-text-muted focus:outline-none focus:ring-1 focus:ring-border-focus border border-border-default text-text-default"
           />
         </div>
 
-        {/* Spacer */}
-        <div className="flex-1" />
-
-        {/* Right side icons & info */}
-        <div className="flex items-center gap-spacing-4 min-w-0 shrink-0">
-          {/* Chat with Support */}
+        {/* 5. Right cluster */}
+        <div className="flex items-center gap-2 ml-auto shrink-0">
+          {/* Chat with Support pill */}
           <button
+            type="button"
             onClick={() => toast('Opening support chat…')}
-            className="inline-flex items-center gap-spacing-2 h-9 px-spacing-3 rounded-2 border border-border-default bg-bg-canvas hover:bg-gray-30 transition-colors cursor-pointer"
+            className="hidden lg:inline-flex items-center gap-1.5 h-8 px-3 rounded-2 border border-border-default bg-bg-card text-text-default text-text-4 font-normal hover:bg-bg-muted transition-colors cursor-pointer"
           >
-            <MessageCircle className="w-4 h-4 text-text-secondary shrink-0" />
-            <span className="hidden md:inline text-text-4 font-normal text-text-default">
-              Chat with Support
-            </span>
+            <MessageCircle className="w-4 h-4 text-text-muted" />
+            <span>Chat with Support</span>
           </button>
 
-          {/* F-1: Bell → notifications Popover */}
+          {/* Bell icon with badge */}
           <Popover>
             <PopoverTrigger asChild>
-              <button type="button" className="relative cursor-pointer">
-                <Bell className="w-5 h-5 text-gray-80 hover:text-gray-120 transition-colors" />
+              <button
+                type="button"
+                className="relative w-8 h-8 flex items-center justify-center rounded-2 hover:bg-bg-muted transition-colors cursor-pointer"
+              >
+                <Bell className="w-4 h-4 text-text-muted" />
                 {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center rounded-round bg-red-80 text-white text-[10px] font-semibold leading-none">
+                  <span
+                    className="absolute flex items-center justify-center rounded-full text-white font-semibold leading-none bg-error-text"
+                    style={{
+                      top: 2,
+                      right: 2,
+                      width: 16,
+                      height: 16,
+                      fontSize: 10,
+                    }}
+                  >
                     {unreadCount}
                   </span>
                 )}
@@ -166,78 +194,71 @@ export function TopUtilityBar() {
             </PopoverContent>
           </Popover>
 
-          {/* F-3: Help (?) → DropdownMenu */}
+          {/* Help icon */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button type="button" className="cursor-pointer">
-                <HelpCircle className="w-5 h-5 text-gray-80 hover:text-gray-120 transition-colors" />
+              <button
+                type="button"
+                className="w-8 h-8 flex items-center justify-center rounded-2 hover:bg-bg-muted transition-colors cursor-pointer"
+              >
+                <HelpCircle className="w-4 h-4 text-text-muted" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="min-w-[200px]">
-              <DropdownMenuItem
-                className="cursor-pointer"
-                onClick={() => toast('Opening documentation…')}
-              >
+              <DropdownMenuItem className="cursor-pointer" onClick={() => toast('Opening documentation…')}>
                 <ExternalLink className="w-3.5 h-3.5 mr-2" />
                 Documentation
               </DropdownMenuItem>
-              <DropdownMenuItem
-                className="cursor-pointer"
-                onClick={() => setShortcutsOpen(true)}
-              >
+              <DropdownMenuItem className="cursor-pointer" onClick={() => setShortcutsOpen(true)}>
                 <Keyboard className="w-3.5 h-3.5 mr-2" />
                 Keyboard Shortcuts
               </DropdownMenuItem>
-              <DropdownMenuItem
-                className="cursor-pointer"
-                onClick={() => setFeedbackOpen(true)}
-              >
+              <DropdownMenuItem className="cursor-pointer" onClick={() => setFeedbackOpen(true)}>
                 <MessageSquare className="w-3.5 h-3.5 mr-2" />
                 Submit Feedback
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                className="cursor-pointer"
-                onClick={() => toast('Opening release notes…')}
-              >
+              <DropdownMenuItem className="cursor-pointer" onClick={() => toast('Opening release notes…')}>
                 <Sparkles className="w-3.5 h-3.5 mr-2" />
                 What&apos;s New
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* F-4: Activity icon → Popover */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <button type="button" className="cursor-pointer">
-                <Activity className="w-5 h-5 text-gray-80 hover:text-gray-120 transition-colors" />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent align="end" className="w-[300px] p-0">
-              <div className="p-spacing-3 border-b border-border-default">
-                <h4 className="text-text-4 font-semibold text-text-default">Recent Activity</h4>
-              </div>
-              <div className="max-h-[280px] overflow-y-auto">
-                {RECENT_ACTIVITY.map((item) => (
-                  <div
-                    key={item.id}
-                    className="px-spacing-3 py-spacing-2 border-b border-border-default last:border-b-0 hover:bg-gray-30 transition-colors cursor-pointer"
-                  >
-                    <p className="text-text-4 font-normal text-text-default">{item.text}</p>
-                    <p className="text-text-4 text-text-muted">{item.time}</p>
-                  </div>
-                ))}
-              </div>
-            </PopoverContent>
-          </Popover>
+          {/* Separator */}
+          <div className="hidden lg:block w-px h-6 bg-border-default mx-1" />
 
-          {/* F-5: Site dropdown */}
+          {/* "Logged in as {Name}" — user menu trigger */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="hidden md:flex items-center gap-1 text-text-4 font-normal text-text-default hover:text-brand-primary transition-colors cursor-pointer">
+              <button className="hidden lg:flex items-center gap-1 px-2 py-1 rounded-2 hover:bg-bg-muted transition-colors cursor-pointer whitespace-nowrap">
+                <span className="text-text-4 text-text-muted">Logged in as</span>
+                <span className="text-text-4 font-semibold text-text-default">Alina Kāne</span>
+                <ChevronDown className="w-3.5 h-3.5 ml-0.5 shrink-0 text-text-muted" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="min-w-[200px]">
+              <DropdownMenuItem className="cursor-pointer" onClick={() => toast('Opening account settings…')}>
+                <Settings className="w-3.5 h-3.5 mr-2" />
+                Account Settings
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer text-red-80" onClick={() => toast('Signing out…')}>
+                <LogOut className="w-3.5 h-3.5 mr-2" />
+                Sign Out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* Site selector */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                className="hidden md:flex items-center gap-1 text-text-4 font-normal text-text-link hover:opacity-80 transition-opacity cursor-pointer"
+              >
                 <Globe className="w-4 h-4 shrink-0" />
                 <span className="truncate max-w-[150px]">{activeSite}</span>
-                <ChevronDown className="w-4 h-4 shrink-0" />
+                <ChevronDown className="w-3.5 h-3.5 shrink-0" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="min-w-[220px]">
@@ -245,12 +266,10 @@ export function TopUtilityBar() {
                 <DropdownMenuItem
                   key={site.id}
                   className="cursor-pointer flex items-center justify-between"
-                  onClick={() => handleSiteSwich(site.name)}
+                  onClick={() => handleSiteSwitch(site.name)}
                 >
                   <span>{site.name}</span>
-                  {activeSite === site.name && (
-                    <Check className="w-4 h-4 text-blue-110" />
-                  )}
+                  {activeSite === site.name && <Check className="w-4 h-4 text-blue-110" />}
                 </DropdownMenuItem>
               ))}
               <DropdownMenuSeparator />
@@ -262,44 +281,10 @@ export function TopUtilityBar() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          {/* F-2: Avatar & greeting → DropdownMenu */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-spacing-2 ml-spacing-2 cursor-pointer rounded-2 px-spacing-2 py-spacing-1 hover:bg-gray-30 transition-colors">
-                <img
-                  src="https://i.pravatar.cc/36?img=47"
-                  alt="User avatar"
-                  className="w-9 h-9 rounded-full object-cover"
-                />
-                <span className="hidden md:inline text-text-4 font-semibold text-text-default">
-                  Aloha, Alina
-                </span>
-                <ChevronDown className="hidden md:block w-4 h-4 text-text-secondary shrink-0" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="min-w-[200px]">
-              <DropdownMenuItem
-                className="cursor-pointer"
-                onClick={() => toast('Opening account settings…')}
-              >
-                <Settings className="w-3.5 h-3.5 mr-2" />
-                Account Settings
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                className="cursor-pointer text-red-80"
-                onClick={() => toast('Signing out…')}
-              >
-                <LogOut className="w-3.5 h-3.5 mr-2" />
-                Sign Out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       </header>
 
-      {/* Keyboard Shortcuts Dialog */}
+      {/* ── Keyboard Shortcuts Dialog ─────────────────────── */}
       <Dialog open={shortcutsOpen} onOpenChange={setShortcutsOpen}>
         <DialogContent className="sm:max-w-[440px]">
           <DialogHeader>
@@ -335,7 +320,7 @@ export function TopUtilityBar() {
         </DialogContent>
       </Dialog>
 
-      {/* Submit Feedback Dialog */}
+      {/* ── Submit Feedback Dialog ────────────────────────── */}
       <Dialog open={feedbackOpen} onOpenChange={setFeedbackOpen}>
         <DialogContent className="sm:max-w-[440px]">
           <DialogHeader>

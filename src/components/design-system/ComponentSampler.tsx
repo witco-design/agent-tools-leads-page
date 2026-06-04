@@ -50,7 +50,7 @@ export function ComponentSampler() {
       case 'focus':
         return `${base} bg-bg-canvas border-border-default text-text-default ring-2 ring-focus-ring ring-offset-2`;
       case 'disabled':
-        return `${base} bg-gray-20 border-gray-30 text-gray-60 cursor-not-allowed`;
+        return `${base} bg-gray-20 border-border-default text-gray-60 cursor-not-allowed`;
     }
   };
 

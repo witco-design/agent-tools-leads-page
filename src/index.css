@@ -6,35 +6,87 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* ── Real Geeks Design System semantic CSS variables ──────────
+     * Mirror of the tailwind.config.js semantic token layer.
+     * Changing these here is sufficient for future theming (dark mode,
+     * white-label) without touching any component code.
+     * ─────────────────────────────────────────────────────────── */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Text */
+    --color-text-default:    #101828; /* gray.110 */
+    --color-text-secondary:  #475467; /* gray.80  */
+    --color-text-muted:      #667085; /* gray.70  */
+    --color-text-link:       #3E60C9; /* blue.110 */
+    --color-text-link-hover: #3840A9; /* blue.120 */
+    --color-text-inverse:    #FFFFFF;
+
+    /* Surfaces */
+    --color-bg-app:    #F5F5F5;
+    --color-bg-card:   #FFFFFF;
+    --color-bg-muted:  #F9FAFB; /* gray.10 */
+
+    /* Borders — #E4E7EC (gray.50) is the ONLY default border/divider color.
+       All new border/divider code should reference border-border-default,
+       NOT a hardcoded hex. This prevents gray drift from typos like
+       #E4E7EB, #E4E6EC, #EAECF0 etc. */
+    --color-border-default: #E4E7EC; /* gray.50 — the ONLY default border/divider color */
+    --color-border-strong:  #D0D5DD; /* gray.40 — heavier emphasis, reserved */
+    --color-border-focus:   #3E60C9; /* blue.110 */
+
+    /* Brand */
+    --color-brand-primary:       #3E60C9; /* blue.110 */
+    --color-brand-primary-hover: #3840A9; /* blue.120 */
+
+    /* Status */
+    --color-success-bg:   #ECFDF3; /* green.10 */
+    --color-success-text: #039855; /* green.70 */
+    --color-warning-bg:   #FEF6EE; /* orange.10 */
+    --color-warning-text: #E04F16; /* orange.70 */
+    --color-error-bg:     #FEF3F2; /* red.10 */
+    --color-error-text:   #D92D20; /* red.70 */
+
+    /* Legacy shell tokens (kept for backward compat) */
+    --rg-blue: #3E60C9;
+    --rg-blue-hover: #3840A9;
+    --rg-blue-active-tint: rgba(255, 255, 255, 0.12);
+    --rg-blue-hover-tint: rgba(255, 255, 255, 0.08);
+    --rg-bg: #F5F5F5;
+    --rg-surface: #FFFFFF;
+    --rg-border: #E4E7EC;
+    --rg-text: #101828;
+    --rg-text-muted: #667085;
+    --rg-danger: #D92D20; /* red.70 — updated to match error-text token */
+
+    /* shadcn/ui primitive tokens — mapped to Real Geeks palette */
+    --background: 0 0% 100%;           /* bg-card: #FFFFFF */
+    --foreground: 220 39% 11%;         /* gray.110: #101828 */
+
+    --card: 0 0% 100%;                 /* bg-card: #FFFFFF */
+    --card-foreground: 220 39% 11%;    /* gray.110: #101828 */
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 39% 11%; /* gray.110: #101828 */
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 222 56% 52%;            /* blue.110: #3E60C9 */
+    --primary-foreground: 0 0% 100%;   /* white */
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 220 14% 96%;          /* gray.10: #F9FAFB */
+    --secondary-foreground: 220 39% 11%; /* gray.110: #101828 */
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 14% 96%;              /* gray.10: #F9FAFB */
+    --muted-foreground: 215 14% 47%;   /* gray.70: #667085 */
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 220 14% 96%;             /* gray.10: #F9FAFB */
+    --accent-foreground: 220 39% 11%;  /* gray.110: #101828 */
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 4 80% 49%;          /* red.70: #D92D20 */
+    --destructive-foreground: 0 0% 100%; /* white */
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 218 18% 91%;             /* gray.50: #E4E7EC */
+    --input: 218 18% 91%;              /* gray.50: #E4E7EC */
+    --ring: 222 56% 52%;               /* blue.110: #3E60C9 */
 
-    --radius: 0.5rem;
+    --radius: 0.5rem;                  /* 8px — maps to rounded-2 */
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -55,17 +107,15 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply font-lato text-text-default antialiased;
-    background-color: #fef5dd;
-    /* Subtle dot-grid pattern */
-    background-image: radial-gradient(circle, rgba(192, 192, 192, 0.4) 1px, transparent 1px);
-    background-size: 24px 24px;
+    @apply font-lato antialiased;
+    color: var(--color-text-default);
+    background-color: var(--color-bg-app);
   }
 }
 
 /* Clipboard copy flash */
 @keyframes copy-flash {
-  0% { background-color: #b0e0b0; }
+  0% { background-color: var(--color-success-bg); }
   100% { background-color: transparent; }
 }
 .copy-flash {
@@ -94,12 +144,43 @@
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f8f8f8;
+  background: var(--color-bg-muted);
 }
 ::-webkit-scrollbar-thumb {
-  background: #c0c0c0;
+  background: var(--color-border-default);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #a0a0a0;
+  background: var(--color-text-muted);
+}
+
+/* Scroll-to-section flash highlight */
+@keyframes flash-highlight {
+  0%   { box-shadow: 0 0 0 0 rgba(62, 96, 201, 0); }
+  20%  { box-shadow: 0 0 0 4px rgba(62, 96, 201, 0.20); }
+  100% { box-shadow: 0 0 0 0 rgba(62, 96, 201, 0); }
+}
+.flash-highlight {
+  animation: flash-highlight 1.5s ease-out forwards;
+}
+
+/* AI Summary card scrollbar */
+.ai-summary-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.ai-summary-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.ai-summary-scroll::-webkit-scrollbar-thumb {
+  background: rgba(96, 89, 183, 0.25);
+  border-radius: 4px;
+}
+.ai-summary-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(96, 89, 183, 0.5);
+}
+
+/* Firefox */
+.ai-summary-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(96, 89, 183, 0.25) transparent;
 }

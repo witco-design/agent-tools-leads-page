@@ -1,3 +1,14 @@
+/**
+ * Real Geeks Design System — Tailwind Configuration
+ *
+ * Token scales are derived from the Real Geeks Figma export.
+ * Source of truth: [ Base Colors ].Value.tokens.json, [ Spacing & Sizing ].Mode 1.tokens.json,
+ * [ Border Radius ].Mode 1.tokens.json, text.styles.tokens.json, effect.styles.tokens.json
+ *
+ * Engineers: prefer semantic tokens (text-default, border-default, bg-card, etc.) wherever
+ * they exist. Use raw scale tokens (blue-110, gray-50) only when no semantic alias applies.
+ */
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -19,124 +30,161 @@ module.exports = {
     extend: {
       fontFamily: {
         lato: ['Lato', 'sans-serif'],
+        sans: ['Lato', 'system-ui', 'sans-serif'],
       },
+
       colors: {
-        /* ── Real Geeks Design System Color Scales ── */
+        /* ─────────────────────────────────────────────────────────────
+         * BASE COLOR SCALES  (Figma: [ Base Colors ].Value.tokens.json)
+         * ───────────────────────────────────────────────────────────── */
         blue: {
-          10: '#f0f3fb',
-          20: '#d9e0f4',
-          30: '#b3c1e9',
-          40: '#8da2de',
-          50: '#6783d3',
-          60: '#4f6ec9',
-          70: '#4564c4',
-          80: '#3e5cb8',
-          90: '#3752a8',
-          100: '#2f4898',
-          110: '#3e60c9',
-          120: '#1a2f6b',
+          10:  '#F4F7FE',
+          20:  '#E5EBFB',
+          30:  '#CBD5F4',
+          40:  '#A8BAEC',
+          50:  '#849EE3',
+          60:  '#6781D9',
+          70:  '#4E68CC',
+          80:  '#3E60C9',
+          90:  '#3D55B9',
+          100: '#3A4DAA',
+          110: '#3E60C9', // brand primary
+          120: '#3840A9', // brand primary hover/pressed
         },
         gray: {
-          10: '#f8f8f8',
-          20: '#f0f0f0',
-          30: '#e8e8e8',
-          40: '#d8d8d8',
-          50: '#c0c0c0',
-          60: '#a0a0a0',
-          70: '#888888',
-          80: '#707070',
-          90: '#585858',
-          100: '#404040',
-          110: '#303030',
-          120: '#1a1a1a',
+          10:  '#F9FAFB',
+          20:  '#F2F4F7',
+          30:  '#EAECF0',
+          40:  '#D0D5DD',
+          50:  '#E4E7EC', // default hairline / border
+          60:  '#98A2B3',
+          70:  '#667085',
+          80:  '#475467',
+          90:  '#344054',
+          100: '#1D2939',
+          110: '#101828', // primary text
+          120: '#0C111D',
         },
         green: {
-          10: '#f0faf0',
-          20: '#d4f0d4',
-          30: '#b0e0b0',
-          40: '#80cc80',
-          50: '#5cb85c',
-          60: '#4cae4c',
-          70: '#42a042',
-          80: '#389438',
-          90: '#2d7a2d',
-          100: '#256b25',
-          110: '#1a5c1a',
-          120: '#0f3d0f',
+          10:  '#ECFDF3',
+          20:  '#DCFAE6',
+          30:  '#A6F4C5',
+          40:  '#6CE9A6',
+          50:  '#32D583',
+          60:  '#12B76A',
+          70:  '#039855', // success text/icon
+          80:  '#027A48',
+          90:  '#05603A',
+          100: '#054F31',
+          110: '#053321',
+          120: '#022A1A',
         },
         red: {
-          10: '#fef0f0',
-          20: '#fcd4d4',
-          30: '#f8a8a8',
-          40: '#f47c7c',
-          50: '#ef5050',
-          60: '#e04040',
-          70: '#d43030',
-          80: '#c42020',
-          90: '#a81818',
-          100: '#8c1010',
-          110: '#700a0a',
-          120: '#500505',
+          10:  '#FEF3F2',
+          20:  '#FEE4E2',
+          30:  '#FECDCA',
+          40:  '#FDA29B',
+          50:  '#F97066',
+          60:  '#F04438',
+          70:  '#D92D20', // error default
+          80:  '#B42318',
+          90:  '#912018',
+          100: '#7A271A',
+          110: '#55160C',
+          120: '#3B0B05',
         },
         orange: {
-          10: '#fef5dd',
-          20: '#fde8b0',
-          30: '#fcd883',
-          40: '#fbc856',
-          50: '#fab829',
-          60: '#e5a520',
-          70: '#cc9318',
-          80: '#b38010',
-          90: '#996e0a',
-          100: '#805c05',
-          110: '#664a03',
-          120: '#4d3802',
+          10:  '#FEF6EE',
+          20:  '#FDEAD7',
+          30:  '#F9DBAF',
+          40:  '#F7B27A',
+          50:  '#F38744',
+          60:  '#EF6820',
+          70:  '#E04F16', // warning default
+          80:  '#B93815',
+          90:  '#932F19',
+          100: '#7E2410',
+          110: '#5C1A0C',
+          120: '#3D1106',
         },
         purple: {
-          10: '#f5f0ff',
-          20: '#e4d9fc',
-          30: '#d3c0f9',
-          40: '#bfa3f5',
-          50: '#a886f0',
-          60: '#9470e0',
-          70: '#7f5bcc',
-          80: '#6b47b8',
-          90: '#5733a4',
-          100: '#462090',
-          110: '#36107c',
-          120: '#260060',
+          10:  '#EBEAFF', // AI gradient start
+          20:  '#D9D6FE',
+          30:  '#C3C0F1', // AI card border
+          40:  '#A4A0F5',
+          50:  '#8580EB',
+          60:  '#6A65D8',
+          70:  '#5E5CC0',
+          80:  '#4F4DAB',
+          90:  '#3E3D87',
+          100: '#2F2E67',
+          110: '#23234B',
+          120: '#171733',
         },
         ink: {
-          white: '#ffffff',
+          white: '#FFFFFF',
           black: '#000000',
         },
 
-        /* ── Semantic Aliases ── */
-        'bg-app': '#fef5dd',
-        'bg-canvas': '#ffffff',
-        'bg-muted': '#f8f8f8',
-        'text-default': '#1a1a1a',
-        'text-secondary': '#585858',
-        'text-muted': '#a0a0a0',
-        'text-link': '#3e60c9',
-        'brand-primary': '#3e60c9',
-        'brand-primary-hover': '#3752a8',
-        'border-default': '#c0c0c0',
-        'focus-ring': '#1a1a1a',
-        'icon-default': '#303030',
-        'success-bg': '#b0e0b0',
-        'success-border': '#80cc80',
-        'success-text': '#2d7a2d',
-        'error-bg': '#fcd4d4',
-        'error-border': '#f47c7c',
-        'error-text': '#a81818',
-        'warning-bg': '#fef5dd',
-        'warning-border': '#fde8b0',
-        'warning-text': '#996e0a',
-        'tag-bg': '#d3c0f9',
-        'tag-text': '#36107c',
+        /* ─────────────────────────────────────────────────────────────
+         * SEMANTIC TOKENS  — intent-first aliases over the base scales
+         * Engineers should prefer these wherever they exist.
+         * ───────────────────────────────────────────────────────────── */
 
-        /* ── shadcn defaults ── */
+        // Surfaces
+        'bg-app':    '#F5F5F5',  // outer shell background
+        'bg-card':   '#FFFFFF',  // card / panel surfaces
+        'bg-canvas': '#FFFFFF',  // alias — same as bg-card (design system term)
+        'bg-muted':  '#F9FAFB',  // gray.10 — subtle row bg / hover
+
+        // Text
+        'text-default':    '#101828', // gray.110 — primary text on cards
+        'text-secondary':  '#475467', // gray.80  — supporting / meta text
+        'text-muted':      '#667085', // gray.70  — hint / disabled / icon labels
+        'text-link':       '#3E60C9', // blue.110 — links and brand actions
+        'text-link-hover': '#3840A9', // blue.120 — hover / pressed link
+
+        // Borders
+        'border-default': '#E4E7EC', // gray.50 — 1px hairlines, card borders
+        'border-strong':  '#D0D5DD', // gray.40 — heavier emphasis
+        'border-focus':   '#3E60C9', // blue.110 — focused inputs
+
+        // Brand
+        'brand-primary':       '#3E60C9', // blue.110
+        'brand-primary-hover': '#3840A9', // blue.120
+
+        // Focus
+        'focus-ring':   '#3E60C9', // blue.110 — 2px focus outline
+
+        // Icon
+        'icon-default': '#667085', // gray.70
+
+        // Status — success
+        'success-bg':     '#ECFDF3', // green.10
+        'success-border': '#6CE9A6', // green.40
+        'success-text':   '#039855', // green.70
+
+        // Status — warning
+        'warning-bg':     '#FEF6EE', // orange.10
+        'warning-border': '#FDEAD7', // orange.20
+        'warning-text':   '#E04F16', // orange.70
+
+        // Status — error
+        'error-bg':     '#FEF3F2', // red.10
+        'error-border': '#FDA29B', // red.40
+        'error-text':   '#D92D20', // red.70
+
+        // Status — info
+        'info-bg':   '#F4F7FE', // blue.10
+        'info-text': '#3E60C9', // blue.110
+
+        // Tag / chip
+        'tag-bg':   '#C3C0F1', // purple.30
+        'tag-text': '#23234B', // purple.110
+
+        /* ─────────────────────────────────────────────────────────────
+         * shadcn/ui CSS-variable tokens — do not modify
+         * ───────────────────────────────────────────────────────────── */
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -182,31 +230,33 @@ module.exports = {
         }
       },
 
-      /* ── Spacing tokens ── */
+      /* ─── Spacing tokens (Figma: [ Spacing & Sizing ].Mode 1.tokens.json) ─── */
       spacing: {
-        'spacing-1': '4px',
-        'spacing-2': '8px',
-        'spacing-3': '12px',
-        'spacing-4': '16px',
-        'spacing-5': '20px',
-        'spacing-6': '24px',
-        'spacing-7': '28px',
-        'spacing-8': '32px',
-        'spacing-9': '36px',
+        'spacing-0':  '0px',
+        'spacing-1':  '4px',
+        'spacing-2':  '8px',
+        'spacing-3':  '12px',
+        'spacing-4':  '16px',
+        'spacing-5':  '20px',
+        'spacing-6':  '24px',
+        'spacing-7':  '28px',
+        'spacing-8':  '32px',
+        'spacing-9':  '36px',
         'spacing-10': '40px',
+        'spacing-11': '48px',
       },
 
-      /* ── Sizing tokens ── */
+      /* ─── Sizing tokens ─── */
       width: {
-        'sizing-1': '4px',
-        'sizing-2': '8px',
-        'sizing-3': '12px',
-        'sizing-4': '16px',
-        'sizing-5': '20px',
-        'sizing-6': '24px',
-        'sizing-7': '28px',
-        'sizing-8': '32px',
-        'sizing-9': '36px',
+        'sizing-1':  '4px',
+        'sizing-2':  '8px',
+        'sizing-3':  '12px',
+        'sizing-4':  '16px',
+        'sizing-5':  '20px',
+        'sizing-6':  '24px',
+        'sizing-7':  '28px',
+        'sizing-8':  '32px',
+        'sizing-9':  '36px',
         'sizing-10': '40px',
         'sizing-11': '44px',
         'sizing-12': '48px',
@@ -214,15 +264,15 @@ module.exports = {
         'sizing-14': '56px',
       },
       height: {
-        'sizing-1': '4px',
-        'sizing-2': '8px',
-        'sizing-3': '12px',
-        'sizing-4': '16px',
-        'sizing-5': '20px',
-        'sizing-6': '24px',
-        'sizing-7': '28px',
-        'sizing-8': '32px',
-        'sizing-9': '36px',
+        'sizing-1':  '4px',
+        'sizing-2':  '8px',
+        'sizing-3':  '12px',
+        'sizing-4':  '16px',
+        'sizing-5':  '20px',
+        'sizing-6':  '24px',
+        'sizing-7':  '28px',
+        'sizing-8':  '32px',
+        'sizing-9':  '36px',
         'sizing-10': '40px',
         'sizing-11': '44px',
         'sizing-12': '48px',
@@ -230,8 +280,14 @@ module.exports = {
         'sizing-14': '56px',
       },
 
-      /* ── Border Radius tokens ── */
+      /* ─── Border Radius tokens (Figma: [ Border Radius ].Mode 1.tokens.json) ─── */
       borderRadius: {
+        'radius-1':     '4px',
+        'radius-2':     '8px',
+        'radius-3':     '12px',
+        'radius-4':     '16px',
+        'radius-round': '9999px',
+        // Legacy short aliases kept for backward compat — prefer radius-N above
         'round': '9999px',
         '1': '4px',
         '2': '8px',
@@ -242,24 +298,24 @@ module.exports = {
         sm: 'calc(var(--radius) - 4px)',
       },
 
-      /* ── Shadow tokens ── */
+      /* ─── Shadow tokens (Figma: effect.styles.tokens.json) ─── */
       boxShadow: {
-        'sm': '0 1px 2px 0 rgba(0,0,0,0.05)',
-        'md': '0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05)',
-        'lg': '0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04)',
+        'sm': '0 1px 2px 0 rgba(16, 24, 40, 0.05)',
+        'md': '0 4px 8px -2px rgba(16, 24, 40, 0.10), 0 2px 4px -2px rgba(16, 24, 40, 0.06)',
+        'lg': '0 12px 16px -4px rgba(16, 24, 40, 0.08), 0 4px 6px -2px rgba(16, 24, 40, 0.03)',
       },
 
-      /* ── Typography (fontSize) ── */
+      /* ─── Typography scale (Figma: text.styles.tokens.json) ─── */
       fontSize: {
-        'text-1': ['10px', { lineHeight: '14px' }],
-        'text-2': ['12px', { lineHeight: '16px' }],
-        'text-3': ['14px', { lineHeight: '20px' }],
-        'text-4': ['16px', { lineHeight: '24px' }],
-        'text-5': ['18px', { lineHeight: '26px' }],
+        'text-1': ['8px',  { lineHeight: '12px' }],
+        'text-2': ['10px', { lineHeight: '14px' }],
+        'text-3': ['12px', { lineHeight: '16px' }],
+        'text-4': ['14px', { lineHeight: '20px' }],
+        'text-5': ['16px', { lineHeight: '24px' }],
         'text-6': ['20px', { lineHeight: '28px' }],
         'text-7': ['24px', { lineHeight: '32px' }],
         'text-8': ['32px', { lineHeight: '40px' }],
-        'text-9': ['40px', { lineHeight: '48px' }],
+        'text-9': ['60px', { lineHeight: '72px' }],
       },
 
       keyframes: {
@@ -279,12 +335,22 @@ module.exports = {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
+        'spin-slow': {
+          from: { transform: 'rotate(0deg)' },
+          to: { transform: 'rotate(360deg)' },
+        },
+        'blink': {
+          '0%, 50%': { opacity: '1' },
+          '51%, 100%': { opacity: '0' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-in-up': 'fade-in-up 0.3s ease-out forwards',
         'fade-in': 'fade-in 0.3s ease-out forwards',
+        'spin-slow': 'spin-slow 3s linear infinite',
+        'blink': 'blink 1s steps(2) infinite',
       }
     }
   },
