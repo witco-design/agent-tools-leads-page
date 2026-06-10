@@ -9,9 +9,9 @@ import {
   Pencil,
   Video,
   Lock,
-  Clock,
-  GitMerge,
-  Trash2,
+  Bookmark,
+  FileSignature,
+  Unlock,
   AlertTriangle,
   ChevronLeft,
   ChevronRight,
@@ -37,18 +37,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction,
-} from '@/components/ui/alert-dialog';
 import { TruncatedText } from './TruncatedText';
 
 interface ActionButton {
@@ -83,7 +72,6 @@ export function LeadHeader() {
   const [emailOpen, setEmailOpen] = useState(false);
   const [chatModalOpen, setChatModalOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
   const [textBody, setTextBody] = useState('');
 
   useEffect(() => {
@@ -142,11 +130,11 @@ export function LeadHeader() {
   return (
     <TooltipProvider delayDuration={200}>
       {/* Lead identity + actions */}
-      <div className="py-spacing-2 flex flex-wrap items-center gap-x-spacing-4 gap-y-spacing-3">
+      <div data-component="LeadHeader" className="py-spacing-2 flex items-center justify-between gap-spacing-4">
         {/* Avatar + Name + Pencil — group for hover reveal */}
-        <div className="group flex items-center gap-3 shrink-0">
+        <div className="group flex items-center gap-spacing-3 flex-1 min-w-0">
           {/* Lock icon */}
-          <Lock className="w-6 h-6 text-text-muted shrink-0" strokeWidth={2.25} />
+          <Lock className="w-4 h-4 text-text-muted shrink-0" strokeWidth={2.25} />
 
           {isEditing ? (
             <input
@@ -157,12 +145,10 @@ export function LeadHeader() {
               onBlur={commitEdit}
               onKeyDown={handleKeyDown}
               autoFocus
-              className="text-text-7 font-semibold text-text-default whitespace-nowrap
+              className="flex-1 min-w-[280px] max-w-[700px] text-text-7 font-semibold text-text-default whitespace-nowrap
                          bg-white border border-border-default rounded-2
                          px-spacing-2 py-0 outline-none
-                         focus:border-blue-110 focus:ring-2 focus:ring-blue-40 focus:ring-offset-0
-                         min-w-[80px] max-w-[600px]"
-              style={{ fieldSizing: 'content' } as React.CSSProperties}
+                         focus:border-blue-110 focus:ring-2 focus:ring-blue-40 focus:ring-offset-0"
             />
           ) : (
             <>
@@ -195,11 +181,8 @@ export function LeadHeader() {
           )}
         </div>
 
-        {/* Spacer - only shows at xl */}
-        <div className="hidden xl:block flex-1" />
-
         {/* Action pill buttons */}
-        <div className="flex items-center gap-spacing-2">
+        <div className="flex items-center gap-spacing-2 flex-shrink-0">
           {actionButtons.map((btn) => {
             const Icon = btn.icon;
             return (
@@ -227,50 +210,29 @@ export function LeadHeader() {
                 <MoreHorizontal className="w-4 h-4" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="min-w-[200px]">
-              <DropdownMenuItem
-                className="flex items-center gap-spacing-2 cursor-pointer"
-                onClick={() => toast('Sending postcard to Camille Dubois')}
-              >
-                <Mail className="w-4 h-4" />
-                <span>Send Postcard to Lead</span>
+            <DropdownMenuContent
+              align="end"
+              className="w-[240px] bg-white border border-[#E4E7EC] rounded-2 shadow-lg p-spacing-1"
+            >
+              <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]">
+                <Bookmark className="w-4 h-4 mr-spacing-2 text-[#475467]" />
+                <span className="text-sm text-[#101828]">Saved Searches</span>
               </DropdownMenuItem>
-              <DropdownMenuItem
-                className="flex items-center gap-spacing-2 cursor-pointer"
-                onClick={() => toast('Generating video email…')}
-              >
-                <Video className="w-4 h-4" />
-                <span>Send Video Email</span>
+              <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]">
+                <FileSignature className="w-4 h-4 mr-spacing-2 text-[#475467]" />
+                <span className="text-sm text-[#101828]">Send Agreement</span>
               </DropdownMenuItem>
-              <DropdownMenuItem
-                className="flex items-center gap-spacing-2 cursor-pointer"
-                onClick={() => toast('Website photos unlocked')}
-              >
-                <Lock className="w-4 h-4" />
-                <span>Unlock Website Photos</span>
+              <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]">
+                <Mail className="w-4 h-4 mr-spacing-2 text-[#475467]" />
+                <span className="text-sm text-[#101828]">Send Postcard</span>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                className="flex items-center gap-spacing-2 cursor-pointer"
-                onClick={() => toast('Lead history coming soon')}
-              >
-                <Clock className="w-4 h-4" />
-                <span>View Lead History</span>
+              <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]">
+                <Video className="w-4 h-4 mr-spacing-2 text-[#475467]" />
+                <span className="text-sm text-[#101828]">Send BombBomb</span>
               </DropdownMenuItem>
-              <DropdownMenuItem
-                className="flex items-center gap-spacing-2 cursor-pointer"
-                onClick={() => toast('Merge lead — coming soon')}
-              >
-                <GitMerge className="w-4 h-4" />
-                <span>Merge with another lead</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                className="flex items-center gap-spacing-2 cursor-pointer text-red-80"
-                onClick={() => setDeleteOpen(true)}
-              >
-                <Trash2 className="w-4 h-4" />
-                <span>Delete lead</span>
+              <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]">
+                <Unlock className="w-4 h-4 mr-spacing-2 text-[#475467]" />
+                <span className="text-sm text-[#101828]">Unlock site photos</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -563,26 +525,6 @@ export function LeadHeader() {
         </DialogContent>
       </Dialog>
 
-      {/* ── DELETE LEAD AlertDialog ──────────────────────────── */}
-      <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Permanently delete this lead?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will permanently remove {leadName} and all associated data. This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-red-80 text-white hover:bg-red-90"
-              onClick={() => toast.error('Lead deleted')}
-            >
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </TooltipProvider>
   );
 }

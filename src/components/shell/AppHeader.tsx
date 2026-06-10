@@ -3,8 +3,8 @@ import {
   Search,
   Bell,
   HelpCircle,
-  MessageCircle,
-  ArrowLeft,
+  MessageSquare,
+  MessageSquareDot,
   Globe,
   ChevronDown,
   ExternalLink,
@@ -22,7 +22,6 @@ import {
   Shield,
   Accessibility,
   CircleUserRound,
-  MoreHorizontal,
   X,
 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -54,34 +53,13 @@ const WEBSITES = [
   { domain: 'www.beachfrontrealty.com' },
 ];
 
+const USER_FIRST_NAME = 'Alina';
 const USER_NAME = 'Alina Kāne';
 const USER_EMAIL = 'alina.kane@realgeeks.com';
+const LEAD_NAME = 'Camille Dubois';
 
 function stripWww(domain: string) {
   return domain.replace(/^www\./, '');
-}
-
-// ── Idle detection hook ──────────────────────────────────────────
-function useIdleDetection(thresholdMs: number, onIdle: () => void) {
-  const stableOnIdle = useCallback(onIdle, [onIdle]);
-
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout>;
-
-    const resetTimer = () => {
-      clearTimeout(timer);
-      timer = setTimeout(stableOnIdle, thresholdMs);
-    };
-
-    const events = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
-    events.forEach((e) => window.addEventListener(e, resetTimer, { passive: true }));
-    resetTimer();
-
-    return () => {
-      clearTimeout(timer);
-      events.forEach((e) => window.removeEventListener(e, resetTimer));
-    };
-  }, [thresholdMs, stableOnIdle]);
 }
 
 // ── Component ────────────────────────────────────────────────────
@@ -93,22 +71,25 @@ export function AppHeader() {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const mobileSearchRef = useRef<HTMLInputElement>(null);
 
-  // Chat with Support animations
-  const [isFirstLoad, setIsFirstLoad] = useState(true);
-  const [isIdle, setIsIdle] = useState(false);
+  // Chat Support animation sequencing
+  const [animPhase, setAnimPhase] = useState<'pulse' | 'dot' | 'done'>('pulse');
+  const [isOnline] = useState(true);
 
+  // Nudge popover state
+  const [nudgeVisible, setNudgeVisible] = useState(false);
+  const nudgeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const nudgeRef = useRef<HTMLDivElement>(null);
+
+  // Animation sequence: button pulses 4× (~3.2s) → dot starts pulsing → badge burst
   useEffect(() => {
-    const timer = setTimeout(() => setIsFirstLoad(false), 3200); // 2 pulses × 1.6s
-    return () => clearTimeout(timer);
+    const t1 = setTimeout(() => setAnimPhase('dot'), 3200);
+    const t2 = setTimeout(() => setAnimPhase('done'), 4200);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
   }, []);
-
-  useIdleDetection(
-    20000,
-    useCallback(() => {
-      setIsIdle(true);
-      setTimeout(() => setIsIdle(false), 600);
-    }, []),
-  );
 
   // Focus mobile search input when overlay opens
   useEffect(() => {
@@ -119,44 +100,80 @@ export function AppHeader() {
 
   const openChat = () => toast('Opening support chat…');
   const signOut = () => toast('Signing out…');
-  const markAllRead = () => {
-    setUnreadCount(0);
-  };
+  const markAllRead = () => setUnreadCount(0);
   const switchTo = (domain: string) => {
     setCurrentDomain(domain);
     toast(`Switched to ${stripWww(domain)}`);
   };
 
-  return (
-    <header className="h-14 sticky top-0 z-40 bg-white border-b border-[#E4E7EC] flex items-center px-spacing-4 md:px-spacing-6 gap-spacing-3 md:gap-spacing-4">
+  // ── Nudge hover/focus handlers ──
+  const showNudge = useCallback(() => {
+    if (nudgeTimer.current) clearTimeout(nudgeTimer.current);
+    nudgeTimer.current = null;
+    setNudgeVisible(true);
+  }, []);
 
-      {/* ── LEFT: CRM Breadcrumb ──────────────────────────── */}
-      <a
-        href="/leads"
-        className="inline-flex items-center gap-spacing-2 text-sm font-medium text-[#3E60C9] hover:text-[#3840A9] transition shrink-0 whitespace-nowrap"
-      >
-        <ArrowLeft className="w-4 h-4 shrink-0" />
-        {/* Stage D (<md): arrow only. Stage A/B/C (md+): full breadcrumb */}
-        <span className="hidden md:inline">CRM / Lead Manager</span>
-      </a>
+  const startHideNudge = useCallback(() => {
+    if (nudgeTimer.current) clearTimeout(nudgeTimer.current);
+    nudgeTimer.current = setTimeout(() => setNudgeVisible(false), 250);
+  }, []);
+
+  const cancelHideNudge = useCallback(() => {
+    if (nudgeTimer.current) {
+      clearTimeout(nudgeTimer.current);
+      nudgeTimer.current = null;
+    }
+  }, []);
+
+  const dismissNudge = useCallback(() => {
+    if (nudgeTimer.current) clearTimeout(nudgeTimer.current);
+    setNudgeVisible(false);
+  }, []);
+
+  return (
+    <header data-component="AppHeader" className="h-14 sticky top-0 z-40 bg-white border-b border-[#E4E7EC] flex items-center px-spacing-6 gap-spacing-4">
+
+      {/* ── LEFT: Breadcrumb ──────────────────────────────── */}
+      <nav aria-label="Breadcrumb" className="shrink-0">
+        <ol className="flex items-center gap-spacing-2 text-sm whitespace-nowrap">
+          <li>
+            <a
+              href="/dashboard"
+              className="font-medium text-[#3E60C9] hover:text-[#3840A9] hover:underline transition"
+            >
+              <span className="hidden md:inline">Dashboard</span>
+              <span className="md:hidden">Dashboard</span>
+            </a>
+          </li>
+          <li className="text-[#667085]" aria-hidden="true">/</li>
+          <li>
+            <span
+              className="font-medium text-[#475467] truncate max-w-[180px] inline-block align-bottom"
+              aria-current="page"
+            >
+              {LEAD_NAME}
+            </span>
+          </li>
+        </ol>
+      </nav>
 
       {/* ── SPACER ────────────────────────────────────────── */}
       <div className="flex-1 min-w-0" />
 
-      {/* ── RIGHT CLUSTER (search + utilities) ──────────── */}
-      <div className="flex items-center gap-spacing-2 md:gap-spacing-3 shrink-0">
+      {/* ── RIGHT CLUSTER ─────────────────────────────────── */}
+      <div className="flex items-center gap-spacing-3 shrink-0">
 
         {/* ────────────────────────────────────────────────── */}
         {/* Search                                            */}
         {/* ────────────────────────────────────────────────── */}
 
-        {/* Search — Stage D (<md): icon button that opens overlay */}
+        {/* Search — <md: icon button → overlay */}
         <Tooltip>
           <TooltipTrigger asChild>
             <button
               type="button"
               aria-label="Search"
-              className="md:hidden h-9 w-9 inline-flex items-center justify-center text-[#475467] hover:bg-[#F9FAFB] rounded-1 transition cursor-pointer shrink-0"
+              className="md:hidden h-9 w-9 inline-flex items-center justify-center text-[#475467] hover:bg-[#F9FAFB] rounded-2 transition cursor-pointer shrink-0"
               onClick={() => setMobileSearchOpen(true)}
             >
               <Search className="w-5 h-5" />
@@ -165,8 +182,7 @@ export function AppHeader() {
           <TooltipContent side="bottom" sideOffset={6}>Search</TooltipContent>
         </Tooltip>
 
-        {/* Search — Stage A/B/C (md+): focus-expanding input */}
-        {/* xl: 320→440, lg: 260→400, md: 200→360 */}
+        {/* Search — md+: focus-expanding input */}
         <div className="hidden md:flex justify-end relative shrink-0">
           <Search className="absolute left-spacing-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#667085] pointer-events-none z-10" />
           <Input
@@ -174,9 +190,7 @@ export function AppHeader() {
             placeholder="Search your CRM"
             className={cn(
               'h-10 pl-9 pr-spacing-3 rounded-2 border border-[#E4E7EC] bg-white text-sm text-[#101828] placeholder:text-[#667085] focus:outline-none focus:border-[#3E60C9] focus:ring-1 focus:ring-[#3E60C9] transition-[width] duration-300 ease-out',
-              searchFocused
-                ? 'w-[360px] lg:w-[400px] xl:w-[440px]'
-                : 'w-[200px] lg:w-[260px] xl:w-[320px]',
+              searchFocused ? 'w-[440px]' : 'w-[320px]',
             )}
             onFocus={() => setSearchFocused(true)}
             onBlur={() => setSearchFocused(false)}
@@ -184,35 +198,104 @@ export function AppHeader() {
         </div>
 
         {/* ────────────────────────────────────────────────── */}
-        {/* Chat with Support                                 */}
-        {/* Visible at md+, hidden below md (moves to kebab)  */}
-        {/* xl: icon + label. lg/md: icon only                */}
+        {/* Chat Support                                      */}
+        {/* Blue-tinted bg, grey content, green live dot      */}
+        {/* Labeled ≥1080px; icon-only below                  */}
         {/* ────────────────────────────────────────────────── */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              type="button"
-              aria-label="Chat with Support"
-              onClick={openChat}
-              className={cn(
-                'hidden md:inline-flex h-9 w-9 items-center justify-center gap-spacing-2 text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] rounded-1 text-sm font-medium transition cursor-pointer shrink-0',
-                'xl:w-auto xl:px-spacing-4 xl:border xl:border-[#E4E7EC] xl:bg-white xl:text-[#101828] xl:shadow-sm',
-                isFirstLoad && 'animate-pulse-blue',
-                isIdle && 'animate-shake',
-              )}
+        <Popover open={nudgeVisible} onOpenChange={() => {}}>
+          <PopoverTrigger asChild>
+            <div className="relative shrink-0">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    ref={buttonRef}
+                    type="button"
+                    aria-label="Chat Support"
+                    onClick={openChat}
+                    onMouseEnter={showNudge}
+                    onMouseLeave={startHideNudge}
+                    onFocus={showNudge}
+                    onBlur={startHideNudge}
+                    className={cn(
+                      'inline-flex items-center justify-center gap-spacing-2 h-10 rounded-2 text-sm font-semibold transition cursor-pointer',
+                      'bg-[#3E60C9]/[0.08] hover:bg-[#3E60C9]/[0.14]',
+                      'w-10 min-[1080px]:w-auto min-[1080px]:px-spacing-4',
+                      animPhase === 'pulse' && 'animate-chat-pulse',
+                    )}
+                  >
+                    <span className="relative shrink-0">
+                      <MessageSquare className="w-5 h-5 text-[#475467]" />
+                      {/* Live dot */}
+                      <span
+                        className={cn(
+                          'absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-round ring-2 ring-white',
+                          isOnline ? 'bg-[#216f51]' : 'bg-[#667085]',
+                          isOnline && animPhase !== 'pulse' && 'animate-dot-pulse',
+                        )}
+                      />
+                    </span>
+                    <span className="hidden min-[1080px]:inline whitespace-nowrap text-[#101828]">
+                      Chat Support
+                    </span>
+                  </button>
+                </TooltipTrigger>
+                {/* Tooltip only when icon-only (below 1080px) */}
+                <TooltipContent side="bottom" sideOffset={6} className="min-[1080px]:hidden">Chat Support</TooltipContent>
+              </Tooltip>
+            </div>
+          </PopoverTrigger>
+
+          {/* ── Contextual Nudge Popover ── */}
+          {nudgeVisible && (
+            <PopoverContent
+              side="bottom"
+              sideOffset={8}
+              align="center"
+              className="w-[280px] p-spacing-4 bg-white border border-[#E4E7EC] rounded-2 shadow-lg"
+              onMouseEnter={cancelHideNudge}
+              onMouseLeave={startHideNudge}
+              onOpenAutoFocus={(e) => e.preventDefault()}
+              onCloseAutoFocus={(e) => e.preventDefault()}
+              ref={nudgeRef}
             >
-              <MessageCircle className="w-5 h-5 shrink-0" />
-              {/* Label only at xl */}
-              <span className="hidden xl:inline whitespace-nowrap">Chat with Support</span>
-            </button>
-          </TooltipTrigger>
-          {/* Tooltip shows when label is hidden (below xl) */}
-          <TooltipContent side="bottom" sideOffset={6} className="xl:hidden">Chat with Support</TooltipContent>
-        </Tooltip>
+              {/* Close X */}
+              <button
+                type="button"
+                aria-label="Close"
+                className="absolute top-2 right-2 h-6 w-6 inline-flex items-center justify-center text-[#667085] hover:text-[#101828] rounded-1 transition cursor-pointer"
+                onClick={dismissNudge}
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              <p className="text-sm font-semibold text-[#101828]">Need a hand?</p>
+              <p className="text-sm text-[#475467] mt-0.5">Get instant answers now.</p>
+
+              <div className="flex items-center gap-spacing-2 mt-spacing-3">
+                <span className={cn(
+                  'w-2 h-2 rounded-round shrink-0',
+                  isOnline ? 'bg-[#216f51]' : 'bg-[#667085]',
+                )} />
+                <span className="text-xs font-medium text-[#216f51]">Available now</span>
+              </div>
+
+              <button
+                type="button"
+                className="mt-spacing-3 h-9 px-spacing-4 w-full inline-flex items-center justify-center bg-[#3E60C9] hover:bg-[#3840A9] text-white text-sm font-medium rounded-2 transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3E60C9] focus-visible:ring-offset-2"
+                onClick={() => {
+                  dismissNudge();
+                  openChat();
+                }}
+              >
+                Chat now
+              </button>
+            </PopoverContent>
+          )}
+        </Popover>
 
         {/* ────────────────────────────────────────────────── */}
-        {/* Notification Bell                                 */}
-        {/* Visible at md+, hidden below md (moves to kebab)  */}
+        {/* Notifications                                     */}
+        {/* Bell + label ≥1080px; icon-only below             */}
         {/* ────────────────────────────────────────────────── */}
         <Popover
           open={isNotifOpen}
@@ -228,51 +311,51 @@ export function AppHeader() {
                 <button
                   type="button"
                   aria-label="Notifications"
-                  className="hidden md:inline-flex relative h-9 w-9 items-center justify-center text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] rounded-1 transition cursor-pointer shrink-0"
+                  className="inline-flex items-center gap-spacing-2 h-9 min-[1080px]:h-10 min-[1080px]:px-spacing-3 rounded-2 text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] transition cursor-pointer shrink-0 relative w-9 min-[1080px]:w-auto justify-center min-[1080px]:justify-start"
                 >
-                  <Bell className="w-5 h-5" />
-                  {unreadCount > 0 && (
-                    <span className="absolute top-0.5 right-0.5 min-w-4 h-4 px-1 inline-flex items-center justify-center text-[10px] font-semibold text-white bg-[#D92D20] rounded-round ring-2 ring-white">
-                      {unreadCount}
-                    </span>
-                  )}
+                  <span className="relative shrink-0">
+                    <Bell className="w-5 h-5" />
+                    {unreadCount > 0 && (
+                      <span className={cn(
+                        'absolute -top-1 -right-1 min-w-4 h-4 px-1 inline-flex items-center justify-center text-[10px] font-semibold text-white bg-[#ec423d] rounded-round ring-2 ring-white',
+                        animPhase === 'done' && 'animate-badge-burst',
+                      )}>
+                        {unreadCount}
+                      </span>
+                    )}
+                  </span>
+                  <span className="hidden min-[1080px]:inline text-sm font-medium text-[#101828] whitespace-nowrap">
+                    Notifications
+                  </span>
                 </button>
               </PopoverTrigger>
             </TooltipTrigger>
-            <TooltipContent side="bottom" sideOffset={6}>Notifications</TooltipContent>
+            <TooltipContent side="bottom" sideOffset={6} className="min-[1080px]:hidden">Notifications</TooltipContent>
           </Tooltip>
 
           <PopoverContent className="w-[360px] p-0 bg-white border border-[#E4E7EC] rounded-2 shadow-lg" align="end">
-            {/* Popover header */}
             <div className="px-spacing-4 py-spacing-3 border-b border-[#E4E7EC] bg-[#F9FAFB]">
               <h3 className="text-sm font-semibold text-[#101828]">Refer-A-Friend Program</h3>
             </div>
-            {/* Popover body */}
             <div className="px-spacing-4 py-spacing-4 space-y-spacing-3">
-              <p className="text-sm text-[#3E60C9] font-medium">
-                Refer Real Geeks. Earn $200.
-              </p>
+              <p className="text-sm text-[#3E60C9] font-medium">Refer Real Geeks. Earn $200.</p>
               <div className="flex items-center justify-between">
                 <button
                   type="button"
-                  className="h-8 px-spacing-3 inline-flex items-center bg-[#039855] hover:bg-[#027A48] text-white rounded-1 text-sm font-medium transition cursor-pointer"
+                  className="h-8 px-spacing-3 inline-flex items-center bg-[#216f51] hover:bg-[#027A48] text-white rounded-2 text-sm font-medium transition cursor-pointer"
                   onClick={() => toast('Opening referral form…')}
                 >
                   Earn $200
                 </button>
                 <button
                   type="button"
-                  className="text-xs text-[#D92D20] hover:text-[#B42318] transition cursor-pointer"
-                  onClick={() => {
-                    setIsNotifOpen(false);
-                    toast('Notification deleted');
-                  }}
+                  className="text-xs text-[#ec423d] hover:text-[#B42318] transition cursor-pointer"
+                  onClick={() => { setIsNotifOpen(false); toast('Notification deleted'); }}
                 >
                   Delete Notification
                 </button>
               </div>
             </div>
-            {/* Popover footer */}
             <div className="px-spacing-4 py-spacing-3 border-t border-[#E4E7EC] text-center">
               <button
                 type="button"
@@ -286,8 +369,8 @@ export function AppHeader() {
         </Popover>
 
         {/* ────────────────────────────────────────────────── */}
-        {/* Help & Support                                    */}
-        {/* Visible at md+, hidden below md (moves to kebab)  */}
+        {/* Resources (was Help & Support)                    */}
+        {/* Labeled ≥1080px; icon-only below                  */}
         {/* ────────────────────────────────────────────────── */}
         <DropdownMenu modal={false}>
           <Tooltip>
@@ -295,26 +378,33 @@ export function AppHeader() {
               <DropdownMenuTrigger asChild>
                 <button
                   type="button"
-                  aria-label="Help & Support"
-                  className="hidden md:inline-flex h-9 w-9 items-center justify-center text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] rounded-1 transition cursor-pointer shrink-0"
+                  aria-label="Resources"
+                  className="inline-flex items-center gap-spacing-2 h-9 min-[1080px]:h-10 min-[1080px]:px-spacing-3 rounded-2 text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] transition cursor-pointer shrink-0 w-9 min-[1080px]:w-auto justify-center min-[1080px]:justify-start"
                 >
-                  <HelpCircle className="w-5 h-5" />
+                  <HelpCircle className="w-5 h-5 shrink-0" />
+                  <span className="hidden min-[1080px]:inline text-sm font-medium text-[#101828] whitespace-nowrap">
+                    Resources
+                  </span>
                 </button>
               </DropdownMenuTrigger>
             </TooltipTrigger>
-            <TooltipContent side="bottom" sideOffset={6}>Help &amp; Support</TooltipContent>
+            <TooltipContent side="bottom" sideOffset={6} className="min-[1080px]:hidden">Resources</TooltipContent>
           </Tooltip>
 
           <DropdownMenuContent className="w-[280px] bg-white border border-[#E4E7EC] rounded-2 shadow-lg" align="end">
             <DropdownMenuLabel className="text-sm font-semibold text-[#101828] px-spacing-3 py-spacing-2">
-              Help &amp; Support
+              Resources
             </DropdownMenuLabel>
             <DropdownMenuSeparator className="bg-[#E4E7EC]" />
 
-            <DropdownMenuItem onClick={openChat} className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]">
-              <MessageCircle className="w-4 h-4 mr-spacing-2 text-[#3E60C9] shrink-0" />
+            {/* Highlighted Chat Support row */}
+            <DropdownMenuItem
+              onClick={openChat}
+              className="px-spacing-3 py-spacing-2 cursor-pointer bg-[#3E60C9]/[0.08] hover:bg-[#3E60C9]/[0.14] focus:bg-[#3E60C9]/[0.14]"
+            >
+              <MessageSquareDot className="w-4 h-4 mr-spacing-2 text-[#3E60C9] shrink-0" />
               <div className="flex flex-col">
-                <span className="text-sm font-medium text-[#101828]">Chat with Support</span>
+                <span className="text-sm font-medium text-[#101828]">Chat Support</span>
                 <span className="text-xs text-[#667085]">Get real-time help</span>
               </div>
             </DropdownMenuItem>
@@ -362,8 +452,8 @@ export function AppHeader() {
         </DropdownMenu>
 
         {/* ────────────────────────────────────────────────── */}
-        {/* Overflow Kebab (Stage D: <md only)                */}
-        {/* Contains Chat, Notifications, Help                */}
+        {/* Account (includes domain switcher)                */}
+        {/* Icon + first name ≥1080px; icon-only below        */}
         {/* ────────────────────────────────────────────────── */}
         <DropdownMenu modal={false}>
           <Tooltip>
@@ -371,81 +461,70 @@ export function AppHeader() {
               <DropdownMenuTrigger asChild>
                 <button
                   type="button"
-                  aria-label="More"
-                  className="md:hidden relative h-9 w-9 inline-flex items-center justify-center text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] rounded-1 transition cursor-pointer shrink-0"
-                >
-                  <MoreHorizontal className="w-5 h-5" />
-                  {/* Unread dot on kebab when notifications are collapsed */}
-                  {unreadCount > 0 && (
-                    <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#D92D20] rounded-round ring-2 ring-white" />
-                  )}
-                </button>
-              </DropdownMenuTrigger>
-            </TooltipTrigger>
-            <TooltipContent side="bottom" sideOffset={6}>More</TooltipContent>
-          </Tooltip>
-
-          <DropdownMenuContent className="w-[240px] bg-white border border-[#E4E7EC] rounded-2 shadow-lg" align="end">
-            <DropdownMenuItem onClick={openChat} className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]">
-              <MessageCircle className="w-4 h-4 mr-spacing-2 text-[#475467] shrink-0" />
-              <span className="text-sm font-medium text-[#101828]">Chat with Support</span>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]"
-              onClick={() => {
-                setIsNotifOpen(true);
-                markAllRead();
-              }}
-            >
-              <Bell className="w-4 h-4 mr-spacing-2 text-[#475467] shrink-0" />
-              <span className="text-sm font-medium text-[#101828] flex-1">Notifications</span>
-              {unreadCount > 0 && (
-                <span className="ml-auto min-w-5 h-5 px-1.5 inline-flex items-center justify-center text-[11px] font-semibold text-white bg-[#D92D20] rounded-round">
-                  {unreadCount}
-                </span>
-              )}
-            </DropdownMenuItem>
-
-            <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]" onClick={() => toast('Opening Help & Support…')}>
-              <HelpCircle className="w-4 h-4 mr-spacing-2 text-[#475467] shrink-0" />
-              <span className="text-sm font-medium text-[#101828]">Help &amp; Support</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        {/* ────────────────────────────────────────────────── */}
-        {/* Account Menu                                      */}
-        {/* xl/lg: icon + name + chevron                      */}
-        {/* md: icon only                                     */}
-        {/* <md: icon only (identity = always visible)        */}
-        {/* ────────────────────────────────────────────────── */}
-        <DropdownMenu modal={false}>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <DropdownMenuTrigger asChild>
-                <button
-                  type="button"
-                  aria-label={USER_NAME}
-                  className="inline-flex items-center gap-spacing-2 h-9 px-spacing-2 rounded-1 hover:bg-[#F9FAFB] transition cursor-pointer shrink-0"
+                  aria-label="Account menu"
+                  className="inline-flex items-center gap-spacing-2 h-9 px-spacing-2 rounded-2 hover:bg-[#F9FAFB] transition cursor-pointer shrink-0"
                 >
                   <CircleUserRound className="w-5 h-5 text-[#475467] shrink-0" />
-                  {/* Label visible at lg+, hidden below lg */}
-                  <span className="hidden lg:inline text-sm font-medium text-[#101828] whitespace-nowrap">{USER_NAME}</span>
-                  <ChevronDown className="hidden lg:block w-4 h-4 text-[#667085] shrink-0" />
+                  <span className="hidden min-[1080px]:inline text-sm font-medium text-[#101828] whitespace-nowrap">
+                    {USER_FIRST_NAME}
+                  </span>
+                  <ChevronDown className="hidden min-[1080px]:block w-4 h-4 text-[#667085] shrink-0" />
                 </button>
               </DropdownMenuTrigger>
             </TooltipTrigger>
-            {/* Tooltip when label hidden (below lg) */}
-            <TooltipContent side="bottom" sideOffset={6} className="lg:hidden">{USER_NAME}</TooltipContent>
+            <TooltipContent side="bottom" sideOffset={6} className="min-[1080px]:hidden">{USER_NAME}</TooltipContent>
           </Tooltip>
 
-          <DropdownMenuContent className="w-[280px] bg-white border border-[#E4E7EC] rounded-2 shadow-lg" align="end">
+          <DropdownMenuContent className="w-[300px] bg-white border border-[#E4E7EC] rounded-2 shadow-lg" align="end">
             {/* User identity */}
-            <div className="px-spacing-3 py-spacing-3 border-b border-[#E4E7EC]">
-              <p className="text-sm font-semibold text-[#101828]">{USER_NAME}</p>
-              <p className="text-xs text-[#667085]">{USER_EMAIL}</p>
+            <div className="px-spacing-3 py-spacing-3 flex items-center gap-spacing-3 border-b border-[#E4E7EC]">
+              <CircleUserRound className="w-8 h-8 text-[#475467] shrink-0" />
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-[#101828] truncate">{USER_NAME}</p>
+                <p className="text-xs text-[#667085] truncate">{USER_EMAIL}</p>
+              </div>
             </div>
+
+            {/* Switch Website section */}
+            <DropdownMenuLabel className="text-xs font-semibold uppercase tracking-wide text-[#667085] px-spacing-3 pt-spacing-2 pb-1">
+              Switch Website
+            </DropdownMenuLabel>
+            {WEBSITES.map((site) => {
+              const isCurrent = site.domain === currentDomain;
+              return (
+                <DropdownMenuItem
+                  key={site.domain}
+                  onClick={() => switchTo(site.domain)}
+                  className={cn(
+                    'px-spacing-3 py-spacing-2 cursor-pointer',
+                    isCurrent
+                      ? 'bg-[#3E60C9]/[0.08] focus:bg-[#3E60C9]/[0.14]'
+                      : 'focus:bg-[#F9FAFB]',
+                  )}
+                >
+                  <Globe className="w-4 h-4 mr-spacing-2 text-[#475467] shrink-0" />
+                  <span className={cn(
+                    'text-sm flex-1 truncate',
+                    isCurrent ? 'font-semibold text-[#101828]' : 'text-[#101828]',
+                  )}>
+                    {stripWww(site.domain)}
+                  </span>
+                  {isCurrent && <Check className="w-4 h-4 text-[#3E60C9] shrink-0 ml-spacing-2" />}
+                  <a
+                    href={`https://${site.domain}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ml-spacing-2 text-[#98A2B3] hover:text-[#475467] transition"
+                    onClick={(e) => e.stopPropagation()}
+                    aria-label={`Visit ${stripWww(site.domain)}`}
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </DropdownMenuItem>
+              );
+            })}
+
+            <DropdownMenuSeparator className="bg-[#E4E7EC]" />
 
             {/* Account actions */}
             <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]" onClick={() => toast('Opening Account Settings…')}>
@@ -498,66 +577,17 @@ export function AppHeader() {
             {/* Sign Out */}
             <DropdownMenuItem
               onClick={signOut}
-              className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#FEE4E2] text-[#D92D20]"
+              className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#FEE4E2] text-[#ec423d]"
             >
               <LogOut className="w-4 h-4 mr-spacing-2" />
               <span className="text-sm font-medium">Sign Out</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-
-        {/* ────────────────────────────────────────────────── */}
-        {/* Domain Switcher                                   */}
-        {/* xl/lg: icon + domain + chevron                    */}
-        {/* md: icon only                                     */}
-        {/* <md: icon only (context = always visible)         */}
-        {/* ────────────────────────────────────────────────── */}
-        <DropdownMenu modal={false}>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <DropdownMenuTrigger asChild>
-                <button
-                  type="button"
-                  aria-label="Switch website"
-                  className="inline-flex items-center gap-spacing-2 h-9 px-spacing-2 rounded-1 hover:bg-[#F9FAFB] transition cursor-pointer shrink-0"
-                >
-                  <Globe className="w-5 h-5 text-[#475467] shrink-0" />
-                  {/* Label visible at lg+, hidden below lg */}
-                  <span className="hidden lg:inline text-sm font-medium text-[#101828] truncate max-w-[180px] whitespace-nowrap">
-                    {stripWww(currentDomain)}
-                  </span>
-                  <ChevronDown className="hidden lg:block w-4 h-4 text-[#667085] shrink-0" />
-                </button>
-              </DropdownMenuTrigger>
-            </TooltipTrigger>
-            {/* Tooltip: full domain when label hidden (below lg), "Switch website" at lg+ */}
-            <TooltipContent side="bottom" sideOffset={6} className="lg:hidden">{stripWww(currentDomain)}</TooltipContent>
-          </Tooltip>
-
-          <DropdownMenuContent className="w-[280px] bg-white border border-[#E4E7EC] rounded-2 shadow-lg" align="end">
-            <DropdownMenuLabel className="text-xs font-semibold uppercase tracking-wide text-[#667085] px-spacing-3 py-spacing-2">
-              Switch Website
-            </DropdownMenuLabel>
-
-            {WEBSITES.map((site) => (
-              <DropdownMenuItem
-                key={site.domain}
-                onClick={() => switchTo(site.domain)}
-                className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]"
-              >
-                <span className="text-sm text-[#101828] flex-1">{stripWww(site.domain)}</span>
-                {site.domain === currentDomain && (
-                  <Check className="w-4 h-4 text-[#3E60C9]" />
-                )}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
 
       {/* ────────────────────────────────────────────────────── */}
-      {/* Mobile Search Overlay (Stage D: <md)                  */}
-      {/* Full-width input anchored under header                */}
+      {/* Mobile Search Overlay (<md)                           */}
       {/* ────────────────────────────────────────────────────── */}
       {mobileSearchOpen && (
         <div className="md:hidden fixed inset-x-0 top-14 z-50 bg-white border-b border-[#E4E7EC] px-spacing-4 py-spacing-3 flex items-center gap-spacing-3 shadow-md">
@@ -576,7 +606,7 @@ export function AppHeader() {
           <button
             type="button"
             aria-label="Close search"
-            className="h-9 w-9 inline-flex items-center justify-center text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] rounded-1 transition cursor-pointer shrink-0"
+            className="h-9 w-9 inline-flex items-center justify-center text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] rounded-2 transition cursor-pointer shrink-0"
             onClick={() => setMobileSearchOpen(false)}
           >
             <X className="w-5 h-5" />

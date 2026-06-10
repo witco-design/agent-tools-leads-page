@@ -11,12 +11,7 @@ import { ActivityHistoryCard } from './ActivityHistoryCard';
 import { RightColumn } from './RightColumn';
 import { LeadSignalTagsCard } from './LeadSignalTagsCard';
 import { ActivityFilterProvider } from './ActivityFilterContext';
-import {
-  LeadHeaderSkeleton,
-  ContactInfoCardSkeleton,
-  ActivityHistoryCardSkeleton,
-  RightColumnSkeleton,
-} from './LeadDetailSkeletons';
+import { LeadDetailPageSkeleton } from './LeadDetailSkeletons';
 import {
   Dialog,
   DialogContent,
@@ -39,7 +34,7 @@ export default function LeadDetailPage() {
 
   return (
     <ActivityFilterProvider>
-      <div className="min-h-screen w-screen bg-bg-app">
+      <div className="min-h-screen w-full overflow-x-hidden bg-bg-app">
         {/* Header — fixed, full viewport width, z-30 */}
         <div className="fixed top-0 left-0 right-0 z-30">
           <AppHeader />
@@ -77,18 +72,7 @@ export default function LeadDetailPage() {
         >
           <div className="space-y-spacing-4 max-w-[1284px]">
             {isLoading ? (
-              <>
-                <LeadHeaderSkeleton />
-                <ContactInfoCardSkeleton />
-                <div className="flex flex-col xl:flex-row gap-spacing-6">
-                  <div className="flex-1 min-w-0 max-w-full xl:max-w-[880px] w-full">
-                    <ActivityHistoryCardSkeleton />
-                  </div>
-                  <div className="w-full xl:w-[380px] xl:shrink-0">
-                    <RightColumnSkeleton />
-                  </div>
-                </div>
-              </>
+              <LeadDetailPageSkeleton />
             ) : (
               <>
                 {/* TOP: Lead Header only */}

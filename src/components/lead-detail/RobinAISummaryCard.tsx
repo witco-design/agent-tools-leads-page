@@ -160,14 +160,14 @@ export function RobinAISummaryCard() {
         if (!isGenerating) setIsExpanded(open);
       }}
     >
-      <div className="bg-gradient-to-br from-purple-10 to-bg-card border border-purple-30 rounded-3 shadow-sm overflow-hidden">
+      <div data-component="RobinAISummaryCard" className="bg-[#dedcff] border border-[#c3c0f1] rounded-3 shadow-[0_4px_12px_rgba(116,110,192,0.10)] overflow-hidden">
 
         {/* ── Header ── */}
-        <div className="px-spacing-5 py-spacing-2 flex items-center justify-between gap-spacing-3">
+        <div className="pl-spacing-5 pr-spacing-2 py-spacing-2 flex items-center justify-between gap-spacing-3">
 
           {/* Left: icon + title */}
           <div className="flex items-center gap-spacing-2 min-w-0">
-            <Sparkles className="w-5 h-5 text-purple-60 shrink-0" />
+            <Sparkles className="w-5 h-5 text-[#746ec0] shrink-0" />
             <h2 className="text-base font-semibold text-text-default truncate">
               Robin AI Summary
             </h2>
@@ -181,7 +181,7 @@ export function RobinAISummaryCard() {
               <button
                 type="button"
                 onClick={handleGenerate}
-                className="h-9 px-spacing-4 inline-flex items-center gap-spacing-2 bg-[#5E5CC0] hover:bg-[#4F4DAB] text-white rounded-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2"
+                className="h-9 px-spacing-4 inline-flex items-center gap-spacing-2 bg-[#746ec0] hover:bg-[#4F4DAB] text-white rounded-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2"
               >
                 <Sparkles className="w-4 h-4" />
                 Generate
@@ -193,7 +193,7 @@ export function RobinAISummaryCard() {
               <button
                 type="button"
                 disabled
-                className="h-9 px-spacing-4 inline-flex items-center gap-spacing-2 bg-[#5E5CC0] opacity-60 text-white rounded-2 text-sm font-medium cursor-not-allowed"
+                className="h-9 px-spacing-4 inline-flex items-center gap-spacing-2 bg-[#746ec0] opacity-60 text-white rounded-2 text-sm font-medium cursor-not-allowed"
               >
                 <Loader2 className="w-4 h-4 animate-spin" />
                 Generating…
@@ -210,7 +210,7 @@ export function RobinAISummaryCard() {
                   type="button"
                   onClick={handleGenerate}
                   aria-label="Regenerate summary"
-                  className="text-sm font-medium text-[#5E5CC0] hover:text-[#4F4DAB] transition inline-flex items-center gap-spacing-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1"
+                  className="text-sm font-medium text-[#746ec0] hover:text-[#4F4DAB] transition inline-flex items-center gap-spacing-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1"
                 >
                   <RotateCw className="w-3.5 h-3.5" />
                   Regenerate

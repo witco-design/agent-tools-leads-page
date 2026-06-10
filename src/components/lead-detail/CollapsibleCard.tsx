@@ -10,6 +10,7 @@ import { useDragHandle } from './DragHandleContext';
 
 interface CollapsibleCardProps {
   id?: string;
+  'data-component'?: string;
   title: string;
   countBadge?: number;
   showInfoIcon?: boolean;
@@ -21,6 +22,7 @@ interface CollapsibleCardProps {
 
 export function CollapsibleCard({
   id,
+  'data-component': dataComponent,
   title,
   countBadge,
   showInfoIcon,
@@ -34,7 +36,7 @@ export function CollapsibleCard({
 
   return (
     <TooltipProvider delayDuration={200}>
-      <div id={id} className="bg-bg-card rounded-3 border border-border-default shadow-sm overflow-hidden group">
+      <div id={id} data-component={dataComponent} className="bg-bg-card rounded-3 border border-border-default shadow-sm overflow-hidden group">
         {/* Header */}
         <div className={`w-full flex items-center px-spacing-5 py-spacing-3 hover:bg-bg-muted/50 transition-colors ${open ? 'border-b border-border-default' : ''}`}>
           {/* Drag handle — flush left by default, slides in on hover */}
@@ -65,7 +67,7 @@ export function CollapsibleCard({
               <Info className="w-3.5 h-3.5 ml-spacing-2 text-icon-default" />
             )}
             {countBadge !== undefined && (
-              <span className="ml-spacing-2 inline-flex items-center px-2 py-0.5 rounded-round bg-gray-40 text-gray-90 text-text-3 font-semibold"> {/* text-text-3 OK: badge counter */}
+              <span className="ml-spacing-2 inline-flex items-center justify-center min-w-[20px] h-5 px-spacing-1 rounded-round bg-[#ebf8ff] text-[#3e60c9] text-xs font-semibold">
                 {countBadge}
               </span>
             )}

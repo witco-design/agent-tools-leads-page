@@ -6,7 +6,7 @@ import { ChannelIcon } from './ChannelIcon';
 export function HighlightsCard() {
   return (
     <TooltipProvider delayDuration={200}>
-      <CollapsibleCard id="highlights" title="Highlights">
+      <CollapsibleCard id="highlights" data-component="HighlightsCard" title="Highlights">
         <div className="space-y-spacing-3">
           <div className="flex items-center justify-between py-spacing-1">
             <span className="text-text-4 font-normal text-text-secondary">

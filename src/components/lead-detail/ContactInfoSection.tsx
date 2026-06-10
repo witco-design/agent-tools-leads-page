@@ -59,13 +59,13 @@ export function ContactInfoSection() {
         showInfoIcon
         rightAction={editButton}
       >
-        <div className="divide-y divide-border-default -my-spacing-1">
+        <div className="flex flex-col gap-spacing-3">
           {CONTACT_ROWS.map((row) => {
             const Icon = row.icon;
             return (
               <div
                 key={row.id}
-                className="flex items-center justify-between py-spacing-3 first:pt-0 last:pb-0"
+                className="flex items-center justify-between"
               >
                 <div className="flex items-center gap-spacing-3 min-w-0">
                   <Icon

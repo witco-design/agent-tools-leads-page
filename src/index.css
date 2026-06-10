@@ -21,7 +21,7 @@
     --color-text-inverse:    #FFFFFF;
 
     /* Surfaces */
-    --color-bg-app:    #F5F5F5;
+    --color-bg-app:    #f5fcff;
     --color-bg-card:   #FFFFFF;
     --color-bg-muted:  #F9FAFB; /* gray.10 */
 
@@ -38,12 +38,12 @@
     --color-brand-primary-hover: #3840A9; /* blue.120 */
 
     /* Status */
-    --color-success-bg:   #ECFDF3; /* green.10 */
-    --color-success-text: #039855; /* green.70 */
+    --color-success-bg:   #e0f1ec; /* green.10 */
+    --color-success-text: #45ac86; /* green.70 */
     --color-warning-bg:   #FEF6EE; /* orange.10 */
-    --color-warning-text: #E04F16; /* orange.70 */
+    --color-warning-text: #f48a3c; /* orange.70 */
     --color-error-bg:     #FEF3F2; /* red.10 */
-    --color-error-text:   #D92D20; /* red.70 */
+    --color-error-text:   #ec423d; /* red.70 */
 
     /* Legacy shell tokens (kept for backward compat) */
     --rg-blue: #3E60C9;
@@ -55,7 +55,7 @@
     --rg-border: #E4E7EC;
     --rg-text: #101828;
     --rg-text-muted: #667085;
-    --rg-danger: #D92D20; /* red.70 — updated to match error-text token */
+    --rg-danger: #ec423d; /* red.70 — updated to match error-text token */
 
     /* shadcn/ui primitive tokens — mapped to Real Geeks palette */
     --background: 0 0% 100%;           /* bg-card: #FFFFFF */
@@ -79,7 +79,7 @@
     --accent: 220 14% 96%;             /* gray.10: #F9FAFB */
     --accent-foreground: 220 39% 11%;  /* gray.110: #101828 */
 
-    --destructive: 4 80% 49%;          /* red.70: #D92D20 */
+    --destructive: 2 82% 58%;          /* red.70: #ec423d */
     --destructive-foreground: 0 0% 100%; /* white */
 
     --border: 218 18% 91%;             /* gray.50: #E4E7EC */
@@ -186,21 +186,45 @@
   scrollbar-color: rgba(96, 89, 183, 0.25) transparent;
 }
 
-/* Chat with Support — first-load pulse */
-@keyframes pulse-blue {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(62, 96, 201, 0.4); }
-  50%      { box-shadow: 0 0 0 8px rgba(62, 96, 201, 0); }
+/* ── Chat Support — on-load button pulse (4× scale + blue glow) ── */
+@keyframes chat-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(62, 96, 201, 0.35);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 0 0 8px rgba(62, 96, 201, 0);
+  }
 }
-.animate-pulse-blue {
-  animation: pulse-blue 1.6s ease-out 2;
+.animate-chat-pulse {
+  animation: chat-pulse 0.8s ease-in-out 4;
 }
 
-/* Chat with Support — idle shake */
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
-  20%, 40%, 60%, 80% { transform: translateX(2px); }
+/* ── Chat Support — live-dot ambient pulse (infinite, slow) ── */
+@keyframes dot-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.55; transform: scale(1.25); }
 }
-.animate-shake {
-  animation: shake 0.6s ease-in-out;
+.animate-dot-pulse {
+  animation: dot-pulse 2s ease-in-out infinite;
+}
+
+/* ── Notifications — badge burst (once, after intro sequence) ── */
+@keyframes badge-burst {
+  0%   { transform: scale(1); box-shadow: 0 0 0 0 rgba(217, 45, 32, 0.4); }
+  40%  { transform: scale(1.3); box-shadow: 0 0 0 6px rgba(217, 45, 32, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(217, 45, 32, 0); }
+}
+.animate-badge-burst {
+  animation: badge-burst 0.6s ease-out 1;
+}
+
+/* ── Reduced motion: disable all header animations ── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-chat-pulse,
+  .animate-dot-pulse,
+  .animate-badge-burst {
+    animation: none !important;
+  }
 }

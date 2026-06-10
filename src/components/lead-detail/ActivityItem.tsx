@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import {
   Phone,
+  PhoneCall,
+  PhoneOff,
   Search,
   Heart,
   Eye,
   Pin,
   Mail,
+  MailOpen,
   CalendarCheck,
   CalendarClock,
   PencilLine,
@@ -15,6 +18,22 @@ import {
   Calendar,
   BookmarkPlus,
   MessageSquare,
+  MessageCircle,
+  MessagesSquare,
+  MousePointerClick,
+  Globe,
+  Play,
+  CheckSquare,
+  BarChart3,
+  DollarSign,
+  Users,
+  Shield,
+  ShieldCheck,
+  UserCheck,
+  ArrowRightLeft,
+  UserPlus,
+  Upload,
+  Home,
   MoreHorizontal,
   ChevronDown,
   Check,
@@ -42,24 +61,72 @@ import { TruncatedText } from './TruncatedText';
 
 // ── Types ──────────────────────────────────────────────────────
 export type ActivityType =
+  // Phone
   | 'call'
-  | 'text'
+  | 'called_contact_made'
+  | 'called_no_answer'
+  | 'called_left_voicemail'
+  // Email
   | 'email'
+  | 'email_sent'
+  | 'email_opened'
+  | 'email_clicked'
+  | 'shared_property_via_email'
+  // SMS
+  | 'text'
+  | 'sms'
+  | 'sent_text_message_to'
+  | 'received_text_message_from'
+  | 'opted_in_to_texting'
+  // Chat
+  | 'chat'
+  | 'assistant_conversation_started'
+  | 'received_chat_message_from'
+  // Notes / Follow-ups
+  | 'note'
+  | 'edited'
+  | 'created_a_followup_for'
+  | 'completed_a_followup_for'
+  | 'important_date_added'
+  // Searches
   | 'search'
+  | 'search_performed'
   | 'saved_search'
+  | 'saved_search_added'
+  // Favorites
   | 'favorited'
+  | 'favorite_property_added'
+  // Properties / Visits
+  | 'view'
+  | 'viewed'
+  | 'property_viewed'
+  | 'visited'
+  | 'video_played'
+  | 'market_report_viewed'
+  | 'tour_requested'
+  | 'valuation_inquired'
+  | 'opted_in_lender_tcpa'
+  // Drip
   | 'drip'
   | 'drip_started'
   | 'drip_ended'
   | 'drip_terminated'
-  | 'view'
-  | 'viewed'
-  | 'note'
+  | 'drip_subscription_created'
+  // Lifecycle
+  | 'created'
+  | 'imported'
+  | 'was_assigned'
+  | 'round_robin'
+  // Transactions
+  | 'buyer_consult_set'
+  | 'buyer_consult_held'
+  // GVL
+  | 'gvl_verified'
+  // Legacy
   | 'follow_up'
   | 'follow_up_completed'
   | 'task'
-  | 'meeting'
-  | 'edited';
+  | 'meeting';
 
 export interface PropertyData {
   address: string;
@@ -105,36 +172,117 @@ export interface ActivityItemData {
 // ── Icon config ────────────────────────────────────────────────
 function getIconConfig(type: ActivityType) {
   switch (type) {
+    // ── Phone ──
     case 'call':
-      return { bg: 'bg-green-30', icon: Phone, color: 'text-green-90' };
-    case 'text':
-      return { bg: 'bg-orange-20', icon: MessageSquare, color: 'text-orange-100' };
+    case 'called_contact_made':
+      return { bg: 'bg-green-30', icon: Phone, color: 'text-green-100' };
+    case 'called_left_voicemail':
+      return { bg: 'bg-orange-20', icon: PhoneCall, color: 'text-orange-110' };
+    case 'called_no_answer':
+      return { bg: 'bg-gray-40', icon: PhoneOff, color: 'text-gray-90' };
+
+    // ── Email ──
     case 'email':
+    case 'email_sent':
+    case 'shared_property_via_email':
       return { bg: 'bg-blue-30', icon: Mail, color: 'text-blue-110' };
+    case 'email_opened':
+      return { bg: 'bg-blue-30', icon: MailOpen, color: 'text-blue-110' };
+    case 'email_clicked':
+      return { bg: 'bg-blue-30', icon: MousePointerClick, color: 'text-blue-110' };
+
+    // ── SMS ──
+    case 'text':
+    case 'sms':
+    case 'sent_text_message_to':
+    case 'received_text_message_from':
+    case 'opted_in_to_texting':
+      return { bg: 'bg-orange-20', icon: MessageSquare, color: 'text-orange-110' };
+
+    // ── Chat ──
+    case 'chat':
+    case 'assistant_conversation_started':
+      return { bg: 'bg-purple-20', icon: MessagesSquare, color: 'text-purple-70' };
+    case 'received_chat_message_from':
+      return { bg: 'bg-purple-20', icon: MessageCircle, color: 'text-purple-70' };
+
+    // ── Notes / Follow-ups ──
+    case 'note':
+      return { bg: 'bg-orange-20', icon: FileText, color: 'text-orange-110' };
+    case 'created_a_followup_for':
+      return { bg: 'bg-purple-30', icon: Calendar, color: 'text-purple-70' };
+    case 'completed_a_followup_for':
+      return { bg: 'bg-green-30', icon: CheckSquare, color: 'text-green-100' };
+    case 'important_date_added':
+      return { bg: 'bg-gray-40', icon: Calendar, color: 'text-gray-90' };
+    case 'follow_up':
+      return { bg: 'bg-purple-30', icon: CalendarClock, color: 'text-purple-70' };
+    case 'follow_up_completed':
+      return { bg: 'bg-purple-30', icon: CalendarCheck, color: 'text-purple-70' };
+
+    // ── Searches ──
+    case 'search':
+    case 'search_performed':
+      return { bg: 'bg-gray-40', icon: Search, color: 'text-gray-90' };
+    case 'saved_search':
+    case 'saved_search_added':
+      return { bg: 'bg-blue-30', icon: BookmarkPlus, color: 'text-blue-110' };
+
+    // ── Favorites ──
+    case 'favorited':
+    case 'favorite_property_added':
+      return { bg: 'bg-red-30', icon: Heart, color: 'text-red-70' };
+
+    // ── Properties / Visits ──
+    case 'view':
+    case 'viewed':
+    case 'property_viewed':
+      return { bg: 'bg-blue-20', icon: Home, color: 'text-blue-90' };
+    case 'visited':
+      return { bg: 'bg-gray-40', icon: Globe, color: 'text-gray-90' };
+    case 'video_played':
+      return { bg: 'bg-blue-30', icon: Play, color: 'text-blue-110' };
+    case 'market_report_viewed':
+      return { bg: 'bg-blue-30', icon: BarChart3, color: 'text-blue-110' };
+    case 'tour_requested':
+      return { bg: 'bg-blue-30', icon: Calendar, color: 'text-blue-110' };
+    case 'valuation_inquired':
+      return { bg: 'bg-blue-30', icon: DollarSign, color: 'text-blue-110' };
+    case 'opted_in_lender_tcpa':
+      return { bg: 'bg-blue-30', icon: Shield, color: 'text-blue-110' };
+
+    // ── Drip ──
     case 'drip':
     case 'drip_started':
     case 'drip_ended':
     case 'drip_terminated':
-      return { bg: 'bg-green-20', icon: Droplets, color: 'text-green-80' };
-    case 'note':
-      return { bg: 'bg-gray-40', icon: FileText, color: 'text-gray-90' };
-    case 'follow_up':
-      return { bg: 'bg-purple-30', icon: CalendarClock, color: 'text-purple-110' };
-    case 'follow_up_completed':
-      return { bg: 'bg-purple-30', icon: CalendarCheck, color: 'text-purple-110' };
+    case 'drip_subscription_created':
+      return { bg: 'bg-green-20', icon: Droplets, color: 'text-green-100' };
+
+    // ── Lifecycle ──
+    case 'created':
+    case 'imported':
+      return { bg: 'bg-gray-40', icon: Upload, color: 'text-gray-90' };
+    case 'was_assigned':
+      return { bg: 'bg-gray-40', icon: UserCheck, color: 'text-gray-90' };
+    case 'round_robin':
+      return { bg: 'bg-gray-40', icon: ArrowRightLeft, color: 'text-gray-90' };
+
+    // ── Transactions ──
+    case 'buyer_consult_set':
+      return { bg: 'bg-blue-30', icon: Calendar, color: 'text-blue-110' };
+    case 'buyer_consult_held':
+      return { bg: 'bg-green-30', icon: Users, color: 'text-green-100' };
+
+    // ── GVL ──
+    case 'gvl_verified':
+      return { bg: 'bg-blue-30', icon: ShieldCheck, color: 'text-blue-110' };
+
+    // ── Other ──
     case 'task':
-      return { bg: 'bg-purple-30', icon: Clipboard, color: 'text-purple-110' };
+      return { bg: 'bg-purple-30', icon: Clipboard, color: 'text-purple-70' };
     case 'meeting':
-      return { bg: 'bg-orange-30', icon: Calendar, color: 'text-orange-100' };
-    case 'search':
-      return { bg: 'bg-blue-30', icon: Search, color: 'text-blue-110' };
-    case 'saved_search':
-      return { bg: 'bg-blue-30', icon: BookmarkPlus, color: 'text-blue-110' };
-    case 'view':
-    case 'viewed':
-      return { bg: 'bg-blue-20', icon: Eye, color: 'text-blue-90' };
-    case 'favorited':
-      return { bg: 'bg-red-30', icon: Heart, color: 'text-red-90' };
+      return { bg: 'bg-orange-30', icon: Calendar, color: 'text-orange-110' };
     case 'edited':
       return { bg: 'bg-gray-40', icon: PencilLine, color: 'text-gray-90' };
     default:
@@ -182,7 +330,7 @@ export function ActivityItem({
 
   return (
     <>
-    <div className="group/item p-spacing-5 border-b border-border-default last:border-b-0 hover:bg-gray-30/30 transition-colors">
+    <div data-component="ActivityItem" className="group/item p-spacing-5 border-b border-border-default last:border-b-0 hover:bg-gray-30/30 transition-colors">
       {/* METADATA ROW */}
       <div className="flex items-center gap-spacing-3 pb-spacing-3">
         {/* Type icon circle */}
@@ -225,8 +373,10 @@ export function ActivityItem({
           <button
             type="button"
             onClick={() => onTogglePin(item.id)}
-            className={`p-1 rounded-2 transition-colors cursor-pointer hover:bg-gray-30 ${
-              item.pinned ? 'text-blue-110' : 'text-gray-70'
+            className={`p-1 rounded-2 transition-colors cursor-pointer ${
+              item.pinned
+                ? 'bg-[#ebf8ff] hover:bg-[#e4f2ff] text-blue-110'
+                : 'text-gray-70 hover:bg-gray-30'
             }`}
             title={item.pinned ? 'Unpin' : 'Pin'}
           >

@@ -122,16 +122,17 @@ export function ContactInfoCard() {
       <div key={field} className="group flex items-center justify-between gap-spacing-3 min-h-9">
         <span className="text-sm text-[#667085] flex-shrink-0">{label}</span>
 
-        <div className="flex items-center gap-spacing-2 min-w-0">
+        <div className="min-w-0 flex items-center justify-end gap-spacing-2 flex-1">
           {href ? (
             <a
               href={href}
-              className="text-sm font-medium text-[#3E60C9] hover:text-[#3840A9] transition truncate"
+              title={value}
+              className="text-sm font-medium text-[#3E60C9] hover:text-[#3840A9] truncate whitespace-nowrap transition"
             >
               {value}
             </a>
           ) : (
-            <span className="text-sm font-medium text-[#101828] truncate" title={value}>
+            <span className="text-sm font-medium text-[#101828] truncate whitespace-nowrap" title={value}>
               {value}
             </span>
           )}
@@ -150,8 +151,8 @@ export function ContactInfoCard() {
   };
 
   return (
-    <div className="bg-white border border-[#E4E7EC] rounded-3 shadow-sm overflow-hidden">
-      <div className="grid grid-cols-1 md:grid-cols-[1fr_1px_1fr_1px_1fr]">
+    <div data-component="LeadDataSnapshotCard" className="bg-white border border-[#E4E7EC] rounded-3 shadow-sm overflow-hidden">
+      <div className="flex flex-col xl:grid xl:grid-cols-[minmax(180px,1fr)_1px_minmax(200px,1fr)_1px_minmax(220px,1fr)]">
 
         {/* ── COLUMN 1: Contact (no header) ── */}
         <div className="p-spacing-5">
@@ -163,8 +164,11 @@ export function ContactInfoCard() {
           </div>
         </div>
 
-        {/* Inset vertical divider */}
-        <div className="hidden md:block my-spacing-3 w-px bg-[#E4E7EC]" />
+        {/* Horizontal divider — visible below lg only */}
+        <div className="xl:hidden mx-spacing-5 h-px bg-[#E4E7EC]" />
+
+        {/* Vertical divider — visible at lg+ only */}
+        <div className="hidden xl:block my-spacing-3 w-px bg-[#E4E7EC]" />
 
         {/* ── COLUMN 2: About (no header) ── */}
         <div className="p-spacing-5">
@@ -172,7 +176,7 @@ export function ContactInfoCard() {
             {/* Urgency */}
             <div className="flex items-center justify-between gap-spacing-3 min-h-9">
               <span className="text-sm text-[#667085] flex-shrink-0">Urgency</span>
-              <div className="w-[160px] flex-shrink-0">
+              <div className="min-w-0 max-w-[160px] flex-1">
                 <Select value={urgency} onValueChange={handleUrgency}>
                   <SelectTrigger className="h-9 w-full px-3 bg-white border border-[#E4E7EC] rounded-2 text-sm font-medium text-[#101828] hover:bg-[#F9FAFB] focus:outline-none focus:ring-1 focus:ring-[#3E60C9] focus:border-[#3E60C9] transition">
                     <SelectValue placeholder="None" />
@@ -192,7 +196,7 @@ export function ContactInfoCard() {
             {/* Status */}
             <div className="flex items-center justify-between gap-spacing-3 min-h-9">
               <span className="text-sm text-[#667085] flex-shrink-0">Status</span>
-              <div className="w-[160px] flex-shrink-0">
+              <div className="min-w-0 max-w-[160px] flex-1">
                 <Select value={status} onValueChange={handleStatus}>
                   <SelectTrigger className="h-9 w-full px-3 bg-white border border-[#E4E7EC] rounded-2 text-sm font-medium text-[#101828] hover:bg-[#F9FAFB] focus:outline-none focus:ring-1 focus:ring-[#3E60C9] focus:border-[#3E60C9] transition">
                     <SelectValue placeholder="Nurture" />
@@ -215,7 +219,7 @@ export function ContactInfoCard() {
             {/* Type */}
             <div className="flex items-center justify-between gap-spacing-3 min-h-9">
               <span className="text-sm text-[#667085] flex-shrink-0">Type</span>
-              <div className="w-[160px] flex-shrink-0">
+              <div className="min-w-0 max-w-[160px] flex-1">
                 <Select value={type} onValueChange={handleType}>
                   <SelectTrigger className="h-9 w-full px-3 bg-white border border-[#E4E7EC] rounded-2 text-sm font-medium text-[#101828] hover:bg-[#F9FAFB] focus:outline-none focus:ring-1 focus:ring-[#3E60C9] focus:border-[#3E60C9] transition">
                     <SelectValue placeholder="Buyer" />
@@ -232,7 +236,7 @@ export function ContactInfoCard() {
             {/* Timeframe */}
             <div className="flex items-center justify-between gap-spacing-3 min-h-9">
               <span className="text-sm text-[#667085] flex-shrink-0">Timeframe</span>
-              <div className="w-[160px] flex-shrink-0">
+              <div className="min-w-0 max-w-[160px] flex-1">
                 <Select value={timeframe} onValueChange={handleTimeframe}>
                   <SelectTrigger className="h-9 w-full px-3 bg-white border border-[#E4E7EC] rounded-2 text-sm font-medium text-[#101828] hover:bg-[#F9FAFB] focus:outline-none focus:ring-1 focus:ring-[#3E60C9] focus:border-[#3E60C9] transition">
                     <SelectValue placeholder="30 Days" />
@@ -250,8 +254,11 @@ export function ContactInfoCard() {
           </div>
         </div>
 
-        {/* Inset vertical divider */}
-        <div className="hidden md:block my-spacing-3 w-px bg-[#E4E7EC]" />
+        {/* Horizontal divider — visible below lg only */}
+        <div className="xl:hidden mx-spacing-5 h-px bg-[#E4E7EC]" />
+
+        {/* Vertical divider — visible at lg+ only */}
+        <div className="hidden xl:block my-spacing-3 w-px bg-[#E4E7EC]" />
 
         {/* ── COLUMN 3: Highlights (no header) ── */}
         <div className="p-spacing-5">
@@ -259,8 +266,8 @@ export function ContactInfoCard() {
             {/* Online */}
             <div className="flex items-center justify-between gap-spacing-3 min-h-9">
               <span className="text-sm text-[#667085] flex-shrink-0">Online</span>
-              <div className="flex items-center gap-spacing-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-success-bg px-2.5 py-0.5">
+              <div className="min-w-0 flex items-center justify-end flex-1">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-success-bg px-2.5 py-0.5 whitespace-nowrap flex-shrink-0">
                   <span className="relative flex h-2 w-2">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success-text opacity-75"></span>
                     <span className="relative inline-flex h-2 w-2 rounded-full bg-success-text"></span>
@@ -273,26 +280,26 @@ export function ContactInfoCard() {
             {/* Contacted */}
             <div className="flex items-center justify-between gap-spacing-3 min-h-9">
               <span className="text-sm text-[#667085] flex-shrink-0">Contacted</span>
-              <div className="flex items-center gap-spacing-2">
-                <span className="text-sm text-text-default">3 days ago</span>
-                <Phone className="w-3.5 h-3.5 text-text-muted" />
+              <div className="min-w-0 flex items-center justify-end gap-spacing-2 flex-1">
+                <span className="text-sm text-[#101828] truncate whitespace-nowrap" title="3 days ago">3 days ago</span>
+                <Phone className="w-4 h-4 flex-shrink-0 text-[#475467]" />
               </div>
             </div>
 
             {/* Login */}
             <div className="flex items-center justify-between gap-spacing-3 min-h-9">
               <span className="text-sm text-[#667085] flex-shrink-0">Login</span>
-              <div className="flex items-center gap-spacing-2">
-                <span className="text-sm text-text-default">14 days ago</span>
-                <Globe className="w-3.5 h-3.5 text-text-muted" />
+              <div className="min-w-0 flex items-center justify-end gap-spacing-2 flex-1">
+                <span className="text-sm text-[#101828] truncate whitespace-nowrap" title="14 days ago">14 days ago</span>
+                <Globe className="w-4 h-4 flex-shrink-0 text-[#475467]" />
               </div>
             </div>
 
             {/* IP */}
             <div className="flex items-center justify-between gap-spacing-3 min-h-9">
               <span className="text-sm text-[#667085] flex-shrink-0">IP</span>
-              <div className="flex items-center gap-spacing-2">
-                <span className="text-sm text-text-default">San Jose, CA</span>
+              <div className="min-w-0 flex items-center justify-end flex-1">
+                <span className="text-sm text-[#101828] truncate whitespace-nowrap" title="San Jose, CA">San Jose, CA</span>
               </div>
             </div>
           </div>

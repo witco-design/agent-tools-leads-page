@@ -3,12 +3,15 @@ import {
   Search,
   Plus,
   ChevronDown,
-  ChevronUp,
   Phone,
   MessageSquare,
+  MessagesSquare,
   Mail,
   FileText,
   MoreHorizontal,
+  Heart,
+  Home,
+  Activity,
   X,
 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -26,53 +29,38 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog';
-// Select removed — time range now uses DropdownMenu
+// Activity timeline card with content-type filtering
 import { ActivityItem, ActivityItemData } from './ActivityItem';
 import {
   page1Items,
   page2Items,
   pinnedItem,
-  upcomingItems,
 } from './activityData';
 import { useActivityFilter } from './ActivityFilterContext';
 
-const TIME_RANGE_OPTIONS = [
-  { value: 'all', label: 'All Time' },
-  { value: '24h', label: 'Last 24 Hours' },
-  { value: '7d', label: 'Last 7 Days' },
-  { value: '30d', label: 'Last 30 Days' },
-  { value: '90d', label: 'Last 90 Days' },
-];
+// ── Content-type filter categories ─────────────────────────────
+const CONTENT_FILTER_CATEGORIES = [
+  { key: 'all', label: 'All', icon: Activity, types: null },
+  { key: 'phone', label: 'Phone', icon: Phone, types: ['call', 'called_contact_made', 'called_no_answer', 'called_left_voicemail', 'follow_up', 'follow_up_completed'] },
+  { key: 'email', label: 'Email', icon: Mail, types: ['email', 'email_sent', 'email_opened', 'email_clicked', 'email_bounced', 'shared_property_via_email'] },
+  { key: 'sms', label: 'SMS', icon: MessageSquare, types: ['sms', 'text', 'sent_text_message_to', 'received_text_message_from', 'opted_in_to_texting'] },
+  { key: 'chats', label: 'Chats', icon: MessagesSquare, types: ['chat', 'assistant_conversation_started', 'received_chat_message_from'] },
+  { key: 'notes', label: 'Notes', icon: FileText, types: ['note', 'created_a_followup_for', 'completed_a_followup_for', 'important_date_added'] },
+  { key: 'searches', label: 'Searches', icon: Search, types: ['search', 'search_performed', 'saved_search', 'saved_search_added'] },
+  { key: 'favorites', label: 'Favorites', icon: Heart, types: ['favorited', 'favorite_property_added'] },
+  { key: 'properties', label: 'Properties', icon: Home, types: ['view', 'viewed', 'property_viewed', 'visited', 'video_played', 'market_report_viewed', 'tour_requested', 'valuation_inquired', 'opted_in_lender_tcpa'] },
+] as const;
 
 // ── Log Activity dropdown types ────────────────────────────────
 const logActivityTypes = [
-  { label: 'Call', icon: Phone, color: 'text-green-90' },
-  { label: 'Text', icon: MessageSquare, color: 'text-orange-80' },
+  { label: 'Call', icon: Phone, color: 'text-green-100' },
+  { label: 'Text', icon: MessageSquare, color: 'text-orange-110' },
   { label: 'Email', icon: Mail, color: 'text-blue-110' },
   { label: 'Note', icon: FileText, color: 'text-gray-80' },
   { label: 'Other', icon: MoreHorizontal, color: 'text-gray-80' },
 ];
 
-// ── Filter type mapping ────────────────────────────────────────
-const FILTER_TYPE_MAP: Record<string, string[]> = {
-  Searches: ['search'],
-  Visits: ['viewed', 'view'],
-  'Prop Views': ['viewed', 'view'],
-  'Saved Searches': ['search'],
-  Favorites: ['favorited'],
-  'Contact Emails': ['email'],
-  'Email Updates': ['drip', 'drip_started', 'drip_ended', 'drip_terminated'],
-};
-
-function filterItems(
-  items: ActivityItemData[],
-  filterLabel: string | null,
-): ActivityItemData[] {
-  if (!filterLabel) return items;
-  const types = FILTER_TYPE_MAP[filterLabel];
-  if (!types) return items;
-  return items.filter((item) => types.includes(item.type));
-}
+// (Filter type mapping removed — unified into CONTENT_FILTER_CATEGORIES via shared context)
 
 // ── Date grouping helper ───────────────────────────────────────
 function getDateLabel(dateStr: string): string {
@@ -135,8 +123,6 @@ export function ActivityHistoryCard() {
   const [p1Items, setP1Items] = useState<ActivityItemData[]>(page1Items);
   const [p2Items, setP2Items] = useState<ActivityItemData[]>(page2Items);
   const [olderLoaded, setOlderLoaded] = useState(false);
-  const [upcoming, setUpcoming] = useState<ActivityItemData[]>(upcomingItems);
-
   // Log Activity dialog
   const [logDialogOpen, setLogDialogOpen] = useState(false);
   const [logDialogType, setLogDialogType] = useState('');
@@ -151,11 +137,10 @@ export function ActivityHistoryCard() {
   const [editTitle, setEditTitle] = useState('');
   const [editNote, setEditNote] = useState('');
 
-  // Search & time range
+  // Search filter
   const [searchQuery, setSearchQuery] = useState('');
-  const [timeRange, setTimeRange] = useState('all');
 
-  // Filter from shared context
+  // Unified filter from shared context (used by both dropdown and Activity Stats)
   const { activeFilter, setActiveFilter } = useActivityFilter();
 
   const currentItems = olderLoaded ? [...p1Items, ...p2Items] : p1Items;
@@ -176,32 +161,45 @@ export function ActivityHistoryCard() {
     [searchQuery],
   );
 
-  // ── Time range filter helper ──────────────────────────────────
-  const timeRangeFilter = useCallback(
+  // ── Content-type filter helper (reads from shared context) ────
+  const contentTypeFilter = useCallback(
     (items: ActivityItemData[]) => {
-      if (timeRange === 'all') return items;
-      const now = new Date();
-      const msMap: Record<string, number> = {
-        '24h': 24 * 60 * 60 * 1000,
-        '7d': 7 * 24 * 60 * 60 * 1000,
-        '30d': 30 * 24 * 60 * 60 * 1000,
-        '90d': 90 * 24 * 60 * 60 * 1000,
-      };
-      const cutoff = now.getTime() - (msMap[timeRange] || 0);
-      return items.filter((item) => new Date(item.date + 'T12:00:00').getTime() >= cutoff);
+      if (!activeFilter || activeFilter === 'all') return items;
+      const category = CONTENT_FILTER_CATEGORIES.find((c) => c.key === activeFilter);
+      if (!category || !category.types) return items;
+      return items.filter((item) => (category.types as readonly string[]).includes(item.type));
     },
-    [timeRange],
+    [activeFilter],
   );
 
-  // Apply filter chain to historical items (NOT upcoming)
+  // Apply filter chain to historical items
   const filteredPinnedItems = useMemo(
-    () => searchFilter(timeRangeFilter(filterItems(pinnedItems, activeFilter))),
-    [pinnedItems, activeFilter, searchFilter, timeRangeFilter],
+    () => searchFilter(contentTypeFilter(pinnedItems)),
+    [pinnedItems, searchFilter, contentTypeFilter],
   );
   const filteredCurrentItems = useMemo(
-    () => searchFilter(timeRangeFilter(filterItems(currentItems, activeFilter))),
-    [currentItems, activeFilter, searchFilter, timeRangeFilter],
+    () => searchFilter(contentTypeFilter(currentItems)),
+    [currentItems, searchFilter, contentTypeFilter],
   );
+
+  // ── Category counts (computed from all items, ignoring other filters) ──
+  const allItemsFlat = useMemo(
+    () => [...pinnedItems, ...currentItems],
+    [pinnedItems, currentItems],
+  );
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const cat of CONTENT_FILTER_CATEGORIES) {
+      if (!cat.types) {
+        counts[cat.key] = allItemsFlat.length;
+      } else {
+        counts[cat.key] = allItemsFlat.filter((item) =>
+          (cat.types as readonly string[]).includes(item.type),
+        ).length;
+      }
+    }
+    return counts;
+  }, [allItemsFlat]);
 
   const hasNoHistoricalResults =
     filteredPinnedItems.length === 0 && filteredCurrentItems.length === 0;
@@ -220,10 +218,11 @@ export function ActivityHistoryCard() {
       if (alreadyPinned) {
         setPinnedItems((prev) => prev.filter((item) => item.id !== id));
         const unpinnedItem = { ...alreadyPinned, pinned: false };
-        if (id.startsWith('p1') || id === 'pinned-1') {
-          setP1Items((prev) => [unpinnedItem, ...prev]);
-        } else {
+        // Route unpinned items back to the appropriate list
+        if (id.startsWith('p2')) {
           setP2Items((prev) => [unpinnedItem, ...prev]);
+        } else {
+          setP1Items((prev) => [unpinnedItem, ...prev]);
         }
       } else {
         let foundItem: ActivityItemData | undefined;
@@ -250,44 +249,9 @@ export function ActivityHistoryCard() {
     [pinnedItems, p1Items, p2Items],
   );
 
-  // ── Upcoming completion toggle ───────────────────────────────
+  // ── Completion toggle ────────────────────────────────────────
   const handleToggleComplete = useCallback(
     (id: string) => {
-      // Check if it's an upcoming item
-      const upcomingItem = upcoming.find((item) => item.id === id);
-      if (upcomingItem) {
-        // Mark as completed in upcoming
-        setUpcoming((prev) =>
-          prev.map((item) =>
-            item.id === id ? { ...item, isCompleted: true } : item,
-          ),
-        );
-
-        // After 1 second, move it to page 1 as follow_up_completed
-        setTimeout(() => {
-          setUpcoming((prev) => prev.filter((item) => item.id !== id));
-          const today = new Date().toISOString().slice(0, 10);
-          const nowTime = new Date().toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true,
-          });
-          const completedItem: ActivityItemData = {
-            ...upcomingItem,
-            type: 'follow_up_completed',
-            typeLabel: 'completed a follow-up',
-            isCompleted: true,
-            isCompletable: false,
-            date: today,
-            time: nowTime,
-            timestamp: `Today at ${nowTime}`,
-          };
-          setP1Items((prev) => [completedItem, ...prev]);
-        }, 1000);
-        return;
-      }
-
-      // For historical items, just toggle
       setP1Items((prev) =>
         prev.map((item) =>
           item.id === id
@@ -303,7 +267,7 @@ export function ActivityHistoryCard() {
         ),
       );
     },
-    [upcoming],
+    [],
   );
 
   const openLogDialog = (type: string) => {
@@ -316,13 +280,12 @@ export function ActivityHistoryCard() {
     setPinnedItems((prev) => prev.filter((item) => item.id !== id));
     setP1Items((prev) => prev.filter((item) => item.id !== id));
     setP2Items((prev) => prev.filter((item) => item.id !== id));
-    setUpcoming((prev) => prev.filter((item) => item.id !== id));
   }, []);
 
   // ── Edit handler ──────────────────────────────────────────────
   const handleEdit = useCallback(
     (id: string) => {
-      const allItems = [...pinnedItems, ...p1Items, ...p2Items, ...upcoming];
+      const allItems = [...pinnedItems, ...p1Items, ...p2Items];
       const found = allItems.find((item) => item.id === id);
       if (found) {
         setEditItemId(id);
@@ -331,7 +294,7 @@ export function ActivityHistoryCard() {
         setEditDialogOpen(true);
       }
     },
-    [pinnedItems, p1Items, p2Items, upcoming],
+    [pinnedItems, p1Items, p2Items],
   );
 
   const handleSaveEdit = () => {
@@ -343,7 +306,6 @@ export function ActivityHistoryCard() {
     setPinnedItems(updater);
     setP1Items(updater);
     setP2Items(updater);
-    setUpcoming(updater);
     setEditDialogOpen(false);
     toast.success('Activity updated');
   };
@@ -377,7 +339,7 @@ export function ActivityHistoryCard() {
 
   return (
     <>
-      <div className="bg-bg-card rounded-3 border border-border-default shadow-sm overflow-hidden">
+      <div data-component="ActivityHistoryCard" className="bg-bg-card rounded-3 border border-border-default shadow-sm overflow-hidden">
         {/* ── BAR 1: Title bar ─────────────────────────────────── */}
         <div className="px-spacing-5 py-spacing-3 flex items-center justify-between">
           <h3 className="text-text-5 font-semibold text-text-default">
@@ -437,16 +399,27 @@ export function ActivityHistoryCard() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* Time range */}
-          <DropdownMenu>
+          {/* Content-type filter (reads/writes shared context) */}
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-              <button className="inline-flex items-center gap-1 h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer">
-                <span>{TIME_RANGE_OPTIONS.find((o) => o.value === timeRange)?.label ?? 'All Time'}</span>
-                {timeRange !== 'all' ? (
+              <button className="inline-flex items-center gap-1.5 h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer">
+                {(() => {
+                  const filterKey = activeFilter ?? 'all';
+                  const active = CONTENT_FILTER_CATEGORIES.find((c) => c.key === filterKey);
+                  const Icon = active?.icon ?? Activity;
+                  return (
+                    <>
+                      <Icon className="w-4 h-4 text-text-secondary" />
+                      <span>{active?.label ?? 'All'}</span>
+                      <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-spacing-1 rounded-round bg-[#ebf8ff] text-[#3e60c9] text-xs font-semibold">{categoryCounts[filterKey] ?? 0}</span>
+                    </>
+                  );
+                })()}
+                {activeFilter && activeFilter !== 'all' ? (
                   <button
                     type="button"
                     className="ml-0.5 p-0.5 hover:bg-gray-50 rounded-full cursor-pointer"
-                    onClick={(e) => { e.stopPropagation(); setTimeRange('all'); }}
+                    onClick={(e) => { e.stopPropagation(); setActiveFilter(null); }}
                   >
                     <X className="w-3 h-3 text-text-muted" />
                   </button>
@@ -455,16 +428,29 @@ export function ActivityHistoryCard() {
                 )}
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="min-w-[160px]">
-              {TIME_RANGE_OPTIONS.map((opt) => (
-                <DropdownMenuItem
-                  key={opt.value}
-                  className="cursor-pointer"
-                  onClick={() => setTimeRange(opt.value)}
-                >
-                  {opt.label}
-                </DropdownMenuItem>
-              ))}
+            <DropdownMenuContent align="start" className="w-[220px]">
+              {CONTENT_FILTER_CATEGORIES.map((cat) => {
+                const CatIcon = cat.icon;
+                const count = categoryCounts[cat.key] ?? 0;
+                const isActive = (activeFilter ?? 'all') === cat.key;
+                return (
+                  <DropdownMenuItem
+                    key={cat.key}
+                    className={`flex items-center gap-spacing-2 py-spacing-2 px-spacing-3 cursor-pointer text-text-4 ${
+                      isActive
+                        ? 'bg-blue-30 text-blue-110 font-semibold'
+                        : 'text-text-default hover:bg-gray-30'
+                    }`}
+                    onClick={() => setActiveFilter(cat.key === 'all' ? null : cat.key)}
+                  >
+                    <CatIcon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-blue-110' : 'text-text-secondary'}`} />
+                    <span className="flex-1">{cat.label}</span>
+                    <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-spacing-1 rounded-round bg-[#ebf8ff] text-[#3e60c9] text-xs font-semibold">
+                      {count}
+                    </span>
+                  </DropdownMenuItem>
+                );
+              })}
             </DropdownMenuContent>
           </DropdownMenu>
 
@@ -492,24 +478,6 @@ export function ActivityHistoryCard() {
 
         {/* Hairline between toolbar and content */}
         <div className="border-t border-border-default" />
-
-        {/* ── Filter pill ─────────────────────────────────────── */}
-        {activeFilter && (
-          <div className="px-spacing-5 pb-spacing-3">
-            <span className="inline-flex items-center gap-spacing-2 h-7 px-3 bg-blue-30 rounded-round">
-              <span className="text-text-4 font-semibold text-blue-110">
-                Filtering by: {activeFilter}
-              </span>
-              <button
-                type="button"
-                className="inline-flex items-center justify-center cursor-pointer hover:bg-blue-40 rounded-full p-0.5 transition-colors"
-                onClick={() => setActiveFilter(null)}
-              >
-                <X className="w-3 h-3 text-blue-110" />
-              </button>
-            </span>
-          </div>
-        )}
 
         {/* ── Pinned Section ──────────────────────────────────── */}
         <div className="mt-0">
@@ -546,51 +514,6 @@ export function ActivityHistoryCard() {
           )}
         </div>
 
-        {/* ── Upcoming Section ────────────────────────────────── */}
-        <div className="border-t border-b border-border-default">
-          <div className="flex items-center px-spacing-5 py-spacing-3 border-b border-border-default">
-            <span className="text-text-4 font-semibold text-text-default">
-              Upcoming Follow-ups
-            </span>
-            <div className="flex-1" />
-            <a
-              href="#"
-              className="text-text-4 font-semibold text-text-link hover:underline"
-              onClick={(e) => e.preventDefault()}
-            >
-              See all follow-ups &rarr;
-            </a>
-          </div>
-
-          {upcoming.length > 0 ? (
-            <div>
-              {upcoming.slice(0, 3).map((item, idx, arr) => (
-                <div
-                  key={item.id}
-                  className={`transition-opacity duration-300 ${
-                    item.isCompleted ? 'opacity-50' : 'opacity-100'
-                  }${idx < arr.length - 1 ? ' border-b border-border-default' : ''}`}
-                >
-                  <ActivityItem
-                    item={item}
-                    onTogglePin={handleTogglePin}
-                    onToggleComplete={handleToggleComplete}
-                    onDelete={handleDelete}
-                    onEdit={handleEdit}
-                    showTimeOnly
-                  />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="py-spacing-4 flex items-center justify-center">
-              <p className="text-text-4 text-text-muted">
-                No upcoming follow-ups
-              </p>
-            </div>
-          )}
-        </div>
-
         {/* ── Historical Timeline (date-grouped) ──────────────── */}
         {!hasNoHistoricalResults ? (
           <div>
@@ -618,15 +541,19 @@ export function ActivityHistoryCard() {
         ) : (
           <div className="py-spacing-10 flex flex-col items-center justify-center gap-spacing-2">
             <p className="text-text-4 text-text-muted">
-              No activity of this type yet
+              No activity matches the current filter
             </p>
-            <button
-              type="button"
-              className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
-              onClick={() => setActiveFilter(null)}
-            >
-              Clear filter
-            </button>
+            <div className="flex items-center gap-spacing-3">
+              {activeFilter && (
+                <button
+                  type="button"
+                  className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+                  onClick={() => setActiveFilter(null)}
+                >
+                  Reset filter
+                </button>
+              )}
+            </div>
           </div>
         )}
 

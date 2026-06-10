@@ -1,45 +1,45 @@
 import { CollapsibleCard } from './CollapsibleCard';
 import { useActivityFilter } from './ActivityFilterContext';
 
+/** Each stat row maps to a content-filter category key */
 const stats = [
-  { label: 'Searches', value: '3' },
-  { label: 'Visits', value: '20' },
-  { label: 'Prop Views', value: '10' },
-  { label: 'Saved Searches', value: '10' },
-  { label: 'Favorites', value: '5' },
-  { label: 'Contact Emails', value: '6' },
-  { label: 'Email Updates', value: '4' },
+  { label: 'Searches', value: '3', filterKey: 'searches' },
+  { label: 'Visits', value: '20', filterKey: 'properties' },
+  { label: 'Prop Views', value: '10', filterKey: 'properties' },
+  { label: 'Saved Searches', value: '10', filterKey: 'searches' },
+  { label: 'Favorites', value: '5', filterKey: 'favorites' },
+  { label: 'Contact Emails', value: '6', filterKey: 'email' },
 ];
 
 export function ActivityStatsCard() {
   const { activeFilter, toggleFilter } = useActivityFilter();
 
   return (
-    <CollapsibleCard title="Activity Stats">
+    <CollapsibleCard data-component="ActivityStatsCard" title="Activity Stats">
       <div className="space-y-spacing-1">
         {stats.map((s) => {
-          const isActive = activeFilter === s.label;
+          const isActive = activeFilter === s.filterKey;
           return (
             <button
               key={s.label}
               type="button"
-              onClick={() => toggleFilter(s.label)}
-              className={`w-full flex items-center justify-between py-spacing-1 px-spacing-3 -mx-spacing-3 rounded-2 transition-colors cursor-pointer ${
+              onClick={() => toggleFilter(s.filterKey)}
+              className={`w-full flex items-center justify-between py-spacing-1 px-spacing-3 -mx-spacing-3 rounded-1 transition-colors cursor-pointer ${
                 isActive
-                  ? 'bg-blue-30 border-l-2 border-blue-110 -ml-spacing-3 pl-spacing-3'
-                  : 'hover:bg-gray-30'
+                  ? 'bg-[#ebf8ff] text-[#3E60C9]'
+                  : 'hover:bg-[#f5fcff]'
               }`}
             >
               <span
-                className={`text-text-4 font-normal ${
-                  isActive ? 'text-blue-110' : 'text-text-secondary'
+                className={`text-text-4 ${
+                  isActive ? 'font-semibold text-[#3E60C9]' : 'font-normal text-text-secondary'
                 }`}
               >
                 {s.label}
               </span>
               <span
                 className={`text-text-4 font-semibold ${
-                  isActive ? 'text-blue-110' : 'text-text-default'
+                  isActive ? 'text-[#3E60C9]' : 'text-text-default'
                 }`}
               >
                 {s.value}

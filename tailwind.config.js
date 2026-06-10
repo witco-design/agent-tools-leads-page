@@ -38,15 +38,15 @@ module.exports = {
          * BASE COLOR SCALES  (Figma: [ Base Colors ].Value.tokens.json)
          * ───────────────────────────────────────────────────────────── */
         blue: {
-          10:  '#F4F7FE',
-          20:  '#E5EBFB',
-          30:  '#CBD5F4',
-          40:  '#A8BAEC',
+          10:  '#f5fcff',
+          20:  '#ebf8ff',
+          30:  '#e4f2ff',
+          40:  '#bfddff',
           50:  '#849EE3',
           60:  '#6781D9',
           70:  '#4E68CC',
           80:  '#3E60C9',
-          90:  '#3D55B9',
+          90:  '#3840a9',
           100: '#3A4DAA',
           110: '#3E60C9', // brand primary
           120: '#3840A9', // brand primary hover/pressed
@@ -66,27 +66,27 @@ module.exports = {
           120: '#0C111D',
         },
         green: {
-          10:  '#ECFDF3',
+          10:  '#e0f1ec',
           20:  '#DCFAE6',
-          30:  '#A6F4C5',
+          30:  '#e0f1ec',
           40:  '#6CE9A6',
           50:  '#32D583',
           60:  '#12B76A',
-          70:  '#039855', // success text/icon
+          70:  '#45ac86', // success text/icon (Green.70)
           80:  '#027A48',
           90:  '#05603A',
-          100: '#054F31',
+          100: '#216f51',
           110: '#053321',
           120: '#022A1A',
         },
         red: {
           10:  '#FEF3F2',
           20:  '#FEE4E2',
-          30:  '#FECDCA',
+          30:  '#ffe0e4',
           40:  '#FDA29B',
           50:  '#F97066',
           60:  '#F04438',
-          70:  '#D92D20', // error default
+          70:  '#ec423d', // error default (Red.70)
           80:  '#B42318',
           90:  '#912018',
           100: '#7A271A',
@@ -95,16 +95,16 @@ module.exports = {
         },
         orange: {
           10:  '#FEF6EE',
-          20:  '#FDEAD7',
+          20:  '#fbe4ab',
           30:  '#F9DBAF',
           40:  '#F7B27A',
           50:  '#F38744',
           60:  '#EF6820',
-          70:  '#E04F16', // warning default
+          70:  '#f48a3c', // warning default (Orange.70)
           80:  '#B93815',
           90:  '#932F19',
           100: '#7E2410',
-          110: '#5C1A0C',
+          110: '#c26025',
           120: '#3D1106',
         },
         purple: {
@@ -114,7 +114,7 @@ module.exports = {
           40:  '#A4A0F5',
           50:  '#8580EB',
           60:  '#6A65D8',
-          70:  '#5E5CC0',
+          70:  '#746ec0', // Purple.70
           80:  '#4F4DAB',
           90:  '#3E3D87',
           100: '#2F2E67',
@@ -132,7 +132,7 @@ module.exports = {
          * ───────────────────────────────────────────────────────────── */
 
         // Surfaces
-        'bg-app':    '#F5F5F5',  // outer shell background
+        'bg-app':    '#f5fcff',  // outer shell background (blue.10)
         'bg-card':   '#FFFFFF',  // card / panel surfaces
         'bg-canvas': '#FFFFFF',  // alias — same as bg-card (design system term)
         'bg-muted':  '#F9FAFB',  // gray.10 — subtle row bg / hover
@@ -160,19 +160,19 @@ module.exports = {
         'icon-default': '#667085', // gray.70
 
         // Status — success
-        'success-bg':     '#ECFDF3', // green.10
+        'success-bg':     '#e0f1ec', // green.10
         'success-border': '#6CE9A6', // green.40
-        'success-text':   '#039855', // green.70
+        'success-text':   '#45ac86', // green.70
 
         // Status — warning
         'warning-bg':     '#FEF6EE', // orange.10
-        'warning-border': '#FDEAD7', // orange.20
-        'warning-text':   '#E04F16', // orange.70
+        'warning-border': '#fbe4ab', // orange.20
+        'warning-text':   '#f48a3c', // orange.70
 
         // Status — error
         'error-bg':     '#FEF3F2', // red.10
         'error-border': '#FDA29B', // red.40
-        'error-text':   '#D92D20', // red.70
+        'error-text':   '#ec423d', // red.70
 
         // Status — info
         'info-bg':   '#F4F7FE', // blue.10

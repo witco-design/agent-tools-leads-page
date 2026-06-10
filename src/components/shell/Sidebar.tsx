@@ -204,6 +204,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   return (
     <TooltipProvider delayDuration={200}>
       <aside
+        data-component="Sidebar"
         data-state={collapsed ? 'collapsed' : 'expanded'}
         className="fixed top-14 bottom-0 left-0 z-20 flex flex-col"
         style={{

@@ -126,6 +126,7 @@ export function FollowUpsCard() {
   return (
     <>
       <CollapsibleCard
+        data-component="FollowUpItem"
         title="Follow Ups"
         showInfoIcon
         footer={
