@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import {
   Search,
   Plus,
@@ -113,6 +113,11 @@ function groupByDate(items: ActivityItemData[]): DateGroup[] {
   return groups;
 }
 
+// ── Progressive disclosure constants ──────────────────────────
+const INITIAL_VISIBLE = 20;
+const INCREMENT = 20;
+const DATE_JUMPER_THRESHOLD = 100;
+
 // ── Main component ─────────────────────────────────────────────
 export function ActivityHistoryCard() {
   const [activityOpen, setActivityOpen] = useState(true);
@@ -120,9 +125,10 @@ export function ActivityHistoryCard() {
   const [pinnedItems, setPinnedItems] = useState<ActivityItemData[]>([
     pinnedItem,
   ]);
-  const [p1Items, setP1Items] = useState<ActivityItemData[]>(page1Items);
-  const [p2Items, setP2Items] = useState<ActivityItemData[]>(page2Items);
-  const [olderLoaded, setOlderLoaded] = useState(false);
+  const [historyItems, setHistoryItems] = useState<ActivityItemData[]>([
+    ...page1Items,
+    ...page2Items,
+  ]);
   // Log Activity dialog
   const [logDialogOpen, setLogDialogOpen] = useState(false);
   const [logDialogType, setLogDialogType] = useState('');
@@ -140,10 +146,17 @@ export function ActivityHistoryCard() {
   // Search filter
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Progressive disclosure
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
+  const showMoreRef = useRef<HTMLButtonElement>(null);
+
   // Unified filter from shared context (used by both dropdown and Activity Stats)
   const { activeFilter, setActiveFilter } = useActivityFilter();
 
-  const currentItems = olderLoaded ? [...p1Items, ...p2Items] : p1Items;
+  // Reset visibleCount when filter or search changes
+  useEffect(() => {
+    setVisibleCount(INITIAL_VISIBLE);
+  }, [activeFilter, searchQuery]);
 
   // ── Search filter helper ──────────────────────────────────────
   const searchFilter = useCallback(
@@ -177,15 +190,23 @@ export function ActivityHistoryCard() {
     () => searchFilter(contentTypeFilter(pinnedItems)),
     [pinnedItems, searchFilter, contentTypeFilter],
   );
-  const filteredCurrentItems = useMemo(
-    () => searchFilter(contentTypeFilter(currentItems)),
-    [currentItems, searchFilter, contentTypeFilter],
+  const filteredHistoryItems = useMemo(
+    () => searchFilter(contentTypeFilter(historyItems)),
+    [historyItems, searchFilter, contentTypeFilter],
   );
+
+  // Progressive disclosure — slice to visible count
+  const visibleHistoryItems = useMemo(
+    () => filteredHistoryItems.slice(0, visibleCount),
+    [filteredHistoryItems, visibleCount],
+  );
+  const remainingCount = Math.max(0, filteredHistoryItems.length - visibleCount);
+  const hasMore = remainingCount > 0;
 
   // ── Category counts (computed from all items, ignoring other filters) ──
   const allItemsFlat = useMemo(
-    () => [...pinnedItems, ...currentItems],
-    [pinnedItems, currentItems],
+    () => [...pinnedItems, ...historyItems],
+    [pinnedItems, historyItems],
   );
   const categoryCounts = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -202,12 +223,12 @@ export function ActivityHistoryCard() {
   }, [allItemsFlat]);
 
   const hasNoHistoricalResults =
-    filteredPinnedItems.length === 0 && filteredCurrentItems.length === 0;
+    filteredPinnedItems.length === 0 && filteredHistoryItems.length === 0;
 
-  // Group filtered historical items by date
+  // Group visible historical items by date
   const dateGroups = useMemo(
-    () => groupByDate(filteredCurrentItems),
-    [filteredCurrentItems],
+    () => groupByDate(visibleHistoryItems),
+    [visibleHistoryItems],
   );
 
   // ── Pin toggle ───────────────────────────────────────────────
@@ -218,48 +239,26 @@ export function ActivityHistoryCard() {
       if (alreadyPinned) {
         setPinnedItems((prev) => prev.filter((item) => item.id !== id));
         const unpinnedItem = { ...alreadyPinned, pinned: false };
-        // Route unpinned items back to the appropriate list
-        if (id.startsWith('p2')) {
-          setP2Items((prev) => [unpinnedItem, ...prev]);
-        } else {
-          setP1Items((prev) => [unpinnedItem, ...prev]);
-        }
+        setHistoryItems((prev) => [unpinnedItem, ...prev]);
       } else {
-        let foundItem: ActivityItemData | undefined;
-
-        const inP1 = p1Items.find((item) => item.id === id);
-        const inP2 = p2Items.find((item) => item.id === id);
-
-        if (inP1) {
-          foundItem = inP1;
-          setP1Items((prev) => prev.filter((item) => item.id !== id));
-        } else if (inP2) {
-          foundItem = inP2;
-          setP2Items((prev) => prev.filter((item) => item.id !== id));
-        }
+        const foundItem = historyItems.find((item) => item.id === id);
 
         if (foundItem) {
+          setHistoryItems((prev) => prev.filter((item) => item.id !== id));
           setPinnedItems((prev) => [
             ...prev,
-            { ...foundItem!, pinned: true },
+            { ...foundItem, pinned: true },
           ]);
         }
       }
     },
-    [pinnedItems, p1Items, p2Items],
+    [pinnedItems, historyItems],
   );
 
   // ── Completion toggle ────────────────────────────────────────
   const handleToggleComplete = useCallback(
     (id: string) => {
-      setP1Items((prev) =>
-        prev.map((item) =>
-          item.id === id
-            ? { ...item, isCompleted: !item.isCompleted }
-            : item,
-        ),
-      );
-      setP2Items((prev) =>
+      setHistoryItems((prev) =>
         prev.map((item) =>
           item.id === id
             ? { ...item, isCompleted: !item.isCompleted }
@@ -278,14 +277,13 @@ export function ActivityHistoryCard() {
   // ── Delete handler ────────────────────────────────────────────
   const handleDelete = useCallback((id: string) => {
     setPinnedItems((prev) => prev.filter((item) => item.id !== id));
-    setP1Items((prev) => prev.filter((item) => item.id !== id));
-    setP2Items((prev) => prev.filter((item) => item.id !== id));
+    setHistoryItems((prev) => prev.filter((item) => item.id !== id));
   }, []);
 
   // ── Edit handler ──────────────────────────────────────────────
   const handleEdit = useCallback(
     (id: string) => {
-      const allItems = [...pinnedItems, ...p1Items, ...p2Items];
+      const allItems = [...pinnedItems, ...historyItems];
       const found = allItems.find((item) => item.id === id);
       if (found) {
         setEditItemId(id);
@@ -294,7 +292,7 @@ export function ActivityHistoryCard() {
         setEditDialogOpen(true);
       }
     },
-    [pinnedItems, p1Items, p2Items],
+    [pinnedItems, historyItems],
   );
 
   const handleSaveEdit = () => {
@@ -304,8 +302,7 @@ export function ActivityHistoryCard() {
         item.id === editItemId ? { ...item, title: editTitle, note: editNote || undefined } : item,
       );
     setPinnedItems(updater);
-    setP1Items(updater);
-    setP2Items(updater);
+    setHistoryItems(updater);
     setEditDialogOpen(false);
     toast.success('Activity updated');
   };
@@ -331,7 +328,7 @@ export function ActivityHistoryCard() {
       typeLabel: 'added a note',
       note: trimmed,
     };
-    setP1Items((prev) => [newNote, ...prev]);
+    setHistoryItems((prev) => [newNote, ...prev]);
     setNoteText('');
     setNoteDialogOpen(false);
     toast.success('Note added');
@@ -516,7 +513,7 @@ export function ActivityHistoryCard() {
 
         {/* ── Historical Timeline (date-grouped) ──────────────── */}
         {!hasNoHistoricalResults ? (
-          <div>
+          <div role="region" aria-label="Activity history" aria-live="polite">
             {dateGroups.map((group) => (
               <div key={group.date}>
                 {/* Date heading */}
@@ -544,29 +541,59 @@ export function ActivityHistoryCard() {
               No activity matches the current filter
             </p>
             <div className="flex items-center gap-spacing-3">
-              {activeFilter && (
+              {(activeFilter || searchQuery) && (
                 <button
                   type="button"
                   className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
-                  onClick={() => setActiveFilter(null)}
+                  onClick={() => { setActiveFilter(null); setSearchQuery(''); }}
                 >
-                  Reset filter
+                  Clear filter
                 </button>
               )}
             </div>
           </div>
         )}
 
-        {/* ── Load older activity ───────────────────────────────── */}
-        {!hasNoHistoricalResults && !olderLoaded && (
-          <div className="p-spacing-5 flex items-center justify-center border-t border-border-default">
-            <button
-              type="button"
-              onClick={() => setOlderLoaded(true)}
-              className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
-            >
-              Load older activity
-            </button>
+        {/* ── Show more / Date jumper ──────────────────────────── */}
+        {!hasNoHistoricalResults && hasMore && (
+          <div className="px-spacing-5 py-spacing-4 border-t border-border-default">
+            {visibleCount < DATE_JUMPER_THRESHOLD ? (
+              <button
+                ref={showMoreRef}
+                type="button"
+                onClick={() => setVisibleCount((c) => c + INCREMENT)}
+                className="w-full h-10 inline-flex items-center justify-center gap-spacing-2 bg-white border border-border-default rounded-2 text-text-4 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              >
+                Show more activity
+                <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-spacing-1 rounded-round bg-[#ebf8ff] text-[#3e60c9] text-xs font-semibold">
+                  {remainingCount}
+                </span>
+              </button>
+            ) : (
+              <div className="space-y-spacing-3">
+                <p className="text-text-4 text-text-muted">
+                  You&apos;ve reviewed the last {visibleCount} activities. Jump to a specific date to see older activity.
+                </p>
+                <div className="flex items-center gap-spacing-2">
+                  <label className="text-text-4 font-medium text-text-default">Jump to date:</label>
+                  <input
+                    type="date"
+                    onChange={(e) => {
+                      if (!e.target.value) return;
+                      const targetDate = e.target.value;
+                      const idx = filteredHistoryItems.findIndex((a) => a.date <= targetDate);
+                      if (idx !== -1) {
+                        setVisibleCount(idx + INCREMENT);
+                      }
+                    }}
+                    className="h-9 px-spacing-3 border border-border-default rounded-2 text-text-4 text-text-default focus:outline-none focus:border-blue-110 focus:ring-1 focus:ring-blue-40"
+                  />
+                  <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-spacing-1 rounded-round bg-[#ebf8ff] text-[#3e60c9] text-xs font-semibold">
+                    {remainingCount} remaining
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         )}
           </>
