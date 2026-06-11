@@ -82,12 +82,12 @@ export function SmsEmailOptOutsCard() {
   ];
 
   return (
-    <CollapsibleCard title="SMS/Email Opt Outs" showInfoIcon>
+    <CollapsibleCard title="SMS/Email Opt Outs" infoTooltip="On (purple) means opted in. Off (gray) means opted out.">
       <div className="space-y-spacing-4">
         {optOutItems.map((item) => (
           <div
             key={item.key}
-            className={`flex items-start gap-spacing-3 p-spacing-2 -mx-spacing-2 rounded-2 transition-colors ${
+            className={`flex items-start gap-spacing-3 p-spacing-2 -mx-spacing-2 rounded-1 transition-colors ${
               item.disabled ? '' : 'hover:bg-gray-30 cursor-pointer'
             }`}
             onClick={() => !item.disabled && toggleOptOut(item.key)}

@@ -42,7 +42,7 @@ export function CopyTooltip({ tokenPath, resolvedValue, tailwindClass, children,
       {show && (
         <div
           ref={tooltipRef}
-          className="fixed z-50 bg-bg-canvas rounded-2 shadow-lg border border-border-default px-spacing-3 py-spacing-2 pointer-events-auto"
+          className="fixed z-50 bg-bg-canvas rounded-1 shadow-lg border border-border-default px-spacing-3 py-spacing-2 pointer-events-auto"
           style={{
             top: position.top,
             left: position.left,

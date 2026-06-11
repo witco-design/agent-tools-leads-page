@@ -95,7 +95,7 @@ export function ComponentSampler() {
           <input
             type="email"
             placeholder="you@example.com"
-            className="w-full h-sizing-11 px-spacing-3 bg-bg-muted border border-border-default rounded-2 text-text-3 font-normal text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring focus:border-transparent transition-all duration-200"
+            className="w-full h-sizing-11 px-spacing-3 bg-bg-muted border border-border-default rounded-1 text-text-3 font-normal text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring focus:border-transparent transition-all duration-200"
           />
           <p className="text-text-2 font-normal text-text-muted">Focus ring uses <code className="text-text-2 font-semibold text-brand-primary bg-blue-10 px-1 rounded-1">focus-ring (gray.120)</code></p>
         </div>
@@ -128,7 +128,7 @@ export function ComponentSampler() {
         <h3 className="text-text-4 font-semibold text-text-default">Status Banners</h3>
 
         {/* Online Now Banner */}
-        <div className="bg-success-bg border border-success-border rounded-2 px-spacing-4 py-spacing-3 flex items-center gap-spacing-3">
+        <div className="bg-success-bg border border-success-border rounded-1 px-spacing-4 py-spacing-3 flex items-center gap-spacing-3">
           <CheckCircle2 className="w-5 h-5 text-success-text flex-shrink-0" />
           <div>
             <div className="text-text-3 font-semibold text-success-text">Online Now</div>

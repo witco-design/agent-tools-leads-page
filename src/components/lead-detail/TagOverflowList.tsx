@@ -120,12 +120,12 @@ export function TagOverflowList({ tags }: TagOverflowListProps) {
             <button
               type="button"
               aria-label={`Show ${overflowTags.length} more tags`}
-              className="h-7 w-7 inline-flex items-center justify-center rounded-full bg-[#F2F4F7] hover:bg-[#E4E7EC] text-[#101828] transition shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-40 focus-visible:ring-offset-2"
+              className="h-7 w-7 inline-flex items-center justify-center rounded-1 bg-[#F2F4F7] hover:bg-[#E4E7EC] text-[#101828] transition shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-40 focus-visible:ring-offset-2"
             >
               <MoreHorizontal className="w-4 h-4" />
             </button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-3 bg-white border border-[#E4E7EC] rounded-2 shadow-md">
+          <PopoverContent className="w-auto p-3 bg-white border border-[#E4E7EC] rounded-1 shadow-md">
             <div className="flex flex-col gap-2">
               {overflowTags.map((tag, i) => {
                 const Icon = tag.icon;

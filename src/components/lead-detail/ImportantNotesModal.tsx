@@ -111,7 +111,7 @@ export function ImportantNotesModal({
               onChange={(e) => setEditValue(e.target.value)}
               autoFocus
               rows={10}
-              className="w-full min-h-[200px] px-spacing-3 py-spacing-2 rounded-2 border-2 border-blue-110 bg-white text-text-4 text-text-default leading-relaxed focus:outline-none resize-none"
+              className="w-full min-h-[200px] px-spacing-3 py-spacing-2 rounded-1 border-2 border-blue-110 bg-white text-text-4 text-text-default leading-relaxed focus:outline-none resize-none"
               placeholder="Add notes about this lead..."
             />
           )}
@@ -124,16 +124,16 @@ export function ImportantNotesModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+                className="text-sm text-[#667085] hover:text-[#101828] transition cursor-pointer"
               >
                 Close
               </button>
               <button
                 type="button"
                 onClick={handleEnterEditMode}
-                className="h-9 px-spacing-4 rounded-2 inline-flex items-center gap-spacing-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
+                className="h-7 px-spacing-3 inline-flex items-center gap-spacing-2 bg-[#3e60c9] hover:bg-[#3840a9] text-white rounded-1 text-sm font-medium transition cursor-pointer"
               >
-                <Pencil className="w-4 h-4" />
+                <Pencil className="w-3.5 h-3.5" />
                 Edit
               </button>
             </>
@@ -142,7 +142,7 @@ export function ImportantNotesModal({
               <button
                 type="button"
                 onClick={handleCancel}
-                className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+                className="text-sm text-[#667085] hover:text-[#101828] transition cursor-pointer"
               >
                 Cancel
               </button>
@@ -150,7 +150,7 @@ export function ImportantNotesModal({
                 type="button"
                 onClick={handleSave}
                 disabled={!hasUnsavedChanges}
-                className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="h-7 px-spacing-3 inline-flex items-center bg-[#3e60c9] hover:bg-[#3840a9] disabled:bg-[#bfddff] disabled:cursor-not-allowed text-white rounded-1 text-sm font-medium transition cursor-pointer"
               >
                 Save
               </button>

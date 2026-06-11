@@ -202,23 +202,23 @@ function getIconConfig(type: ActivityType) {
     // ── Chat ──
     case 'chat':
     case 'assistant_conversation_started':
-      return { bg: 'bg-purple-20', icon: MessagesSquare, color: 'text-purple-70' };
+      return { bg: 'bg-[#DEDCFF]', icon: MessagesSquare, color: 'text-[#3830A5]' };
     case 'received_chat_message_from':
-      return { bg: 'bg-purple-20', icon: MessageCircle, color: 'text-purple-70' };
+      return { bg: 'bg-[#DEDCFF]', icon: MessageCircle, color: 'text-[#3830A5]' };
 
     // ── Notes / Follow-ups ──
     case 'note':
       return { bg: 'bg-orange-20', icon: FileText, color: 'text-orange-110' };
     case 'created_a_followup_for':
-      return { bg: 'bg-purple-30', icon: Calendar, color: 'text-purple-70' };
+      return { bg: 'bg-[#DEDCFF]', icon: Calendar, color: 'text-[#3830A5]' };
     case 'completed_a_followup_for':
       return { bg: 'bg-green-30', icon: CheckSquare, color: 'text-green-100' };
     case 'important_date_added':
       return { bg: 'bg-gray-40', icon: Calendar, color: 'text-gray-90' };
     case 'follow_up':
-      return { bg: 'bg-purple-30', icon: CalendarClock, color: 'text-purple-70' };
+      return { bg: 'bg-[#DEDCFF]', icon: CalendarClock, color: 'text-[#3830A5]' };
     case 'follow_up_completed':
-      return { bg: 'bg-purple-30', icon: CalendarCheck, color: 'text-purple-70' };
+      return { bg: 'bg-[#DEDCFF]', icon: CalendarCheck, color: 'text-[#3830A5]' };
 
     // ── Searches ──
     case 'search':
@@ -237,7 +237,7 @@ function getIconConfig(type: ActivityType) {
     case 'view':
     case 'viewed':
     case 'property_viewed':
-      return { bg: 'bg-blue-20', icon: Home, color: 'text-blue-90' };
+      return { bg: 'bg-blue-20', icon: Home, color: 'text-blue-110' };
     case 'visited':
       return { bg: 'bg-gray-40', icon: Globe, color: 'text-gray-90' };
     case 'video_played':
@@ -257,7 +257,7 @@ function getIconConfig(type: ActivityType) {
     case 'drip_ended':
     case 'drip_terminated':
     case 'drip_subscription_created':
-      return { bg: 'bg-green-20', icon: Droplets, color: 'text-green-100' };
+      return { bg: 'bg-green-30', icon: Droplets, color: 'text-green-100' };
 
     // ── Lifecycle ──
     case 'created':
@@ -280,7 +280,7 @@ function getIconConfig(type: ActivityType) {
 
     // ── Other ──
     case 'task':
-      return { bg: 'bg-purple-30', icon: Clipboard, color: 'text-purple-70' };
+      return { bg: 'bg-[#DEDCFF]', icon: Clipboard, color: 'text-[#3830A5]' };
     case 'meeting':
       return { bg: 'bg-orange-30', icon: Calendar, color: 'text-orange-110' };
     case 'edited':
@@ -373,7 +373,7 @@ export function ActivityItem({
           <button
             type="button"
             onClick={() => onTogglePin(item.id)}
-            className={`p-1 rounded-2 transition-colors cursor-pointer ${
+            className={`p-1 rounded-1 transition-colors cursor-pointer ${
               item.pinned
                 ? 'bg-[#ebf8ff] hover:bg-[#e4f2ff] text-blue-110'
                 : 'text-gray-70 hover:bg-gray-30'
@@ -392,7 +392,7 @@ export function ActivityItem({
             <DropdownMenuTrigger asChild>
               <button
                 type="button"
-                className="opacity-0 group-hover/item:opacity-100 transition-opacity p-1 rounded-2 hover:bg-gray-30 cursor-pointer"
+                className="opacity-0 group-hover/item:opacity-100 transition-opacity p-1 rounded-1 hover:bg-gray-30 cursor-pointer"
               >
                 <MoreHorizontal className="w-4 h-4 text-gray-70" />
               </button>
@@ -444,7 +444,7 @@ export function ActivityItem({
           <button
             type="button"
             onClick={() => setIsExpanded((prev) => !prev)}
-            className="p-1 rounded-2 hover:bg-gray-30 cursor-pointer transition-colors"
+            className="p-1 rounded-1 hover:bg-gray-30 cursor-pointer transition-colors"
           >
             <ChevronDown
               className={`w-4 h-4 text-gray-70 transition-transform duration-200 ${
@@ -512,7 +512,7 @@ export function ActivityItem({
               {/* Body: search criteria */}
               {item.searchCriteria && (
                 <div className="mt-spacing-2">
-                  <div className="border border-border-default rounded-2 p-spacing-3">
+                  <div className="border border-border-default rounded-1 p-spacing-3">
                     {item.searchCriteria.map((line, i) => (
                       <p
                         key={i}
@@ -547,7 +547,7 @@ export function ActivityItem({
 
           {/* Inset panel for tasks/follow-ups — outline-only with column dividers */}
           {item.inset && (
-            <div className="mt-spacing-3 rounded-2 border border-border-default overflow-hidden">
+            <div className="mt-spacing-3 rounded-1 border border-border-default overflow-hidden">
               <div className="flex">
                 {Object.entries(item.inset.fields).map(([label, value], index) => (
                   <div
@@ -604,14 +604,14 @@ export function ActivityItem({
 // ── Property card sub-component ────────────────────────────────
 function PropertyCard({ property }: { property: PropertyData }) {
   return (
-    <div className="flex gap-spacing-4 border border-border-default rounded-2 p-spacing-3">
+    <div className="flex gap-spacing-4 border border-border-default rounded-1 p-spacing-3">
       <img
         src={
           property.image ||
           'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=280&fit=crop'
         }
         alt={property.address}
-        className="w-[200px] h-[140px] rounded-2 object-cover shrink-0"
+        className="w-[200px] h-[140px] rounded-1 object-cover shrink-0"
       />
       <div className="flex-1 min-w-0 flex flex-col justify-center">
         <p className="text-text-4 font-semibold text-text-default min-w-0">

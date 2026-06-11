@@ -24,7 +24,7 @@ export function ActivityStatsCard() {
               key={s.label}
               type="button"
               onClick={() => toggleFilter(s.filterKey)}
-              className={`w-full flex items-center justify-between py-spacing-1 px-spacing-3 -mx-spacing-3 rounded-1 transition-colors cursor-pointer ${
+              className={`w-full flex items-center justify-between py-spacing-1 rounded-1 transition-colors cursor-pointer ${
                 isActive
                   ? 'bg-[#ebf8ff] text-[#3E60C9]'
                   : 'hover:bg-[#f5fcff]'

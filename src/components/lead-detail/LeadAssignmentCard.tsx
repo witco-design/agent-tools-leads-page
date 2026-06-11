@@ -75,7 +75,7 @@ export function LeadAssignmentCard() {
             </span>
             <div className="flex-1">
               <Select value={agent} onValueChange={handleAgentChange}>
-                <SelectTrigger className="h-8 rounded-2 border-border-default bg-white text-text-4 px-spacing-3 w-full">
+                <SelectTrigger className="h-8 rounded-1 border-border-default bg-white text-text-4 px-spacing-3 w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -93,7 +93,7 @@ export function LeadAssignmentCard() {
             </span>
             <div className="flex-1">
               <Select value={lender} onValueChange={handleLenderChange}>
-                <SelectTrigger className="h-8 rounded-2 border-border-default bg-white text-text-4 px-spacing-3 w-full">
+                <SelectTrigger className="h-8 rounded-1 border-border-default bg-white text-text-4 px-spacing-3 w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

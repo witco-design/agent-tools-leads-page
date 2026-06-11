@@ -4,6 +4,7 @@ import { Toaster } from 'sonner';
 import { Sidebar } from '@/components/shell/Sidebar';
 import { AppHeader } from '@/components/shell/AppHeader';
 import { useSidebar } from '@/components/shell/useSidebar';
+import { useDevMode } from '@/dev/DevModeContext';
 import { LeadHeader } from './LeadHeader';
 import { ContactInfoCard } from './ContactInfoCard';
 import { RobinAISummaryCard } from './RobinAISummaryCard';
@@ -11,6 +12,10 @@ import { ActivityHistoryCard } from './ActivityHistoryCard';
 import { RightColumn } from './RightColumn';
 import { LeadSignalTagsCard } from './LeadSignalTagsCard';
 import { ActivityFilterProvider } from './ActivityFilterContext';
+import {
+  ContactInfoProvider,
+  type ContactInfo,
+} from '@/contexts/ContactInfoContext';
 import { LeadDetailPageSkeleton } from './LeadDetailSkeletons';
 import {
   Dialog,
@@ -22,10 +27,30 @@ import {
 
 const LOADING_MS = 800;
 
+const INITIAL_CONTACT_INFO: ContactInfo = {
+  firstName: 'Camille',
+  lastName: 'Dubois',
+  primary: '(415) 555-0142',
+  primaryStatus: 'good',
+  alt: '(415) 555-0188',
+  altStatus: 'good',
+  office: '',
+  officeStatus: 'good',
+  fax: '',
+  faxStatus: 'good',
+  email: 'cdubois@realgeeks.com',
+  emailStatus: 'good',
+  street: '123 Fake Address Street',
+  city: 'Mountain View',
+  state: 'CA',
+  zip: '94041',
+};
+
 export default function LeadDetailPage() {
   const [chatOpen, setChatOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { collapsed, toggle } = useSidebar();
+  const { active: devModeActive } = useDevMode();
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), LOADING_MS);
@@ -33,10 +58,14 @@ export default function LeadDetailPage() {
   }, []);
 
   return (
+    <ContactInfoProvider initial={INITIAL_CONTACT_INFO}>
     <ActivityFilterProvider>
       <div className="min-h-screen w-full overflow-x-hidden bg-bg-app">
         {/* Header — fixed, full viewport width, z-30 */}
-        <div className="fixed top-0 left-0 right-0 z-30">
+        <div
+          className="fixed top-0 left-0 z-30 transition-all duration-200"
+          style={{ right: devModeActive ? 380 : 0 }}
+        >
           <AppHeader />
         </div>
 
@@ -48,7 +77,7 @@ export default function LeadDetailPage() {
           type="button"
           onClick={toggle}
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="fixed z-30 w-6 h-6 rounded-full bg-bg-card border border-border-default flex items-center justify-center shadow-md hover:shadow-lg hover:bg-bg-muted cursor-pointer hidden md:flex"
+          className="fixed z-30 w-6 h-6 rounded-1 bg-bg-card border border-border-default flex items-center justify-center shadow-md hover:shadow-lg hover:bg-bg-muted cursor-pointer hidden md:flex"
           style={{
             top: 76,
             left: collapsed ? 60 : 208,
@@ -62,12 +91,13 @@ export default function LeadDetailPage() {
           )}
         </button>
 
-        {/* Main content area — offset for header + sidebar */}
+        {/* Main content area — offset for header + sidebar + devmode panel */}
         <main
           className="min-h-screen pt-20 p-spacing-8"
           style={{
             marginLeft: collapsed ? 72 : 220,
-            transition: 'margin-left 180ms ease',
+            marginRight: devModeActive ? 380 : 0,
+            transition: 'margin-left 180ms ease, margin-right 200ms ease',
           }}
         >
           <div className="space-y-spacing-4 max-w-[1284px]">
@@ -81,7 +111,7 @@ export default function LeadDetailPage() {
                 </div>
 
                 {/* BOTTOM TWO-COLUMN LAYOUT */}
-                <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-spacing-4 mt-spacing-10">
+                <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] items-start gap-spacing-4 mt-spacing-10">
                   {/* Left column: Data Snapshot → Robin AI → Activity History */}
                   <div className="flex flex-col gap-spacing-4 min-w-0 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both" style={{ animationDelay: '120ms' }}>
                     <LeadSignalTagsCard />
@@ -117,7 +147,8 @@ export default function LeadDetailPage() {
       <button
         type="button"
         onClick={() => setChatOpen(true)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-round bg-blue-110 shadow-lg flex items-center justify-center hover:bg-blue-120 transition-colors cursor-pointer"
+        className="fixed bottom-6 z-50 w-14 h-14 rounded-round bg-blue-110 shadow-lg flex items-center justify-center hover:bg-blue-120 transition-all duration-200 cursor-pointer"
+        style={{ right: devModeActive ? 380 + 24 : 24 }}
         aria-label="Chat with support"
       >
         <MessageCircle className="w-7 h-7 text-white" />
@@ -136,9 +167,9 @@ export default function LeadDetailPage() {
 
           <div className="space-y-spacing-4 py-spacing-2">
             {/* Mock chat area */}
-            <div className="h-[200px] bg-gray-30 rounded-2 p-spacing-3 overflow-y-auto">
+            <div className="h-[200px] bg-gray-30 rounded-1 p-spacing-3 overflow-y-auto">
               <div className="flex flex-col gap-spacing-3">
-                <div className="self-start max-w-[80%] bg-white rounded-2 rounded-tl-none px-spacing-3 py-spacing-2 shadow-sm">
+                <div className="self-start max-w-[80%] bg-white rounded-1 rounded-tl-none px-spacing-3 py-spacing-2 shadow-sm">
                   <p className="text-text-4 text-text-default">
                     Hi there! How can we help you today?
                   </p>
@@ -154,11 +185,11 @@ export default function LeadDetailPage() {
               <textarea
                 rows={1}
                 placeholder="Type your message..."
-                className="flex-1 h-9 px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+                className="flex-1 h-9 px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               />
               <button
                 type="button"
-                className="h-9 w-9 rounded-2 bg-blue-110 text-white flex items-center justify-center hover:bg-blue-120 transition-colors cursor-pointer shrink-0"
+                className="h-9 w-9 rounded-1 bg-blue-110 text-white flex items-center justify-center hover:bg-blue-120 transition-colors cursor-pointer shrink-0"
               >
                 <Send className="w-4 h-4" />
               </button>
@@ -167,5 +198,6 @@ export default function LeadDetailPage() {
         </DialogContent>
       </Dialog>
     </ActivityFilterProvider>
+    </ContactInfoProvider>
   );
 }

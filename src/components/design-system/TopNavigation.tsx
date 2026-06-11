@@ -17,7 +17,7 @@ export function TopNavigation() {
          style={{ animationDuration: '0.4s' }}>
       {/* Logo */}
       <div className="flex items-center gap-spacing-3 mr-spacing-10">
-        <div className="w-sizing-8 h-sizing-8 bg-ink-white rounded-2 flex items-center justify-center">
+        <div className="w-sizing-8 h-sizing-8 bg-ink-white rounded-1 flex items-center justify-center">
           <svg viewBox="0 0 24 24" className="w-5 h-5 text-brand-primary" fill="currentColor">
             <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18l7.12 3.56L12 11.3 4.88 7.74 12 4.18zM4 8.82l7 3.5v7.36l-7-3.5V8.82zm9 10.86v-7.36l7-3.5v7.36l-7 3.5z" />
           </svg>

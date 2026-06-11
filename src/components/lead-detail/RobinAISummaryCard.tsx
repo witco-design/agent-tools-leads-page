@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Sparkles, Loader2, RotateCw, ChevronUp, ChevronDown } from 'lucide-react';
 import {
   Collapsible,
@@ -125,6 +125,11 @@ export function RobinAISummaryCard() {
   /** Bumped each time we (re)generate — used as key on TypewriterBody to remount it fresh */
   const [genKey, setGenKey] = useState(0);
 
+  /** One-time shimmer on viewport entry */
+  const generateBtnRef = useRef<HTMLButtonElement>(null);
+  const [hasShimmered, setHasShimmered] = useState(false);
+  const observerFiredRef = useRef(false);
+
   /* ── Refresh the relative timestamp every 30s ── */
   useEffect(() => {
     if (!generatedAt) return;
@@ -134,6 +139,32 @@ export function RobinAISummaryCard() {
     }, 30_000);
     return () => clearInterval(interval);
   }, [generatedAt]);
+
+  /* ── Shimmer on viewport entry (one-time, pure gradient overlay) ── */
+  useEffect(() => {
+    if (!generateBtnRef.current || observerFiredRef.current) return;
+    let delayTimer: ReturnType<typeof setTimeout>;
+    let cleanupTimer: ReturnType<typeof setTimeout>;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !observerFiredRef.current) {
+          observerFiredRef.current = true;
+          delayTimer = setTimeout(() => {
+            setHasShimmered(true);
+            cleanupTimer = setTimeout(() => setHasShimmered(false), 1400);
+          }, 400);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.6 },
+    );
+    observer.observe(generateBtnRef.current);
+    return () => {
+      observer.disconnect();
+      clearTimeout(delayTimer);
+      clearTimeout(cleanupTimer);
+    };
+  }, []);
 
   /* ── Generation complete callback (called by TypewriterBody) ── */
   const handleGenerationComplete = useCallback(() => {
@@ -179,12 +210,12 @@ export function RobinAISummaryCard() {
             {/* STATE A: Not generated → Generate button */}
             {!hasGenerated && !isGenerating && (
               <button
+                ref={generateBtnRef}
                 type="button"
                 onClick={handleGenerate}
-                className="h-9 px-spacing-4 inline-flex items-center gap-spacing-2 bg-[#746ec0] hover:bg-[#4F4DAB] text-white rounded-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2"
+                className={`relative overflow-hidden h-9 px-spacing-4 inline-flex items-center bg-[#ebeaff] hover:bg-[#ebeaff]/60 border border-[#c3c0f1] text-[#2d2684] rounded-1 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2${hasShimmered ? ' shimmer-active' : ''}`}
               >
-                <Sparkles className="w-4 h-4" />
-                Generate
+                Generate Summary
               </button>
             )}
 
@@ -193,7 +224,7 @@ export function RobinAISummaryCard() {
               <button
                 type="button"
                 disabled
-                className="h-9 px-spacing-4 inline-flex items-center gap-spacing-2 bg-[#746ec0] opacity-60 text-white rounded-2 text-sm font-medium cursor-not-allowed"
+                className="h-9 px-spacing-4 inline-flex items-center gap-spacing-2 bg-[#746ec0] opacity-60 text-white rounded-1 text-sm font-medium cursor-not-allowed"
               >
                 <Loader2 className="w-4 h-4 animate-spin" />
                 Generating…
@@ -203,16 +234,19 @@ export function RobinAISummaryCard() {
             {/* STATE C / D: Generated → timestamp + Regenerate + chevron */}
             {hasGenerated && !isGenerating && (
               <>
-                <span className="text-sm text-text-muted hidden sm:inline">
+                <time
+                  dateTime={generatedAt?.toISOString()}
+                  className="text-sm text-[#344054] hidden sm:inline"
+                >
                   Generated {relativeTime}
-                </span>
+                </time>
                 <button
                   type="button"
                   onClick={handleGenerate}
                   aria-label="Regenerate summary"
-                  className="text-sm font-medium text-[#746ec0] hover:text-[#4F4DAB] transition inline-flex items-center gap-spacing-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1"
+                  className="text-sm font-medium text-[#322b95] hover:text-[#2d2684] transition inline-flex items-center gap-spacing-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1"
                 >
-                  <RotateCw className="w-3.5 h-3.5" />
+                  <RotateCw className="w-3.5 h-3.5" aria-hidden="true" />
                   Regenerate
                 </button>
                 <CollapsibleTrigger asChild>
@@ -222,9 +256,9 @@ export function RobinAISummaryCard() {
                     className="text-[#475467] hover:text-[#101828] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1"
                   >
                     {isExpanded ? (
-                      <ChevronUp className="w-5 h-5" />
+                      <ChevronUp className="w-5 h-5" aria-hidden="true" />
                     ) : (
-                      <ChevronDown className="w-5 h-5" />
+                      <ChevronDown className="w-5 h-5" aria-hidden="true" />
                     )}
                   </button>
                 </CollapsibleTrigger>

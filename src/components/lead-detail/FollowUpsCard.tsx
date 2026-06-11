@@ -35,7 +35,7 @@ const initialFollowUps: FollowUpItem[] = [
     id: '1',
     title: 'Call back',
     description: 'Discuss interest level on 2339 Shaughnessy and confirm pre-approval status with lender.',
-    date: 'Nov 9 · 10:37am',
+    date: '11/9 · 10:37am',
     tagType: 'video',
     hasAlarm: true,
     checked: false,
@@ -44,7 +44,7 @@ const initialFollowUps: FollowUpItem[] = [
     id: '2',
     title: 'Send listings',
     description: 'Email curated list of 3-bed townhomes in San Jose / Santa Clara area, $650K-$750K.',
-    date: 'Nov 12 · 9:00am',
+    date: '11/12 · 9:00am',
     tagType: 'email',
     hasAlarm: false,
     checked: false,
@@ -128,7 +128,7 @@ export function FollowUpsCard() {
       <CollapsibleCard
         data-component="FollowUpItem"
         title="Follow Ups"
-        showInfoIcon
+        infoTooltip="These are reminders for next step interactions that are important for nurturing the relationship with your lead."
         footer={
           <div className="flex items-center justify-between">
             <button
@@ -149,11 +149,11 @@ export function FollowUpsCard() {
           </div>
         }
       >
-        <div className="space-y-spacing-4">
+        <div>
           {followUps.map((item) => (
             <div
               key={item.id}
-              className="flex gap-spacing-3 p-spacing-2 -mx-spacing-2 rounded-2 hover:bg-gray-30 transition-colors cursor-pointer"
+              className="relative flex gap-spacing-3 px-spacing-2 py-spacing-5 -mx-spacing-2 rounded-1 hover:bg-gray-30 transition-colors cursor-pointer after:absolute after:bottom-0 after:left-spacing-5 after:right-0 after:h-px after:bg-border-default last:after:hidden"
             >
               {/* Checkbox */}
               <div className="pt-0.5">
@@ -166,9 +166,14 @@ export function FollowUpsCard() {
 
               {/* Content */}
               <div className="flex-1 min-w-0">
-                {/* Title row */}
-                <div className="flex items-center justify-between gap-spacing-2">
-                  <span className="text-text-4 font-semibold text-text-default truncate">
+                {/* Title row — clock badge before title */}
+                <div className="flex items-center gap-spacing-2">
+                  {item.hasAlarm && (
+                    <div className="w-6 h-6 rounded-round bg-red-30 flex items-center justify-center flex-shrink-0">
+                      <AlarmClock className="w-3.5 h-3.5 text-red-80" aria-label="Follow-up needed soon" />
+                    </div>
+                  )}
+                  <span className="text-text-4 font-semibold text-text-default truncate flex-1 min-w-0">
                     {item.title}
                   </span>
                   <button
@@ -186,21 +191,11 @@ export function FollowUpsCard() {
                   {item.description}
                 </p>
 
-                {/* Bottom meta (stacked) */}
-                <div className="flex flex-col gap-spacing-2 mt-2">
-                  {/* Row 1: Date with optional alarm icon */}
-                  <div className="flex items-center gap-spacing-2">
-                    {item.hasAlarm && (
-                      <div className="w-6 h-6 rounded-round bg-red-30 flex items-center justify-center flex-shrink-0">
-                        <AlarmClock className="w-3.5 h-3.5 text-red-80" />
-                      </div>
-                    )}
-                    <span className="text-text-4 font-normal text-text-secondary whitespace-nowrap">
-                      {item.date}
-                    </span>
-                  </div>
-
-                  {/* Row 2: Action pill, left-aligned */}
+                {/* Bottom meta — date + tag inline, wraps if narrow */}
+                <div className="flex flex-wrap items-center gap-spacing-2 mt-2">
+                  <span className="text-xs text-[#475467] whitespace-nowrap">
+                    {item.date}
+                  </span>
                   <Badge variant="communication" className="self-start">
                     {item.tagType === 'video' ? (
                       <>
@@ -236,7 +231,7 @@ export function FollowUpsCard() {
                 value={addTitle}
                 onChange={(e) => setAddTitle(e.target.value)}
                 placeholder="e.g., Call back"
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
@@ -246,7 +241,7 @@ export function FollowUpsCard() {
                 value={addDescription}
                 onChange={(e) => setAddDescription(e.target.value)}
                 placeholder="What needs to be done?"
-                className="w-full px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+                className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               />
             </div>
             <div>
@@ -255,13 +250,13 @@ export function FollowUpsCard() {
                 type="datetime-local"
                 value={addDate}
                 onChange={(e) => setAddDate(e.target.value)}
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
               <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Type</label>
               <Select value={addTagType} onValueChange={(v) => setAddTagType(v as 'video' | 'email')}>
-                <SelectTrigger className="h-9 rounded-2 border-border-default bg-white text-text-4 px-spacing-3 w-full">
+                <SelectTrigger className="h-9 rounded-1 border-border-default bg-white text-text-4 px-spacing-3 w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -274,7 +269,7 @@ export function FollowUpsCard() {
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-1 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setAddOpen(false)}
             >
               Cancel
@@ -282,7 +277,7 @@ export function FollowUpsCard() {
             <button
               type="button"
               disabled={!addTitle.trim()}
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-9 px-spacing-4 rounded-1 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleAdd}
             >
               Add
@@ -305,7 +300,7 @@ export function FollowUpsCard() {
                 type="text"
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
@@ -314,7 +309,7 @@ export function FollowUpsCard() {
                 rows={3}
                 value={editDescription}
                 onChange={(e) => setEditDescription(e.target.value)}
-                className="w-full px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+                className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               />
             </div>
             <div>
@@ -323,13 +318,13 @@ export function FollowUpsCard() {
                 type="text"
                 value={editDate}
                 onChange={(e) => setEditDate(e.target.value)}
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
               <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Type</label>
               <Select value={editTagType} onValueChange={(v) => setEditTagType(v as 'video' | 'email')}>
-                <SelectTrigger className="h-9 rounded-2 border-border-default bg-white text-text-4 px-spacing-3 w-full">
+                <SelectTrigger className="h-9 rounded-1 border-border-default bg-white text-text-4 px-spacing-3 w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -342,14 +337,14 @@ export function FollowUpsCard() {
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-1 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setEditOpen(false)}
             >
               Cancel
             </button>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-1 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
               onClick={handleSaveEdit}
             >
               Save

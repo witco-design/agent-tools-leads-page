@@ -64,7 +64,7 @@ export function LeadDetailPageSkeleton() {
                 {[1, 2, 3, 4].map((i) => (
                   <div key={i} className="flex items-center justify-between min-h-9">
                     <Skeleton className="h-4 w-20 rounded-1" />
-                    <Skeleton className="h-9 w-[160px] rounded-2" />
+                    <Skeleton className="h-9 w-[160px] rounded-1" />
                   </div>
                 ))}
               </div>
@@ -160,7 +160,7 @@ export function LeadDetailPageSkeleton() {
 
               <div className="px-spacing-5 py-spacing-4 space-y-spacing-3">
                 {section.bodyType === 'note' ? (
-                  <div className="bg-[#FEF6EE] rounded-2 p-spacing-4 space-y-spacing-2">
+                  <div className="bg-[#FEF6EE] rounded-1 p-spacing-4 space-y-spacing-2">
                     <Skeleton className="h-4 w-full rounded-1 bg-[#fbe4ab]" />
                     <Skeleton className="h-4 w-5/6 rounded-1 bg-[#fbe4ab]" />
                     <Skeleton className="h-4 w-3/4 rounded-1 bg-[#fbe4ab]" />

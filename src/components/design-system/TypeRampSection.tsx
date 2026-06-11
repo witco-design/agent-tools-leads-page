@@ -13,7 +13,7 @@ export function TypeRampSection() {
         return (
           <div
             key={entry.step}
-            className="bg-bg-canvas rounded-2 border border-border-default px-spacing-4 py-spacing-3 flex items-baseline gap-spacing-6 hover:shadow-sm transition-shadow duration-200"
+            className="bg-bg-canvas rounded-1 border border-border-default px-spacing-4 py-spacing-3 flex items-baseline gap-spacing-6 hover:shadow-sm transition-shadow duration-200"
           >
             {/* Step name & metadata */}
             <div className="w-[140px] flex-shrink-0">

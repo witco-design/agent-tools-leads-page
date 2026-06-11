@@ -8,13 +8,13 @@ import {
   MessagesSquare,
   Mail,
   FileText,
-  MoreHorizontal,
   Heart,
   Home,
   Activity,
   X,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { format } from 'date-fns';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -37,6 +37,7 @@ import {
   pinnedItem,
 } from './activityData';
 import { useActivityFilter } from './ActivityFilterContext';
+import { LogActivityDialog } from './LogActivityDialog';
 
 // ── Content-type filter categories ─────────────────────────────
 const CONTENT_FILTER_CATEGORIES = [
@@ -51,14 +52,7 @@ const CONTENT_FILTER_CATEGORIES = [
   { key: 'properties', label: 'Properties', icon: Home, types: ['view', 'viewed', 'property_viewed', 'visited', 'video_played', 'market_report_viewed', 'tour_requested', 'valuation_inquired', 'opted_in_lender_tcpa'] },
 ] as const;
 
-// ── Log Activity dropdown types ────────────────────────────────
-const logActivityTypes = [
-  { label: 'Call', icon: Phone, color: 'text-green-100' },
-  { label: 'Text', icon: MessageSquare, color: 'text-orange-110' },
-  { label: 'Email', icon: Mail, color: 'text-blue-110' },
-  { label: 'Note', icon: FileText, color: 'text-gray-80' },
-  { label: 'Other', icon: MoreHorizontal, color: 'text-gray-80' },
-];
+// (Log activity types moved into LogActivityDialog)
 
 // (Filter type mapping removed — unified into CONTENT_FILTER_CATEGORIES via shared context)
 
@@ -131,7 +125,6 @@ export function ActivityHistoryCard() {
   ]);
   // Log Activity dialog
   const [logDialogOpen, setLogDialogOpen] = useState(false);
-  const [logDialogType, setLogDialogType] = useState('');
 
   // Note dialog
   const [noteDialogOpen, setNoteDialogOpen] = useState(false);
@@ -269,10 +262,37 @@ export function ActivityHistoryCard() {
     [],
   );
 
-  const openLogDialog = (type: string) => {
-    setLogDialogType(type);
-    setLogDialogOpen(true);
-  };
+  // Log Activity save handler
+  const handleLogActivitySave = useCallback(
+    (activity: { type: string; direction: string; timestamp: Date; notes: string; notifyRecipient: string }) => {
+      const today = activity.timestamp.toISOString().slice(0, 10);
+      const nowTime = activity.timestamp.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      });
+      const typeLabel =
+        activity.type === 'other'
+          ? `logged ${activity.direction || 'an activity'}`
+          : `logged a ${activity.type}`;
+      const newItem: ActivityItemData = {
+        id: `log-${Date.now()}`,
+        type: activity.type === 'call' ? 'call' : activity.type === 'text' ? 'sms' : activity.type === 'email' ? 'email' : activity.type === 'note' ? 'note' : 'note',
+        title:
+          activity.notes?.slice(0, 80) ||
+          `${activity.type.charAt(0).toUpperCase() + activity.type.slice(1)} activity`,
+        timestamp: `${format(activity.timestamp, 'MMM d, yyyy')} at ${nowTime}`,
+        date: today,
+        time: nowTime,
+        actor: { name: 'Jon Scharer', avatarInitials: 'JS' },
+        typeLabel,
+        note: activity.notes || undefined,
+      };
+      setHistoryItems((prev) => [newItem, ...prev]);
+      toast.success(`${activity.type.charAt(0).toUpperCase() + activity.type.slice(1)} activity logged`);
+    },
+    [],
+  );
 
   // ── Delete handler ────────────────────────────────────────────
   const handleDelete = useCallback((id: string) => {
@@ -364,42 +384,25 @@ export function ActivityHistoryCard() {
           {/* + Note button */}
           <button
             onClick={() => setNoteDialogOpen(true)}
-            className="inline-flex items-center gap-1 h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-link hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1 h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 font-semibold text-text-link hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Note</span>
           </button>
 
-          {/* + Log Activity split-button */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="inline-flex items-center gap-1 h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-link hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer">
-                <Plus className="w-4 h-4" />
-                <span>Log Activity</span>
-                <ChevronDown className="w-3.5 h-3.5 ml-0.5" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="min-w-[160px]">
-              {logActivityTypes.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <DropdownMenuItem
-                    key={item.label}
-                    className="flex items-center gap-spacing-2 py-spacing-2 px-spacing-3 cursor-pointer hover:bg-gray-30 text-text-4 text-text-default"
-                    onClick={() => openLogDialog(item.label)}
-                  >
-                    <Icon className={`w-3.5 h-3.5 ${item.color}`} />
-                    <span>{item.label}</span>
-                  </DropdownMenuItem>
-                );
-              })}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {/* + Log Activity button (opens unified dialog) */}
+          <button
+            onClick={() => setLogDialogOpen(true)}
+            className="inline-flex items-center gap-1 h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 font-semibold text-text-link hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Log Activity</span>
+          </button>
 
           {/* Content-type filter (reads/writes shared context) */}
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-              <button className="inline-flex items-center gap-1.5 h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer">
+              <button className="inline-flex items-center gap-1.5 h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer">
                 {(() => {
                   const filterKey = activeFilter ?? 'all';
                   const active = CONTENT_FILTER_CATEGORIES.find((c) => c.key === filterKey);
@@ -412,17 +415,7 @@ export function ActivityHistoryCard() {
                     </>
                   );
                 })()}
-                {activeFilter && activeFilter !== 'all' ? (
-                  <button
-                    type="button"
-                    className="ml-0.5 p-0.5 hover:bg-gray-50 rounded-full cursor-pointer"
-                    onClick={(e) => { e.stopPropagation(); setActiveFilter(null); }}
-                  >
-                    <X className="w-3 h-3 text-text-muted" />
-                  </button>
-                ) : (
-                  <ChevronDown className="w-4 h-4 text-text-secondary" />
-                )}
+                <ChevronDown className="w-4 h-4 text-text-secondary" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-[220px]">
@@ -459,13 +452,13 @@ export function ActivityHistoryCard() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search Activity"
-              className="w-full h-9 pl-9 pr-3 bg-white rounded-2 text-text-4 font-normal text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-blue-40 focus:border-blue-110 border border-border-default"
+              className="w-full h-9 pl-9 pr-3 bg-white rounded-1 text-text-4 font-normal text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-blue-40 focus:border-blue-110 border border-border-default"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 hover:bg-gray-50 rounded-full cursor-pointer"
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 hover:bg-gray-50 rounded-1 cursor-pointer"
               >
                 <X className="w-3.5 h-3.5 text-text-muted" />
               </button>
@@ -562,7 +555,7 @@ export function ActivityHistoryCard() {
                 ref={showMoreRef}
                 type="button"
                 onClick={() => setVisibleCount((c) => c + INCREMENT)}
-                className="w-full h-10 inline-flex items-center justify-center gap-spacing-2 bg-white border border-border-default rounded-2 text-text-4 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+                className="w-full h-10 inline-flex items-center justify-center gap-spacing-2 bg-white border border-border-default rounded-1 text-text-4 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               >
                 Show more activity
                 <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-spacing-1 rounded-round bg-[#ebf8ff] text-[#3e60c9] text-xs font-semibold">
@@ -586,7 +579,7 @@ export function ActivityHistoryCard() {
                         setVisibleCount(idx + INCREMENT);
                       }
                     }}
-                    className="h-9 px-spacing-3 border border-border-default rounded-2 text-text-4 text-text-default focus:outline-none focus:border-blue-110 focus:ring-1 focus:ring-blue-40"
+                    className="h-9 px-spacing-3 border border-border-default rounded-1 text-text-4 text-text-default focus:outline-none focus:border-blue-110 focus:ring-1 focus:ring-blue-40"
                   />
                   <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-spacing-1 rounded-round bg-[#ebf8ff] text-[#3e60c9] text-xs font-semibold">
                     {remainingCount} remaining
@@ -600,58 +593,14 @@ export function ActivityHistoryCard() {
         )}
       </div>
 
-      {/* ── Log Activity Dialog ─────────────────────────────── */}
-      <Dialog open={logDialogOpen} onOpenChange={setLogDialogOpen}>
-        <DialogContent className="sm:max-w-[480px]">
-          <DialogHeader>
-            <DialogTitle>Log {logDialogType}</DialogTitle>
-            <DialogDescription>
-              Record a {logDialogType.toLowerCase()} activity for this lead.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-spacing-4 py-spacing-2">
-            <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">
-                Date &amp; Time
-              </label>
-              <input
-                type="datetime-local"
-                defaultValue={new Date().toISOString().slice(0, 16)}
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
-              />
-            </div>
-            <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">
-                Notes
-              </label>
-              <textarea
-                rows={4}
-                placeholder="Add notes about this activity..."
-                className="w-full px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <button
-              type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
-              onClick={() => setLogDialogOpen(false)}
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
-              onClick={() => {
-                setLogDialogOpen(false);
-                toast.success(`${logDialogType} activity logged`);
-              }}
-            >
-              Save
-            </button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {/* ── Log Activity Dialog (unified with tabs) ──────── */}
+      <LogActivityDialog
+        open={logDialogOpen}
+        onOpenChange={setLogDialogOpen}
+        leadName="Camille Dubois"
+        currentUserName="Jon Scharer"
+        onSave={handleLogActivitySave}
+      />
 
       {/* ── Add Note Dialog ──────────────────────────────────── */}
       <Dialog open={noteDialogOpen} onOpenChange={setNoteDialogOpen}>
@@ -668,14 +617,14 @@ export function ActivityHistoryCard() {
               value={noteText}
               onChange={(e) => setNoteText(e.target.value)}
               placeholder="Type your note…"
-              className="w-full px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+              className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               autoFocus
             />
           </div>
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-1 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setNoteDialogOpen(false)}
             >
               Cancel
@@ -683,7 +632,7 @@ export function ActivityHistoryCard() {
             <button
               type="button"
               disabled={!noteText.trim()}
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-9 px-spacing-4 rounded-1 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleSaveNote}
             >
               Save Note
@@ -710,7 +659,7 @@ export function ActivityHistoryCard() {
                 type="text"
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
@@ -722,21 +671,21 @@ export function ActivityHistoryCard() {
                 value={editNote}
                 onChange={(e) => setEditNote(e.target.value)}
                 placeholder="Add notes…"
-                className="w-full px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+                className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               />
             </div>
           </div>
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-1 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setEditDialogOpen(false)}
             >
               Cancel
             </button>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-1 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
               onClick={handleSaveEdit}
             >
               Save

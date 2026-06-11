@@ -54,7 +54,7 @@ export function SourceCard() {
           </span>
           <div className="flex-1">
             <Select value={source} onValueChange={setSource}>
-              <SelectTrigger className="h-8 rounded-2 border-border-default bg-white text-text-4 px-spacing-3 w-full">
+              <SelectTrigger className="h-8 rounded-1 border-border-default bg-white text-text-4 px-spacing-3 w-full">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -78,7 +78,7 @@ export function SourceCard() {
               <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Source</label>
               <select
                 defaultValue={source}
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
               >
                 {SOURCE_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -90,7 +90,7 @@ export function SourceCard() {
               <input
                 type="text"
                 placeholder="e.g., Landing page A"
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
@@ -98,21 +98,21 @@ export function SourceCard() {
               <input
                 type="text"
                 placeholder="e.g., Spring 2025"
-                className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
           </div>
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-1 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setEditOpen(false)}
             >
               Cancel
             </button>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-1 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
               onClick={() => {
                 setEditOpen(false);
                 toast.success('Source updated');

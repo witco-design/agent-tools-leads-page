@@ -173,7 +173,7 @@ export function AppHeader() {
             <button
               type="button"
               aria-label="Search"
-              className="md:hidden h-9 w-9 inline-flex items-center justify-center text-[#475467] hover:bg-[#F9FAFB] rounded-2 transition cursor-pointer shrink-0"
+              className="md:hidden h-9 w-9 inline-flex items-center justify-center text-[#475467] hover:bg-[#F9FAFB] rounded-1 transition cursor-pointer shrink-0"
               onClick={() => setMobileSearchOpen(true)}
             >
               <Search className="w-5 h-5" />
@@ -189,7 +189,7 @@ export function AppHeader() {
             type="search"
             placeholder="Search your CRM"
             className={cn(
-              'h-10 pl-9 pr-spacing-3 rounded-2 border border-[#E4E7EC] bg-white text-sm text-[#101828] placeholder:text-[#667085] focus:outline-none focus:border-[#3E60C9] focus:ring-1 focus:ring-[#3E60C9] transition-[width] duration-300 ease-out',
+              'h-10 pl-9 pr-spacing-3 rounded-1 border border-[#E4E7EC] bg-white text-sm text-[#101828] placeholder:text-[#667085] focus:outline-none focus:border-[#3E60C9] focus:ring-1 focus:ring-[#3E60C9] transition-[width] duration-300 ease-out',
               searchFocused ? 'w-[440px]' : 'w-[320px]',
             )}
             onFocus={() => setSearchFocused(true)}
@@ -217,7 +217,7 @@ export function AppHeader() {
                     onFocus={showNudge}
                     onBlur={startHideNudge}
                     className={cn(
-                      'inline-flex items-center justify-center gap-spacing-2 h-10 rounded-2 text-sm font-semibold transition cursor-pointer',
+                      'inline-flex items-center justify-center gap-spacing-2 h-10 rounded-1 text-sm font-semibold transition cursor-pointer',
                       'bg-[#3E60C9]/[0.08] hover:bg-[#3E60C9]/[0.14]',
                       'w-10 min-[1080px]:w-auto min-[1080px]:px-spacing-4',
                       animPhase === 'pulse' && 'animate-chat-pulse',
@@ -251,7 +251,7 @@ export function AppHeader() {
               side="bottom"
               sideOffset={8}
               align="center"
-              className="w-[280px] p-spacing-4 bg-white border border-[#E4E7EC] rounded-2 shadow-lg"
+              className="w-[280px] p-spacing-4 bg-white border border-[#E4E7EC] rounded-1 shadow-lg"
               onMouseEnter={cancelHideNudge}
               onMouseLeave={startHideNudge}
               onOpenAutoFocus={(e) => e.preventDefault()}
@@ -281,7 +281,7 @@ export function AppHeader() {
 
               <button
                 type="button"
-                className="mt-spacing-3 h-9 px-spacing-4 w-full inline-flex items-center justify-center bg-[#3E60C9] hover:bg-[#3840A9] text-white text-sm font-medium rounded-2 transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3E60C9] focus-visible:ring-offset-2"
+                className="mt-spacing-3 h-9 px-spacing-4 w-full inline-flex items-center justify-center bg-[#3E60C9] hover:bg-[#3840A9] text-white text-sm font-medium rounded-1 transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3E60C9] focus-visible:ring-offset-2"
                 onClick={() => {
                   dismissNudge();
                   openChat();
@@ -311,7 +311,7 @@ export function AppHeader() {
                 <button
                   type="button"
                   aria-label="Notifications"
-                  className="inline-flex items-center gap-spacing-2 h-9 min-[1080px]:h-10 min-[1080px]:px-spacing-3 rounded-2 text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] transition cursor-pointer shrink-0 relative w-9 min-[1080px]:w-auto justify-center min-[1080px]:justify-start"
+                  className="inline-flex items-center gap-spacing-2 h-9 min-[1080px]:h-10 min-[1080px]:px-spacing-3 rounded-1 text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] transition cursor-pointer shrink-0 relative w-9 min-[1080px]:w-auto justify-center min-[1080px]:justify-start"
                 >
                   <span className="relative shrink-0">
                     <Bell className="w-5 h-5" />
@@ -333,7 +333,7 @@ export function AppHeader() {
             <TooltipContent side="bottom" sideOffset={6} className="min-[1080px]:hidden">Notifications</TooltipContent>
           </Tooltip>
 
-          <PopoverContent className="w-[360px] p-0 bg-white border border-[#E4E7EC] rounded-2 shadow-lg" align="end">
+          <PopoverContent className="w-[360px] p-0 bg-white border border-[#E4E7EC] rounded-1 shadow-lg" align="end">
             <div className="px-spacing-4 py-spacing-3 border-b border-[#E4E7EC] bg-[#F9FAFB]">
               <h3 className="text-sm font-semibold text-[#101828]">Refer-A-Friend Program</h3>
             </div>
@@ -342,7 +342,7 @@ export function AppHeader() {
               <div className="flex items-center justify-between">
                 <button
                   type="button"
-                  className="h-8 px-spacing-3 inline-flex items-center bg-[#216f51] hover:bg-[#027A48] text-white rounded-2 text-sm font-medium transition cursor-pointer"
+                  className="h-8 px-spacing-3 inline-flex items-center bg-[#216f51] hover:bg-[#027A48] text-white rounded-1 text-sm font-medium transition cursor-pointer"
                   onClick={() => toast('Opening referral form…')}
                 >
                   Earn $200
@@ -379,7 +379,7 @@ export function AppHeader() {
                 <button
                   type="button"
                   aria-label="Resources"
-                  className="inline-flex items-center gap-spacing-2 h-9 min-[1080px]:h-10 min-[1080px]:px-spacing-3 rounded-2 text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] transition cursor-pointer shrink-0 w-9 min-[1080px]:w-auto justify-center min-[1080px]:justify-start"
+                  className="inline-flex items-center gap-spacing-2 h-9 min-[1080px]:h-10 min-[1080px]:px-spacing-3 rounded-1 text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] transition cursor-pointer shrink-0 w-9 min-[1080px]:w-auto justify-center min-[1080px]:justify-start"
                 >
                   <HelpCircle className="w-5 h-5 shrink-0" />
                   <span className="hidden min-[1080px]:inline text-sm font-medium text-[#101828] whitespace-nowrap">
@@ -391,7 +391,7 @@ export function AppHeader() {
             <TooltipContent side="bottom" sideOffset={6} className="min-[1080px]:hidden">Resources</TooltipContent>
           </Tooltip>
 
-          <DropdownMenuContent className="w-[280px] bg-white border border-[#E4E7EC] rounded-2 shadow-lg" align="end">
+          <DropdownMenuContent className="w-[280px] bg-white border border-[#E4E7EC] rounded-1 shadow-lg" align="end">
             <DropdownMenuLabel className="text-sm font-semibold text-[#101828] px-spacing-3 py-spacing-2">
               Resources
             </DropdownMenuLabel>
@@ -462,7 +462,7 @@ export function AppHeader() {
                 <button
                   type="button"
                   aria-label="Account menu"
-                  className="inline-flex items-center gap-spacing-2 h-9 px-spacing-2 rounded-2 hover:bg-[#F9FAFB] transition cursor-pointer shrink-0"
+                  className="inline-flex items-center gap-spacing-2 h-9 px-spacing-2 rounded-1 hover:bg-[#F9FAFB] transition cursor-pointer shrink-0"
                 >
                   <CircleUserRound className="w-5 h-5 text-[#475467] shrink-0" />
                   <span className="hidden min-[1080px]:inline text-sm font-medium text-[#101828] whitespace-nowrap">
@@ -475,7 +475,7 @@ export function AppHeader() {
             <TooltipContent side="bottom" sideOffset={6} className="min-[1080px]:hidden">{USER_NAME}</TooltipContent>
           </Tooltip>
 
-          <DropdownMenuContent className="w-[300px] bg-white border border-[#E4E7EC] rounded-2 shadow-lg" align="end">
+          <DropdownMenuContent className="w-[300px] bg-white border border-[#E4E7EC] rounded-1 shadow-lg" align="end">
             {/* User identity */}
             <div className="px-spacing-3 py-spacing-3 flex items-center gap-spacing-3 border-b border-[#E4E7EC]">
               <CircleUserRound className="w-8 h-8 text-[#475467] shrink-0" />
@@ -597,7 +597,7 @@ export function AppHeader() {
               ref={mobileSearchRef}
               type="search"
               placeholder="Search your CRM"
-              className="h-10 w-full pl-9 pr-spacing-3 rounded-2 border border-[#E4E7EC] bg-white text-sm text-[#101828] placeholder:text-[#667085] focus:outline-none focus:border-[#3E60C9] focus:ring-1 focus:ring-[#3E60C9]"
+              className="h-10 w-full pl-9 pr-spacing-3 rounded-1 border border-[#E4E7EC] bg-white text-sm text-[#101828] placeholder:text-[#667085] focus:outline-none focus:border-[#3E60C9] focus:ring-1 focus:ring-[#3E60C9]"
               onKeyDown={(e) => {
                 if (e.key === 'Escape') setMobileSearchOpen(false);
               }}
@@ -606,7 +606,7 @@ export function AppHeader() {
           <button
             type="button"
             aria-label="Close search"
-            className="h-9 w-9 inline-flex items-center justify-center text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] rounded-2 transition cursor-pointer shrink-0"
+            className="h-9 w-9 inline-flex items-center justify-center text-[#475467] hover:text-[#101828] hover:bg-[#F9FAFB] rounded-1 transition cursor-pointer shrink-0"
             onClick={() => setMobileSearchOpen(false)}
           >
             <X className="w-5 h-5" />

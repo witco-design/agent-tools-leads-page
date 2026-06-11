@@ -91,7 +91,7 @@ export function TopUtilityBar() {
           <input
             type="text"
             placeholder="Search your CRM"
-            className="w-full h-9 pl-9 pr-3 bg-white rounded-2 text-text-4 font-normal text-text-secondary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-blue-40 focus:border-blue-110 border border-border-default"
+            className="w-full h-9 pl-9 pr-3 bg-white rounded-1 text-text-4 font-normal text-text-secondary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-blue-40 focus:border-blue-110 border border-border-default"
           />
         </div>
 
@@ -103,7 +103,7 @@ export function TopUtilityBar() {
           {/* Chat with Support */}
           <button
             onClick={() => toast('Opening support chat…')}
-            className="inline-flex items-center gap-spacing-2 h-9 px-spacing-3 rounded-2 border border-border-default bg-bg-canvas hover:bg-gray-30 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-spacing-2 h-9 px-spacing-3 rounded-1 border border-border-default bg-bg-canvas hover:bg-gray-30 transition-colors cursor-pointer"
           >
             <MessageCircle className="w-4 h-4 text-text-secondary shrink-0" />
             <span className="hidden md:inline text-text-4 font-normal text-text-default">
@@ -266,7 +266,7 @@ export function TopUtilityBar() {
           {/* F-2: Avatar & greeting → DropdownMenu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-spacing-2 ml-spacing-2 cursor-pointer rounded-2 px-spacing-2 py-spacing-1 hover:bg-gray-30 transition-colors">
+              <button className="flex items-center gap-spacing-2 ml-spacing-2 cursor-pointer rounded-1 px-spacing-2 py-spacing-1 hover:bg-gray-30 transition-colors">
                 <img
                   src="https://i.pravatar.cc/36?img=47"
                   alt="User avatar"
@@ -317,7 +317,7 @@ export function TopUtilityBar() {
             ].map(([key, desc]) => (
               <div key={key} className="flex items-center justify-between">
                 <span className="text-text-4 text-text-default">{desc}</span>
-                <kbd className="inline-flex items-center h-6 px-2 rounded-2 bg-gray-40 text-text-3 font-mono text-text-secondary border border-border-default"> {/* text-text-3 OK: keyboard shortcut hint */}
+                <kbd className="inline-flex items-center h-6 px-2 rounded-1 bg-gray-40 text-text-3 font-mono text-text-secondary border border-border-default"> {/* text-text-3 OK: keyboard shortcut hint */}
                   {key}
                 </kbd>
               </div>
@@ -326,7 +326,7 @@ export function TopUtilityBar() {
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-1 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
               onClick={() => setShortcutsOpen(false)}
             >
               Close
@@ -348,14 +348,14 @@ export function TopUtilityBar() {
               value={feedbackText}
               onChange={(e) => setFeedbackText(e.target.value)}
               placeholder="Tell us what you think…"
-              className="w-full px-spacing-3 py-spacing-2 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+              className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               autoFocus
             />
           </div>
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-1 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setFeedbackOpen(false)}
             >
               Cancel
@@ -363,7 +363,7 @@ export function TopUtilityBar() {
             <button
               type="button"
               disabled={!feedbackText.trim()}
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-9 px-spacing-4 rounded-1 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleFeedbackSubmit}
             >
               Submit

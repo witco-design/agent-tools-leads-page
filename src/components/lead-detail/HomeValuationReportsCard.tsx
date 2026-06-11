@@ -47,13 +47,13 @@ export function HomeValuationReportsCard() {
         }
       >
         {reports.length === 0 ? (
-          <div className="bg-bg-muted rounded-2 p-3">
+          <div className="bg-bg-muted rounded-1 p-3">
             <p className="text-text-4 text-text-muted">No Home Valuation Reports</p>
           </div>
         ) : (
           <div className="space-y-spacing-2">
             {reports.map((report) => (
-              <div key={report.id} className="p-spacing-2 rounded-2 border border-border-default">
+              <div key={report.id} className="p-spacing-2 rounded-1 border border-border-default">
                 <p className="text-text-4 font-semibold text-text-default">{report.address}</p>
                 <p className="text-text-4 text-text-secondary">Home Valuation Report</p>
               </div>
@@ -76,13 +76,13 @@ export function HomeValuationReportsCard() {
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               placeholder="e.g., 123 Main St, San Jose, CA"
-              className="w-full h-9 px-spacing-3 rounded-2 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
             />
           </div>
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-1 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setAddOpen(false)}
             >
               Cancel
@@ -90,7 +90,7 @@ export function HomeValuationReportsCard() {
             <button
               type="button"
               disabled={!address.trim()}
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-9 px-spacing-4 rounded-1 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleAdd}
             >
               Add Report

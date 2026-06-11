@@ -21,8 +21,8 @@ const fields: CriteriaField[] = [
   {
     label: 'Area',
     stateKey: 'area',
-    options: ['Main Street, USA', 'Downtown Dallas', 'Highland Park', 'Uptown'],
-    defaultValue: 'main-street',
+    options: ['None', 'Main Street, USA', 'Downtown Dallas', 'Highland Park', 'Uptown'],
+    defaultValue: 'none',
   },
   {
     label: 'Home Type',
@@ -95,7 +95,7 @@ export function SearchCriteriaCard() {
             onClick={() => toast('Running search on website with current criteria…')}
             className="inline-flex items-center gap-1.5 text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
           >
-            <span>Run search</span>
+            <span>See Search Results</span>
             <ExternalLink className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -112,7 +112,7 @@ export function SearchCriteriaCard() {
                 value={values[field.stateKey]}
                 onValueChange={(v) => handleChange(field.stateKey, v)}
               >
-                <SelectTrigger className="h-8 rounded-2 border-border-default bg-white text-text-4 px-spacing-3 w-full">
+                <SelectTrigger className="h-8 rounded-1 border-border-default bg-white text-text-4 px-spacing-3 w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

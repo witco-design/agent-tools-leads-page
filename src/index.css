@@ -86,7 +86,7 @@
     --input: 218 18% 91%;              /* gray.50: #E4E7EC */
     --ring: 222 56% 52%;               /* blue.110: #3E60C9 */
 
-    --radius: 0.5rem;                  /* 8px — maps to rounded-2 */
+    --radius: 0.5rem;                  /* 8px — shadcn default; project uses rounded-1 (4px) for buttons/inputs */
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -220,11 +220,36 @@
   animation: badge-burst 0.6s ease-out 1;
 }
 
+/* ── Robin AI Generate button — pure shimmer: only the pseudo-element moves. Button stays still. ── */
+@keyframes shimmer-sweep {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.shimmer-active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(195, 192, 241, 0.55) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: shimmer-sweep 1.2s ease-out 1 forwards;
+  pointer-events: none;
+  z-index: 1;
+}
+
 /* ── Reduced motion: disable all header animations ── */
 @media (prefers-reduced-motion: reduce) {
   .animate-chat-pulse,
   .animate-dot-pulse,
-  .animate-badge-burst {
+  .animate-badge-burst,
+  .shimmer-active::before {
     animation: none !important;
   }
 }

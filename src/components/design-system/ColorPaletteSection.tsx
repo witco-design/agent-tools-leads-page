@@ -26,7 +26,7 @@ function ColorChip({ scaleName, step, hex, onCopy, copiedValue }: ColorChipProps
 
   return (
     <div
-      className={`relative flex-1 min-w-[72px] h-[72px] rounded-2 shadow-sm cursor-pointer transition-all duration-200 flex flex-col items-center justify-center ${
+      className={`relative flex-1 min-w-[72px] h-[72px] rounded-1 shadow-sm cursor-pointer transition-all duration-200 flex flex-col items-center justify-center ${
         hovered ? 'scale-105 shadow-md z-10' : ''
       } ${isCopied ? 'ring-2 ring-success-text' : ''}`}
       style={{ backgroundColor: hex }}
@@ -48,7 +48,7 @@ function ColorChip({ scaleName, step, hex, onCopy, copiedValue }: ColorChipProps
         {hex}
       </span>
       {isCopied && (
-        <div className="absolute inset-0 rounded-2 bg-success-bg/60 flex items-center justify-center">
+        <div className="absolute inset-0 rounded-1 bg-success-bg/60 flex items-center justify-center">
           <span className="text-[10px] font-semibold text-success-text">Copied!</span>
         </div>
       )}
@@ -77,7 +77,7 @@ export function ColorPaletteSection() {
                 {Object.entries(scale).map(([step, hex]) => (
                   <div
                     key={step}
-                    className="min-w-[72px] h-[72px] rounded-2 shadow-sm cursor-pointer transition-all duration-200 flex flex-col items-center justify-center border border-border-default hover:scale-105 hover:shadow-md"
+                    className="min-w-[72px] h-[72px] rounded-1 shadow-sm cursor-pointer transition-all duration-200 flex flex-col items-center justify-center border border-border-default hover:scale-105 hover:shadow-md"
                     style={{ backgroundColor: hex }}
                     onClick={() => copy(`bg-ink-${step}`)}
                     title={`bg-ink-${step} — ${hex}`}

@@ -98,7 +98,7 @@ export function WorkflowsCard() {
     <>
       <CollapsibleCard
         title="Workflows"
-        showInfoIcon
+        infoTooltip="A drip campaign is an automated chain of texts, emails or follow ups"
         footer={
           <div className="flex items-center gap-2">
             <Select value={selectedWorkflow} onValueChange={setSelectedWorkflow}>
@@ -118,7 +118,7 @@ export function WorkflowsCard() {
               type="button"
               disabled={!isWorkflowSelected}
               onClick={handleStart}
-              className={`inline-flex items-center gap-1.5 h-9 px-4 rounded-2 text-text-4 font-semibold transition-colors cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 h-9 px-4 rounded-1 text-text-4 font-semibold transition-colors cursor-pointer ${
                 isWorkflowSelected
                   ? 'bg-blue-110 text-white hover:bg-blue-120'
                   : 'bg-gray-40 text-text-muted cursor-not-allowed'
@@ -135,7 +135,7 @@ export function WorkflowsCard() {
           {workflows.map((workflow) => (
             <div
               key={workflow.id}
-              className="flex items-center gap-spacing-2 p-spacing-2 -mx-spacing-2 rounded-2 hover:bg-gray-30 transition-colors group"
+              className="flex items-center gap-spacing-2 p-spacing-2 -mx-spacing-2 rounded-1 hover:bg-gray-30 transition-colors group"
             >
               <button
                 type="button"
@@ -147,7 +147,7 @@ export function WorkflowsCard() {
               <button
                 type="button"
                 onClick={() => confirmRemove(workflow.id)}
-                className="opacity-0 group-hover:opacity-100 p-1 rounded-2 hover:bg-gray-50 cursor-pointer transition-all"
+                className="opacity-0 group-hover:opacity-100 p-1 rounded-1 hover:bg-gray-50 cursor-pointer transition-all"
                 title="Remove workflow"
               >
                 <X className="w-3.5 h-3.5 text-red-80" />
@@ -156,7 +156,7 @@ export function WorkflowsCard() {
           ))}
 
           {workflows.length === 0 && (
-            <div className="bg-bg-muted rounded-2 p-3">
+            <div className="bg-bg-muted rounded-1 p-3">
               <p className="text-text-4 text-text-muted">No active workflows</p>
             </div>
           )}
@@ -187,14 +187,14 @@ export function WorkflowsCard() {
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 border border-red-80 text-red-80 text-text-4 font-semibold hover:bg-red-30 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-1 border border-red-80 text-red-80 text-text-4 font-semibold hover:bg-red-30 transition-colors cursor-pointer"
               onClick={() => detailWorkflow && confirmRemove(detailWorkflow.id)}
             >
               Remove from Lead
             </button>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-2 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-1 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
               onClick={() => setDetailOpen(false)}
             >
               Close

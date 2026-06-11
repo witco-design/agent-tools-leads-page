@@ -28,8 +28,8 @@ export function ImportantNotesCard() {
           </button>
         }
       >
-        <div className="rounded-2 bg-orange-10 p-spacing-3">
-          <p className="text-text-4 font-normal text-text-default whitespace-pre-line line-clamp-5">
+        <div className="rounded-1 bg-orange-10 p-spacing-3">
+          <p className="text-text-4 font-normal text-text-default whitespace-pre-line line-clamp-6">
             {noteText}
           </p>
           <div className="flex justify-end mt-spacing-2">

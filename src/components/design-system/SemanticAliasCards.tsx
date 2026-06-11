@@ -20,7 +20,7 @@ export function SemanticAliasCards() {
               return (
                 <div
                   key={alias.name}
-                  className={`flex items-start gap-spacing-3 cursor-pointer rounded-2 p-spacing-2 -mx-spacing-2 transition-colors duration-150 hover:bg-bg-muted ${
+                  className={`flex items-start gap-spacing-3 cursor-pointer rounded-1 p-spacing-2 -mx-spacing-2 transition-colors duration-150 hover:bg-bg-muted ${
                     isCopied ? 'bg-success-bg/30' : ''
                   }`}
                   onClick={() => copy(alias.name)}

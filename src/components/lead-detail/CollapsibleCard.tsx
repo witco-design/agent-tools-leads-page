@@ -14,6 +14,10 @@ interface CollapsibleCardProps {
   title: string;
   countBadge?: number;
   showInfoIcon?: boolean;
+  /** Tooltip text for a standalone (i) button next to the title. Takes precedence over showInfoIcon. */
+  infoTooltip?: string;
+  /** Custom info slot rendered after the title (e.g. a HoverCard trigger). Takes precedence over showInfoIcon and infoTooltip. */
+  infoSlot?: React.ReactNode;
   rightAction?: React.ReactNode;
   footer?: React.ReactNode;
   defaultOpen?: boolean;
@@ -26,6 +30,8 @@ export function CollapsibleCard({
   title,
   countBadge,
   showInfoIcon,
+  infoTooltip,
+  infoSlot,
   rightAction,
   footer,
   defaultOpen = true,
@@ -63,7 +69,7 @@ export function CollapsibleCard({
             onClick={() => setOpen((prev) => !prev)}
           >
             <h3 className="text-text-4 font-semibold text-text-default">{title}</h3>
-            {showInfoIcon && (
+            {!infoSlot && !infoTooltip && showInfoIcon && (
               <Info className="w-3.5 h-3.5 ml-spacing-2 text-icon-default" />
             )}
             {countBadge !== undefined && (
@@ -72,6 +78,27 @@ export function CollapsibleCard({
               </span>
             )}
           </button>
+          {!infoSlot && infoTooltip && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  aria-label={`About ${title}`}
+                  className="ml-spacing-2 inline-flex items-center justify-center cursor-help bg-transparent border-none p-0 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-round"
+                >
+                  <Info className="w-3.5 h-3.5 text-icon-default" aria-hidden="true" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="top" className="max-w-xs">
+                <p>{infoTooltip}</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
+          {infoSlot && (
+            <div className="ml-spacing-2 shrink-0">
+              {infoSlot}
+            </div>
+          )}
           {rightAction && (
             <div className="ml-spacing-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200">
               {rightAction}
