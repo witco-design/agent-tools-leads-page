@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pencil, ChevronUp, ChevronDown, GripVertical, Plus } from 'lucide-react';
+import { Pencil, ChevronUp, ChevronDown, GripVertical } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Tooltip,
@@ -145,11 +145,27 @@ function DefaultMode({
   // Address is composite
   const hasAddress = contact.address.trim() !== '';
 
-  // Text-only fields (city, state, zip shown only in edit mode; they're part of address display)
-  const emptyFields = FIELDS.filter((f) => {
-    const val = contact[f.key] as string;
-    return val.trim() === '';
-  });
+  // Check if ALL fields are empty → show empty state
+  const hasAnyField =
+    hasName ||
+    phoneFields.some((pf) => (contact[pf.key] as string).trim() !== '') ||
+    emailFields.some((ef) => (contact[ef.key] as string).trim() !== '') ||
+    hasAddress;
+
+  if (!hasAnyField) {
+    return (
+      <div className="py-spacing-4 text-center">
+        <p className="text-sm text-text-muted mb-spacing-2">No contact information yet.</p>
+        <button
+          type="button"
+          onClick={onStartEdit}
+          className="text-sm font-medium text-text-link hover:underline cursor-pointer bg-transparent border-none p-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1"
+        >
+          + Add contact details
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-spacing-3">
@@ -208,23 +224,6 @@ function DefaultMode({
           status="good"
           onDelete={() => onChange({ ...contact, address: '', city: '', state: '', zip: '' })}
         />
-      )}
-
-      {/* Empty field add-affordances */}
-      {emptyFields.length > 0 && (
-        <div className="flex flex-wrap gap-spacing-2 pt-spacing-1">
-          {emptyFields.map((f) => (
-            <button
-              key={f.key}
-              type="button"
-              onClick={onStartEdit}
-              className="inline-flex items-center gap-0.5 text-sm text-[#3e60c9] hover:text-[#3840a9] transition cursor-pointer bg-transparent border-none p-0"
-            >
-              <Plus className="w-3 h-3" />
-              Add {f.label}
-            </button>
-          ))}
-        </div>
       )}
     </div>
   );

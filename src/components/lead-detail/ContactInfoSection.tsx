@@ -17,7 +17,7 @@ import {
 /* ────────────────────────────────────────────────────────
    DefaultMode — shows non-blank fields with action menus
    ──────────────────────────────────────────────────────── */
-function DefaultMode() {
+function DefaultMode({ onStartEdit }: { onStartEdit: () => void }) {
   const { contactInfo, updateContactInfo } = useContactInfo();
 
   const markStatus = (field: string, status: FieldStatus) => {
@@ -28,6 +28,26 @@ function DefaultMode() {
   const deleteField = (field: string) => {
     updateContactInfo({ [field]: '' } as Partial<ContactInfo>);
   };
+
+  // Check if ALL fields are empty → show empty state
+  const hasAnyField =
+    !!contactInfo.primary || !!contactInfo.alt || !!contactInfo.office ||
+    !!contactInfo.fax || !!contactInfo.email || !!contactInfo.street;
+
+  if (!hasAnyField) {
+    return (
+      <div className="py-spacing-4 text-center">
+        <p className="text-sm text-text-muted mb-spacing-2">No contact information yet.</p>
+        <button
+          type="button"
+          onClick={onStartEdit}
+          className="text-sm font-medium text-text-link hover:underline cursor-pointer bg-transparent border-none p-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1"
+        >
+          + Add contact details
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-spacing-3">
@@ -346,7 +366,7 @@ export function ContactInfoSection() {
             {isEditing ? (
               <EditMode form={editForm} onChange={setEditForm} />
             ) : (
-              <DefaultMode />
+              <DefaultMode onStartEdit={handleStartEdit} />
             )}
           </div>
         )}
