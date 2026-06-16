@@ -343,6 +343,19 @@ module.exports = {
           '0%, 50%': { opacity: '1' },
           '51%, 100%': { opacity: '0' },
         },
+        'chat-pulse': {
+          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+          '50%': { transform: 'scale(1.08)', opacity: '0.85' },
+        },
+        'dot-pulse': {
+          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+          '50%': { transform: 'scale(1.4)', opacity: '0.6' },
+        },
+        'badge-burst': {
+          '0%': { transform: 'scale(0.6)', opacity: '0' },
+          '60%': { transform: 'scale(1.25)', opacity: '1' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -351,6 +364,9 @@ module.exports = {
         'fade-in': 'fade-in 0.3s ease-out forwards',
         'spin-slow': 'spin-slow 3s linear infinite',
         'blink': 'blink 1s steps(2) infinite',
+        'chat-pulse': 'chat-pulse 0.8s ease-in-out 4',
+        'dot-pulse': 'dot-pulse 1.5s ease-in-out infinite',
+        'badge-burst': 'badge-burst 0.35s ease-out forwards',
       }
     }
   },
