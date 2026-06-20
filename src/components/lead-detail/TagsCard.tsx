@@ -53,7 +53,7 @@ export function TagsCard() {
 
   return (
     <>
-      <CollapsibleCard data-component="LeadSignalTagsCard" title="Tags" countBadge={tags.length}>
+      <CollapsibleCard data-component="LeadSignalTagsCard" title="Custom Tags" countBadge={tags.length}>
         {/* Tag chips with X delete button */}
         <div className="flex flex-wrap gap-spacing-2">
           {tags.map((tag) => (
