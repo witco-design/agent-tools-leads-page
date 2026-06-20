@@ -96,7 +96,7 @@ export function SavedSearchesCard() {
               className="w-80 p-spacing-4 bg-white border border-border-default shadow-lg rounded-2"
             >
               <p className="text-sm font-semibold text-text-default mb-spacing-3 text-center">
-                Use property alerts to get more website activity:
+                Use property alerts to get more website&nbsp;activity:
               </p>
               <div className="flex flex-col gap-spacing-2 items-center">
                 <button
