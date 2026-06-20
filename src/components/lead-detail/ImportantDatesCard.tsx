@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { MoreHorizontal } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { MoveHorizontal as MoreHorizontal } from 'lucide-react';
 import { toast } from 'sonner';
 import { CollapsibleCard } from './CollapsibleCard';
 import {
@@ -16,54 +16,219 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
 
 interface DateItem {
   id: string;
   label: string;
-  date: string;
+  month: number;
+  day: number;
   note?: string;
 }
 
-export function ImportantDatesCard() {
-  const [dates, setDates] = useState<DateItem[]>([
-    {
-      id: '1',
-      label: 'Anniversary',
-      date: '2025-12-08',
-      note: 'Camille mentioned wanting to celebrate with a private chef dinner at home — Tom is allergic to shellfish so consider sourcing from a coastal vineyard tour instead.',
-    },
-  ]);
-  const [addOpen, setAddOpen] = useState(false);
-  const [newLabel, setNewLabel] = useState('');
-  const [newDate, setNewDate] = useState('');
-  const [newNote, setNewNote] = useState('');
+const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONTH_LABELS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-  // Edit state
-  const [editOpen, setEditOpen] = useState(false);
-  const [editId, setEditId] = useState<string | null>(null);
-  const [editLabel, setEditLabel] = useState('');
-  const [editDate, setEditDate] = useState('');
-  const [editNote, setEditNote] = useState('');
+function formatMonthDay(month: number, day: number): string {
+  return `${MONTH_NAMES[month - 1]} ${day}`;
+}
 
-  const formatDate = (d: string) => {
-    const dt = new Date(d + 'T12:00:00');
-    return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+function maxDayForMonth(month: number): number {
+  if (month === 2) return 29;
+  if ([4, 6, 9, 11].includes(month)) return 30;
+  return 31;
+}
+
+const INITIAL_DATES: DateItem[] = [
+  {
+    id: '1',
+    label: 'Anniversary',
+    month: 12,
+    day: 8,
+    note: 'Camille mentioned wanting to celebrate with a private chef dinner at home — Tom is allergic to shellfish so consider sourcing from a coastal vineyard tour instead.',
+  },
+];
+
+function DateDialog({
+  open,
+  onOpenChange,
+  title,
+  description,
+  initialLabel = '',
+  initialMonth = 0,
+  initialDay = null as number | null,
+  initialNote = '',
+  onSave,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  title: string;
+  description: string;
+  initialLabel?: string;
+  initialMonth?: number;
+  initialDay?: number | null;
+  initialNote?: string;
+  onSave: (label: string, month: number, day: number, note: string) => void;
+}) {
+  const [label, setLabel] = useState(initialLabel);
+  const [month, setMonth] = useState(initialMonth);
+  const [day, setDay] = useState<number | null>(initialDay);
+  const [note, setNote] = useState(initialNote);
+
+  useEffect(() => {
+    if (open) {
+      setLabel(initialLabel);
+      setMonth(initialMonth);
+      setDay(initialDay);
+      setNote(initialNote);
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (day !== null && day > maxDayForMonth(month)) {
+      setDay(maxDayForMonth(month));
+    }
+  }, [month]);
+
+  const canSave =
+    label.trim().length > 0 &&
+    month >= 1 &&
+    month <= 12 &&
+    day !== null &&
+    day >= 1 &&
+    day <= maxDayForMonth(month);
+
+  const handleSave = () => {
+    if (!canSave) return;
+    onSave(label.trim(), month, day!, note.trim());
   };
 
-  const handleAdd = () => {
-    if (!newLabel.trim()) return;
-    const item: DateItem = {
-      id: `date-${Date.now()}`,
-      label: newLabel.trim(),
-      date: newDate || new Date().toISOString().slice(0, 10),
-      note: newNote.trim() || undefined,
-    };
-    setDates((prev) => [...prev, item]);
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[400px]">
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
+        </DialogHeader>
+        <div className="space-y-spacing-4 py-spacing-2">
+          <div>
+            <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">Label</label>
+            <input
+              type="text"
+              value={label}
+              onChange={(e) => setLabel(e.target.value)}
+              placeholder="e.g., Anniversary, Birthday, Closing Date"
+              className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+            />
+          </div>
+          <div>
+            <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">Date</label>
+            <div className="grid grid-cols-[1fr_120px] gap-spacing-3">
+              <Select
+                value={month > 0 ? String(month) : ''}
+                onValueChange={(v) => setMonth(parseInt(v, 10))}
+              >
+                <SelectTrigger aria-label="Month">
+                  <SelectValue placeholder="Month" />
+                </SelectTrigger>
+                <SelectContent>
+                  {MONTH_LABELS.map((name, i) => (
+                    <SelectItem key={i + 1} value={String(i + 1)}>{name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <input
+                type="number"
+                inputMode="numeric"
+                min={1}
+                max={month > 0 ? maxDayForMonth(month) : 31}
+                value={day ?? ''}
+                onChange={(e) => {
+                  const raw = parseInt(e.target.value, 10);
+                  if (Number.isNaN(raw)) { setDay(null); return; }
+                  const clamped = Math.max(1, Math.min(maxDayForMonth(month > 0 ? month : 12), raw));
+                  setDay(clamped);
+                }}
+                placeholder="Day"
+                aria-label="Day"
+                className="h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">
+              Note <span className="font-normal text-text-muted">(optional)</span>
+            </label>
+            <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value.slice(0, 200))}
+              placeholder="Add a note about this date..."
+              rows={2}
+              maxLength={200}
+              className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+            />
+            <div className="flex justify-end mt-1">
+              <span className="text-xs text-[#344054]">{note.length} / 200</span>
+            </div>
+          </div>
+        </div>
+        <DialogFooter>
+          <button
+            type="button"
+            className="h-9 px-spacing-4 rounded-1 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+            onClick={() => onOpenChange(false)}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            disabled={!canSave}
+            className="h-9 px-spacing-4 rounded-1 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleSave}
+          >
+            Save
+          </button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export function ImportantDatesCard() {
+  const [dates, setDates] = useState<DateItem[]>(INITIAL_DATES);
+  const [addOpen, setAddOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [editItem, setEditItem] = useState<DateItem | null>(null);
+
+  const sorted = [...dates].sort((a, b) => a.month - b.month || a.day - b.day);
+
+  const handleAdd = (label: string, month: number, day: number, note: string) => {
+    setDates((prev) => [
+      ...prev,
+      { id: `date-${Date.now()}`, label, month, day, note: note || undefined },
+    ]);
     setAddOpen(false);
-    setNewLabel('');
-    setNewDate('');
-    setNewNote('');
     toast.success('Date added');
+  };
+
+  const handleSaveEdit = (label: string, month: number, day: number, note: string) => {
+    if (!editItem) return;
+    setDates((prev) =>
+      prev.map((d) =>
+        d.id === editItem.id
+          ? { ...d, label, month, day, note: note || undefined }
+          : d,
+      ),
+    );
+    setEditOpen(false);
+    setEditItem(null);
+    toast.success('Date updated');
   };
 
   const handleDelete = (id: string) => {
@@ -72,25 +237,8 @@ export function ImportantDatesCard() {
   };
 
   const openEdit = (item: DateItem) => {
-    setEditId(item.id);
-    setEditLabel(item.label);
-    setEditDate(item.date);
-    setEditNote(item.note || '');
+    setEditItem(item);
     setEditOpen(true);
-  };
-
-  const handleSaveEdit = () => {
-    if (!editId || !editLabel.trim()) return;
-    setDates((prev) =>
-      prev.map((d) =>
-        d.id === editId
-          ? { ...d, label: editLabel.trim(), date: editDate, note: editNote.trim() || undefined }
-          : d,
-      ),
-    );
-    setEditOpen(false);
-    setEditId(null);
-    toast.success('Date updated');
   };
 
   return (
@@ -109,14 +257,14 @@ export function ImportantDatesCard() {
         }
       >
         <div className="space-y-spacing-3">
-          {dates.map((item) => (
+          {sorted.map((item) => (
             <div key={item.id} className="group grid grid-cols-[100px_1fr_auto] gap-x-spacing-2 items-start">
               <span className="text-text-4 font-normal text-text-secondary pt-px">
                 {item.label}
               </span>
               <div className="flex flex-col gap-1 min-w-0">
                 <span className="text-text-4 font-normal text-text-default">
-                  {formatDate(item.date)}
+                  {formatMonthDay(item.month, item.day)}
                 </span>
                 {item.note && (
                   <p className="text-xs italic text-[#475467]">
@@ -134,10 +282,7 @@ export function ImportantDatesCard() {
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="min-w-[100px]">
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    onClick={() => openEdit(item)}
-                  >
+                  <DropdownMenuItem className="cursor-pointer" onClick={() => openEdit(item)}>
                     Edit
                   </DropdownMenuItem>
                   <DropdownMenuItem
@@ -153,130 +298,27 @@ export function ImportantDatesCard() {
         </div>
       </CollapsibleCard>
 
-      {/* Add Date Dialog */}
-      <Dialog open={addOpen} onOpenChange={setAddOpen}>
-        <DialogContent className="sm:max-w-[400px]">
-          <DialogHeader>
-            <DialogTitle>Add Important Date</DialogTitle>
-            <DialogDescription>Add a memorable date for this lead.</DialogDescription>
-          </DialogHeader>
-          <div className="space-y-spacing-4 py-spacing-2">
-            <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">Label</label>
-              <input
-                type="text"
-                value={newLabel}
-                onChange={(e) => setNewLabel(e.target.value)}
-                placeholder="e.g., Anniversary, Birthday, Closing Date"
-                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
-              />
-            </div>
-            <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">Date</label>
-              <input
-                type="date"
-                value={newDate}
-                onChange={(e) => setNewDate(e.target.value)}
-                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
-              />
-            </div>
-            <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">
-                Note <span className="font-normal text-text-muted">(optional)</span>
-              </label>
-              <textarea
-                value={newNote}
-                onChange={(e) => setNewNote(e.target.value.slice(0, 200))}
-                placeholder="Add a note about this date..."
-                rows={2}
-                maxLength={200}
-                className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
-              />
-              <div className="flex justify-end mt-1">
-                <span className="text-xs text-[#344054]">{newNote.length} / 200</span>
-              </div>
-            </div>
-          </div>
-          <DialogFooter>
-            <button
-              type="button"
-              className="h-9 px-spacing-4 rounded-1 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
-              onClick={() => { setAddOpen(false); setNewLabel(''); setNewDate(''); setNewNote(''); }}
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              className="h-9 px-spacing-4 rounded-1 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
-              onClick={handleAdd}
-            >
-              Save
-            </button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <DateDialog
+        open={addOpen}
+        onOpenChange={setAddOpen}
+        title="Add Important Date"
+        description="Add a memorable date for this lead."
+        onSave={handleAdd}
+      />
 
-      {/* Edit Date Dialog */}
-      <Dialog open={editOpen} onOpenChange={setEditOpen}>
-        <DialogContent className="sm:max-w-[400px]">
-          <DialogHeader>
-            <DialogTitle>Edit Important Date</DialogTitle>
-            <DialogDescription>Update the details for this date.</DialogDescription>
-          </DialogHeader>
-          <div className="space-y-spacing-4 py-spacing-2">
-            <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">Label</label>
-              <input
-                type="text"
-                value={editLabel}
-                onChange={(e) => setEditLabel(e.target.value)}
-                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
-              />
-            </div>
-            <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">Date</label>
-              <input
-                type="date"
-                value={editDate}
-                onChange={(e) => setEditDate(e.target.value)}
-                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
-              />
-            </div>
-            <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">
-                Note <span className="font-normal text-text-muted">(optional)</span>
-              </label>
-              <textarea
-                value={editNote}
-                onChange={(e) => setEditNote(e.target.value.slice(0, 200))}
-                placeholder="Add a note about this date..."
-                rows={2}
-                maxLength={200}
-                className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
-              />
-              <div className="flex justify-end mt-1">
-                <span className="text-xs text-[#344054]">{editNote.length} / 200</span>
-              </div>
-            </div>
-          </div>
-          <DialogFooter>
-            <button
-              type="button"
-              className="h-9 px-spacing-4 rounded-1 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
-              onClick={() => setEditOpen(false)}
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              className="h-9 px-spacing-4 rounded-1 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
-              onClick={handleSaveEdit}
-            >
-              Save
-            </button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {editItem && (
+        <DateDialog
+          open={editOpen}
+          onOpenChange={(v) => { setEditOpen(v); if (!v) setEditItem(null); }}
+          title="Edit Important Date"
+          description="Update the details for this date."
+          initialLabel={editItem.label}
+          initialMonth={editItem.month}
+          initialDay={editItem.day}
+          initialNote={editItem.note ?? ''}
+          onSave={handleSaveEdit}
+        />
+      )}
     </>
   );
 }
