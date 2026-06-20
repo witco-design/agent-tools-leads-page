@@ -5,14 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import {
-  AlertTriangle,
-  ChevronDown,
-  Copy,
-  Pencil,
-  Flag,
-  Trash2,
-} from 'lucide-react';
+import { TriangleAlert as AlertTriangle, ChevronDown, Copy, Mail, MapPin, Pencil, Phone, Flag, Trash2 } from 'lucide-react';
 
 type FieldType = 'phone' | 'email' | 'address';
 
@@ -92,6 +85,9 @@ export function ContactFieldRow({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[180px]">
           <DropdownMenuItem onClick={handlePrimaryAction}>
+            {type === 'phone' && <Phone className="w-4 h-4 mr-spacing-2" aria-hidden="true" />}
+            {type === 'email' && <Mail className="w-4 h-4 mr-spacing-2" aria-hidden="true" />}
+            {type === 'address' && <MapPin className="w-4 h-4 mr-spacing-2" aria-hidden="true" />}
             {primaryActionLabel}
           </DropdownMenuItem>
           {onEdit && (

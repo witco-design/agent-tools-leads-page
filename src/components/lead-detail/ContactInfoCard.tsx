@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Phone, Globe, Pencil, TriangleAlert as AlertTriangle, ChevronDown, Copy, Flag, Trash2 } from 'lucide-react';
+import { Phone, Globe, Mail, MapPin, Pencil, TriangleAlert as AlertTriangle, ChevronDown, Copy, Flag, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import {
@@ -242,6 +242,9 @@ export function ContactInfoCard() {
               <DropdownMenuItem
                 onClick={() => handlePrimaryAction(field, value)}
               >
+                {fieldType === 'phone' && <Phone className="w-4 h-4 mr-spacing-2" aria-hidden="true" />}
+                {fieldType === 'email' && <Mail className="w-4 h-4 mr-spacing-2" aria-hidden="true" />}
+                {fieldType === 'address' && <MapPin className="w-4 h-4 mr-spacing-2" aria-hidden="true" />}
                 {primaryLabel}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => startEditing(field)}>
