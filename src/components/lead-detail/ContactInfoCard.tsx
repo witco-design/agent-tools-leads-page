@@ -1,14 +1,5 @@
 import { useState } from 'react';
-import {
-  Phone,
-  Globe,
-  Pencil,
-  AlertTriangle,
-  ChevronDown,
-  Copy,
-  Flag,
-  Trash2,
-} from 'lucide-react';
+import { Phone, Globe, Pencil, TriangleAlert as AlertTriangle, ChevronDown, Copy, Flag, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import {
@@ -212,7 +203,7 @@ export function ContactInfoCard() {
     return (
       <div
         key={field}
-        className="group flex items-center justify-between gap-spacing-3 min-h-9"
+        className="flex items-center justify-between gap-spacing-3 min-h-9"
       >
         <span className="text-sm text-[#667085] flex-shrink-0">{label}</span>
 
@@ -299,16 +290,6 @@ export function ContactInfoCard() {
               )}
             </DropdownMenuContent>
           </DropdownMenu>
-
-          {/* Hover-pencil — hidden by default, pushes content on hover */}
-          <button
-            type="button"
-            aria-label={`Edit ${label.toLowerCase()}`}
-            onClick={() => startEditing(field)}
-            className="hidden group-hover:inline-flex focus:inline-flex items-center justify-center text-[#667085] hover:text-[#475467] flex-shrink-0"
-          >
-            <Pencil className="w-3.5 h-3.5" />
-          </button>
         </div>
       </div>
     );
