@@ -1,14 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import {
-  Phone,
-  MessageSquare,
-  Mail,
-  StickyNote,
-  MoreHorizontal,
-  Calendar as CalendarIcon,
-  Maximize2,
-  Minimize2,
-} from 'lucide-react';
+import { Phone, MessageSquare, Mail, StickyNote, MoveHorizontal as MoreHorizontal, Calendar as CalendarIcon, Maximize2, Minimize2 } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -526,7 +517,7 @@ export function LogActivityDialog({
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmDiscard}
-              className="bg-red-70 hover:bg-red-80 text-white"
+              className="bg-red-100 hover:bg-red-110 text-white"
             >
               Discard
             </AlertDialogAction>

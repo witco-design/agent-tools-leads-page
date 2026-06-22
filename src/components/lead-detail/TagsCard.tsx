@@ -107,7 +107,7 @@ export function TagsCard() {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmDelete}
-              className="bg-[#ec423d] hover:bg-[#B42318] text-white"
+              className="bg-red-100 hover:bg-red-110 text-white"
             >
               Delete
             </AlertDialogAction>

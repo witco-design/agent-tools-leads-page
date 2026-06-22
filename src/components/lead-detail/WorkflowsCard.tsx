@@ -194,7 +194,7 @@ export function WorkflowsCard() {
             </button>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-1 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-1 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setDetailOpen(false)}
             >
               Close
@@ -215,7 +215,7 @@ export function WorkflowsCard() {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              className="bg-red-80 text-white hover:bg-red-90"
+              className="bg-red-100 text-white hover:bg-red-110"
               onClick={handleRemove}
             >
               Remove

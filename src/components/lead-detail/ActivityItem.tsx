@@ -1,43 +1,5 @@
 import { useState } from 'react';
-import {
-  Phone,
-  PhoneCall,
-  PhoneOff,
-  Search,
-  Heart,
-  Eye,
-  Pin,
-  Mail,
-  MailOpen,
-  CalendarCheck,
-  CalendarClock,
-  PencilLine,
-  Droplets,
-  FileText,
-  Clipboard,
-  Calendar,
-  BookmarkPlus,
-  MessageSquare,
-  MessageCircle,
-  MessagesSquare,
-  MousePointerClick,
-  Globe,
-  Play,
-  CheckSquare,
-  BarChart3,
-  DollarSign,
-  Users,
-  Shield,
-  ShieldCheck,
-  UserCheck,
-  ArrowRightLeft,
-  UserPlus,
-  Upload,
-  Home,
-  MoreHorizontal,
-  ChevronDown,
-  Check,
-} from 'lucide-react';
+import { Phone, PhoneCall, PhoneOff, Search, Heart, Eye, Pin, Mail, MailOpen, CalendarCheck, CalendarClock, PencilLine, Droplets, FileText, Clipboard, Calendar, BookmarkPlus, MessageSquare, MessageCircle, MessagesSquare, MousePointerClick, Globe, Play, SquareCheck as CheckSquare, BarChart3, DollarSign, Users, Shield, ShieldCheck, UserCheck, ArrowRightLeft, UserPlus, Upload, Home, MoveHorizontal as MoreHorizontal, ChevronDown, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   DropdownMenu,
@@ -586,7 +548,7 @@ export function ActivityItem({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            className="bg-red-80 text-white hover:bg-red-90"
+            className="bg-red-100 text-white hover:bg-red-110"
             onClick={() => {
               onDelete?.(item.id);
               toast.error('Activity deleted');
