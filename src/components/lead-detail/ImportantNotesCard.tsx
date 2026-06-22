@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Maximize2, Pencil } from 'lucide-react';
 import { toast } from 'sonner';
 import { CollapsibleCard } from './CollapsibleCard';
@@ -15,6 +15,14 @@ Budget headroom up to $800K if exceptional property.`;
 export function ImportantNotesCard() {
   const [notesModalOpen, setNotesModalOpen] = useState(false);
   const [noteText, setNoteText] = useState(NOTE_CONTENT);
+  const noteRef = useRef<HTMLParagraphElement>(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+
+  useEffect(() => {
+    if (noteRef.current) {
+      setIsOverflowing(noteRef.current.scrollHeight > noteRef.current.clientHeight);
+    }
+  }, [noteText]);
 
   return (
     <>
@@ -33,19 +41,29 @@ export function ImportantNotesCard() {
         }
       >
         <div className="rounded-1 bg-orange-10 p-spacing-3">
-          <p className="text-text-4 font-normal text-text-default whitespace-pre-line line-clamp-8">
-            {noteText}
-          </p>
-          <div className="flex justify-end mt-spacing-2">
-            <button
-              type="button"
-              onClick={() => setNotesModalOpen(true)}
-              className="inline-flex items-center gap-1 text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+          <div className="relative">
+            <p
+              ref={noteRef}
+              className="text-text-4 font-normal text-text-default whitespace-pre-line leading-relaxed max-h-[215px] overflow-hidden"
             >
-              <Maximize2 className="w-3.5 h-3.5" />
-              <span>Expand</span>
-            </button>
+              {noteText}
+            </p>
+            {isOverflowing && (
+              <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-orange-10 to-transparent pointer-events-none" />
+            )}
           </div>
+          {isOverflowing && (
+            <div className="flex justify-end mt-spacing-2">
+              <button
+                type="button"
+                onClick={() => setNotesModalOpen(true)}
+                className="inline-flex items-center gap-1 text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+              >
+                <Maximize2 className="w-3.5 h-3.5" />
+                <span>Expand</span>
+              </button>
+            </div>
+          )}
         </div>
       </CollapsibleCard>
 
