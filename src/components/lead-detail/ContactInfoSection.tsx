@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pencil, ChevronUp, ChevronDown, Info, GripVertical } from 'lucide-react';
+import { Pencil, ChevronUp, ChevronDown, GripVertical } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -310,7 +310,6 @@ export function ContactInfoSection() {
             <h3 className="text-text-4 font-semibold text-text-default">
               Contact Info
             </h3>
-            <Info className="w-3.5 h-3.5 ml-spacing-2 text-icon-default" />
           </button>
 
           {/* Edit / Cancel+Done controls */}
