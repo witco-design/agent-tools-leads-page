@@ -287,47 +287,54 @@ export function LogActivityDialog({
               </TabsList>
             </Tabs>
 
-            {/* CONDITIONAL DIRECTION / CUSTOM TYPE */}
-            {currentTypeConfig.directionLabel && (
-              <div className="space-y-spacing-2 animate-in fade-in slide-in-from-top-1 duration-200">
-                <Label
-                  htmlFor="log-direction"
-                  className="text-sm font-medium text-text-default"
-                >
-                  {currentTypeConfig.directionLabel}
-                </Label>
-                {currentTypeConfig.customTypeInput ? (
-                  <input
-                    id="log-direction"
-                    type="text"
-                    value={customType}
-                    onChange={(e) => setCustomType(e.target.value)}
-                    placeholder="e.g. In-person meeting, voicemail, postcard..."
-                    className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
-                  />
-                ) : (
-                  <Select value={direction} onValueChange={setDirection}>
-                    <SelectTrigger id="log-direction" className="w-full">
-                      <SelectValue
-                        placeholder={`Select ${currentTypeConfig.directionLabel.toLowerCase()}`}
-                      />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {currentTypeConfig.directionOptions!.map((opt) => (
-                        <SelectItem key={opt} value={opt}>
-                          {opt}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              </div>
-            )}
+            {/* DIRECTION + DATE + TIME + AM/PM — combined row */}
+            <div
+              className="grid gap-spacing-3 items-end animate-in fade-in duration-200"
+              style={{
+                gridTemplateColumns: currentTypeConfig.directionLabel
+                  ? 'minmax(180px, 1fr) 140px 80px 80px'
+                  : '1fr 80px 80px',
+              }}
+            >
+              {/* Direction (conditional) */}
+              {currentTypeConfig.directionLabel && (
+                <div className="space-y-spacing-2 min-w-0 animate-in fade-in slide-in-from-left-1 duration-200">
+                  <Label
+                    htmlFor="log-direction"
+                    className="text-sm font-medium text-text-default"
+                  >
+                    {currentTypeConfig.directionLabel}
+                  </Label>
+                  {currentTypeConfig.customTypeInput ? (
+                    <input
+                      id="log-direction"
+                      type="text"
+                      value={customType}
+                      onChange={(e) => setCustomType(e.target.value)}
+                      placeholder="e.g. In-person meeting, voicemail, postcard..."
+                      className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                    />
+                  ) : (
+                    <Select value={direction} onValueChange={setDirection}>
+                      <SelectTrigger id="log-direction" className="w-full">
+                        <SelectValue
+                          placeholder={`Select ${currentTypeConfig.directionLabel.toLowerCase()}`}
+                        />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {currentTypeConfig.directionOptions!.map((opt) => (
+                          <SelectItem key={opt} value={opt}>
+                            {opt}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                </div>
+              )}
 
-            {/* DATE + TIME ROW */}
-            <div className="grid grid-cols-[1fr_auto_auto] gap-spacing-3 items-end">
               {/* Date Picker */}
-              <div className="space-y-spacing-2">
+              <div className="space-y-spacing-2 min-w-0">
                 <Label
                   htmlFor="log-date"
                   className="text-sm font-medium text-text-default"
@@ -342,10 +349,10 @@ export function LogActivityDialog({
                       className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer inline-flex items-center gap-spacing-2 text-left"
                     >
                       <CalendarIcon
-                        className="w-4 h-4 text-text-secondary"
+                        className="w-4 h-4 text-text-secondary shrink-0"
                         aria-hidden="true"
                       />
-                      {format(date, 'MM/dd/yyyy')}
+                      <span className="truncate">{format(date, 'MM/dd/yyyy')}</span>
                     </button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
@@ -364,8 +371,8 @@ export function LogActivityDialog({
                 </Popover>
               </div>
 
-              {/* Hour : Minute */}
-              <div className="space-y-spacing-2">
+              {/* Time */}
+              <div className="space-y-spacing-2 min-w-0">
                 <Label
                   htmlFor="log-time"
                   className="text-sm font-medium text-text-default"
@@ -379,19 +386,19 @@ export function LogActivityDialog({
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
                   placeholder="02:45"
-                  className="w-[80px] h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default text-center focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                  className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default text-center focus:outline-none focus:ring-2 focus:ring-focus-ring"
                   maxLength={5}
                 />
               </div>
 
               {/* AM/PM */}
-              <div className="space-y-spacing-2">
+              <div className="space-y-spacing-2 min-w-0">
                 <Label className="sr-only">AM/PM</Label>
                 <Select
                   value={ampm}
                   onValueChange={(v) => setAmpm(v as 'AM' | 'PM')}
                 >
-                  <SelectTrigger className="w-[72px]" aria-label="AM or PM">
+                  <SelectTrigger className="w-full" aria-label="AM or PM">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
