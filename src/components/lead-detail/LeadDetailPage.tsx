@@ -77,7 +77,7 @@ export default function LeadDetailPage() {
           type="button"
           onClick={toggle}
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="fixed z-30 w-6 h-6 rounded-1 bg-bg-card border border-border-default flex items-center justify-center shadow-md hover:shadow-lg hover:bg-bg-muted cursor-pointer hidden md:flex"
+          className="fixed z-30 w-6 h-6 rounded-round bg-bg-card border border-border-default flex items-center justify-center shadow-md hover:shadow-lg hover:bg-bg-muted cursor-pointer hidden md:flex"
           style={{
             top: 76,
             left: collapsed ? 60 : 208,
