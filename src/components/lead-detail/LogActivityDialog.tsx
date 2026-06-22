@@ -252,7 +252,7 @@ export function LogActivityDialog({
       <Dialog open={open} onOpenChange={handleAttemptClose}>
         <DialogContent className="sm:max-w-[640px] p-0 gap-0">
           {/* HEADER */}
-          <DialogHeader className="px-spacing-6 pt-spacing-6 pb-spacing-4 border-b border-border-default">
+          <DialogHeader className="px-spacing-6 pt-spacing-6 pb-spacing-4">
             <DialogTitle className="text-base font-semibold text-text-default">
               Log Activity
             </DialogTitle>
@@ -269,18 +269,18 @@ export function LogActivityDialog({
               onValueChange={(v) => setActivityType(v as ActivityTypeKey)}
               className="w-full"
             >
-              <TabsList className="grid grid-cols-5 w-full h-auto p-1 bg-bg-muted rounded-1 gap-1">
+              <TabsList className="w-full justify-start gap-spacing-6 bg-transparent border-b border-border-default rounded-none p-0 h-auto">
                 {ACTIVITY_TYPES.map((t, idx) => {
                   const Icon = t.icon;
                   return (
                     <TabsTrigger
                       key={t.key}
                       value={t.key}
-                      className="flex flex-col items-center gap-1 py-spacing-2 px-spacing-2 data-[state=active]:bg-[#3A4DAA] data-[state=active]:text-white data-[state=active]:shadow-sm rounded-1 transition-all text-text-secondary"
                       aria-keyshortcuts={String(idx + 1)}
+                      className="inline-flex items-center gap-spacing-2 px-0 pb-spacing-2 pt-0 rounded-none bg-transparent shadow-none border-b-2 border-transparent text-text-4 font-medium text-text-muted hover:text-text-default transition-colors data-[state=active]:border-blue-100 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-text-default data-[state=active]:font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-100 focus-visible:ring-offset-2"
                     >
                       <Icon className="w-4 h-4" aria-hidden="true" />
-                      <span className="text-xs font-medium">{t.label}</span>
+                      {t.label}
                     </TabsTrigger>
                   );
                 })}
