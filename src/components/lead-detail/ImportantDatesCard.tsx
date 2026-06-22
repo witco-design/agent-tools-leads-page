@@ -181,7 +181,7 @@ function DateDialog({
         <DialogFooter>
           <button
             type="button"
-            className="h-9 px-spacing-4 rounded-1 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+            className="h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer shadow-sm"
             onClick={() => onOpenChange(false)}
           >
             Cancel
@@ -189,7 +189,7 @@ function DateDialog({
           <button
             type="button"
             disabled={!canSave}
-            className="h-9 px-spacing-4 rounded-1 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="h-8 px-spacing-3 rounded-1 bg-blue-110 text-white text-text-5 font-medium shadow-sm hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleSave}
           >
             Save
@@ -250,9 +250,9 @@ export function ImportantDatesCard() {
           <button
             type="button"
             onClick={() => setAddOpen(true)}
-            className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+            className="text-text-4 font-medium text-text-link hover:underline cursor-pointer"
           >
-            + Add Date
+            Add Date
           </button>
         }
       >

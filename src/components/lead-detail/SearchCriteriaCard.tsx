@@ -93,7 +93,7 @@ export function SearchCriteriaCard() {
           <button
             type="button"
             onClick={() => toast('Running search on website with current criteria…')}
-            className="inline-flex items-center gap-1.5 text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+            className="inline-flex items-center gap-1.5 text-text-4 font-medium text-text-link hover:underline cursor-pointer"
           >
             <span>See Search Results</span>
             <ExternalLink className="w-3.5 h-3.5" />

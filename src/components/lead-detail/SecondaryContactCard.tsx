@@ -161,7 +161,7 @@ function DefaultMode({
           onClick={onStartEdit}
           className="text-sm font-medium text-text-link hover:underline cursor-pointer bg-transparent border-none p-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1"
         >
-          + Add contact details
+          Add contact details
         </button>
       </div>
     );

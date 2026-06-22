@@ -118,10 +118,10 @@ export function WorkflowsCard() {
               type="button"
               disabled={!isWorkflowSelected}
               onClick={handleStart}
-              className={`inline-flex items-center gap-1.5 h-9 px-4 rounded-1 text-text-4 font-semibold transition-colors cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 h-8 px-spacing-3 rounded-1 text-text-5 font-medium shadow-sm transition-colors cursor-pointer ${
                 isWorkflowSelected
                   ? 'bg-blue-110 text-white hover:bg-blue-120'
-                  : 'bg-gray-40 text-text-muted cursor-not-allowed'
+                  : 'bg-gray-40 text-text-muted cursor-not-allowed border border-border-default'
               }`}
             >
               <Play className="w-3.5 h-3.5" />
@@ -187,14 +187,14 @@ export function WorkflowsCard() {
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-1 border border-red-80 text-red-80 text-text-4 font-semibold hover:bg-red-30 transition-colors cursor-pointer"
+              className="h-8 px-spacing-3 rounded-1 border border-red-80 text-red-80 text-text-5 font-medium shadow-sm hover:bg-red-30 transition-colors cursor-pointer"
               onClick={() => detailWorkflow && confirmRemove(detailWorkflow.id)}
             >
               Remove from Lead
             </button>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-1 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer shadow-sm"
               onClick={() => setDetailOpen(false)}
             >
               Close
