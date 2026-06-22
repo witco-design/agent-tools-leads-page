@@ -6,7 +6,11 @@ import { ImportantNotesModal } from './ImportantNotesModal';
 
 const NOTE_CONTENT = `Camille is a first-time buyer in California, pre-approved up to $750K. Spouse is in tech, looking for a 3-bedroom in the Bay Area within 30 miles of San Jose. Prefers move-in-ready, open to townhomes.
 
-Background: rented in SF for 6 years, ready to put down roots. Strong communicator — responds quickly to texts.`;
+Background: rented in SF for 6 years, ready to put down roots. Strong communicator — responds quickly to texts.
+
+Key priorities: walkable neighborhoods, good schools (no kids yet but planning), short commute to San Jose tech corridor. Open to slightly older homes if well-maintained.
+
+Budget headroom up to $800K if exceptional property.`;
 
 export function ImportantNotesCard() {
   const [notesModalOpen, setNotesModalOpen] = useState(false);
@@ -29,7 +33,7 @@ export function ImportantNotesCard() {
         }
       >
         <div className="rounded-1 bg-orange-10 p-spacing-3">
-          <p className="text-text-4 font-normal text-text-default whitespace-pre-line line-clamp-6">
+          <p className="text-text-4 font-normal text-text-default whitespace-pre-line line-clamp-8">
             {noteText}
           </p>
           <div className="flex justify-end mt-spacing-2">
