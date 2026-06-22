@@ -59,7 +59,7 @@ export function TagsCard() {
           {tags.map((tag) => (
             <div
               key={tag.id}
-              className="inline-flex items-center gap-spacing-2 h-7 pl-spacing-3 pr-spacing-2 rounded-round bg-[#EBEAFF] text-[#101828]"
+              className="inline-flex items-center gap-spacing-2 h-7 pl-spacing-3 pr-spacing-2 rounded-round bg-gray-30 text-text-default"
             >
               <span className="text-sm font-medium whitespace-nowrap">{tag.label}</span>
               <button
