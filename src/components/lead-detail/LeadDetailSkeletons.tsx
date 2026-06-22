@@ -31,7 +31,7 @@ export function LeadDetailPageSkeleton() {
         {/* ============ LEFT COLUMN ============ */}
         <div className="flex flex-col gap-spacing-4">
           {/* Tags container skeleton */}
-          <div className="bg-white border border-[#E4E7EC] rounded-3 shadow-sm p-spacing-3">
+          <div className="bg-white border border-[#E4E7EC] rounded-4 shadow-sm p-spacing-3">
             <div className="flex items-center gap-spacing-2">
               <Skeleton className="h-7 w-24 rounded-round" />
               <Skeleton className="h-7 w-32 rounded-round" />
@@ -41,7 +41,7 @@ export function LeadDetailPageSkeleton() {
           </div>
 
           {/* Data container skeleton (3 columns) */}
-          <div className="bg-white border border-[#E4E7EC] rounded-3 shadow-sm overflow-hidden">
+          <div className="bg-white border border-[#E4E7EC] rounded-4 shadow-sm overflow-hidden">
             <div className="flex flex-col xl:grid xl:grid-cols-[minmax(180px,1fr)_1px_minmax(200px,1fr)_1px_minmax(220px,1fr)]">
               {/* Contact column */}
               <div className="p-spacing-5 space-y-spacing-3">
@@ -88,7 +88,7 @@ export function LeadDetailPageSkeleton() {
           </div>
 
           {/* Robin AI Summary skeleton (collapsed) */}
-          <div className="bg-white border border-[#c3c0f1] rounded-3 shadow-sm">
+          <div className="bg-white border border-[#c3c0f1] rounded-4 shadow-sm">
             <div className="px-spacing-5 py-spacing-2 flex items-center justify-between">
               <div className="flex items-center gap-spacing-2">
                 <Skeleton className="w-5 h-5 rounded-1" />
@@ -99,7 +99,7 @@ export function LeadDetailPageSkeleton() {
           </div>
 
           {/* Activity History skeleton */}
-          <div className="bg-white border border-[#E4E7EC] rounded-3 shadow-sm overflow-hidden">
+          <div className="bg-white border border-[#E4E7EC] rounded-4 shadow-sm overflow-hidden">
             {/* Header */}
             <div className="px-spacing-5 py-spacing-3 flex items-center justify-between">
               <Skeleton className="h-5 w-32 rounded-1" />
@@ -150,7 +150,7 @@ export function LeadDetailPageSkeleton() {
             { headerWidth: 'w-24', bodyRows: 6, bodyType: 'rows' as const },
             { headerWidth: 'w-28', bodyRows: 4, bodyType: 'rows' as const },
           ].map((section, i) => (
-            <div key={i} className="bg-white border border-[#E4E7EC] rounded-3 shadow-sm overflow-hidden">
+            <div key={i} className="bg-white border border-[#E4E7EC] rounded-4 shadow-sm overflow-hidden">
               <div className="px-spacing-5 py-spacing-3 flex items-center justify-between">
                 <Skeleton className={`h-5 ${section.headerWidth} rounded-1`} />
                 <Skeleton className="w-5 h-5 rounded-1" />

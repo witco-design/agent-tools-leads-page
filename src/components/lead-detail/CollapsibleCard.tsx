@@ -42,7 +42,7 @@ export function CollapsibleCard({
 
   return (
     <TooltipProvider delayDuration={200}>
-      <div id={id} data-component={dataComponent} className="bg-bg-card rounded-3 border border-border-default shadow-sm overflow-hidden group">
+      <div id={id} data-component={dataComponent} className="bg-bg-card rounded-4 border border-border-default shadow-sm overflow-hidden group">
         {/* Header */}
         <div className={`w-full flex items-center px-spacing-5 py-spacing-3 hover:bg-bg-muted/50 transition-colors ${open ? 'border-b border-border-default' : ''}`}>
           {/* Drag handle — flush left by default, slides in on hover */}

@@ -10,7 +10,7 @@ const EXAMPLE_TAGS = [
 
 export function LeadSignalTagsCard() {
   return (
-    <div className="bg-white border border-border-default rounded-3 shadow-sm p-spacing-3">
+    <div className="bg-white border border-border-default rounded-4 shadow-sm p-spacing-3">
       <div className="flex items-center gap-spacing-2 flex-wrap">
         {EXAMPLE_TAGS.map((tag, i) => (
           <Badge
