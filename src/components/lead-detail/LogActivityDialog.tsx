@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Phone, MessageSquare, Mail, StickyNote, MoveHorizontal as MoreHorizontal, Calendar as CalendarIcon, Maximize2, Minimize2 } from 'lucide-react';
+import { Phone, MessageSquare, Mail, StickyNote, MoveHorizontal as MoreHorizontal, Calendar as CalendarIcon } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -33,6 +33,7 @@ import {
   AlertDialogAction,
 } from '@/components/ui/alert-dialog';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { format } from 'date-fns';
 
 /* ── Activity type config (single source of truth) ─────────── */
@@ -90,7 +91,7 @@ let draftState: {
   time: string;
   ampm: 'AM' | 'PM';
   notes: string;
-  recipient: string;
+  notifyMe: boolean;
 } | null = null;
 
 /* ── Utility: combine date + time + ampm into a Date ──────── */
@@ -116,7 +117,7 @@ interface LogActivityDialogProps {
     direction: string;
     timestamp: Date;
     notes: string;
-    notifyRecipient: string;
+    notifyMe: boolean;
   }) => void;
 }
 
@@ -146,15 +147,14 @@ export function LogActivityDialog({
       (format(now, 'aa').toUpperCase() as 'AM' | 'PM'),
   );
   const [notes, setNotes] = useState(draftState?.notes || '');
-  const [recipient, setRecipient] = useState(draftState?.recipient || 'self');
-  const [notesExpanded, setNotesExpanded] = useState(false);
+  const [notifyMe, setNotifyMe] = useState(draftState?.notifyMe ?? false);
   const [datePopoverOpen, setDatePopoverOpen] = useState(false);
   const [confirmCloseOpen, setConfirmCloseOpen] = useState(false);
 
   const notesRef = useRef<HTMLTextAreaElement>(null);
 
   const currentTypeConfig = ACTIVITY_TYPES.find((t) => t.key === activityType)!;
-  const isDirty = !!(direction || customType || notes || recipient !== 'self');
+  const isDirty = !!(direction || customType || notes || notifyMe);
   const charLimit = 2000;
 
   /* ── Persist draft on change ──────────────────────────────── */
@@ -168,10 +168,10 @@ export function LogActivityDialog({
         time,
         ampm,
         notes,
-        recipient,
+        notifyMe,
       };
     }
-  }, [open, isDirty, activityType, direction, customType, date, time, ampm, notes, recipient]);
+  }, [open, isDirty, activityType, direction, customType, date, time, ampm, notes, notifyMe]);
 
   /* ── Reset form ───────────────────────────────────────────── */
   const resetForm = useCallback(() => {
@@ -183,8 +183,7 @@ export function LogActivityDialog({
     setTime(format(n, 'hh:mm'));
     setAmpm(format(n, 'aa').toUpperCase() as 'AM' | 'PM');
     setNotes('');
-    setRecipient('self');
-    setNotesExpanded(false);
+    setNotifyMe(false);
     draftState = null;
   }, []);
 
@@ -195,12 +194,12 @@ export function LogActivityDialog({
       direction: currentTypeConfig.customTypeInput ? customType : direction,
       timestamp: combineDateAndTime(date, time, ampm),
       notes,
-      notifyRecipient: recipient,
+      notifyMe,
     };
     onSave?.(activity);
     resetForm();
     onOpenChange(false);
-  }, [activityType, currentTypeConfig, customType, direction, date, time, ampm, notes, recipient, onSave, resetForm, onOpenChange]);
+  }, [activityType, currentTypeConfig, customType, direction, date, time, ampm, notes, notifyMe, onSave, resetForm, onOpenChange]);
 
   /* ── Dirty-state close confirmation ───────────────────────── */
   const handleAttemptClose = useCallback(
@@ -411,35 +410,20 @@ export function LogActivityDialog({
 
             {/* NOTES */}
             <div className="space-y-spacing-2">
-              <div className="flex items-center justify-between">
-                <Label
-                  htmlFor="log-notes"
-                  className="text-sm font-medium text-text-default"
-                >
-                  Notes
-                </Label>
-                <button
-                  type="button"
-                  onClick={() => setNotesExpanded(!notesExpanded)}
-                  className="text-xs text-text-link hover:underline inline-flex items-center gap-1 cursor-pointer"
-                  aria-label={notesExpanded ? 'Collapse notes' : 'Expand notes'}
-                >
-                  {notesExpanded ? (
-                    <Minimize2 className="w-3 h-3" aria-hidden="true" />
-                  ) : (
-                    <Maximize2 className="w-3 h-3" aria-hidden="true" />
-                  )}
-                  {notesExpanded ? 'Collapse' : 'Expand'}
-                </button>
-              </div>
+              <Label
+                htmlFor="log-notes"
+                className="text-sm font-medium text-text-default"
+              >
+                Notes
+              </Label>
               <textarea
                 ref={notesRef}
                 id="log-notes"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value.slice(0, charLimit))}
                 placeholder="Type notes here..."
-                rows={notesExpanded ? 10 : 4}
-                className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none transition-all duration-200"
+                rows={10}
+                className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               />
               <div className="flex justify-end">
                 <span
@@ -455,28 +439,19 @@ export function LogActivityDialog({
               </div>
             </div>
 
-            {/* RECIPIENT */}
-            <div className="space-y-spacing-2">
+            {/* NOTIFY ME */}
+            <div className="flex items-center gap-spacing-2">
+              <Checkbox
+                id="notify-me"
+                checked={notifyMe}
+                onCheckedChange={(checked) => setNotifyMe(checked === true)}
+              />
               <Label
-                htmlFor="log-recipient"
-                className="text-sm font-medium text-text-default"
+                htmlFor="notify-me"
+                className="text-sm font-medium text-text-default cursor-pointer select-none"
               >
-                Send notification to
+                Send notification to {currentUserName} (me)
               </Label>
-              <Select value={recipient} onValueChange={setRecipient}>
-                <SelectTrigger id="log-recipient" className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="self">No one (just log)</SelectItem>
-                  <SelectItem value="me">
-                    {currentUserName} (me)
-                  </SelectItem>
-                  <SelectItem value="lead">{leadName} (the lead)</SelectItem>
-                  <SelectItem value="assignee">Assigned agent</SelectItem>
-                  <SelectItem value="team">Team</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
           </div>
 
