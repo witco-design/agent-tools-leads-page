@@ -102,12 +102,12 @@ const RADIUS_MAP: Record<string, { token: string; value: string }> = {
   'rounded-2': { token: 'Radius/2', value: '8px' },
   'rounded-3': { token: 'Radius/3', value: '12px' },
   'rounded-4': { token: 'Radius/4', value: '16px' },
-  'rounded-round': { token: 'Radius/round', value: '9999px' },
+  'rounded-round': { token: 'Radius/round', value: '999px' },
   'rounded-radius-1': { token: 'Radius/1', value: '4px' },
   'rounded-radius-2': { token: 'Radius/2', value: '8px' },
   'rounded-radius-3': { token: 'Radius/3', value: '12px' },
   'rounded-radius-4': { token: 'Radius/4', value: '16px' },
-  'rounded-radius-round': { token: 'Radius/round', value: '9999px' },
+  'rounded-radius-round': { token: 'Radius/round', value: '999px' },
 };
 for (const [cls, { token, value }] of Object.entries(RADIUS_MAP)) {
   TOKEN_MAP[cls] = { token, value, category: 'radius' };

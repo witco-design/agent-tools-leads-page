@@ -157,7 +157,7 @@ module.exports = {
         'focus-ring':   '#3840a9', // blue.120 — 2px focus outline (distinct from button rest)
 
         // Icon
-        'icon-default': '#667085', // gray.80
+        'icon-default': '#1d2939', // gray.110
 
         // Status — success
         'success-bg':     '#f8fcfb', // green.10
@@ -181,6 +181,18 @@ module.exports = {
         // Tag / chip
         'tag-bg':   '#dedcff', // purple.30
         'tag-text': '#322b95', // purple.110
+
+        // Disabled states
+        'disabled-content': '#98a2b3', // gray.70
+        'disabled-bg':      '#f2f4f7', // gray.40
+
+        // Focus
+        'focus-ring':         '#3840a9', // blue.120 — 2px focus outline
+        'focus-ring-default': '#101828', // gray.120 — non-primary focus
+
+        // Backgrounds
+        'bg-default':      '#ffffff',
+        'bg-default-dark': '#0d0d0d',
 
         /* ─────────────────────────────────────────────────────────────
          * shadcn/ui CSS-variable tokens — do not modify
@@ -233,6 +245,7 @@ module.exports = {
       /* ─── Spacing tokens (Figma: [ Spacing & Sizing ].Mode 1.tokens.json) ─── */
       spacing: {
         'spacing-0':  '0px',
+        'spacing-05': '2px',
         'spacing-1':  '4px',
         'spacing-2':  '8px',
         'spacing-3':  '12px',
@@ -248,6 +261,7 @@ module.exports = {
 
       /* ─── Sizing tokens ─── */
       width: {
+        'sizing-0':  '0px',
         'sizing-1':  '4px',
         'sizing-2':  '8px',
         'sizing-3':  '12px',
@@ -262,8 +276,10 @@ module.exports = {
         'sizing-12': '48px',
         'sizing-13': '52px',
         'sizing-14': '56px',
+        'sizing-15': '60px',
       },
       height: {
+        'sizing-0':  '0px',
         'sizing-1':  '4px',
         'sizing-2':  '8px',
         'sizing-3':  '12px',
@@ -278,21 +294,17 @@ module.exports = {
         'sizing-12': '48px',
         'sizing-13': '52px',
         'sizing-14': '56px',
+        'sizing-15': '60px',
       },
 
       /* ─── Border Radius tokens (Figma: [ Border Radius ].Mode 1.tokens.json) ─── */
       borderRadius: {
-        'radius-1':     '4px',
-        'radius-2':     '8px',
-        'radius-3':     '12px',
-        'radius-4':     '16px',
-        'radius-round': '9999px',
-        // Legacy short aliases kept for backward compat — prefer radius-N above
-        'round': '9999px',
         '1': '4px',
         '2': '8px',
         '3': '12px',
         '4': '16px',
+        'round': '999px',
+        // shadcn/ui CSS-var aliases — required by shadcn components
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
@@ -300,22 +312,23 @@ module.exports = {
 
       /* ─── Shadow tokens (Figma: effect.styles.tokens.json) ─── */
       boxShadow: {
-        'sm': '0 1px 2px 0 rgba(16, 24, 40, 0.05)',
-        'md': '0 4px 8px -2px rgba(16, 24, 40, 0.10), 0 2px 4px -2px rgba(16, 24, 40, 0.06)',
-        'lg': '0 12px 16px -4px rgba(16, 24, 40, 0.08), 0 4px 6px -2px rgba(16, 24, 40, 0.03)',
+        'sm': '0 1px 1px -0.5px rgba(0,0,0,0.07), 0 2px 2px -1px rgba(0,0,0,0.07), 0 3px 3px -1.5px rgba(0,0,0,0.07)',
+        'md': '0 2px 2px -1px rgba(0,0,0,0.07), 0 2px 2px -1px rgba(0,0,0,0.07), 0 6px 6px -3px rgba(0,0,0,0.07)',
+        'lg': '0 8px 8px -4px rgba(0,0,0,0.07), 0 0 2px 1px rgba(0,0,0,0.06), 0 10px 36px 0 rgba(0,0,0,0.16)',
+        'button-press': '0 0 0 2px #bfddff',
       },
 
       /* ─── Typography scale (Figma: text.styles.tokens.json) ─── */
       fontSize: {
-        'text-1': ['8px',  { lineHeight: '12px' }],
-        'text-2': ['10px', { lineHeight: '14px' }],
-        'text-3': ['12px', { lineHeight: '16px' }],
-        'text-4': ['14px', { lineHeight: '20px' }],
-        'text-5': ['16px', { lineHeight: '24px' }],
-        'text-6': ['20px', { lineHeight: '28px' }],
-        'text-7': ['24px', { lineHeight: '32px' }],
-        'text-8': ['32px', { lineHeight: '40px' }],
-        'text-9': ['60px', { lineHeight: '72px' }],
+        'text-1': ['8px',  '10px'],
+        'text-2': ['12px', '16px'],
+        'text-3': ['14px', '20px'],
+        'text-4': ['16px', '24px'],
+        'text-5': ['18px', '24px'],
+        'text-6': ['20px', '24px'],
+        'text-7': ['24px', '32px'],
+        'text-8': ['32px', '40px'],
+        'text-9': ['60px', '60px'],
       },
 
       keyframes: {

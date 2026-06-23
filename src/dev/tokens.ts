@@ -100,6 +100,7 @@ export const TOKENS: Token[] = [
 
   // === SPACING ===
   { name: 'spacing-0',  value: '0px',  category: 'spacing' },
+  { name: 'spacing-05', value: '2px',  category: 'spacing' },
   { name: 'spacing-1',  value: '4px',  category: 'spacing' },
   { name: 'spacing-2',  value: '8px',  category: 'spacing' },
   { name: 'spacing-3',  value: '12px', category: 'spacing' },
@@ -113,27 +114,27 @@ export const TOKENS: Token[] = [
   { name: 'spacing-11', value: '48px', category: 'spacing' },
 
   // === BORDER RADIUS ===
-  { name: 'radius-1',     value: '4px',    category: 'radius' },
-  { name: 'radius-2',     value: '8px',    category: 'radius' },
-  { name: 'radius-3',     value: '12px',   category: 'radius' },
-  { name: 'radius-4',     value: '16px',   category: 'radius' },
-  { name: 'radius-round', value: '9999px', category: 'radius' },
+  { name: 'radius-1',     value: '4px',   category: 'radius' },
+  { name: 'radius-2',     value: '8px',   category: 'radius' },
+  { name: 'radius-3',     value: '12px',  category: 'radius' },
+  { name: 'radius-4',     value: '16px',  category: 'radius' },
+  { name: 'radius-round', value: '999px', category: 'radius' },
 
   // === TYPOGRAPHY ===
-  { name: 'text-1', value: '8px / 12px',  category: 'typography', description: 'Tiny — not used in UI' },
-  { name: 'text-2', value: '10px / 14px', category: 'typography', description: 'Micro — badge counters only' },
-  { name: 'text-3', value: '12px / 16px', category: 'typography', description: 'Small badges only (decorative)' },
-  { name: 'text-4', value: '14px / 20px', category: 'typography', description: 'Body text (accessibility floor)' },
-  { name: 'text-5', value: '16px / 24px', category: 'typography', description: 'Card titles' },
-  { name: 'text-6', value: '20px / 28px', category: 'typography', description: 'Section headers' },
+  { name: 'text-1', value: '8px / 10px',  category: 'typography' },
+  { name: 'text-2', value: '12px / 16px', category: 'typography', description: 'Micro — badge counters only' },
+  { name: 'text-3', value: '14px / 20px', category: 'typography', description: 'Body text (accessibility floor)' },
+  { name: 'text-4', value: '16px / 24px', category: 'typography', description: 'Card titles' },
+  { name: 'text-5', value: '18px / 24px', category: 'typography' },
+  { name: 'text-6', value: '20px / 24px', category: 'typography', description: 'Section headers' },
   { name: 'text-7', value: '24px / 32px', category: 'typography' },
   { name: 'text-8', value: '32px / 40px', category: 'typography' },
-  { name: 'text-9', value: '60px / 72px', category: 'typography' },
+  { name: 'text-9', value: '60px / 60px', category: 'typography' },
 
   // === SHADOWS ===
-  { name: 'shadow-sm', value: '0 1px 2px 0 rgba(16,24,40,0.05)',                                            category: 'shadow' },
-  { name: 'shadow-md', value: '0 4px 8px -2px rgba(16,24,40,0.10), 0 2px 4px -2px rgba(16,24,40,0.06)',     category: 'shadow' },
-  { name: 'shadow-lg', value: '0 12px 16px -4px rgba(16,24,40,0.08), 0 4px 6px -2px rgba(16,24,40,0.03)',   category: 'shadow' },
+  { name: 'shadow-sm', value: '0 1px 1px -0.5px rgba(0,0,0,0.07), 0 2px 2px -1px rgba(0,0,0,0.07), 0 3px 3px -1.5px rgba(0,0,0,0.07)', category: 'shadow' },
+  { name: 'shadow-md', value: '0 2px 2px -1px rgba(0,0,0,0.07), 0 2px 2px -1px rgba(0,0,0,0.07), 0 6px 6px -3px rgba(0,0,0,0.07)',     category: 'shadow' },
+  { name: 'shadow-lg', value: '0 8px 8px -4px rgba(0,0,0,0.07), 0 0 2px 1px rgba(0,0,0,0.06), 0 10px 36px 0 rgba(0,0,0,0.16)',         category: 'shadow' },
 ];
 
 // Helper: find token by value
