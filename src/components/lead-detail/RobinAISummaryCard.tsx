@@ -71,7 +71,7 @@ export function RobinAISummaryCard() {
                 ref={displayBtnRef}
                 type="button"
                 onClick={handleDisplayClick}
-                className={`relative overflow-hidden h-8 px-spacing-3 inline-flex items-center bg-[#ebeaff] hover:bg-[#ebeaff]/60 border border-[#c3c0f1] text-[#2d2684] rounded-1 text-text-5 font-semibold shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2${hasShimmered ? ' shimmer-active' : ''}`}
+                className={`relative overflow-hidden h-8 px-spacing-3 inline-flex items-center bg-[#ebeaff] hover:bg-[#ebeaff]/60 border border-[#c3c0f1] text-[#2d2684] rounded-1 text-text-3 font-semibold shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2${hasShimmered ? ' shimmer-active' : ''}`}
               >
                 Display Summary
               </button>
