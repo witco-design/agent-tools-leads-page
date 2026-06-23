@@ -42,84 +42,84 @@ module.exports = {
           20:  '#ebf8ff',
           30:  '#e4f2ff',
           40:  '#bfddff',
-          50:  '#849EE3',
-          60:  '#6781D9',
-          70:  '#4E68CC',
-          80:  '#3E60C9',
-          90:  '#3840a9',
-          100: '#3A4DAA',
-          110: '#3E60C9', // brand primary
-          120: '#3840A9', // brand primary hover/pressed
+          50:  '#96c9ff',
+          60:  '#6eb3ff',
+          70:  '#55a2ff',
+          80:  '#4592ff',
+          90:  '#4484f0',
+          100: '#4172dc',
+          110: '#3e60c9',
+          120: '#3840a9',
         },
         gray: {
-          10:  '#F9FAFB',
-          20:  '#F2F4F7',
-          30:  '#EAECF0',
-          40:  '#D0D5DD',
-          50:  '#E4E7EC', // default hairline / border
-          60:  '#98A2B3',
-          70:  '#667085',
-          80:  '#475467',
-          90:  '#344054',
-          100: '#1D2939',
-          110: '#101828', // primary text
-          120: '#0C111D',
+          10:  '#fcfcfd',
+          20:  '#f9f9fb',
+          30:  '#f6f7f9',
+          40:  '#f2f4f7',
+          50:  '#e4e7ec',
+          60:  '#d0d5dd',
+          70:  '#98a2b3',
+          80:  '#667085',
+          90:  '#475467',
+          100: '#344054',
+          110: '#1d2939',
+          120: '#101828',
         },
         green: {
-          10:  '#e0f1ec',
-          20:  '#DCFAE6',
+          10:  '#f8fcfb',
+          20:  '#f1f9f7',
           30:  '#e0f1ec',
-          40:  '#6CE9A6',
-          50:  '#32D583',
-          60:  '#12B76A',
-          70:  '#45ac86', // success text/icon (Green.70)
-          80:  '#027A48',
-          90:  '#05603A',
+          40:  '#b3dbce',
+          50:  '#84c5af',
+          60:  '#58ae91',
+          70:  '#45ac86',
+          80:  '#32aa7b',
+          90:  '#2a8d66',
           100: '#216f51',
-          110: '#053321',
-          120: '#022A1A',
+          110: '#1a5f44',
+          120: '#11442c',
         },
         red: {
-          10:  '#FEF3F2',
-          20:  '#FEE4E2',
+          10:  '#fffafb',
+          20:  '#fff0f2',
           30:  '#ffe0e4',
-          40:  '#FDA29B',
-          50:  '#F97066',
-          60:  '#F04438',
-          70:  '#ec423d', // error default (Red.70)
-          80:  '#B42318',
-          90:  '#912018',
-          100: '#7A271A',
-          110: '#55160C',
-          120: '#3B0B05',
+          40:  '#ffbec4',
+          50:  '#f98d8c',
+          60:  '#e36362',
+          70:  '#ec423d',
+          80:  '#ed2e20',
+          90:  '#de2121',
+          100: '#cc0a1b',
+          110: '#c00114',
+          120: '#b10005',
         },
         orange: {
-          10:  '#FEF6EE',
+          10:  '#fef5dd',
           20:  '#fbe4ab',
-          30:  '#F9DBAF',
-          40:  '#F7B27A',
-          50:  '#F38744',
-          60:  '#EF6820',
-          70:  '#f48a3c', // warning default (Orange.70)
-          80:  '#B93815',
-          90:  '#932F19',
-          100: '#7E2410',
+          30:  '#f8d374',
+          40:  '#f7c166',
+          50:  '#f6af58',
+          60:  '#f59c4a',
+          70:  '#f48a3c',
+          80:  '#f3782e',
+          90:  '#e7722c',
+          100: '#db6c29',
           110: '#c26025',
-          120: '#3D1106',
+          120: '#aa5420',
         },
         purple: {
-          10:  '#EBEAFF', // AI gradient start
-          20:  '#D9D6FE',
-          30:  '#C3C0F1', // AI card border
-          40:  '#A4A0F5',
-          50:  '#8580EB',
-          60:  '#6A65D8',
-          70:  '#746ec0', // Purple.70
-          80:  '#4F4DAB',
-          90:  '#3E3D87',
-          100: '#2F2E67',
-          110: '#23234B',
-          120: '#171733',
+          10:  '#f6f6ff',
+          20:  '#ebeaff',
+          30:  '#dedcff',
+          40:  '#c3c0f1',
+          50:  '#aba6e6',
+          60:  '#8883c9',
+          70:  '#746ec0',
+          80:  '#6059b7',
+          90:  '#4c45ae',
+          100: '#3830a5',
+          110: '#322b95',
+          120: '#2d2684',
         },
         ink: {
           white: '#FFFFFF',
@@ -135,52 +135,52 @@ module.exports = {
         'bg-app':    '#f5fcff',  // outer shell background (blue.10)
         'bg-card':   '#FFFFFF',  // card / panel surfaces
         'bg-canvas': '#FFFFFF',  // alias — same as bg-card (design system term)
-        'bg-muted':  '#F9FAFB',  // gray.10 — subtle row bg / hover
+        'bg-muted':  '#fcfcfd',  // gray.10 — subtle row bg / hover
 
         // Text
-        'text-default':    '#101828', // gray.110 — primary text on cards
-        'text-secondary':  '#475467', // gray.80  — supporting / meta text
-        'text-muted':      '#667085', // gray.70  — hint / disabled / icon labels
-        'text-link':       '#3A4DAA', // blue.100 — links and brand actions
-        'text-link-hover': '#3840A9', // blue.120 — hover / pressed link
+        'text-default':    '#101828', // gray.120 — primary text on cards
+        'text-secondary':  '#475467', // gray.90  — supporting / meta text
+        'text-muted':      '#667085', // gray.80  — hint / disabled / icon labels
+        'text-link':       '#4172dc', // blue.100 — links and brand actions
+        'text-link-hover': '#3e60c9', // blue.110 — hover / pressed link
 
         // Borders
-        'border-default': '#E4E7EC', // gray.50 — 1px hairlines, card borders
-        'border-strong':  '#D0D5DD', // gray.40 — heavier emphasis
-        'border-focus':   '#3A4DAA', // blue.100 — focused inputs
+        'border-default': '#e4e7ec', // gray.50 — 1px hairlines, card borders
+        'border-strong':  '#d0d5dd', // gray.60 — heavier emphasis
+        'border-focus':   '#4172dc', // blue.100 — focused inputs
 
         // Brand
-        'brand-primary':       '#3A4DAA', // blue.100
-        'brand-primary-hover': '#3840A9', // blue.120
+        'brand-primary':       '#4172dc', // blue.100
+        'brand-primary-hover': '#3e60c9', // blue.110
 
         // Focus
-        'focus-ring':   '#3840A9', // blue.120 — 2px focus outline (distinct from button rest)
+        'focus-ring':   '#3840a9', // blue.120 — 2px focus outline (distinct from button rest)
 
         // Icon
-        'icon-default': '#667085', // gray.70
+        'icon-default': '#667085', // gray.80
 
         // Status — success
-        'success-bg':     '#e0f1ec', // green.10
-        'success-border': '#6CE9A6', // green.40
+        'success-bg':     '#f8fcfb', // green.10
+        'success-border': '#b3dbce', // green.40
         'success-text':   '#45ac86', // green.70
 
         // Status — warning
-        'warning-bg':     '#FEF6EE', // orange.10
+        'warning-bg':     '#fef5dd', // orange.10
         'warning-border': '#fbe4ab', // orange.20
         'warning-text':   '#f48a3c', // orange.70
 
         // Status — error
-        'error-bg':     '#FEF3F2', // red.10
-        'error-border': '#FDA29B', // red.40
+        'error-bg':     '#fffafb', // red.10
+        'error-border': '#ffbec4', // red.40
         'error-text':   '#ec423d', // red.70
 
         // Status — info
-        'info-bg':   '#F4F7FE', // blue.10
-        'info-text': '#3E60C9', // blue.110
+        'info-bg':   '#f5fcff', // blue.10
+        'info-text': '#4172dc', // blue.100
 
         // Tag / chip
-        'tag-bg':   '#C3C0F1', // purple.30
-        'tag-text': '#23234B', // purple.110
+        'tag-bg':   '#dedcff', // purple.30
+        'tag-text': '#322b95', // purple.110
 
         /* ─────────────────────────────────────────────────────────────
          * shadcn/ui CSS-variable tokens — do not modify

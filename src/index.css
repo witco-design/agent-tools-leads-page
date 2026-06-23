@@ -16,14 +16,14 @@
     --color-text-default:    #101828; /* gray.110 */
     --color-text-secondary:  #475467; /* gray.80  */
     --color-text-muted:      #667085; /* gray.70  */
-    --color-text-link:       #3A4DAA; /* blue.100 */
-    --color-text-link-hover: #3840A9; /* blue.120 */
+    --color-text-link:       #4172dc; /* blue.100 */
+    --color-text-link-hover: #3e60c9; /* blue.110 */
     --color-text-inverse:    #FFFFFF;
 
     /* Surfaces */
     --color-bg-app:    #f5fcff;
     --color-bg-card:   #FFFFFF;
-    --color-bg-muted:  #F9FAFB; /* gray.10 */
+    --color-bg-muted:  #fcfcfd; /* gray.10 */
 
     /* Borders — #E4E7EC (gray.50) is the ONLY default border/divider color.
        All new border/divider code should reference border-border-default,
@@ -31,23 +31,23 @@
        #E4E7EB, #E4E6EC, #EAECF0 etc. */
     --color-border-default: #E4E7EC; /* gray.50 — the ONLY default border/divider color */
     --color-border-strong:  #D0D5DD; /* gray.40 — heavier emphasis, reserved */
-    --color-border-focus:   #3A4DAA; /* blue.100 */
+    --color-border-focus:   #4172dc; /* blue.100 */
 
     /* Brand */
-    --color-brand-primary:       #3A4DAA; /* blue.100 */
-    --color-brand-primary-hover: #3840A9; /* blue.120 */
+    --color-brand-primary:       #4172dc; /* blue.100 */
+    --color-brand-primary-hover: #3e60c9; /* blue.110 */
 
     /* Status */
-    --color-success-bg:   #e0f1ec; /* green.10 */
+    --color-success-bg:   #f8fcfb; /* green.10 */
     --color-success-text: #45ac86; /* green.70 */
-    --color-warning-bg:   #FEF6EE; /* orange.10 */
+    --color-warning-bg:   #fef5dd; /* orange.10 */
     --color-warning-text: #f48a3c; /* orange.70 */
-    --color-error-bg:     #FEF3F2; /* red.10 */
+    --color-error-bg:     #fffafb; /* red.10 */
     --color-error-text:   #ec423d; /* red.70 */
 
     /* Legacy shell tokens (kept for backward compat) */
-    --rg-blue: #3A4DAA;
-    --rg-blue-hover: #3840A9;
+    --rg-blue: #4172dc;
+    --rg-blue-hover: #3e60c9;
     --rg-blue-active-tint: rgba(255, 255, 255, 0.12);
     --rg-blue-hover-tint: rgba(255, 255, 255, 0.08);
     --rg-bg: #F5F5F5;
