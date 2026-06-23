@@ -428,12 +428,12 @@ export function ActivityHistoryCard() {
                     key={cat.key}
                     className={`flex items-center gap-spacing-2 py-spacing-2 px-spacing-3 cursor-pointer text-text-4 ${
                       isActive
-                        ? 'bg-blue-30 text-blue-110 font-semibold'
+                        ? 'bg-blue-30 text-blue-100 font-semibold'
                         : 'text-text-default hover:bg-gray-30'
                     }`}
                     onClick={() => setActiveFilter(cat.key === 'all' ? null : cat.key)}
                   >
-                    <CatIcon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-blue-110' : 'text-text-secondary'}`} />
+                    <CatIcon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-blue-100' : 'text-text-secondary'}`} />
                     <span className="flex-1">{cat.label}</span>
                     <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-spacing-1 rounded-round bg-[#ebf8ff] text-[#3e60c9] text-xs font-semibold">
                       {count}
@@ -452,7 +452,7 @@ export function ActivityHistoryCard() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search Activity"
-              className="w-full h-9 pl-9 pr-3 bg-white rounded-1 text-text-4 font-normal text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-blue-40 focus:border-blue-110 border border-border-default"
+              className="w-full h-9 pl-9 pr-3 bg-white rounded-1 text-text-4 font-normal text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-blue-40 focus:border-blue-100 border border-border-default"
             />
             {searchQuery && (
               <button
@@ -579,7 +579,7 @@ export function ActivityHistoryCard() {
                         setVisibleCount(idx + INCREMENT);
                       }
                     }}
-                    className="h-9 px-spacing-3 border border-border-default rounded-1 text-text-4 text-text-default focus:outline-none focus:border-blue-110 focus:ring-1 focus:ring-blue-40"
+                    className="h-9 px-spacing-3 border border-border-default rounded-1 text-text-4 text-text-default focus:outline-none focus:border-blue-100 focus:ring-1 focus:ring-blue-40"
                   />
                   <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-spacing-1 rounded-round bg-[#ebf8ff] text-[#3e60c9] text-xs font-semibold">
                     {remainingCount} remaining
@@ -632,7 +632,7 @@ export function ActivityHistoryCard() {
             <button
               type="button"
               disabled={!noteText.trim()}
-              className="h-8 px-spacing-3 rounded-1 bg-blue-110 text-white text-text-5 font-medium shadow-sm hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium shadow-sm hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleSaveNote}
             >
               Save Note
@@ -685,7 +685,7 @@ export function ActivityHistoryCard() {
             </button>
             <button
               type="button"
-              className="h-8 px-spacing-3 rounded-1 bg-blue-110 text-white text-text-5 font-medium shadow-sm hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium shadow-sm hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer"
               onClick={handleSaveEdit}
             >
               Save

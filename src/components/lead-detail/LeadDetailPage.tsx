@@ -147,7 +147,7 @@ export default function LeadDetailPage() {
       <button
         type="button"
         onClick={() => setChatOpen(true)}
-        className="fixed bottom-6 z-50 w-14 h-14 rounded-round bg-blue-110 shadow-lg flex items-center justify-center hover:bg-blue-120 transition-all duration-200 cursor-pointer"
+        className="fixed bottom-6 z-50 w-14 h-14 rounded-round bg-blue-100 shadow-lg flex items-center justify-center hover:bg-blue-110 active:bg-blue-120 transition-all duration-200 cursor-pointer"
         style={{ right: devModeActive ? 380 + 24 : 24 }}
         aria-label="Chat with support"
       >
@@ -189,7 +189,7 @@ export default function LeadDetailPage() {
               />
               <button
                 type="button"
-                className="h-9 w-9 rounded-1 bg-blue-110 text-white flex items-center justify-center hover:bg-blue-120 transition-colors cursor-pointer shrink-0"
+                className="h-9 w-9 rounded-1 bg-blue-100 text-white flex items-center justify-center hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer shrink-0"
               >
                 <Send className="w-4 h-4" />
               </button>

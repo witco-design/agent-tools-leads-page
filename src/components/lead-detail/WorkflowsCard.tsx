@@ -120,7 +120,7 @@ export function WorkflowsCard() {
               onClick={handleStart}
               className={`inline-flex items-center gap-1.5 h-8 px-spacing-3 rounded-1 text-text-5 font-medium shadow-sm transition-colors cursor-pointer ${
                 isWorkflowSelected
-                  ? 'bg-blue-110 text-white hover:bg-blue-120'
+                  ? 'bg-blue-100 text-white hover:bg-blue-110 active:bg-blue-120'
                   : 'bg-gray-40 text-text-muted cursor-not-allowed border border-border-default'
               }`}
             >

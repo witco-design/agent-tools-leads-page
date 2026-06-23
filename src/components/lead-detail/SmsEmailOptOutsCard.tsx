@@ -96,7 +96,7 @@ export function SmsEmailOptOutsCard() {
               checked={optOuts[item.key]}
               onCheckedChange={() => !item.disabled && toggleOptOut(item.key)}
               disabled={item.disabled}
-              className={`shrink-0 mt-0.5 cursor-pointer data-[state=checked]:bg-blue-110 ${
+              className={`shrink-0 mt-0.5 cursor-pointer data-[state=checked]:bg-blue-100 ${
                 item.disabled ? 'opacity-50 cursor-not-allowed bg-gray-40' : ''
               }`}
             />

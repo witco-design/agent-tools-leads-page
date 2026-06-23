@@ -277,7 +277,7 @@ export function FollowUpsCard() {
             <button
               type="button"
               disabled={!addTitle.trim()}
-              className="h-8 px-spacing-3 rounded-1 bg-blue-110 text-white text-text-5 font-medium shadow-sm hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium shadow-sm hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleAdd}
             >
               Add
@@ -344,7 +344,7 @@ export function FollowUpsCard() {
             </button>
             <button
               type="button"
-              className="h-8 px-spacing-3 rounded-1 bg-blue-110 text-white text-text-5 font-medium shadow-sm hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium shadow-sm hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer"
               onClick={handleSaveEdit}
             >
               Save

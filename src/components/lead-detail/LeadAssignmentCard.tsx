@@ -118,7 +118,7 @@ export function LeadAssignmentCard() {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              className="bg-blue-110 text-white hover:bg-blue-120"
+              className="bg-blue-100 text-white hover:bg-blue-110 active:bg-blue-120"
               onClick={() => toast.success('Lead sent to the Pond. Agent unassigned.')}
             >
               Send to Pond

@@ -29,7 +29,7 @@ const navItems: NavItem[] = [
 
 export function LeftNav() {
   return (
-    <aside className="w-[200px] shrink-0 min-w-[200px] bg-blue-110 flex flex-col h-full">
+    <aside className="w-[200px] shrink-0 min-w-[200px] bg-blue-100 flex flex-col h-full">
       {/* Wordmark */}
       <div className="p-spacing-6">
         <span className="text-text-6 font-semibold text-white lowercase tracking-tight">

@@ -111,7 +111,7 @@ export function ImportantNotesModal({
               onChange={(e) => setEditValue(e.target.value)}
               autoFocus
               rows={10}
-              className="w-full min-h-[200px] px-spacing-3 py-spacing-2 rounded-1 border-2 border-blue-110 bg-white text-text-4 text-text-default leading-relaxed focus:outline-none resize-none"
+              className="w-full min-h-[200px] px-spacing-3 py-spacing-2 rounded-1 border-2 border-blue-100 bg-white text-text-4 text-text-default leading-relaxed focus:outline-none resize-none"
               placeholder="Add notes about this lead..."
             />
           )}
@@ -131,7 +131,7 @@ export function ImportantNotesModal({
               <button
                 type="button"
                 onClick={handleEnterEditMode}
-                className="h-8 px-spacing-3 rounded-1 bg-blue-110 text-white text-text-5 font-medium shadow-sm hover:bg-blue-120 transition-colors cursor-pointer inline-flex items-center gap-spacing-2"
+                className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium shadow-sm hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer inline-flex items-center gap-spacing-2"
               >
                 <Pencil className="w-4 h-4" aria-hidden="true" />
                 Edit
@@ -150,7 +150,7 @@ export function ImportantNotesModal({
                 type="button"
                 onClick={handleSave}
                 disabled={!hasUnsavedChanges}
-                className="h-8 px-spacing-3 rounded-1 bg-blue-110 text-white text-text-5 font-medium shadow-sm hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium shadow-sm hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Save
               </button>

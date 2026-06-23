@@ -160,13 +160,13 @@ export function RightColumn() {
         <TabsList className="w-full h-auto p-0 bg-transparent rounded-none border-b border-border-default">
           <TabsTrigger
             value="info"
-            className="flex-1 py-4 rounded-none bg-transparent text-text-4 font-semibold text-gray-80 shadow-none border-b-2 border-transparent data-[state=active]:text-blue-110 data-[state=active]:border-blue-110 data-[state=active]:shadow-none data-[state=active]:bg-transparent"
+            className="flex-1 py-4 rounded-none bg-transparent text-text-4 font-semibold text-gray-80 shadow-none border-b-2 border-transparent data-[state=active]:text-blue-100 data-[state=active]:border-blue-100 data-[state=active]:shadow-none data-[state=active]:bg-transparent"
           >
             Info
           </TabsTrigger>
           <TabsTrigger
             value="engagement"
-            className="flex-1 py-4 rounded-none bg-transparent text-text-4 font-semibold text-gray-80 shadow-none border-b-2 border-transparent data-[state=active]:text-blue-110 data-[state=active]:border-blue-110 data-[state=active]:shadow-none data-[state=active]:bg-transparent"
+            className="flex-1 py-4 rounded-none bg-transparent text-text-4 font-semibold text-gray-80 shadow-none border-b-2 border-transparent data-[state=active]:text-blue-100 data-[state=active]:border-blue-100 data-[state=active]:shadow-none data-[state=active]:bg-transparent"
           >
             Engagement
           </TabsTrigger>

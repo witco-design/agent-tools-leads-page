@@ -147,11 +147,11 @@ function getIconConfig(type: ActivityType) {
     case 'email':
     case 'email_sent':
     case 'shared_property_via_email':
-      return { bg: 'bg-blue-30', icon: Mail, color: 'text-blue-110' };
+      return { bg: 'bg-blue-30', icon: Mail, color: 'text-blue-100' };
     case 'email_opened':
-      return { bg: 'bg-blue-30', icon: MailOpen, color: 'text-blue-110' };
+      return { bg: 'bg-blue-30', icon: MailOpen, color: 'text-blue-100' };
     case 'email_clicked':
-      return { bg: 'bg-blue-30', icon: MousePointerClick, color: 'text-blue-110' };
+      return { bg: 'bg-blue-30', icon: MousePointerClick, color: 'text-blue-100' };
 
     // ── SMS ──
     case 'text':
@@ -188,7 +188,7 @@ function getIconConfig(type: ActivityType) {
       return { bg: 'bg-gray-40', icon: Search, color: 'text-gray-90' };
     case 'saved_search':
     case 'saved_search_added':
-      return { bg: 'bg-blue-30', icon: BookmarkPlus, color: 'text-blue-110' };
+      return { bg: 'bg-blue-30', icon: BookmarkPlus, color: 'text-blue-100' };
 
     // ── Favorites ──
     case 'favorited':
@@ -199,19 +199,19 @@ function getIconConfig(type: ActivityType) {
     case 'view':
     case 'viewed':
     case 'property_viewed':
-      return { bg: 'bg-blue-20', icon: Home, color: 'text-blue-110' };
+      return { bg: 'bg-blue-20', icon: Home, color: 'text-blue-100' };
     case 'visited':
       return { bg: 'bg-gray-40', icon: Globe, color: 'text-gray-90' };
     case 'video_played':
-      return { bg: 'bg-blue-30', icon: Play, color: 'text-blue-110' };
+      return { bg: 'bg-blue-30', icon: Play, color: 'text-blue-100' };
     case 'market_report_viewed':
-      return { bg: 'bg-blue-30', icon: BarChart3, color: 'text-blue-110' };
+      return { bg: 'bg-blue-30', icon: BarChart3, color: 'text-blue-100' };
     case 'tour_requested':
-      return { bg: 'bg-blue-30', icon: Calendar, color: 'text-blue-110' };
+      return { bg: 'bg-blue-30', icon: Calendar, color: 'text-blue-100' };
     case 'valuation_inquired':
-      return { bg: 'bg-blue-30', icon: DollarSign, color: 'text-blue-110' };
+      return { bg: 'bg-blue-30', icon: DollarSign, color: 'text-blue-100' };
     case 'opted_in_lender_tcpa':
-      return { bg: 'bg-blue-30', icon: Shield, color: 'text-blue-110' };
+      return { bg: 'bg-blue-30', icon: Shield, color: 'text-blue-100' };
 
     // ── Drip ──
     case 'drip':
@@ -232,13 +232,13 @@ function getIconConfig(type: ActivityType) {
 
     // ── Transactions ──
     case 'buyer_consult_set':
-      return { bg: 'bg-blue-30', icon: Calendar, color: 'text-blue-110' };
+      return { bg: 'bg-blue-30', icon: Calendar, color: 'text-blue-100' };
     case 'buyer_consult_held':
       return { bg: 'bg-green-30', icon: Users, color: 'text-green-100' };
 
     // ── GVL ──
     case 'gvl_verified':
-      return { bg: 'bg-blue-30', icon: ShieldCheck, color: 'text-blue-110' };
+      return { bg: 'bg-blue-30', icon: ShieldCheck, color: 'text-blue-100' };
 
     // ── Other ──
     case 'task':
@@ -337,7 +337,7 @@ export function ActivityItem({
             onClick={() => onTogglePin(item.id)}
             className={`p-1 rounded-1 transition-colors cursor-pointer ${
               item.pinned
-                ? 'bg-[#ebf8ff] hover:bg-[#e4f2ff] text-blue-110'
+                ? 'bg-[#ebf8ff] hover:bg-[#e4f2ff] text-blue-100'
                 : 'text-gray-70 hover:bg-gray-30'
             }`}
             title={item.pinned ? 'Unpin' : 'Pin'}
@@ -436,7 +436,7 @@ export function ActivityItem({
                 ) : (
                   <div className="w-5 h-5 rounded-round border-2 border-gray-60 group-hover/checkbox:border-blue-110 transition-colors flex items-center justify-center">
                     <Check
-                      className="w-3 h-3 text-gray-60 opacity-40 group-hover/checkbox:opacity-70 group-hover/checkbox:text-blue-110 transition-all"
+                      className="w-3 h-3 text-gray-60 opacity-40 group-hover/checkbox:opacity-70 group-hover/checkbox:text-blue-100 transition-all"
                       strokeWidth={3}
                     />
                   </div>

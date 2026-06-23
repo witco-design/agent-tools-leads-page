@@ -1,20 +1,5 @@
 import { useState } from 'react';
-import {
-  Search,
-  Bell,
-  HelpCircle,
-  Activity,
-  ChevronDown,
-  MessageCircle,
-  LogOut,
-  Settings,
-  Keyboard,
-  MessageSquare,
-  ExternalLink,
-  Sparkles,
-  Globe,
-  Check,
-} from 'lucide-react';
+import { Search, Bell, CircleHelp as HelpCircle, Activity, ChevronDown, MessageCircle, LogOut, Settings, Keyboard, MessageSquare, ExternalLink, Sparkles, Globe, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Popover,
@@ -91,7 +76,7 @@ export function TopUtilityBar() {
           <input
             type="text"
             placeholder="Search your CRM"
-            className="w-full h-9 pl-9 pr-3 bg-white rounded-1 text-text-4 font-normal text-text-secondary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-blue-40 focus:border-blue-110 border border-border-default"
+            className="w-full h-9 pl-9 pr-3 bg-white rounded-1 text-text-4 font-normal text-text-secondary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-blue-40 focus:border-blue-100 border border-border-default"
           />
         </div>
 
@@ -144,7 +129,7 @@ export function TopUtilityBar() {
                   >
                     <div className="flex items-start gap-spacing-2">
                       {!notif.read && (
-                        <div className="w-2 h-2 rounded-round bg-blue-110 mt-1.5 shrink-0" />
+                        <div className="w-2 h-2 rounded-round bg-blue-100 mt-1.5 shrink-0" />
                       )}
                       <div className="flex-1 min-w-0">
                         <p className="text-text-4 font-normal text-text-default">{notif.title}</p>
@@ -249,7 +234,7 @@ export function TopUtilityBar() {
                 >
                   <span>{site.name}</span>
                   {activeSite === site.name && (
-                    <Check className="w-4 h-4 text-blue-110" />
+                    <Check className="w-4 h-4 text-blue-100" />
                   )}
                 </DropdownMenuItem>
               ))}
@@ -326,7 +311,7 @@ export function TopUtilityBar() {
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-1 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-9 px-spacing-4 rounded-1 bg-blue-100 text-white text-text-4 font-semibold hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer"
               onClick={() => setShortcutsOpen(false)}
             >
               Close
@@ -363,7 +348,7 @@ export function TopUtilityBar() {
             <button
               type="button"
               disabled={!feedbackText.trim()}
-              className="h-9 px-spacing-4 rounded-1 bg-blue-110 text-white text-text-4 font-semibold hover:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-9 px-spacing-4 rounded-1 bg-blue-100 text-white text-text-4 font-semibold hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleFeedbackSubmit}
             >
               Submit

@@ -131,7 +131,7 @@ export function LeadHeader() {
               className="flex-1 min-w-[280px] max-w-[700px] text-text-7 font-semibold text-text-default whitespace-nowrap
                          bg-white border border-border-default rounded-1
                          px-spacing-2 py-0 outline-none
-                         focus:border-blue-110 focus:ring-2 focus:ring-blue-40 focus:ring-offset-0"
+                         focus:border-blue-100 focus:ring-2 focus:ring-blue-40 focus:ring-offset-0"
             />
           ) : (
             <>
@@ -173,7 +173,7 @@ export function LeadHeader() {
                 <TooltipTrigger asChild>
                   <button
                     onClick={() => openModal(btn.label)}
-                    className="inline-flex items-center h-8 w-8 xl:w-auto xl:px-spacing-3 rounded-round justify-center xl:justify-start xl:gap-spacing-1 bg-blue-110 text-white text-text-5 font-medium shadow-sm hover:bg-blue-120 focus:outline-none focus:ring-2 focus:ring-blue-40 focus:ring-offset-2 focus:ring-offset-white transition-colors duration-150 cursor-pointer"
+                    className="inline-flex items-center h-8 w-8 xl:w-auto xl:px-spacing-3 rounded-round justify-center xl:justify-start xl:gap-spacing-1 bg-blue-100 text-white text-text-5 font-medium shadow-sm hover:bg-blue-110 active:bg-blue-120 focus:outline-none focus:ring-2 focus:ring-blue-40 focus:ring-offset-2 focus:ring-offset-white transition-colors duration-150 cursor-pointer"
                   >
                     <Icon className="w-4 h-4" />
                     <span className="hidden xl:inline">{btn.label}</span>
@@ -319,7 +319,7 @@ export function LeadHeader() {
           </DialogHeader>
           <div className="space-y-spacing-4 py-spacing-2">
             <div className="flex items-center gap-spacing-3">
-              <div className="w-8 h-8 rounded-full bg-blue-110 flex items-center justify-center shrink-0">
+              <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
                 <span className="text-text-3 font-semibold text-white">{initials}</span> {/* text-text-3 OK: avatar initials in 32px circle */}
               </div>
               <div>
@@ -346,7 +346,7 @@ export function LeadHeader() {
             </button>
             <button
               type="button"
-              className="h-8 px-spacing-3 rounded-1 bg-blue-110 text-white text-text-5 font-medium shadow-sm hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium shadow-sm hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer"
               onClick={() => {
                 setTextOpen(false);
                 setTextBody('');
@@ -403,7 +403,7 @@ export function LeadHeader() {
             </button>
             <button
               type="button"
-              className="h-8 px-spacing-3 rounded-1 bg-blue-110 text-white text-text-5 font-medium shadow-sm hover:bg-blue-120 transition-colors cursor-pointer"
+              className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium shadow-sm hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer"
               onClick={() => {
                 setEmailOpen(false);
                 toast.success('Email sent to cdubois@realgeeks.com');

@@ -141,20 +141,20 @@ module.exports = {
         'text-default':    '#101828', // gray.110 — primary text on cards
         'text-secondary':  '#475467', // gray.80  — supporting / meta text
         'text-muted':      '#667085', // gray.70  — hint / disabled / icon labels
-        'text-link':       '#3E60C9', // blue.110 — links and brand actions
+        'text-link':       '#3A4DAA', // blue.100 — links and brand actions
         'text-link-hover': '#3840A9', // blue.120 — hover / pressed link
 
         // Borders
         'border-default': '#E4E7EC', // gray.50 — 1px hairlines, card borders
         'border-strong':  '#D0D5DD', // gray.40 — heavier emphasis
-        'border-focus':   '#3E60C9', // blue.110 — focused inputs
+        'border-focus':   '#3A4DAA', // blue.100 — focused inputs
 
         // Brand
-        'brand-primary':       '#3E60C9', // blue.110
+        'brand-primary':       '#3A4DAA', // blue.100
         'brand-primary-hover': '#3840A9', // blue.120
 
         // Focus
-        'focus-ring':   '#3E60C9', // blue.110 — 2px focus outline
+        'focus-ring':   '#3840A9', // blue.120 — 2px focus outline (distinct from button rest)
 
         // Icon
         'icon-default': '#667085', // gray.70
