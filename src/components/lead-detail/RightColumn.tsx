@@ -55,8 +55,8 @@ const ENGAGEMENT_DEFAULT_ORDER = [
   'workflows',
   'saved-searches',
   'market-reports',
-  'home-valuation-reports',
   'sms-email-opt-outs',
+  'home-valuation-reports',
 ];
 
 // ── Card component maps ────────────────────────────────────────
