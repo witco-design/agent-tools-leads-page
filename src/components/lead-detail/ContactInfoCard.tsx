@@ -301,7 +301,7 @@ export function ContactInfoCard() {
   return (
     <div
       data-component="LeadDataSnapshotCard"
-      className="bg-white border border-[#E4E7EC] rounded-4 shadow-sm overflow-hidden"
+      className="bg-white border border-[#E4E7EC] rounded-3 shadow-sm overflow-hidden"
     >
       <div className="flex flex-col xl:grid xl:grid-cols-[minmax(180px,1fr)_1px_minmax(220px,1fr)_1px_minmax(200px,1fr)]">
         {/* ── COLUMN 1: Contact (no header) ── */}
