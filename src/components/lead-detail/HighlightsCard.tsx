@@ -12,12 +12,12 @@ export function HighlightsCard() {
             <span className="text-text-4 font-normal text-text-secondary">
               Online Status
             </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-success-bg px-2.5 py-0.5">
+            <span className="inline-flex items-center gap-spacing-2">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success-text opacity-75"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-success-text"></span>
               </span>
-              <span className="text-text-4 font-semibold text-success-text">Online Now</span>
+              <span className="text-text-4 font-normal text-success-text">Online Now</span>
             </span>
           </div>
           <div className="flex items-center py-spacing-1">
