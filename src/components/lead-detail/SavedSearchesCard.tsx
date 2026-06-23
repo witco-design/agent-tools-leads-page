@@ -102,14 +102,14 @@ export function SavedSearchesCard() {
                 <button
                   type="button"
                   onClick={handleGuidedTour}
-                  className="text-sm font-medium text-text-link hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1 cursor-pointer"
+                  className="text-sm font-semibold text-text-link hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1 cursor-pointer"
                 >
                   View Guided Tour
                 </button>
                 <button
                   type="button"
                   onClick={handleMoreInfo}
-                  className="text-sm font-medium text-text-link hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1 cursor-pointer"
+                  className="text-sm font-semibold text-text-link hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1 cursor-pointer"
                 >
                   More Information
                 </button>

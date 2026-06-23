@@ -41,7 +41,7 @@ function DefaultMode({ onStartEdit }: { onStartEdit: () => void }) {
         <button
           type="button"
           onClick={onStartEdit}
-          className="text-sm font-medium text-text-link hover:underline cursor-pointer bg-transparent border-none p-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1"
+          className="text-sm font-semibold text-text-link hover:underline cursor-pointer bg-transparent border-none p-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1"
         >
           Add contact details
         </button>
@@ -326,7 +326,7 @@ export function ContactInfoSection() {
                 <button
                   type="button"
                   onClick={handleDone}
-                  className="h-7 px-spacing-3 inline-flex items-center bg-[#3e60c9] hover:bg-[#3840a9] text-white rounded-1 text-sm font-medium transition cursor-pointer border-none"
+                  className="h-7 px-spacing-3 inline-flex items-center bg-[#3e60c9] hover:bg-[#3840a9] text-white rounded-1 text-sm font-semibold transition cursor-pointer border-none"
                 >
                   Done
                 </button>
@@ -335,7 +335,7 @@ export function ContactInfoSection() {
               <button
                 type="button"
                 onClick={handleStartEdit}
-                className="inline-flex items-center gap-spacing-1 text-text-4 font-medium text-text-link hover:text-text-link-hover transition cursor-pointer bg-transparent border-none p-0"
+                className="inline-flex items-center gap-spacing-1 text-text-4 font-semibold text-text-link hover:text-text-link-hover transition cursor-pointer bg-transparent border-none p-0"
               >
                 <Pencil className="w-3.5 h-3.5" />
                 Edit
