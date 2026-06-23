@@ -248,7 +248,7 @@ export function LeadHeader() {
                       window.location.href = '/leads';
                     }
                   }}
-                  className="h-9 px-spacing-3 inline-flex items-center gap-spacing-1 bg-white border border-border-default rounded-1 text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+                  className="h-8 px-spacing-3 inline-flex items-center gap-spacing-2 bg-white border border-border-default rounded-1 text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
                 >
                   <List className="w-4 h-4 xl:hidden" />
                   <span className="hidden xl:inline">Back to List</span>
@@ -291,7 +291,7 @@ export function LeadHeader() {
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-1 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-8 px-spacing-4 rounded-1 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setCallOpen(false)}
             >
               Cancel

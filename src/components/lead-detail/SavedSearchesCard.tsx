@@ -165,7 +165,7 @@ export function SavedSearchesCard() {
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-1 bg-blue-100 text-white text-text-4 font-semibold hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer"
+              className="h-8 px-spacing-4 rounded-1 bg-blue-100 text-white text-text-3 font-semibold hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer"
               onClick={() => setDetailOpen(false)}
             >
               Close
@@ -194,7 +194,7 @@ export function SavedSearchesCard() {
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-1 border border-border-default bg-white text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+              className="h-8 px-spacing-4 rounded-1 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setAddOpen(false)}
             >
               Cancel
@@ -202,7 +202,7 @@ export function SavedSearchesCard() {
             <button
               type="button"
               disabled={!addName.trim()}
-              className="h-9 px-spacing-4 rounded-1 bg-blue-100 text-white text-text-4 font-semibold hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-8 px-spacing-4 rounded-1 bg-blue-100 text-white text-text-3 font-semibold hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleAdd}
             >
               Add
