@@ -7,7 +7,6 @@ import { DevModeToggle } from "./dev/DevModeToggle";
 const Home = lazy(() => import("./components/home"));
 const LeadDetailPage = lazy(() => import("./components/lead-detail/LeadDetailPage"));
 
-// DIAGNOSTIC_PLUS_SWAP_v1 — temporary plus icons to verify build pipeline
 function App() {
   return (
     <DevModeProvider>

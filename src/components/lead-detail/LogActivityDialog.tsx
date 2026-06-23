@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Phone, MessageSquare, Mail, StickyNote, Plus as MoreHorizontal, Calendar as CalendarIcon } from 'lucide-react';
+import { Phone, MessageSquare, Mail, StickyNote, Ellipsis as MoreHorizontal, Calendar as CalendarIcon } from 'lucide-react';
 import {
   Dialog,
   DialogContent,

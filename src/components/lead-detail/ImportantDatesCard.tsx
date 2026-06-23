@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus as MoreHorizontal } from 'lucide-react';
+import { Ellipsis as MoreHorizontal } from 'lucide-react';
 import { toast } from 'sonner';
 import { CollapsibleCard } from './CollapsibleCard';
 import {
