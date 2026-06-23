@@ -4,7 +4,7 @@ import { Toaster } from 'sonner';
 import { Sidebar } from '@/components/shell/Sidebar';
 import { AppHeader } from '@/components/shell/AppHeader';
 import { useSidebar } from '@/components/shell/useSidebar';
-import { useDevMode } from '@/dev/DevModeContext';
+import { useDevMode } from '@/devmode';
 import { LeadHeader } from './LeadHeader';
 import { ContactInfoCard } from './ContactInfoCard';
 import { RobinAISummaryCard } from './RobinAISummaryCard';

@@ -1,8 +1,7 @@
 import { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { DevModeProvider } from "./dev/DevModeContext";
-import { DevModeToggle } from "./dev/DevModeToggle";
+import { DevModeProvider, DevModeToggle } from "./devmode";
 
 const Home = lazy(() => import("./components/home"));
 const LeadDetailPage = lazy(() => import("./components/lead-detail/LeadDetailPage"));
@@ -18,8 +17,7 @@ function App() {
           </Routes>
         </Suspense>
 
-        {/* Dev tools (only rendered in dev, stripped from production builds) */}
-        {import.meta.env.DEV && <DevModeToggle />}
+        <DevModeToggle />
       </TooltipProvider>
     </DevModeProvider>
   );
