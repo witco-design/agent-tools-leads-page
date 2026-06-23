@@ -169,7 +169,7 @@ export default function LeadDetailPage() {
             {/* Mock chat area */}
             <div className="h-[200px] bg-gray-30 rounded-1 p-spacing-3 overflow-y-auto">
               <div className="flex flex-col gap-spacing-3">
-                <div className="self-start max-w-[80%] bg-white rounded-1 rounded-tl-none px-spacing-3 py-spacing-2 shadow-sm">
+                <div className="self-start max-w-[80%] bg-white rounded-1 rounded-tl-none px-spacing-3 py-spacing-2">
                   <p className="text-text-4 text-text-default">
                     Hi there! How can we help you today?
                   </p>

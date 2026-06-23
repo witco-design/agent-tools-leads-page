@@ -54,7 +54,7 @@ export function RobinAISummaryCard() {
       open={isExpanded}
       onOpenChange={setIsExpanded}
     >
-      <div data-component="GeekAIInsightsCard" className="bg-[#ebeaff] border border-[#c3c0f1] rounded-3 shadow-[0_4px_12px_rgba(116,110,192,0.10)] overflow-hidden">
+      <div data-component="GeekAIInsightsCard" className="bg-[#ebeaff] border border-[#c3c0f1] rounded-3 overflow-hidden">
 
         {/* Header */}
         <div className="pl-spacing-5 pr-spacing-2 py-spacing-2 flex items-center justify-between gap-spacing-3">
@@ -71,7 +71,7 @@ export function RobinAISummaryCard() {
                 ref={displayBtnRef}
                 type="button"
                 onClick={handleDisplayClick}
-                className={`relative overflow-hidden h-8 px-spacing-3 inline-flex items-center bg-[#ebeaff] hover:bg-[#ebeaff]/60 border border-[#c3c0f1] text-[#2d2684] rounded-1 text-text-3 font-semibold shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2${hasShimmered ? ' shimmer-active' : ''}`}
+                className={`relative overflow-hidden h-8 px-spacing-3 inline-flex items-center bg-[#ebeaff] hover:bg-[#ebeaff]/60 border border-[#c3c0f1] text-[#2d2684] rounded-1 text-text-3 font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2${hasShimmered ? ' shimmer-active' : ''}`}
               >
                 Display Summary
               </button>

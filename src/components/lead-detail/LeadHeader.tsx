@@ -426,7 +426,7 @@ export function LeadHeader() {
             <div className="h-[200px] bg-gray-30 rounded-1 p-spacing-3 overflow-y-auto">
               <div className="flex flex-col gap-spacing-3">
                 {/* Agent message */}
-                <div className="self-start max-w-[80%] bg-white rounded-1 rounded-tl-none px-spacing-3 py-spacing-2 shadow-sm">
+                <div className="self-start max-w-[80%] bg-white rounded-1 rounded-tl-none px-spacing-3 py-spacing-2">
                   <p className="text-text-4 text-text-default">
                     Hi Camille! Just checking in — have you had a chance to review the listings I sent?
                   </p>

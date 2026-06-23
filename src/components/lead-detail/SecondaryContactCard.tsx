@@ -293,7 +293,7 @@ export function SecondaryContactCard() {
     <TooltipProvider delayDuration={200}>
       <div
         data-component="SecondaryContactCard"
-        className="bg-bg-card rounded-3 border border-border-default shadow-sm overflow-hidden group"
+        className="bg-bg-card rounded-3 border border-border-default overflow-hidden group"
       >
         {/* Header */}
         <div
