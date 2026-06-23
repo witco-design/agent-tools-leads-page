@@ -181,7 +181,7 @@ function DateDialog({
         <DialogFooter>
           <button
             type="button"
-            className="h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer shadow-sm"
+            className="h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
             onClick={() => onOpenChange(false)}
           >
             Cancel
@@ -189,7 +189,7 @@ function DateDialog({
           <button
             type="button"
             disabled={!canSave}
-            className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium shadow-sm hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleSave}
           >
             Save

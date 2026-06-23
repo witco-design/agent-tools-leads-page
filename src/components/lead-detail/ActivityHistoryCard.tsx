@@ -384,7 +384,7 @@ export function ActivityHistoryCard() {
           {/* Add Note button */}
           <button
             onClick={() => setNoteDialogOpen(true)}
-            className="inline-flex items-center gap-1 h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-link shadow-sm hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1 h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-link hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Add Note</span>
@@ -393,7 +393,7 @@ export function ActivityHistoryCard() {
           {/* Log Activity button (opens unified dialog) */}
           <button
             onClick={() => setLogDialogOpen(true)}
-            className="inline-flex items-center gap-1 h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-link shadow-sm hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1 h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-link hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Log Activity</span>
@@ -624,7 +624,7 @@ export function ActivityHistoryCard() {
           <DialogFooter>
             <button
               type="button"
-              className="h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer shadow-sm"
+              className="h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setNoteDialogOpen(false)}
             >
               Cancel
@@ -632,7 +632,7 @@ export function ActivityHistoryCard() {
             <button
               type="button"
               disabled={!noteText.trim()}
-              className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium shadow-sm hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleSaveNote}
             >
               Save Note
@@ -678,14 +678,14 @@ export function ActivityHistoryCard() {
           <DialogFooter>
             <button
               type="button"
-              className="h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer shadow-sm"
+              className="h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setEditDialogOpen(false)}
             >
               Cancel
             </button>
             <button
               type="button"
-              className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium shadow-sm hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer"
+              className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer"
               onClick={handleSaveEdit}
             >
               Save

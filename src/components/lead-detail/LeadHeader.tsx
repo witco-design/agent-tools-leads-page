@@ -173,7 +173,7 @@ export function LeadHeader() {
                 <TooltipTrigger asChild>
                   <button
                     onClick={() => openModal(btn.label)}
-                    className="inline-flex items-center h-8 w-8 xl:w-auto xl:px-spacing-3 rounded-round justify-center xl:justify-start xl:gap-spacing-1 bg-blue-100 text-white text-text-5 font-medium shadow-sm hover:bg-blue-110 active:bg-blue-120 focus:outline-none focus:ring-2 focus:ring-blue-40 focus:ring-offset-2 focus:ring-offset-white transition-colors duration-150 cursor-pointer"
+                    className="inline-flex items-center h-8 w-8 xl:w-auto xl:px-spacing-3 rounded-round justify-center xl:justify-start xl:gap-spacing-1 bg-blue-100 text-white text-text-5 font-medium hover:bg-blue-110 active:bg-blue-120 focus:outline-none focus:ring-2 focus:ring-blue-40 focus:ring-offset-2 focus:ring-offset-white transition-colors duration-150 cursor-pointer"
                   >
                     <Icon className="w-4 h-4" />
                     <span className="hidden xl:inline">{btn.label}</span>
@@ -189,7 +189,7 @@ export function LeadHeader() {
           {/* More button — DropdownMenu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="inline-flex items-center justify-center w-8 h-8 rounded-round border border-border-default bg-white text-icon-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring focus:ring-offset-2 focus:ring-offset-white transition-colors duration-150 cursor-pointer shadow-sm">
+              <button className="inline-flex items-center justify-center w-8 h-8 rounded-round border border-border-default bg-white text-icon-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring focus:ring-offset-2 focus:ring-offset-white transition-colors duration-150 cursor-pointer">
                 <MoreHorizontal className="w-4 h-4" />
               </button>
             </DropdownMenuTrigger>
@@ -291,14 +291,14 @@ export function LeadHeader() {
           <DialogFooter>
             <button
               type="button"
-              className="h-9 px-spacing-4 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer shadow-sm"
+              className="h-9 px-spacing-4 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setCallOpen(false)}
             >
               Cancel
             </button>
             <button
               type="button"
-              className="h-8 px-spacing-3 rounded-1 bg-green-90 text-white text-text-5 font-medium shadow-sm hover:bg-green-100 transition-colors cursor-pointer"
+              className="h-8 px-spacing-3 rounded-1 bg-green-90 text-white text-text-5 font-medium hover:bg-green-100 transition-colors cursor-pointer"
               onClick={() => {
                 setCallOpen(false);
                 toast.success('Calling Camille Dubois at (415) 555-0142…');
@@ -339,14 +339,14 @@ export function LeadHeader() {
           <DialogFooter>
             <button
               type="button"
-              className="h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer shadow-sm"
+              className="h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => { setTextOpen(false); setTextBody(''); }}
             >
               Cancel
             </button>
             <button
               type="button"
-              className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium shadow-sm hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer"
+              className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer"
               onClick={() => {
                 setTextOpen(false);
                 setTextBody('');
@@ -396,14 +396,14 @@ export function LeadHeader() {
           <DialogFooter>
             <button
               type="button"
-              className="h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer shadow-sm"
+              className="h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setEmailOpen(false)}
             >
               Cancel
             </button>
             <button
               type="button"
-              className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium shadow-sm hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer"
+              className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-5 font-medium hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer"
               onClick={() => {
                 setEmailOpen(false);
                 toast.success('Email sent to cdubois@realgeeks.com');
@@ -456,7 +456,7 @@ export function LeadHeader() {
           <DialogFooter>
             <button
               type="button"
-              className="h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer shadow-sm"
+              className="h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => {
                 setChatModalOpen(false);
                 toast('Chat ended');
@@ -489,14 +489,14 @@ export function LeadHeader() {
           <DialogFooter>
             <button
               type="button"
-              className="h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer shadow-sm"
+              className="h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-5 font-medium text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setLoginOpen(false)}
             >
               Cancel
             </button>
             <button
               type="button"
-              className="h-8 px-spacing-3 rounded-1 bg-orange-100 text-white text-text-5 font-medium shadow-sm hover:bg-orange-110 transition-colors cursor-pointer"
+              className="h-8 px-spacing-3 rounded-1 bg-orange-100 text-white text-text-5 font-medium hover:bg-orange-110 transition-colors cursor-pointer"
               onClick={() => {
                 setLoginOpen(false);
                 toast('Viewing as Camille Dubois — your activity will not be tracked');
