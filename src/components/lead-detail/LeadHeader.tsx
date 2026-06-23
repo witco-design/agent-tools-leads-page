@@ -230,7 +230,7 @@ export function LeadHeader() {
                 <button
                   type="button"
                   aria-label="Previous lead"
-                  className="h-9 w-9 inline-flex items-center justify-center bg-white border border-border-default rounded-1 text-text-secondary hover:bg-bg-muted transition-colors cursor-pointer"
+                  className="h-8 w-8 inline-flex items-center justify-center bg-white border border-border-default rounded-1 text-text-secondary hover:bg-bg-muted transition-colors cursor-pointer"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
@@ -261,7 +261,7 @@ export function LeadHeader() {
                 <button
                   type="button"
                   aria-label="Next lead"
-                  className="h-9 w-9 inline-flex items-center justify-center bg-white border border-border-default rounded-1 text-text-secondary hover:bg-bg-muted transition-colors cursor-pointer"
+                  className="h-8 w-8 inline-flex items-center justify-center bg-white border border-border-default rounded-1 text-text-secondary hover:bg-bg-muted transition-colors cursor-pointer"
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>

@@ -452,7 +452,7 @@ export function ActivityHistoryCard() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search Activity"
-              className="w-full h-9 pl-9 pr-3 bg-white rounded-1 text-text-4 font-normal text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-blue-40 focus:border-blue-100 border border-border-default"
+              className="w-full h-8 pl-spacing-8 pr-spacing-3 bg-white rounded-1 text-text-3 font-normal text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-blue-40 focus:border-blue-100 border border-border-default"
             />
             {searchQuery && (
               <button
