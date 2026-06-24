@@ -33,7 +33,7 @@ const actionButtons: ActionButton[] = [
   { label: 'Text', icon: MessageSquare },
   { label: 'Email', icon: Mail },
   { label: 'Chat', icon: MessagesSquare },
-  { label: 'View as Lead', icon: LogIn },
+  { label: 'Login as Lead', icon: LogIn },
 ];
 
 export function LeadHeader() {
@@ -104,7 +104,7 @@ export function LeadHeader() {
       case 'Chat':
         setChatModalOpen(true);
         break;
-      case 'View as Lead':
+      case 'Login as Lead':
         setLoginOpen(true);
         break;
     }
@@ -502,7 +502,7 @@ export function LeadHeader() {
                 toast('Viewing as Camille Dubois — your activity will not be tracked');
               }}
             >
-              View as Lead
+              Login as Lead
             </button>
           </DialogFooter>
         </DialogContent>
