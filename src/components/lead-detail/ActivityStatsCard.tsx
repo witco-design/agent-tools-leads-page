@@ -20,8 +20,8 @@ export function ActivityStatsCard() {
             key={s.label}
             className="w-full flex items-center justify-between py-spacing-1"
           >
-            <span className="text-text-4 font-normal text-text-secondary">{s.label}</span>
-            <span className="text-text-4 font-semibold text-text-default">{s.value}</span>
+            <span className="text-text-3 font-normal text-text-secondary">{s.label}</span>
+            <span className="text-text-3 font-semibold text-text-default">{s.value}</span>
           </div>
         ))}
       </div>

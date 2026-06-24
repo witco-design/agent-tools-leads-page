@@ -93,7 +93,7 @@ export function SearchCriteriaCard() {
           <button
             type="button"
             onClick={() => toast('Running search on website with current criteria…')}
-            className="inline-flex items-center gap-1.5 text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+            className="inline-flex items-center gap-1.5 text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
           >
             <span>See Search Results</span>
             <ExternalLink className="w-3.5 h-3.5" />
@@ -104,7 +104,7 @@ export function SearchCriteriaCard() {
       <div className="space-y-spacing-3">
         {fields.map((field) => (
           <div key={field.stateKey} className="flex items-center gap-spacing-2">
-            <span className="text-text-4 font-normal text-text-secondary w-[80px] shrink-0">
+            <span className="text-text-3 font-normal text-text-secondary w-[80px] shrink-0">
               {field.label}
             </span>
             <div className="flex-1">
@@ -112,7 +112,7 @@ export function SearchCriteriaCard() {
                 value={values[field.stateKey]}
                 onValueChange={(v) => handleChange(field.stateKey, v)}
               >
-                <SelectTrigger className="h-8 rounded-1 border-border-default bg-white text-text-4 px-spacing-3 w-full">
+                <SelectTrigger className="h-8 rounded-1 border-border-default bg-white text-text-3 px-spacing-3 w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

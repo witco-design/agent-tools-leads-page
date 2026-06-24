@@ -48,14 +48,14 @@ export function HomeValuationReportsCard() {
       >
         {reports.length === 0 ? (
           <div className="bg-bg-muted rounded-1 p-3">
-            <p className="text-text-4 text-text-muted">No Home Valuation Reports</p>
+            <p className="text-text-3 text-text-muted">No Home Valuation Reports</p>
           </div>
         ) : (
           <div className="space-y-spacing-2">
             {reports.map((report) => (
               <div key={report.id} className="p-spacing-2 rounded-1 border border-border-default">
-                <p className="text-text-4 font-semibold text-text-default">{report.address}</p>
-                <p className="text-text-4 text-text-secondary">Home Valuation Report</p>
+                <p className="text-text-3 font-semibold text-text-default">{report.address}</p>
+                <p className="text-text-3 text-text-secondary">Home Valuation Report</p>
               </div>
             ))}
           </div>
@@ -70,13 +70,13 @@ export function HomeValuationReportsCard() {
             <DialogDescription>Create a home valuation report for a specific address.</DialogDescription>
           </DialogHeader>
           <div className="py-spacing-2">
-            <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Property Address</label>
+            <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Property Address</label>
             <input
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               placeholder="e.g., 123 Main St, San Jose, CA"
-              className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
             />
           </div>
           <DialogFooter>

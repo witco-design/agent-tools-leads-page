@@ -118,17 +118,17 @@ function DateDialog({
         </DialogHeader>
         <div className="space-y-spacing-4 py-spacing-2">
           <div>
-            <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">Label</label>
+            <label className="block text-text-3 font-semibold text-text-default mb-spacing-2">Label</label>
             <input
               type="text"
               value={label}
               onChange={(e) => setLabel(e.target.value)}
               placeholder="e.g., Anniversary, Birthday, Closing Date"
-              className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+              className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
             />
           </div>
           <div>
-            <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">Date</label>
+            <label className="block text-text-3 font-semibold text-text-default mb-spacing-2">Date</label>
             <div className="grid grid-cols-[1fr_120px] gap-spacing-3">
               <Select
                 value={month > 0 ? String(month) : ''}
@@ -157,12 +157,12 @@ function DateDialog({
                 }}
                 placeholder="Day"
                 aria-label="Day"
-                className="h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
           </div>
           <div>
-            <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">
+            <label className="block text-text-3 font-semibold text-text-default mb-spacing-2">
               Note <span className="font-normal text-text-muted">(optional)</span>
             </label>
             <textarea
@@ -171,7 +171,7 @@ function DateDialog({
               placeholder="Add a note about this date..."
               rows={2}
               maxLength={200}
-              className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+              className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
             />
             <div className="flex justify-end mt-1">
               <span className="text-xs text-[#344054]">{note.length} / 200</span>
@@ -250,7 +250,7 @@ export function ImportantDatesCard() {
           <button
             type="button"
             onClick={() => setAddOpen(true)}
-            className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+            className="text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
           >
             Add Date
           </button>
@@ -259,11 +259,11 @@ export function ImportantDatesCard() {
         <div className="space-y-spacing-3">
           {sorted.map((item) => (
             <div key={item.id} className="group grid grid-cols-[100px_1fr_auto] gap-x-spacing-2 items-start">
-              <span className="text-text-4 font-normal text-text-secondary pt-px">
+              <span className="text-text-3 font-normal text-text-secondary pt-px">
                 {item.label}
               </span>
               <div className="flex flex-col gap-1 min-w-0">
-                <span className="text-text-4 font-normal text-text-default">
+                <span className="text-text-3 font-normal text-text-default">
                   {formatMonthDay(item.month, item.day)}
                 </span>
                 {item.note && (

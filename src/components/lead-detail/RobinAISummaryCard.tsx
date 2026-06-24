@@ -100,7 +100,7 @@ export function RobinAISummaryCard() {
           <CollapsibleContent>
             <div className="border-t border-purple-30 opacity-50" />
             <div className="px-spacing-5 py-spacing-4">
-              <div className="text-text-4 text-text-default leading-relaxed space-y-spacing-3">
+              <div className="text-text-3 text-text-default leading-relaxed space-y-spacing-3">
                 <p>{SUMMARY_TEXT}</p>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-wide text-purple-60 mb-spacing-2">

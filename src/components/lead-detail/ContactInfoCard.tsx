@@ -334,7 +334,7 @@ export function ContactInfoCard() {
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success-text opacity-75"></span>
                     <span className="relative inline-flex h-2 w-2 rounded-full bg-success-text"></span>
                   </span>
-                  <span className="text-text-4 font-normal text-success-text">
+                  <span className="text-text-3 font-normal text-success-text">
                     Online Now
                   </span>
                 </span>

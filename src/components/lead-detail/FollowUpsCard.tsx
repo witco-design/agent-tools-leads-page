@@ -134,14 +134,14 @@ export function FollowUpsCard() {
             <button
               type="button"
               onClick={() => setAddOpen(true)}
-              className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+              className="text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
             >
               Add Followup
             </button>
             <button
               type="button"
               onClick={() => toast('Scrolling to follow-ups section…')}
-              className="inline-flex items-center gap-1.5 text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+              className="inline-flex items-center gap-1.5 text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
             >
               <span>See All Followups</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -173,13 +173,13 @@ export function FollowUpsCard() {
                       <AlarmClock className="w-3.5 h-3.5 text-red-80" aria-label="Follow-up needed soon" />
                     </div>
                   )}
-                  <span className="text-text-4 font-semibold text-text-default truncate flex-1 min-w-0">
+                  <span className="text-text-3 font-semibold text-text-default truncate flex-1 min-w-0">
                     {item.title}
                   </span>
                   <button
                     type="button"
                     onClick={() => openEdit(item)}
-                    className="inline-flex items-center gap-1 text-text-4 font-semibold text-text-link hover:underline cursor-pointer shrink-0"
+                    className="inline-flex items-center gap-1 text-text-3 font-semibold text-text-link hover:underline cursor-pointer shrink-0"
                   >
                     <Pencil className="w-3.5 h-3.5" />
                     <span>Edit</span>
@@ -187,7 +187,7 @@ export function FollowUpsCard() {
                 </div>
 
                 {/* Description */}
-                <p className="text-text-4 font-normal text-text-secondary mt-1 line-clamp-2">
+                <p className="text-text-3 font-normal text-text-secondary mt-1 line-clamp-2">
                   {item.description}
                 </p>
 
@@ -225,38 +225,38 @@ export function FollowUpsCard() {
           </DialogHeader>
           <div className="space-y-spacing-4 py-spacing-2">
             <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Title</label>
+              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Title</label>
               <input
                 type="text"
                 value={addTitle}
                 onChange={(e) => setAddTitle(e.target.value)}
                 placeholder="e.g., Call back"
-                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Description</label>
+              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Description</label>
               <textarea
                 rows={3}
                 value={addDescription}
                 onChange={(e) => setAddDescription(e.target.value)}
                 placeholder="What needs to be done?"
-                className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+                className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               />
             </div>
             <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Due Date</label>
+              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Due Date</label>
               <input
                 type="datetime-local"
                 value={addDate}
                 onChange={(e) => setAddDate(e.target.value)}
-                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-3 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Type</label>
+              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Type</label>
               <Select value={addTagType} onValueChange={(v) => setAddTagType(v as 'video' | 'email')}>
-                <SelectTrigger className="h-9 rounded-1 border-border-default bg-white text-text-4 px-spacing-3 w-full">
+                <SelectTrigger className="h-9 rounded-1 border-border-default bg-white text-text-3 px-spacing-3 w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -295,36 +295,36 @@ export function FollowUpsCard() {
           </DialogHeader>
           <div className="space-y-spacing-4 py-spacing-2">
             <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Title</label>
+              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Title</label>
               <input
                 type="text"
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
-                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-3 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Description</label>
+              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Description</label>
               <textarea
                 rows={3}
                 value={editDescription}
                 onChange={(e) => setEditDescription(e.target.value)}
-                className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+                className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               />
             </div>
             <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Due Date</label>
+              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Due Date</label>
               <input
                 type="text"
                 value={editDate}
                 onChange={(e) => setEditDate(e.target.value)}
-                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-3 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Type</label>
+              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Type</label>
               <Select value={editTagType} onValueChange={(v) => setEditTagType(v as 'video' | 'email')}>
-                <SelectTrigger className="h-9 rounded-1 border-border-default bg-white text-text-4 px-spacing-3 w-full">
+                <SelectTrigger className="h-9 rounded-1 border-border-default bg-white text-text-3 px-spacing-3 w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

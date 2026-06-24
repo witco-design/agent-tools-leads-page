@@ -170,7 +170,7 @@ export default function LeadDetailPage() {
             <div className="h-[200px] bg-gray-30 rounded-1 p-spacing-3 overflow-y-auto">
               <div className="flex flex-col gap-spacing-3">
                 <div className="self-start max-w-[80%] bg-white rounded-1 rounded-tl-none px-spacing-3 py-spacing-2">
-                  <p className="text-text-4 text-text-default">
+                  <p className="text-text-3 text-text-default">
                     Hi there! How can we help you today?
                   </p>
                   <span className="text-text-1 text-text-muted mt-spacing-1 block">
@@ -185,7 +185,7 @@ export default function LeadDetailPage() {
               <textarea
                 rows={1}
                 placeholder="Type your message..."
-                className="flex-1 h-9 px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+                className="flex-1 h-9 px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               />
               <button
                 type="button"

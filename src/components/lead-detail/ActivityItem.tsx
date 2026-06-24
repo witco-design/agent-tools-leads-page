@@ -303,7 +303,7 @@ export function ActivityItem({
         </div>
 
         {/* Meta line: "Logged a call by Kevin McCarthy · 2:17 PM" */}
-        <div className="flex-1 min-w-0 flex items-center gap-spacing-2 text-text-4 leading-none">
+        <div className="flex-1 min-w-0 flex items-center gap-spacing-2 text-text-3 leading-none">
           {isSystem ? (
             <>
               <span className="whitespace-nowrap text-text-default font-medium">
@@ -447,7 +447,7 @@ export function ActivityItem({
             <div className="flex-1 min-w-0">
               {/* Bold title */}
               <h4
-                className={`text-text-4 font-semibold ${
+                className={`text-text-3 font-semibold ${
                   item.isCompleted
                     ? 'text-text-muted line-through'
                     : 'text-text-default'
@@ -464,7 +464,7 @@ export function ActivityItem({
                   <TruncatedText
                     lines={2}
                     fullText={item.note}
-                    className="text-text-4 font-normal text-text-default italic leading-snug whitespace-pre-line"
+                    className="text-text-3 font-normal text-text-default italic leading-snug whitespace-pre-line"
                   >
                     &ldquo;{item.note}&rdquo;
                   </TruncatedText>
@@ -478,7 +478,7 @@ export function ActivityItem({
                     {item.searchCriteria.map((line, i) => (
                       <p
                         key={i}
-                        className="text-text-4 font-normal text-text-default leading-snug"
+                        className="text-text-3 font-normal text-text-default leading-snug"
                       >
                         {line}
                       </p>
@@ -487,7 +487,7 @@ export function ActivityItem({
                   {item.addNoteLink && (
                     <a
                       href="#"
-                      className="inline-block mt-spacing-2 text-text-4 font-semibold text-text-link hover:underline"
+                      className="inline-block mt-spacing-2 text-text-3 font-semibold text-text-link hover:underline"
                       onClick={(e) => e.preventDefault()}
                     >
                       + Add a note
@@ -521,10 +521,10 @@ export function ActivityItem({
                       index > 0 && 'border-l border-border-default',
                     )}
                   >
-                    <div className="text-text-4 text-text-secondary mb-spacing-1">
+                    <div className="text-text-3 text-text-secondary mb-spacing-1">
                       {label}
                     </div>
-                    <div className="text-text-4 font-semibold text-text-default">
+                    <div className="text-text-3 font-semibold text-text-default">
                       {value}
                     </div>
                   </div>
@@ -576,28 +576,28 @@ function PropertyCard({ property }: { property: PropertyData }) {
         className="w-[200px] h-[140px] rounded-1 object-cover shrink-0"
       />
       <div className="flex-1 min-w-0 flex flex-col justify-center">
-        <p className="text-text-4 font-semibold text-text-default min-w-0">
+        <p className="text-text-3 font-semibold text-text-default min-w-0">
           <TruncatedText fullText={property.address}>
             {property.address}
           </TruncatedText>
         </p>
-        <p className="text-text-4 font-normal text-text-secondary">
+        <p className="text-text-3 font-normal text-text-secondary">
           MLS #{property.mls}
         </p>
-        <p className="text-text-4 font-semibold text-text-default">
+        <p className="text-text-3 font-semibold text-text-default">
           {property.price}
         </p>
-        <p className="text-text-4 font-normal text-text-default">
+        <p className="text-text-3 font-normal text-text-default">
           {property.beds} &middot; {property.baths} &middot; {property.type}
         </p>
         {property.year && (
-          <p className="text-text-4 font-normal text-text-secondary">
+          <p className="text-text-3 font-normal text-text-secondary">
             {property.year}
           </p>
         )}
         <a
           href="#"
-          className="mt-spacing-1 text-text-4 font-semibold text-text-link hover:underline"
+          className="mt-spacing-1 text-text-3 font-semibold text-text-link hover:underline"
           onClick={(e) => e.preventDefault()}
         >
           View this property

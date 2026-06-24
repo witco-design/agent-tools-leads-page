@@ -140,7 +140,7 @@ export function WorkflowsCard() {
               <button
                 type="button"
                 onClick={() => openDetail(workflow)}
-                className="flex-1 min-w-0 text-left text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+                className="flex-1 min-w-0 text-left text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
               >
                 <TruncatedText>{workflow.name}</TruncatedText>
               </button>
@@ -157,7 +157,7 @@ export function WorkflowsCard() {
 
           {workflows.length === 0 && (
             <div className="bg-bg-muted rounded-1 p-3">
-              <p className="text-text-4 text-text-muted">No active workflows</p>
+              <p className="text-text-3 text-text-muted">No active workflows</p>
             </div>
           )}
         </div>
@@ -172,15 +172,15 @@ export function WorkflowsCard() {
           </DialogHeader>
           <div className="space-y-spacing-3 py-spacing-2">
             <div className="flex items-center justify-between">
-              <span className="text-text-4 text-text-secondary">Started</span>
-              <span className="text-text-4 font-semibold text-text-default">{detailWorkflow?.startedAt || '—'}</span>
+              <span className="text-text-3 text-text-secondary">Started</span>
+              <span className="text-text-3 font-semibold text-text-default">{detailWorkflow?.startedAt || '—'}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-text-4 text-text-secondary">Progress</span>
-              <span className="text-text-4 font-semibold text-text-default">{detailWorkflow?.currentStep || '—'}</span>
+              <span className="text-text-3 text-text-secondary">Progress</span>
+              <span className="text-text-3 font-semibold text-text-default">{detailWorkflow?.currentStep || '—'}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-text-4 text-text-secondary">Status</span>
+              <span className="text-text-3 text-text-secondary">Status</span>
               <span className="inline-flex items-center gap-1.5 h-6 px-2 rounded-round bg-green-30 text-green-90 text-text-3 font-semibold">Active</span> {/* text-text-3 OK: status badge */}
             </div>
           </div>

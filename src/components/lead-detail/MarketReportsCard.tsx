@@ -55,7 +55,7 @@ export function MarketReportsCard() {
           <button
             type="button"
             onClick={() => setAddOpen(true)}
-            className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+            className="text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
           >
             + Add Report
           </button>
@@ -63,14 +63,14 @@ export function MarketReportsCard() {
       >
         {reports.length === 0 ? (
           <div className="bg-bg-muted rounded-1 p-3">
-            <p className="text-text-4 text-text-muted">No Market Report</p>
+            <p className="text-text-3 text-text-muted">No Market Report</p>
           </div>
         ) : (
           <div className="space-y-spacing-2">
             {reports.map((report) => (
               <div key={report.id} className="p-spacing-2 rounded-1 border border-border-default">
-                <p className="text-text-4 font-semibold text-text-default">{report.name}</p>
-                <p className="text-text-4 text-text-secondary">{report.frequency} &middot; {report.type}</p>
+                <p className="text-text-3 font-semibold text-text-default">{report.name}</p>
+                <p className="text-text-3 text-text-secondary">{report.frequency} &middot; {report.type}</p>
               </div>
             ))}
           </div>
@@ -86,19 +86,19 @@ export function MarketReportsCard() {
           </DialogHeader>
           <div className="space-y-spacing-4 py-spacing-2">
             <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Report Name</label>
+              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Report Name</label>
               <input
                 type="text"
                 value={reportName}
                 onChange={(e) => setReportName(e.target.value)}
                 placeholder="e.g., San Jose Housing Market"
-                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Report Type</label>
+              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Report Type</label>
               <Select value={reportType} onValueChange={setReportType}>
-                <SelectTrigger className="h-9 rounded-1 border-border-default bg-white text-text-4 px-spacing-3 w-full">
+                <SelectTrigger className="h-9 rounded-1 border-border-default bg-white text-text-3 px-spacing-3 w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -109,9 +109,9 @@ export function MarketReportsCard() {
               </Select>
             </div>
             <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-1">Frequency</label>
+              <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Frequency</label>
               <Select value={reportFrequency} onValueChange={setReportFrequency}>
-                <SelectTrigger className="h-9 rounded-1 border-border-default bg-white text-text-4 px-spacing-3 w-full">
+                <SelectTrigger className="h-9 rounded-1 border-border-default bg-white text-text-3 px-spacing-3 w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

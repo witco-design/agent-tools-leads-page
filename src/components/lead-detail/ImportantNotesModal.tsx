@@ -101,7 +101,7 @@ export function ImportantNotesModal({
         <div className="py-spacing-2">
           {mode === 'view' ? (
             <div className="max-h-[400px] overflow-y-auto">
-              <p className="text-text-4 font-normal text-text-default whitespace-pre-line leading-relaxed">
+              <p className="text-text-3 font-normal text-text-default whitespace-pre-line leading-relaxed">
                 {note}
               </p>
             </div>
@@ -111,7 +111,7 @@ export function ImportantNotesModal({
               onChange={(e) => setEditValue(e.target.value)}
               autoFocus
               rows={10}
-              className="w-full min-h-[200px] px-spacing-3 py-spacing-2 rounded-1 border-2 border-blue-100 bg-white text-text-4 text-text-default leading-relaxed focus:outline-none resize-none"
+              className="w-full min-h-[200px] px-spacing-3 py-spacing-2 rounded-1 border-2 border-blue-100 bg-white text-text-3 text-text-default leading-relaxed focus:outline-none resize-none"
               placeholder="Add notes about this lead..."
             />
           )}

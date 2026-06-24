@@ -84,7 +84,7 @@ export function TagsCard() {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Add tag"
-            className="w-full h-9 pl-8 pr-3 border border-border-default rounded-1 text-text-4 font-normal text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring bg-white transition-shadow"
+            className="w-full h-9 pl-8 pr-3 border border-border-default rounded-1 text-text-3 font-normal text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring bg-white transition-shadow"
           />
         </div>
       </CollapsibleCard>

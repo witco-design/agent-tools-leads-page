@@ -335,7 +335,7 @@ export function ContactInfoSection() {
               <button
                 type="button"
                 onClick={handleStartEdit}
-                className="inline-flex items-center gap-spacing-1 text-text-4 font-semibold text-text-link hover:text-text-link-hover transition cursor-pointer bg-transparent border-none p-0"
+                className="inline-flex items-center gap-spacing-1 text-text-3 font-semibold text-text-link hover:text-text-link-hover transition cursor-pointer bg-transparent border-none p-0"
               >
                 <Pencil className="w-3.5 h-3.5" />
                 Edit

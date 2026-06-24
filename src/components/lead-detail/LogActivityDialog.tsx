@@ -276,7 +276,7 @@ export function LogActivityDialog({
                       key={t.key}
                       value={t.key}
                       aria-keyshortcuts={String(idx + 1)}
-                      className="inline-flex items-center gap-spacing-2 px-0 pb-spacing-2 pt-0 rounded-none bg-transparent shadow-none border-b-2 border-transparent text-text-4 font-medium text-text-muted hover:text-text-default transition-colors data-[state=active]:border-blue-100 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-text-default data-[state=active]:font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-100 focus-visible:ring-offset-2"
+                      className="inline-flex items-center gap-spacing-2 px-0 pb-spacing-2 pt-0 rounded-none bg-transparent shadow-none border-b-2 border-transparent text-text-3 font-medium text-text-muted hover:text-text-default transition-colors data-[state=active]:border-blue-100 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-text-default data-[state=active]:font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-100 focus-visible:ring-offset-2"
                     >
                       <Icon className="w-4 h-4" aria-hidden="true" />
                       {t.label}
@@ -311,7 +311,7 @@ export function LogActivityDialog({
                       value={customType}
                       onChange={(e) => setCustomType(e.target.value)}
                       placeholder="e.g. In-person meeting, voicemail, postcard..."
-                      className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                      className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring"
                     />
                   ) : (
                     <Select value={direction} onValueChange={setDirection}>
@@ -345,7 +345,7 @@ export function LogActivityDialog({
                     <button
                       id="log-date"
                       type="button"
-                      className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer inline-flex items-center gap-spacing-2 text-left"
+                      className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-3 text-text-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring transition-colors cursor-pointer inline-flex items-center gap-spacing-2 text-left"
                     >
                       <CalendarIcon
                         className="w-4 h-4 text-text-secondary shrink-0"
@@ -385,7 +385,7 @@ export function LogActivityDialog({
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
                   placeholder="02:45"
-                  className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default text-center focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                  className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-3 text-text-default text-center focus:outline-none focus:ring-2 focus:ring-focus-ring"
                   maxLength={5}
                 />
               </div>
@@ -423,7 +423,7 @@ export function LogActivityDialog({
                 onChange={(e) => setNotes(e.target.value.slice(0, charLimit))}
                 placeholder="Type notes here..."
                 rows={10}
-                className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+                className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               />
               <div className="flex justify-end">
                 <span

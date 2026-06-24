@@ -33,7 +33,7 @@ export function ImportantNotesCard() {
           <button
             type="button"
             onClick={() => setNotesModalOpen(true)}
-            className="inline-flex items-center gap-1 text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+            className="inline-flex items-center gap-1 text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
           >
             <Pencil className="w-3.5 h-3.5" />
             <span>Edit</span>
@@ -44,7 +44,7 @@ export function ImportantNotesCard() {
           <div className="relative">
             <p
               ref={noteRef}
-              className="text-text-4 font-normal text-text-default whitespace-pre-line leading-relaxed max-h-[215px] overflow-hidden"
+              className="text-text-3 font-normal text-text-default whitespace-pre-line leading-relaxed max-h-[215px] overflow-hidden"
             >
               {noteText}
             </p>
@@ -57,7 +57,7 @@ export function ImportantNotesCard() {
               <button
                 type="button"
                 onClick={() => setNotesModalOpen(true)}
-                className="inline-flex items-center gap-1 text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+                className="inline-flex items-center gap-1 text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
               >
                 <Maximize2 className="w-3.5 h-3.5" />
                 <span>Expand</span>

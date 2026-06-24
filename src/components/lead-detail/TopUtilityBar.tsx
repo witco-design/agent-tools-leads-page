@@ -76,7 +76,7 @@ export function TopUtilityBar() {
           <input
             type="text"
             placeholder="Search your CRM"
-            className="w-full h-9 pl-9 pr-3 bg-white rounded-1 text-text-4 font-normal text-text-secondary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-blue-40 focus:border-blue-100 border border-border-default"
+            className="w-full h-9 pl-9 pr-3 bg-white rounded-1 text-text-3 font-normal text-text-secondary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-blue-40 focus:border-blue-100 border border-border-default"
           />
         </div>
 
@@ -91,7 +91,7 @@ export function TopUtilityBar() {
             className="inline-flex items-center gap-spacing-2 h-9 px-spacing-3 rounded-1 border border-border-default bg-bg-canvas hover:bg-gray-30 transition-colors cursor-pointer"
           >
             <MessageCircle className="w-4 h-4 text-text-secondary shrink-0" />
-            <span className="hidden md:inline text-text-4 font-normal text-text-default">
+            <span className="hidden md:inline text-text-3 font-normal text-text-default">
               Chat with Support
             </span>
           </button>
@@ -110,11 +110,11 @@ export function TopUtilityBar() {
             </PopoverTrigger>
             <PopoverContent align="end" className="w-[320px] p-0">
               <div className="p-spacing-3 border-b border-border-default flex items-center justify-between">
-                <h4 className="text-text-4 font-semibold text-text-default">Notifications</h4>
+                <h4 className="text-text-3 font-semibold text-text-default">Notifications</h4>
                 <button
                   type="button"
                   onClick={markAllRead}
-                  className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+                  className="text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
                 >
                   Mark all as read
                 </button>
@@ -132,8 +132,8 @@ export function TopUtilityBar() {
                         <div className="w-2 h-2 rounded-round bg-blue-100 mt-1.5 shrink-0" />
                       )}
                       <div className="flex-1 min-w-0">
-                        <p className="text-text-4 font-normal text-text-default">{notif.title}</p>
-                        <p className="text-text-4 text-text-muted">{notif.time}</p>
+                        <p className="text-text-3 font-normal text-text-default">{notif.title}</p>
+                        <p className="text-text-3 text-text-muted">{notif.time}</p>
                       </div>
                     </div>
                   </div>
@@ -143,7 +143,7 @@ export function TopUtilityBar() {
                 <button
                   type="button"
                   onClick={() => toast('Navigating to all notifications…')}
-                  className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer w-full text-center"
+                  className="text-text-3 font-semibold text-text-link hover:underline cursor-pointer w-full text-center"
                 >
                   View all notifications
                 </button>
@@ -200,7 +200,7 @@ export function TopUtilityBar() {
             </PopoverTrigger>
             <PopoverContent align="end" className="w-[300px] p-0">
               <div className="p-spacing-3 border-b border-border-default">
-                <h4 className="text-text-4 font-semibold text-text-default">Recent Activity</h4>
+                <h4 className="text-text-3 font-semibold text-text-default">Recent Activity</h4>
               </div>
               <div className="max-h-[280px] overflow-y-auto">
                 {RECENT_ACTIVITY.map((item) => (
@@ -208,8 +208,8 @@ export function TopUtilityBar() {
                     key={item.id}
                     className="px-spacing-3 py-spacing-2 border-b border-border-default last:border-b-0 hover:bg-gray-30 transition-colors cursor-pointer"
                   >
-                    <p className="text-text-4 font-normal text-text-default">{item.text}</p>
-                    <p className="text-text-4 text-text-muted">{item.time}</p>
+                    <p className="text-text-3 font-normal text-text-default">{item.text}</p>
+                    <p className="text-text-3 text-text-muted">{item.time}</p>
                   </div>
                 ))}
               </div>
@@ -219,7 +219,7 @@ export function TopUtilityBar() {
           {/* F-5: Site dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="hidden md:flex items-center gap-1 text-text-4 font-normal text-text-default hover:text-brand-primary transition-colors cursor-pointer">
+              <button className="hidden md:flex items-center gap-1 text-text-3 font-normal text-text-default hover:text-brand-primary transition-colors cursor-pointer">
                 <Globe className="w-4 h-4 shrink-0" />
                 <span className="truncate max-w-[150px]">{activeSite}</span>
                 <ChevronDown className="w-4 h-4 shrink-0" />
@@ -257,7 +257,7 @@ export function TopUtilityBar() {
                   alt="User avatar"
                   className="w-9 h-9 rounded-full object-cover"
                 />
-                <span className="hidden md:inline text-text-4 font-semibold text-text-default">
+                <span className="hidden md:inline text-text-3 font-semibold text-text-default">
                   Aloha, Alina
                 </span>
                 <ChevronDown className="hidden md:block w-4 h-4 text-text-secondary shrink-0" />
@@ -301,7 +301,7 @@ export function TopUtilityBar() {
               ['⌘ + /', 'Toggle keyboard shortcuts'],
             ].map(([key, desc]) => (
               <div key={key} className="flex items-center justify-between">
-                <span className="text-text-4 text-text-default">{desc}</span>
+                <span className="text-text-3 text-text-default">{desc}</span>
                 <kbd className="inline-flex items-center h-6 px-2 rounded-1 bg-gray-40 text-text-3 font-mono text-text-secondary border border-border-default"> {/* text-text-3 OK: keyboard shortcut hint */}
                   {key}
                 </kbd>
@@ -333,7 +333,7 @@ export function TopUtilityBar() {
               value={feedbackText}
               onChange={(e) => setFeedbackText(e.target.value)}
               placeholder="Tell us what you think…"
-              className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+              className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               autoFocus
             />
           </div>

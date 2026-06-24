@@ -102,14 +102,14 @@ export function SmsEmailOptOutsCard() {
             />
             <div className="flex-1 min-w-0">
               <p
-                className={`text-text-4 font-semibold ${
+                className={`text-text-3 font-semibold ${
                   item.disabled ? 'text-gray-70' : 'text-text-default'
                 }`}
               >
                 {item.label}
               </p>
               <p
-                className={`text-text-4 font-normal mt-0.5 leading-snug ${
+                className={`text-text-3 font-normal mt-0.5 leading-snug ${
                   item.disabled ? 'text-gray-70' : 'text-text-secondary'
                 }`}
               >

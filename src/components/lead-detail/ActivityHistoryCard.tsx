@@ -426,7 +426,7 @@ export function ActivityHistoryCard() {
                 return (
                   <DropdownMenuItem
                     key={cat.key}
-                    className={`flex items-center gap-spacing-2 py-spacing-2 px-spacing-3 cursor-pointer text-text-4 ${
+                    className={`flex items-center gap-spacing-2 py-spacing-2 px-spacing-3 cursor-pointer text-text-3 ${
                       isActive
                         ? 'bg-blue-30 text-blue-100 font-semibold'
                         : 'text-text-default hover:bg-gray-30'
@@ -476,7 +476,7 @@ export function ActivityHistoryCard() {
             className="w-full flex items-center px-spacing-5 py-spacing-3 border-b border-border-default cursor-pointer hover:bg-bg-muted/50 transition-colors"
             onClick={() => setPinnedOpen((prev) => !prev)}
           >
-            <span className="text-text-4 font-semibold text-text-default">
+            <span className="text-text-3 font-semibold text-text-default">
               Pinned
             </span>
             <div className="flex-1" />
@@ -511,7 +511,7 @@ export function ActivityHistoryCard() {
               <div key={group.date}>
                 {/* Date heading */}
                 <div className="px-spacing-5 py-spacing-3 border-b border-border-default">
-                  <span className="text-text-4 font-semibold text-text-secondary uppercase tracking-wide">
+                  <span className="text-text-3 font-semibold text-text-secondary uppercase tracking-wide">
                     {group.label}
                   </span>
                 </div>
@@ -530,14 +530,14 @@ export function ActivityHistoryCard() {
           </div>
         ) : (
           <div className="py-spacing-10 flex flex-col items-center justify-center gap-spacing-2">
-            <p className="text-text-4 text-text-muted">
+            <p className="text-text-3 text-text-muted">
               No activity matches the current filter
             </p>
             <div className="flex items-center gap-spacing-3">
               {(activeFilter || searchQuery) && (
                 <button
                   type="button"
-                  className="text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+                  className="text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
                   onClick={() => { setActiveFilter(null); setSearchQuery(''); }}
                 >
                   Clear filter
@@ -555,7 +555,7 @@ export function ActivityHistoryCard() {
                 ref={showMoreRef}
                 type="button"
                 onClick={() => setVisibleCount((c) => c + INCREMENT)}
-                className="w-full h-10 inline-flex items-center justify-center gap-spacing-2 bg-white border border-border-default rounded-1 text-text-4 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+                className="w-full h-10 inline-flex items-center justify-center gap-spacing-2 bg-white border border-border-default rounded-1 text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               >
                 Show more activity
                 <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-spacing-1 rounded-round bg-[#ebf8ff] text-[#3e60c9] text-xs font-semibold">
@@ -564,11 +564,11 @@ export function ActivityHistoryCard() {
               </button>
             ) : (
               <div className="space-y-spacing-3">
-                <p className="text-text-4 text-text-muted">
+                <p className="text-text-3 text-text-muted">
                   You&apos;ve reviewed the last {visibleCount} activities. Jump to a specific date to see older activity.
                 </p>
                 <div className="flex items-center gap-spacing-2">
-                  <label className="text-text-4 font-medium text-text-default">Jump to date:</label>
+                  <label className="text-text-3 font-medium text-text-default">Jump to date:</label>
                   <input
                     type="date"
                     onChange={(e) => {
@@ -579,7 +579,7 @@ export function ActivityHistoryCard() {
                         setVisibleCount(idx + INCREMENT);
                       }
                     }}
-                    className="h-9 px-spacing-3 border border-border-default rounded-1 text-text-4 text-text-default focus:outline-none focus:border-blue-100 focus:ring-1 focus:ring-blue-40"
+                    className="h-9 px-spacing-3 border border-border-default rounded-1 text-text-3 text-text-default focus:outline-none focus:border-blue-100 focus:ring-1 focus:ring-blue-40"
                   />
                   <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-spacing-1 rounded-round bg-[#ebf8ff] text-[#3e60c9] text-xs font-semibold">
                     {remainingCount} remaining
@@ -617,7 +617,7 @@ export function ActivityHistoryCard() {
               value={noteText}
               onChange={(e) => setNoteText(e.target.value)}
               placeholder="Type your note…"
-              className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+              className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               autoFocus
             />
           </div>
@@ -652,18 +652,18 @@ export function ActivityHistoryCard() {
           </DialogHeader>
           <div className="space-y-spacing-4 py-spacing-2">
             <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">
+              <label className="block text-text-3 font-semibold text-text-default mb-spacing-2">
                 Title
               </label>
               <input
                 type="text"
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
-                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-4 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
+                className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-3 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"
               />
             </div>
             <div>
-              <label className="block text-text-4 font-semibold text-text-default mb-spacing-2">
+              <label className="block text-text-3 font-semibold text-text-default mb-spacing-2">
                 Notes
               </label>
               <textarea
@@ -671,7 +671,7 @@ export function ActivityHistoryCard() {
                 value={editNote}
                 onChange={(e) => setEditNote(e.target.value)}
                 placeholder="Add notes…"
-                className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-4 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
+                className="w-full px-spacing-3 py-spacing-2 rounded-1 border border-border-default bg-white text-text-3 text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring resize-none"
               />
             </div>
           </div>

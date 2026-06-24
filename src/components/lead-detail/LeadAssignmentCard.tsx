@@ -60,7 +60,7 @@ export function LeadAssignmentCard() {
             <button
               type="button"
               onClick={() => setPondOpen(true)}
-              className="inline-flex items-center gap-1.5 text-text-4 font-semibold text-text-link hover:underline cursor-pointer"
+              className="inline-flex items-center gap-1.5 text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
             >
               <span>Send to Pond</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -70,12 +70,12 @@ export function LeadAssignmentCard() {
       >
         <div className="space-y-spacing-3">
           <div className="flex items-center gap-spacing-2">
-            <span className="text-text-4 font-normal text-text-secondary w-[60px] shrink-0">
+            <span className="text-text-3 font-normal text-text-secondary w-[60px] shrink-0">
               Agent
             </span>
             <div className="flex-1">
               <Select value={agent} onValueChange={handleAgentChange}>
-                <SelectTrigger className="h-8 rounded-1 border-border-default bg-white text-text-4 px-spacing-3 w-full">
+                <SelectTrigger className="h-8 rounded-1 border-border-default bg-white text-text-3 px-spacing-3 w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -88,12 +88,12 @@ export function LeadAssignmentCard() {
           </div>
 
           <div className="flex items-center gap-spacing-2">
-            <span className="text-text-4 font-normal text-text-secondary w-[60px] shrink-0">
+            <span className="text-text-3 font-normal text-text-secondary w-[60px] shrink-0">
               Lender
             </span>
             <div className="flex-1">
               <Select value={lender} onValueChange={handleLenderChange}>
-                <SelectTrigger className="h-8 rounded-1 border-border-default bg-white text-text-4 px-spacing-3 w-full">
+                <SelectTrigger className="h-8 rounded-1 border-border-default bg-white text-text-3 px-spacing-3 w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
