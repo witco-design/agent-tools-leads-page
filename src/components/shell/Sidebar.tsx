@@ -158,6 +158,14 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
     if (collapsed) setOpenSubmenus(new Set());
   }, [collapsed]);
 
+  // PROTECTED — Broadcasts sidebar width as a CSS custom property so that
+  // fixed-positioned elements (e.g. DevModeToggle) can track it without
+  // hardcoding a pixel value. Do not remove; change the pixel values here
+  // if the sidebar widths ever change, not in the consumers.
+  useEffect(() => {
+    document.documentElement.style.setProperty('--sidebar-width', `${collapsed ? 72 : 220}px`);
+  }, [collapsed]);
+
   const toggleSubmenu = useCallback((label: string) => {
     setOpenSubmenus((prev) => {
       const next = new Set(prev);
