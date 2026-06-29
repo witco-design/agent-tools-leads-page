@@ -14,7 +14,7 @@ import {
   X,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { format } from 'date-fns';
+import { formatTime, formatDateTimeWithYear } from '@/utils/formatDate';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -266,11 +266,7 @@ export function ActivityHistoryCard() {
   const handleLogActivitySave = useCallback(
     (activity: { type: string; direction: string; timestamp: Date; notes: string; notifyRecipient: string }) => {
       const today = activity.timestamp.toISOString().slice(0, 10);
-      const nowTime = activity.timestamp.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true,
-      });
+      const nowTime = formatTime(activity.timestamp);
       const typeLabel =
         activity.type === 'other'
           ? `logged ${activity.direction || 'an activity'}`
@@ -281,7 +277,7 @@ export function ActivityHistoryCard() {
         title:
           activity.notes?.slice(0, 80) ||
           `${activity.type.charAt(0).toUpperCase() + activity.type.slice(1)} activity`,
-        timestamp: `${format(activity.timestamp, 'MMM d, yyyy')} at ${nowTime}`,
+        timestamp: formatDateTimeWithYear(activity.timestamp),
         date: today,
         time: nowTime,
         actor: { name: 'Jon Scharer', avatarInitials: 'JS' },
@@ -332,11 +328,7 @@ export function ActivityHistoryCard() {
     const trimmed = noteText.trim();
     if (!trimmed) return;
     const today = new Date().toISOString().slice(0, 10);
-    const nowTime = new Date().toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    });
+    const nowTime = formatTime(new Date());
     const newNote: ActivityItemData = {
       id: `note-${Date.now()}`,
       type: 'note',

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Play, X } from 'lucide-react';
 import { toast } from 'sonner';
+import { formatDateWithYear } from '@/utils/formatDate';
 import {
   Select,
   SelectContent,
@@ -66,7 +67,7 @@ export function WorkflowsCard() {
       const newWf: WorkflowItem = {
         id: `wf-${Date.now()}`,
         name: found.name,
-        startedAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        startedAt: formatDateWithYear(new Date()),
         currentStep: 'Step 1',
       };
       setWorkflows((prev) => [...prev, newWf]);
