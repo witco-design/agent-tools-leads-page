@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Phone, PhoneCall, PhoneOff, Search, Heart, Eye, Pin, Mail, MailOpen, CalendarCheck, CalendarClock, PencilLine, Droplets, FileText, Clipboard, Calendar, BookmarkPlus, MessageSquare, MessageCircle, MessagesSquare, MousePointerClick, Globe, Play, SquareCheck as CheckSquare, BarChart3, DollarSign, Users, Shield, ShieldCheck, UserCheck, ArrowRightLeft, UserPlus, Upload, Home, Ellipsis as MoreHorizontal, ChevronDown, Check } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Phone, PhoneCall, PhoneOff, Search, Heart, Eye, Pin, Mail, MailOpen, CalendarCheck, CalendarClock, PencilLine, Droplets, FileText, Clipboard, Calendar, BookmarkPlus, MessageSquare, MessageCircle, MessagesSquare, MousePointerClick, Globe, Play, SquareCheck as CheckSquare, BarChart3, DollarSign, Users, Shield, ShieldCheck, UserCheck, ArrowRightLeft, UserPlus, Upload, Home, Ellipsis as MoreHorizontal, ChevronDown, Check, Sparkles, Mic } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   DropdownMenu,
@@ -111,13 +111,19 @@ export interface InsetData {
   fields: Record<string, string>;
 }
 
+export interface AiInsightData {
+  summary: string;
+  transcriptUrl?: string;
+  recordingUrl?: string;
+}
+
 export interface ActivityItemData {
   id: string;
   type: ActivityType;
   title: string;
   timestamp: string;
   date: string; // ISO date string for grouping, e.g. "2025-11-05"
-  time: string; // Display time, e.g. "2:17 PM"
+  time: string; // Display time, e.g. "2:17pm"
   actor: ActorData;
   typeLabel: string;
   note?: string;
@@ -129,6 +135,7 @@ export interface ActivityItemData {
   isCompleted?: boolean;
   inset?: InsetData;
   createdAt?: string; // Relative creation time for follow-ups, e.g. "2 days ago"
+  aiInsight?: AiInsightData; // Call-only: AI-generated insight from Geek AI
 }
 
 // ── Icon config ────────────────────────────────────────────────
@@ -280,8 +287,27 @@ export function ActivityItem({
 }: ActivityItemProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [aiExpanded, setAiExpanded] = useState(false);
+  const [needsExpand, setNeedsExpand] = useState(false);
+  const summaryRef = useRef<HTMLParagraphElement>(null);
   const { bg, icon: Icon, color } = getIconConfig(item.type);
   const isSystem = item.actor.name === 'System';
+
+  useEffect(() => {
+    if (summaryRef.current) {
+      setNeedsExpand(summaryRef.current.scrollHeight > summaryRef.current.clientHeight);
+    }
+  }, [item.aiInsight?.summary, isExpanded]);
+
+  const isCallType = item.type === 'call' || item.type === 'called_contact_made' || item.type === 'called_no_answer' || item.type === 'called_left_voicemail';
+
+  const handleViewTranscript = (url: string) => {
+    console.log('[Activity] View transcript:', url);
+  };
+
+  const handleAccessRecording = (url: string) => {
+    console.log('[Activity] Access recording:', url);
+  };
 
   // For follow-ups with createdAt, show relative time; otherwise show absolute time
   const displayTime = item.createdAt
@@ -502,6 +528,61 @@ export function ActivityItem({
                   {item.properties.map((prop, i) => (
                     <PropertyCard key={i} property={prop} />
                   ))}
+                </div>
+              )}
+
+              {/* Geek AI Insight block — call types only */}
+              {isCallType && item.aiInsight && (
+                <div className="mt-spacing-3 p-spacing-4 bg-purple-10 rounded-2 border border-purple-30">
+                  <div className="flex items-center gap-spacing-2 mb-spacing-2">
+                    <Sparkles className="w-4 h-4 text-purple-100 shrink-0" aria-hidden="true" />
+                    <span className="text-text-2 font-semibold uppercase tracking-wide text-purple-100">
+                      Geek AI Insight Summary
+                    </span>
+                  </div>
+
+                  <p
+                    ref={summaryRef}
+                    className={`text-text-3 italic text-text-default leading-relaxed ${aiExpanded ? '' : 'line-clamp-2'}`}
+                  >
+                    &ldquo;{item.aiInsight.summary}&rdquo;
+                  </p>
+
+                  {needsExpand && (
+                    <button
+                      type="button"
+                      onClick={() => setAiExpanded((v) => !v)}
+                      className="mt-spacing-1 text-text-3 font-semibold text-text-link hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-100 focus-visible:ring-offset-2 rounded-1 cursor-pointer"
+                      aria-expanded={aiExpanded}
+                    >
+                      {aiExpanded ? 'Show less' : 'Read more'}
+                    </button>
+                  )}
+
+                  {(item.aiInsight.transcriptUrl || item.aiInsight.recordingUrl) && (
+                    <div className="flex gap-spacing-2 mt-spacing-3">
+                      {item.aiInsight.transcriptUrl && (
+                        <button
+                          type="button"
+                          onClick={() => handleViewTranscript(item.aiInsight!.transcriptUrl!)}
+                          className="inline-flex items-center gap-spacing-2 h-7 px-spacing-3 rounded-1 border border-border-default bg-white text-text-2 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+                        >
+                          <FileText className="w-4 h-4 shrink-0" aria-hidden="true" />
+                          View Transcript
+                        </button>
+                      )}
+                      {item.aiInsight.recordingUrl && (
+                        <button
+                          type="button"
+                          onClick={() => handleAccessRecording(item.aiInsight!.recordingUrl!)}
+                          className="inline-flex items-center gap-spacing-2 h-7 px-spacing-3 rounded-1 border border-border-default bg-white text-text-2 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+                        >
+                          <Mic className="w-4 h-4 shrink-0" aria-hidden="true" />
+                          Access Recording
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
             </div>

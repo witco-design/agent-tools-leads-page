@@ -78,6 +78,11 @@ export const pinnedItem: ActivityItemData = {
   time: '2:17pm',
   note: 'Discussed pre-approval status and timeline. Camille confirmed she has lender Letter of Intent, ready to view properties next weekend. Wants 3BR townhomes in San Jose/Santa Clara, $650-750K.',
   pinned: true,
+  aiInsight: {
+    summary: 'Discussed pre-approval status and timeline. Camille confirmed she has lender Letter of Intent, ready to view properties next weekend. Wants 3BR townhomes in San Jose/Santa Clara, $650-750K. Spouse just accepted a promotion at Google — strong motivation to close before year-end. Preferred contact: texts during work hours, calls evenings and weekends.',
+    transcriptUrl: '#stub-transcript-pinned-1',
+    recordingUrl: '#stub-recording-pinned-1',
+  },
 };
 
 // ── Page 1 items (recent — Nov 12 through Nov 3) ─────────────
@@ -150,6 +155,11 @@ export const page1Items: ActivityItemData[] = [
     timestamp: 'Nov 11, 2025 at 2:17pm',
     date: '2025-11-11',
     time: '2:17pm',
+    aiInsight: {
+      summary: 'Confirmed Saturday showing at 2339 Shaughnessy. Camille requested driving directions and asked about property tax history.',
+      transcriptUrl: '#stub-transcript-act-006',
+      recordingUrl: '#stub-recording-act-006',
+    },
   },
   {
     id: 'act-007',
@@ -347,6 +357,10 @@ export const page1Items: ActivityItemData[] = [
     timestamp: 'Nov 3, 2025 at 4:18pm',
     date: '2025-11-03',
     time: '4:18pm',
+    aiInsight: {
+      summary: 'Initial buyer consultation. Camille is a first-time buyer relocating from SF for tech job in San Jose. Pre-approved at $750K with 25% down. Looking for 3BR/2BA townhome, walkable neighborhood, good schools (planning kids in 2-3 years). Strong communicator, prefers texts during work hours, calls evenings and weekends.',
+      transcriptUrl: '#stub-transcript-p1-1',
+    },
   },
 
   // ── Nov 1 ──
