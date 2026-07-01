@@ -19,12 +19,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { formatDateWithTime } from '@/utils/formatDate';
 
 interface FollowUpItem {
   id: string;
   title: string;
   description: string;
-  date: string;
+  dueDate: Date;
   tagType: 'video' | 'email';
   hasAlarm: boolean;
   checked: boolean;
@@ -35,7 +36,7 @@ const initialFollowUps: FollowUpItem[] = [
     id: '1',
     title: 'Call back',
     description: 'Discuss interest level on 2339 Shaughnessy and confirm pre-approval status with lender.',
-    date: '11/9 · 10:37am',
+    dueDate: new Date(2025, 10, 9, 10, 37),
     tagType: 'video',
     hasAlarm: true,
     checked: false,
@@ -44,7 +45,7 @@ const initialFollowUps: FollowUpItem[] = [
     id: '2',
     title: 'Send listings',
     description: 'Email curated list of 3-bed townhomes in San Jose / Santa Clara area, $650K-$750K.',
-    date: '11/12 · 9:00am',
+    dueDate: new Date(2025, 10, 12, 9, 0),
     tagType: 'email',
     hasAlarm: false,
     checked: false,
@@ -58,7 +59,7 @@ export function FollowUpsCard() {
   const [addOpen, setAddOpen] = useState(false);
   const [addTitle, setAddTitle] = useState('');
   const [addDescription, setAddDescription] = useState('');
-  const [addDate, setAddDate] = useState('');
+  const [addDate, setAddDate] = useState<string>('');
   const [addTagType, setAddTagType] = useState<'video' | 'email'>('email');
 
   // Edit dialog
@@ -66,7 +67,7 @@ export function FollowUpsCard() {
   const [editId, setEditId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState('');
   const [editDescription, setEditDescription] = useState('');
-  const [editDate, setEditDate] = useState('');
+  const [editDate, setEditDate] = useState<string>('');
   const [editTagType, setEditTagType] = useState<'video' | 'email'>('email');
 
   const toggleChecked = (id: string) => {
@@ -87,7 +88,7 @@ export function FollowUpsCard() {
       id: `fu-${Date.now()}`,
       title: addTitle.trim(),
       description: addDescription.trim(),
-      date: addDate || 'TBD',
+      dueDate: addDate ? new Date(addDate) : new Date(),
       tagType: addTagType,
       hasAlarm: false,
       checked: false,
@@ -105,7 +106,10 @@ export function FollowUpsCard() {
     setEditId(item.id);
     setEditTitle(item.title);
     setEditDescription(item.description);
-    setEditDate(item.date);
+    // Format as "YYYY-MM-DDTHH:mm" for datetime-local input
+    const d = item.dueDate;
+    const pad = (n: number) => String(n).padStart(2, '0');
+    setEditDate(`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`);
     setEditTagType(item.tagType);
     setEditOpen(true);
   };
@@ -115,7 +119,7 @@ export function FollowUpsCard() {
     setFollowUps((prev) =>
       prev.map((item) =>
         item.id === editId
-          ? { ...item, title: editTitle, description: editDescription, date: editDate, tagType: editTagType }
+          ? { ...item, title: editTitle, description: editDescription, dueDate: editDate ? new Date(editDate) : item.dueDate, tagType: editTagType }
           : item
       )
     );
@@ -194,7 +198,7 @@ export function FollowUpsCard() {
                 {/* Bottom meta — date + tag inline, wraps if narrow */}
                 <div className="flex flex-wrap items-center gap-spacing-2 mt-2">
                   <span className="text-xs text-[#475467] whitespace-nowrap">
-                    {item.date}
+                    {formatDateWithTime(item.dueDate)}
                   </span>
                   <Badge variant="communication" className="self-start">
                     {item.tagType === 'video' ? (
@@ -315,7 +319,7 @@ export function FollowUpsCard() {
             <div>
               <label className="block text-text-3 font-semibold text-text-default mb-spacing-1">Due Date</label>
               <input
-                type="text"
+                type="datetime-local"
                 value={editDate}
                 onChange={(e) => setEditDate(e.target.value)}
                 className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-white text-text-3 text-text-default focus:outline-none focus:ring-2 focus:ring-focus-ring"

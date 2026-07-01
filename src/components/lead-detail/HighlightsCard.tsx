@@ -25,7 +25,7 @@ export function HighlightsCard() {
               Lead Created
             </span>
             <span className="text-text-3 font-normal text-text-default min-w-0">
-              <TruncatedText>Aug 4 · 10:46am</TruncatedText>
+              <TruncatedText>Aug 4, 10:46am</TruncatedText>
             </span>
           </div>
           <div className="flex items-center py-spacing-1">
@@ -42,7 +42,7 @@ export function HighlightsCard() {
               Last Email Update
             </span>
             <span className="text-text-3 font-normal text-text-default min-w-0">
-              <TruncatedText>Dec 8 · 11:49am</TruncatedText>
+              <TruncatedText>Dec 8, 11:49am</TruncatedText>
             </span>
           </div>
           <div className="flex items-center py-spacing-1">

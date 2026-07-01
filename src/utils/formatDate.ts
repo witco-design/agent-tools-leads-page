@@ -46,6 +46,25 @@ export function formatDateTimeWithYear(date: Date | string | number): string {
 }
 
 /**
+ * PROTECTED — Canonical Follow Up + compact meta date format.
+ * Do not inline `format(date, 'MMM d, h:mmaaa')` elsewhere — always import
+ * formatDateWithTime from this file. Keeps the convention consistent when
+ * we tweak whitespace, punctuation, or 12/24-hour treatment later.
+ */
+
+/** "Jan 10, 8:00am" — compact date + time, comma-separated, no year */
+export function formatDateWithTime(date: Date | string | number): string {
+  const d = typeof date === 'string' || typeof date === 'number' ? new Date(date) : date;
+  return format(d, 'MMM d, h:mmaaa');
+}
+
+/** "Jan 10, 2026, 8:00am" — compact date + time with year, comma-separated */
+export function formatDateWithTimeYear(date: Date | string | number): string {
+  const d = typeof date === 'string' || typeof date === 'number' ? new Date(date) : date;
+  return format(d, 'MMM d, yyyy, h:mmaaa');
+}
+
+/**
  * Hybrid relative formatter.
  * - Within 1 minute     → "just now"
  * - Within 1 hour       → "N minutes ago"
