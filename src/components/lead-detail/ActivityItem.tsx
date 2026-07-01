@@ -565,7 +565,7 @@ export function ActivityItem({
                         <button
                           type="button"
                           onClick={() => handleViewTranscript(item.aiInsight!.transcriptUrl!)}
-                          className="h-8 px-spacing-3 inline-flex items-center gap-spacing-2 bg-[#ebeaff] hover:bg-[#ebeaff]/60 border border-[#c3c0f1] text-[#2d2684] rounded-1 text-text-3 font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 cursor-pointer"
+                          className="h-8 px-spacing-3 inline-flex items-center gap-spacing-2 bg-[#f6f6ff] hover:bg-[#ebeaff] active:bg-[#dedcff] border border-[#c3c0f1] text-[#2d2684] rounded-1 text-text-3 font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 cursor-pointer"
                         >
                           <FileText className="w-4 h-4 shrink-0" aria-hidden="true" />
                           View Transcript
@@ -575,7 +575,7 @@ export function ActivityItem({
                         <button
                           type="button"
                           onClick={() => handleAccessRecording(item.aiInsight!.recordingUrl!)}
-                          className="h-8 px-spacing-3 inline-flex items-center gap-spacing-2 bg-[#ebeaff] hover:bg-[#ebeaff]/60 border border-[#c3c0f1] text-[#2d2684] rounded-1 text-text-3 font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 cursor-pointer"
+                          className="h-8 px-spacing-3 inline-flex items-center gap-spacing-2 bg-[#f6f6ff] hover:bg-[#ebeaff] active:bg-[#dedcff] border border-[#c3c0f1] text-[#2d2684] rounded-1 text-text-3 font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 cursor-pointer"
                         >
                           <Mic className="w-4 h-4 shrink-0" aria-hidden="true" />
                           Access Recording
