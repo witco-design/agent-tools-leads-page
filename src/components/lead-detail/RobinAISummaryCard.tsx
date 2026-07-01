@@ -54,7 +54,7 @@ export function RobinAISummaryCard() {
       open={isExpanded}
       onOpenChange={setIsExpanded}
     >
-      <div data-component="GeekAIInsightsCard" className="bg-[#ebeaff] border border-[#c3c0f1] rounded-3 overflow-hidden">
+      <div data-component="GeekAIInsightsCard" className="bg-[#f6f6ff] border border-[#c3c0f1] rounded-3 overflow-hidden">
 
         {/* Header */}
         <div className="pl-spacing-5 pr-spacing-2 py-spacing-2 flex items-center justify-between gap-spacing-3">
