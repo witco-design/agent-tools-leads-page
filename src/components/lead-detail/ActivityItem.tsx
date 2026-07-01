@@ -552,7 +552,7 @@ export function ActivityItem({
                     <button
                       type="button"
                       onClick={() => setAiExpanded((v) => !v)}
-                      className="mt-spacing-1 text-text-3 font-semibold text-purple-110 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1 cursor-pointer"
+                      className="mt-spacing-1 mb-spacing-5 text-text-3 font-normal text-purple-110 underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1 cursor-pointer"
                       aria-expanded={aiExpanded}
                     >
                       {aiExpanded ? 'Show less' : 'Read more'}
