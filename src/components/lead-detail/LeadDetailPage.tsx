@@ -72,7 +72,17 @@ export default function LeadDetailPage() {
         {/* Sidebar — fixed, below header */}
         <Sidebar collapsed={collapsed} onToggle={toggle} />
 
-        {/* Floating collapse toggle — Notion-style */}
+        {/* PROTECTED — Sidebar collapse toggle position.
+         * Reads --sidebar-width so it slides with the sidebar automatically
+         * when the width changes (both collapse/expand state changes AND
+         * any future design-time width adjustments).
+         *
+         * The translateX(-50%) is what creates the "overlap" effect —
+         * half the circle sits on the sidebar, half on the content area.
+         *
+         * Do not hardcode `left` values for the collapsed / expanded states.
+         * If a new sidebar width is introduced, update it in Sidebar.tsx's
+         * useEffect and this toggle will follow. */}
         <button
           type="button"
           onClick={toggle}
@@ -80,7 +90,8 @@ export default function LeadDetailPage() {
           className="fixed z-30 w-6 h-6 rounded-round bg-bg-card border border-border-default flex items-center justify-center shadow-md hover:shadow-lg hover:bg-bg-muted cursor-pointer hidden md:flex"
           style={{
             top: 76,
-            left: collapsed ? 60 : 208,
+            left: 'var(--sidebar-width, 184px)',
+            transform: 'translateX(-50%)',
             transition: 'left 180ms ease, box-shadow 150ms ease',
           }}
         >
