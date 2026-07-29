@@ -7,271 +7,98 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useDragHandle } from './DragHandleContext';
-import { ContactFieldRow } from '@/components/contact/ContactFieldRow';
 import {
   useContactInfo,
   type ContactInfo,
-  type FieldStatus,
 } from '@/contexts/ContactInfoContext';
+import { ContactEditDialog, type FieldConfig } from '@/components/ContactEditDialog';
 
-/* ────────────────────────────────────────────────────────
-   DefaultMode — shows non-blank fields with action menus
-   ──────────────────────────────────────────────────────── */
-function DefaultMode({ onStartEdit }: { onStartEdit: () => void }) {
-  const { contactInfo, updateContactInfo } = useContactInfo();
+const CONTACT_INFO_FIELDS: FieldConfig[] = [
+  { key: 'firstName', label: 'First Name', type: 'text' },
+  { key: 'lastName', label: 'Last Name', type: 'text' },
+  { key: 'primary', label: 'Primary', type: 'tel', placeholder: '(415) 555-0142' },
+  { key: 'alt', label: 'Alt', type: 'tel', placeholder: '(415) 555-0188' },
+  { key: 'office', label: 'Office', type: 'tel' },
+  { key: 'fax', label: 'Fax', type: 'tel' },
+  { key: 'email', label: 'Email', type: 'email', placeholder: 'name@example.com' },
+  { key: 'street', label: 'Address', type: 'text', placeholder: 'Street address' },
+  { key: 'city', label: 'City', type: 'text' },
+  { key: 'state', label: 'State/Province', type: 'text' },
+  { key: 'zip', label: 'Zip/Postal', type: 'text' },
+];
 
-  const markStatus = (field: string, status: FieldStatus) => {
-    const statusField = `${field}Status` as keyof ContactInfo;
-    updateContactInfo({ [statusField]: status } as Partial<ContactInfo>);
-  };
-
-  const deleteField = (field: string) => {
-    updateContactInfo({ [field]: '' } as Partial<ContactInfo>);
-  };
-
-  // Check if ALL fields are empty → show empty state
-  const hasAnyField =
-    !!contactInfo.primary || !!contactInfo.alt || !!contactInfo.office ||
-    !!contactInfo.fax || !!contactInfo.email || !!contactInfo.street;
-
-  if (!hasAnyField) {
-    return (
-      <div className="py-spacing-4 text-center">
-        <p className="text-sm text-text-muted mb-spacing-2">No contact information yet.</p>
-        <button
-          type="button"
-          onClick={onStartEdit}
-          className="text-sm font-semibold text-text-link hover:underline cursor-pointer bg-transparent border-none p-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1"
-        >
-          Add contact details
-        </button>
-      </div>
-    );
-  }
-
+function DisplayRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="space-y-spacing-3">
-      {contactInfo.primary && (
-        <ContactFieldRow
-          type="phone"
-          label="Primary"
-          value={contactInfo.primary}
-          status={contactInfo.primaryStatus}
-          onMarkBad={() => markStatus('primary', 'bad')}
-          onMarkGood={() => markStatus('primary', 'good')}
-          onDelete={() => deleteField('primary')}
-        />
-      )}
-      {contactInfo.alt && (
-        <ContactFieldRow
-          type="phone"
-          label="Alt"
-          value={contactInfo.alt}
-          status={contactInfo.altStatus}
-          onMarkBad={() => markStatus('alt', 'bad')}
-          onMarkGood={() => markStatus('alt', 'good')}
-          onDelete={() => deleteField('alt')}
-        />
-      )}
-      {contactInfo.office && (
-        <ContactFieldRow
-          type="phone"
-          label="Office"
-          value={contactInfo.office}
-          status={contactInfo.officeStatus}
-          onMarkBad={() => markStatus('office', 'bad')}
-          onMarkGood={() => markStatus('office', 'good')}
-          onDelete={() => deleteField('office')}
-        />
-      )}
-      {contactInfo.fax && (
-        <ContactFieldRow
-          type="phone"
-          label="Fax"
-          value={contactInfo.fax}
-          status={contactInfo.faxStatus}
-          onMarkBad={() => markStatus('fax', 'bad')}
-          onMarkGood={() => markStatus('fax', 'good')}
-          onDelete={() => deleteField('fax')}
-        />
-      )}
-      {contactInfo.email && (
-        <ContactFieldRow
-          type="email"
-          label="Email"
-          value={contactInfo.email}
-          status={contactInfo.emailStatus}
-          onMarkBad={() => markStatus('email', 'bad')}
-          onMarkGood={() => markStatus('email', 'good')}
-          /* no onDelete — email is not deletable, only markable */
-        />
-      )}
-      {contactInfo.street && (
-        <ContactFieldRow
-          type="address"
-          label="Address"
-          value={contactInfo.street}
-          status="good"
-          onDelete={() =>
-            updateContactInfo({ street: '', city: '', state: '', zip: '' })
-          }
-        />
-      )}
+    <div className="flex items-center min-h-9">
+      <span className="w-24 text-sm text-text-muted flex-shrink-0">{label}</span>
+      <span className="flex-1 text-sm text-text-default">{value}</span>
     </div>
   );
 }
 
-/* ────────────────────────────────────────────────────────
-   EditMode — all fields as inputs (including blanks)
-   ──────────────────────────────────────────────────────── */
-function FieldRow({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="flex items-center gap-spacing-3 min-h-9">
-      <span className="text-sm text-[#667085] flex-shrink-0 w-[100px]">
-        {label}
-      </span>
-      <div className="flex-1 min-w-0">{children}</div>
-    </div>
-  );
-}
-
-function EditMode({
-  form,
-  onChange,
-}: {
-  form: ContactInfo;
-  onChange: (next: ContactInfo) => void;
-}) {
-  const handleField = (field: keyof ContactInfo, value: string) => {
-    onChange({ ...form, [field]: value });
-  };
-
-  const inputClass =
-    'h-9 w-full px-spacing-3 border border-[#E4E7EC] rounded-1 text-sm text-[#101828] placeholder:text-[#98a2b3] focus:outline-none focus:border-[#3e60c9] focus:ring-1 focus:ring-[#3e60c9]';
-
-  return (
-    <div className="space-y-spacing-3">
-      <FieldRow label="First Name">
-        <input
-          type="text"
-          value={form.firstName}
-          onChange={(e) => handleField('firstName', e.target.value)}
-          className={inputClass}
-        />
-      </FieldRow>
-      <FieldRow label="Last Name">
-        <input
-          type="text"
-          value={form.lastName}
-          onChange={(e) => handleField('lastName', e.target.value)}
-          className={inputClass}
-        />
-      </FieldRow>
-      <FieldRow label="Primary">
-        <input
-          type="tel"
-          value={form.primary}
-          onChange={(e) => handleField('primary', e.target.value)}
-          className={inputClass}
-        />
-      </FieldRow>
-      <FieldRow label="Alt">
-        <input
-          type="tel"
-          value={form.alt}
-          onChange={(e) => handleField('alt', e.target.value)}
-          className={inputClass}
-        />
-      </FieldRow>
-      <FieldRow label="Office">
-        <input
-          type="tel"
-          value={form.office}
-          onChange={(e) => handleField('office', e.target.value)}
-          className={inputClass}
-        />
-      </FieldRow>
-      <FieldRow label="Fax">
-        <input
-          type="tel"
-          value={form.fax}
-          onChange={(e) => handleField('fax', e.target.value)}
-          className={inputClass}
-        />
-      </FieldRow>
-      <FieldRow label="Email">
-        <input
-          type="email"
-          value={form.email}
-          onChange={(e) => handleField('email', e.target.value)}
-          className={inputClass}
-        />
-      </FieldRow>
-      <FieldRow label="Address">
-        <input
-          type="text"
-          value={form.street}
-          onChange={(e) => handleField('street', e.target.value)}
-          placeholder="Street address"
-          className={inputClass}
-        />
-      </FieldRow>
-      <FieldRow label="City">
-        <input
-          type="text"
-          value={form.city}
-          onChange={(e) => handleField('city', e.target.value)}
-          className={inputClass}
-        />
-      </FieldRow>
-      <FieldRow label="State/Province">
-        <input
-          type="text"
-          value={form.state}
-          onChange={(e) => handleField('state', e.target.value)}
-          className={inputClass}
-        />
-      </FieldRow>
-      <FieldRow label="Zip/Postal">
-        <input
-          type="text"
-          value={form.zip}
-          onChange={(e) => handleField('zip', e.target.value)}
-          className={inputClass}
-        />
-      </FieldRow>
-    </div>
-  );
-}
-
-/* ────────────────────────────────────────────────────────
-   ContactInfoSection — right column card with edit mode
-   ──────────────────────────────────────────────────────── */
 export function ContactInfoSection() {
-  const { contactInfo, updateContactInfo } = useContactInfo();
-  const [isEditing, setIsEditing] = useState(false);
-  const [editForm, setEditForm] = useState<ContactInfo>(contactInfo);
+  const {
+    contactInfo,
+    updateContactInfo,
+    openContactDialog,
+    contactDialogOpen,
+    contactDialogAutoFocus,
+    closeContactDialog,
+  } = useContactInfo();
   const [open, setOpen] = useState(true);
   const { attributes, listeners } = useDragHandle();
 
-  const handleStartEdit = () => {
-    setEditForm(contactInfo);
-    setIsEditing(true);
+  const rows: { label: string; value: string }[] = [];
+  if (contactInfo.firstName)
+    rows.push({ label: 'First Name', value: contactInfo.firstName });
+  if (contactInfo.lastName)
+    rows.push({ label: 'Last Name', value: contactInfo.lastName });
+  if (contactInfo.primary)
+    rows.push({ label: 'Primary', value: contactInfo.primary });
+  if (contactInfo.alt) rows.push({ label: 'Alt', value: contactInfo.alt });
+  if (contactInfo.office)
+    rows.push({ label: 'Office', value: contactInfo.office });
+  if (contactInfo.fax) rows.push({ label: 'Fax', value: contactInfo.fax });
+  if (contactInfo.email)
+    rows.push({ label: 'Email', value: contactInfo.email });
+  if (contactInfo.street) {
+    rows.push({ label: 'Address', value: contactInfo.street });
+    const line2 = [contactInfo.city, contactInfo.state, contactInfo.zip]
+      .filter(Boolean)
+      .join(', ');
+    if (line2) rows.push({ label: '', value: line2 });
+  }
+
+  const isEmpty = rows.length === 0;
+
+  const handleSave = (values: Record<string, string>) => {
+    updateContactInfo({
+      firstName: values.firstName ?? '',
+      lastName: values.lastName ?? '',
+      primary: values.primary ?? '',
+      alt: values.alt ?? '',
+      office: values.office ?? '',
+      fax: values.fax ?? '',
+      email: values.email ?? '',
+      street: values.street ?? '',
+      city: values.city ?? '',
+      state: values.state ?? '',
+      zip: values.zip ?? '',
+    } as Partial<ContactInfo>);
   };
 
-  const handleDone = () => {
-    updateContactInfo(editForm);
-    setIsEditing(false);
-  };
-
-  const handleCancel = () => {
-    setIsEditing(false);
+  const initialValues: Record<string, string> = {
+    firstName: contactInfo.firstName,
+    lastName: contactInfo.lastName,
+    primary: contactInfo.primary,
+    alt: contactInfo.alt,
+    office: contactInfo.office,
+    fax: contactInfo.fax,
+    email: contactInfo.email,
+    street: contactInfo.street,
+    city: contactInfo.city,
+    state: contactInfo.state,
+    zip: contactInfo.zip,
   };
 
   return (
@@ -312,36 +139,15 @@ export function ContactInfoSection() {
             </h3>
           </button>
 
-          {/* Edit / Cancel+Done controls */}
-          <div className="ml-spacing-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200">
-            {isEditing ? (
-              <div className="flex items-center gap-spacing-2">
-                <button
-                  type="button"
-                  onClick={handleCancel}
-                  className="text-sm text-[#667085] hover:text-[#101828] transition cursor-pointer bg-transparent border-none p-0"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  onClick={handleDone}
-                  className="h-7 px-spacing-3 inline-flex items-center bg-[#3e60c9] hover:bg-[#3840a9] text-white rounded-1 text-sm font-semibold transition cursor-pointer border-none"
-                >
-                  Done
-                </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={handleStartEdit}
-                className="inline-flex items-center gap-spacing-1 text-text-3 font-semibold text-text-link hover:text-text-link-hover transition cursor-pointer bg-transparent border-none p-0"
-              >
-                <Pencil className="w-3.5 h-3.5" />
-                Edit
-              </button>
-            )}
-          </div>
+          {/* Edit link */}
+          <button
+            type="button"
+            onClick={() => openContactDialog()}
+            className="ml-spacing-3 inline-flex items-center gap-spacing-1 text-text-3 font-normal text-blue-100 underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 rounded-1 cursor-pointer bg-transparent border-none p-0"
+          >
+            <Pencil className="w-3.5 h-3.5" />
+            Edit
+          </button>
 
           <div className="flex-1" />
 
@@ -360,16 +166,51 @@ export function ContactInfoSection() {
         </div>
 
         {/* Body */}
+        {/**
+         * PROTECTED — Right-column contact cards render in display-only mode.
+         * Empty fields are hidden (established pattern from task #160).
+         * Editing happens via the Edit link in the card header, which opens
+         * ContactEditDialog with all fields (populated + empty as placeholders).
+         *
+         * Do NOT reintroduce inline input fields or a "Done" button.
+         * The dialog is the single edit affordance for these cards.
+         */}
         {open && (
-          <div className="px-spacing-5 py-spacing-4">
-            {isEditing ? (
-              <EditMode form={editForm} onChange={setEditForm} />
+          <div className="px-spacing-5 py-spacing-4 space-y-spacing-2">
+            {isEmpty ? (
+              <div className="text-sm text-text-muted italic">
+                No contact information yet.{' '}
+                <button
+                  type="button"
+                  onClick={() => openContactDialog()}
+                  className="text-blue-100 underline hover:no-underline cursor-pointer bg-transparent border-none p-0"
+                >
+                  Add one
+                </button>
+                .
+              </div>
             ) : (
-              <DefaultMode onStartEdit={handleStartEdit} />
+              rows.map((row, i) =>
+                row.label ? (
+                  <DisplayRow key={`${row.label}-${i}`} label={row.label} value={row.value} />
+                ) : (
+                  <DisplayRow key={`addr-line2-${i}`} label="" value={row.value} />
+                ),
+              )
             )}
           </div>
         )}
       </div>
+
+      <ContactEditDialog
+        isOpen={contactDialogOpen}
+        onClose={closeContactDialog}
+        onSave={handleSave}
+        title="Contact Info"
+        initialValues={initialValues}
+        fields={CONTACT_INFO_FIELDS}
+        autoFocusField={contactDialogAutoFocus}
+      />
     </TooltipProvider>
   );
 }

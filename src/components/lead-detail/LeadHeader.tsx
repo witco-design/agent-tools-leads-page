@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import { Phone, MessageSquare, Mail, MessagesSquare, LogIn, Ellipsis as MoreHorizontal, Pencil, Video, Lock, Bookmark, Ligature as FileSignature, Clock as Unlock, TriangleAlert as AlertTriangle, ChevronLeft, ChevronRight, List } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -22,6 +22,7 @@ import {
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
 import { TruncatedText } from './TruncatedText';
+import { useContactInfo } from '@/contexts/ContactInfoContext';
 
 interface ActionButton {
   label: string;
@@ -37,10 +38,9 @@ const actionButtons: ActionButton[] = [
 ];
 
 export function LeadHeader() {
-  const [leadName, setLeadName] = useState('Camille Dubois');
-  const [isEditing, setIsEditing] = useState(false);
-  const [editValue, setEditValue] = useState(leadName);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const { contactInfo, openContactDialog } = useContactInfo();
+
+  const leadName = `${contactInfo.firstName} ${contactInfo.lastName}`.trim();
 
   const initials = leadName
     .split(' ')
@@ -56,39 +56,6 @@ export function LeadHeader() {
   const [chatModalOpen, setChatModalOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [textBody, setTextBody] = useState('');
-
-  useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus();
-      inputRef.current.select();
-    }
-  }, [isEditing]);
-
-  const startEditing = () => {
-    setEditValue(leadName);
-    setIsEditing(true);
-  };
-
-  const commitEdit = () => {
-    const trimmed = editValue.trim();
-    if (trimmed) {
-      setLeadName(trimmed);
-    }
-    setIsEditing(false);
-  };
-
-  const cancelEdit = () => {
-    setEditValue(leadName);
-    setIsEditing(false);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      commitEdit();
-    } else if (e.key === 'Escape') {
-      cancelEdit();
-    }
-  };
 
   const openModal = (label: string) => {
     switch (label) {
@@ -114,54 +81,21 @@ export function LeadHeader() {
     <TooltipProvider delayDuration={200}>
       {/* Lead identity + actions */}
       <div data-component="LeadHeader" className="py-spacing-2 flex items-center justify-between gap-spacing-4">
-        {/* Avatar + Name + Pencil — group for hover reveal */}
+        {/* Avatar + Name — name is a button that opens the Contact Edit dialog */}
         <div className="group flex items-center gap-spacing-3 flex-1 min-w-0">
           {/* Lock icon */}
           <Lock className="w-4 h-4 text-text-muted shrink-0" strokeWidth={2.25} />
 
-          {isEditing ? (
-            <input
-              ref={inputRef}
-              type="text"
-              value={editValue}
-              onChange={(e) => setEditValue(e.target.value)}
-              onBlur={commitEdit}
-              onKeyDown={handleKeyDown}
-              autoFocus
-              className="flex-1 min-w-[280px] max-w-[700px] text-text-7 font-semibold text-text-default whitespace-nowrap
-                         bg-white border border-border-default rounded-1
-                         px-spacing-2 py-0 outline-none
-                         focus:border-blue-100 focus:ring-2 focus:ring-blue-40 focus:ring-offset-0"
-            />
-          ) : (
-            <>
-              <h1
-                className="text-text-7 font-semibold text-text-default whitespace-nowrap cursor-default min-w-0"
-                onDoubleClick={startEditing}
-              >
-                <TruncatedText fullText={leadName}>{leadName}</TruncatedText>
-              </h1>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    type="button"
-                    onClick={startEditing}
-                    className="inline-flex items-center justify-center w-7 h-7 rounded-1
-                               opacity-0 group-hover:opacity-100 focus:opacity-100
-                               transition-opacity duration-200 ease-out
-                               text-text-muted hover:text-text-link hover:bg-gray-30
-                               focus:outline-none focus:ring-2 focus:ring-blue-40"
-                    aria-label="Edit lead name"
-                  >
-                    <Pencil className="w-4 h-4" />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Edit lead name</p>
-                </TooltipContent>
-              </Tooltip>
-            </>
-          )}
+          {/* Name — click-to-edit, opens Contact Info dialog focused on First Name */}
+          <h1 className="text-text-7 font-semibold text-text-default whitespace-nowrap min-w-0">
+            <button
+              type="button"
+              onClick={() => openContactDialog('firstName')}
+              className="text-left hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-40 focus-visible:ring-offset-2 rounded-1"
+            >
+              <TruncatedText fullText={leadName}>{leadName}</TruncatedText>
+            </button>
+          </h1>
         </div>
 
         {/* Action pill buttons */}
@@ -285,7 +219,7 @@ export function LeadHeader() {
               <Phone className="w-8 h-8 text-green-90" />
             </div>
             <h2 className="text-text-5 font-semibold text-text-default">{leadName}</h2>
-            <p className="font-mono text-text-3 text-text-default">(415) 555-0142</p>
+            <p className="font-mono text-text-3 text-text-default">{contactInfo.primary}</p>
             <p className="text-text-3 text-text-secondary">Ready to call</p>
           </div>
           <DialogFooter>
@@ -301,7 +235,7 @@ export function LeadHeader() {
               className="h-8 px-spacing-3 rounded-1 bg-green-90 text-white text-text-3 font-semibold hover:bg-green-100 transition-colors cursor-pointer"
               onClick={() => {
                 setCallOpen(false);
-                toast.success('Calling Camille Dubois at (415) 555-0142…');
+                toast.success(`Calling ${leadName} at ${contactInfo.primary}…`);
               }}
             >
               Start Call
@@ -320,11 +254,11 @@ export function LeadHeader() {
           <div className="space-y-spacing-4 py-spacing-2">
             <div className="flex items-center gap-spacing-3">
               <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                <span className="text-text-3 font-semibold text-white">{initials}</span> {/* text-text-3 OK: avatar initials in 32px circle */}
+                <span className="text-text-3 font-semibold text-white">{initials}</span>
               </div>
               <div>
                 <p className="text-text-3 font-semibold text-text-default">{leadName}</p>
-                <p className="text-text-3 text-text-secondary">(415) 555-0142</p>
+                <p className="text-text-3 text-text-secondary">{contactInfo.primary}</p>
               </div>
             </div>
             <textarea
@@ -350,7 +284,7 @@ export function LeadHeader() {
               onClick={() => {
                 setTextOpen(false);
                 setTextBody('');
-                toast.success('Text sent to Camille Dubois');
+                toast.success(`Text sent to ${leadName}`);
               }}
             >
               Send
@@ -372,7 +306,7 @@ export function LeadHeader() {
               <input
                 type="text"
                 readOnly
-                value="Camille Dubois <cdubois@realgeeks.com>"
+                value={`${leadName} <${contactInfo.email}>`}
                 className="w-full h-9 px-spacing-3 rounded-1 border border-border-default bg-gray-30 text-text-3 text-text-secondary"
               />
             </div>
@@ -406,7 +340,7 @@ export function LeadHeader() {
               className="h-8 px-spacing-3 rounded-1 bg-blue-100 text-white text-text-3 font-semibold hover:bg-blue-110 active:bg-blue-120 transition-colors cursor-pointer"
               onClick={() => {
                 setEmailOpen(false);
-                toast.success('Email sent to cdubois@realgeeks.com');
+                toast.success(`Email sent to ${contactInfo.email}`);
               }}
             >
               Send Email
@@ -499,7 +433,7 @@ export function LeadHeader() {
               className="h-8 px-spacing-3 rounded-1 bg-orange-100 text-white text-text-3 font-semibold hover:bg-orange-110 transition-colors cursor-pointer"
               onClick={() => {
                 setLoginOpen(false);
-                toast('Viewing as Camille Dubois — your activity will not be tracked');
+                toast(`Viewing as ${leadName} — your activity will not be tracked`);
               }}
             >
               Login as Lead

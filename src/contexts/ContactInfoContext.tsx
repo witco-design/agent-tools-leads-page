@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useCallback,
+} from 'react';
 
 export type FieldStatus = 'good' | 'bad';
 
@@ -24,6 +30,14 @@ export interface ContactInfo {
 interface ContactInfoContextValue {
   contactInfo: ContactInfo;
   updateContactInfo: (updates: Partial<ContactInfo>) => void;
+  /** Opens the Contact Edit dialog, optionally focusing a field key. */
+  openContactDialog: (autoFocusField?: string) => void;
+  /** Closes the Contact Edit dialog. */
+  closeContactDialog: () => void;
+  /** Whether the Contact Edit dialog is open. */
+  contactDialogOpen: boolean;
+  /** Which field key to auto-focus when the dialog opens. */
+  contactDialogAutoFocus: string | undefined;
 }
 
 const ContactInfoContext = createContext<ContactInfoContextValue | null>(null);
@@ -36,13 +50,35 @@ export function ContactInfoProvider({
   initial: ContactInfo;
 }) {
   const [contactInfo, setContactInfo] = useState<ContactInfo>(initial);
+  const [contactDialogOpen, setContactDialogOpen] = useState(false);
+  const [contactDialogAutoFocus, setContactDialogAutoFocus] = useState<
+    string | undefined
+  >(undefined);
 
   const updateContactInfo = (updates: Partial<ContactInfo>) => {
     setContactInfo((prev) => ({ ...prev, ...updates }));
   };
 
+  const openContactDialog = useCallback((autoFocusField?: string) => {
+    setContactDialogAutoFocus(autoFocusField);
+    setContactDialogOpen(true);
+  }, []);
+
+  const closeContactDialog = useCallback(() => {
+    setContactDialogOpen(false);
+  }, []);
+
   return (
-    <ContactInfoContext.Provider value={{ contactInfo, updateContactInfo }}>
+    <ContactInfoContext.Provider
+      value={{
+        contactInfo,
+        updateContactInfo,
+        openContactDialog,
+        closeContactDialog,
+        contactDialogOpen,
+        contactDialogAutoFocus,
+      }}
+    >
       {children}
     </ContactInfoContext.Provider>
   );

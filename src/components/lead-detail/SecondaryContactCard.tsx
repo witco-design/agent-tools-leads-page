@@ -8,27 +8,19 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useDragHandle } from './DragHandleContext';
-import { ContactFieldRow } from '@/components/contact/ContactFieldRow';
+import { ContactEditDialog, type FieldConfig } from '@/components/ContactEditDialog';
 
 /* ────────────────────────────────────────────────────────
    Types
    ──────────────────────────────────────────────────────── */
-type FieldStatus = 'good' | 'bad';
-
 interface SecondaryContact {
   name: string;
   primary: string;
-  primaryStatus: FieldStatus;
   alt: string;
-  altStatus: FieldStatus;
   office: string;
-  officeStatus: FieldStatus;
   fax: string;
-  faxStatus: FieldStatus;
   email: string;
-  emailStatus: FieldStatus;
   altEmail: string;
-  altEmailStatus: FieldStatus;
   address: string;
   city: string;
   state: string;
@@ -36,29 +28,20 @@ interface SecondaryContact {
 }
 
 /* ────────────────────────────────────────────────────────
-   Field config
+   Field config — keys match SecondaryContact
    ──────────────────────────────────────────────────────── */
-interface FieldConfig {
-  key: keyof SecondaryContact;
-  label: string;
-  type: 'phone' | 'email' | 'address' | 'text';
-  inputType: string;
-  inputMode?: 'tel' | 'email' | 'text';
-  placeholder?: string;
-}
-
-const FIELDS: FieldConfig[] = [
-  { key: 'name', label: 'Name', type: 'text', inputType: 'text' },
-  { key: 'primary', label: 'Primary', type: 'phone', inputType: 'tel', inputMode: 'tel' },
-  { key: 'alt', label: 'Alt', type: 'phone', inputType: 'tel', inputMode: 'tel' },
-  { key: 'office', label: 'Office', type: 'phone', inputType: 'tel', inputMode: 'tel' },
-  { key: 'fax', label: 'Fax', type: 'phone', inputType: 'tel', inputMode: 'tel' },
-  { key: 'email', label: 'Email', type: 'email', inputType: 'email', inputMode: 'email' },
-  { key: 'altEmail', label: 'Alt Email', type: 'email', inputType: 'email', inputMode: 'email' },
-  { key: 'address', label: 'Address', type: 'address', inputType: 'text', placeholder: 'Street address' },
-  { key: 'city', label: 'City', type: 'text', inputType: 'text' },
-  { key: 'state', label: 'State/Province', type: 'text', inputType: 'text' },
-  { key: 'zip', label: 'Zip/Postal', type: 'text', inputType: 'text' },
+const SECONDARY_CONTACT_FIELDS: FieldConfig[] = [
+  { key: 'name', label: 'Name', type: 'text' },
+  { key: 'primary', label: 'Primary', type: 'tel' },
+  { key: 'alt', label: 'Alt', type: 'tel' },
+  { key: 'office', label: 'Office', type: 'tel' },
+  { key: 'fax', label: 'Fax', type: 'tel' },
+  { key: 'email', label: 'Email', type: 'email' },
+  { key: 'altEmail', label: 'Alt Email', type: 'email' },
+  { key: 'address', label: 'Address', type: 'text', placeholder: 'Street address' },
+  { key: 'city', label: 'City', type: 'text' },
+  { key: 'state', label: 'State/Province', type: 'text' },
+  { key: 'zip', label: 'Zip/Postal', type: 'text' },
 ];
 
 /* ────────────────────────────────────────────────────────
@@ -67,17 +50,11 @@ const FIELDS: FieldConfig[] = [
 const INITIAL_DATA: SecondaryContact = {
   name: 'Tom Dubois',
   primary: '(214) 555-8832',
-  primaryStatus: 'good',
   alt: '',
-  altStatus: 'good',
   office: '',
-  officeStatus: 'good',
   fax: '',
-  faxStatus: 'good',
   email: 'tom.dubois@email.com',
-  emailStatus: 'good',
   altEmail: '',
-  altEmailStatus: 'good',
   address: '',
   city: '',
   state: '',
@@ -85,208 +62,86 @@ const INITIAL_DATA: SecondaryContact = {
 };
 
 /* ────────────────────────────────────────────────────────
-   FieldRow — edit-mode label+input row
+   DisplayRow — label-left / value-right
    ──────────────────────────────────────────────────────── */
-function FieldRow({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+function DisplayRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center gap-spacing-3 min-h-9">
-      <span className="text-sm text-[#667085] flex-shrink-0 w-[100px]">
-        {label}
-      </span>
-      <div className="flex-1 min-w-0">{children}</div>
+    <div className="flex items-center min-h-9">
+      <span className="w-24 text-sm text-text-muted flex-shrink-0">{label}</span>
+      <span className="flex-1 text-sm text-text-default">{value}</span>
     </div>
   );
 }
 
 /* ────────────────────────────────────────────────────────
-   DefaultMode — shows non-blank fields with action menus
-   ──────────────────────────────────────────────────────── */
-function DefaultMode({
-  contact,
-  onChange,
-  onStartEdit,
-}: {
-  contact: SecondaryContact;
-  onChange: (next: SecondaryContact) => void;
-  onStartEdit: () => void;
-}) {
-  const statusKey = (field: string) => `${field}Status` as keyof SecondaryContact;
-
-  const markStatus = (field: string, status: FieldStatus) => {
-    onChange({ ...contact, [statusKey(field)]: status });
-  };
-
-  const deleteField = (field: string) => {
-    onChange({ ...contact, [field]: '' });
-  };
-
-  // Name row — shown as plain text if filled
-  const hasName = contact.name.trim() !== '';
-
-  // Phone / email field rows
-  const phoneFields: { key: keyof SecondaryContact; label: string }[] = [
-    { key: 'primary', label: 'Primary' },
-    { key: 'alt', label: 'Alt' },
-    { key: 'office', label: 'Office' },
-    { key: 'fax', label: 'Fax' },
-  ];
-
-  const emailFields: { key: keyof SecondaryContact; label: string }[] = [
-    { key: 'email', label: 'Email' },
-    { key: 'altEmail', label: 'Alt Email' },
-  ];
-
-  // Address is composite
-  const hasAddress = contact.address.trim() !== '';
-
-  // Check if ALL fields are empty → show empty state
-  const hasAnyField =
-    hasName ||
-    phoneFields.some((pf) => (contact[pf.key] as string).trim() !== '') ||
-    emailFields.some((ef) => (contact[ef.key] as string).trim() !== '') ||
-    hasAddress;
-
-  if (!hasAnyField) {
-    return (
-      <div className="py-spacing-4 text-center">
-        <p className="text-sm text-text-muted mb-spacing-2">No contact information yet.</p>
-        <button
-          type="button"
-          onClick={onStartEdit}
-          className="text-sm font-semibold text-text-link hover:underline cursor-pointer bg-transparent border-none p-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1"
-        >
-          Add contact details
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-spacing-3">
-      {/* Name */}
-      {hasName && (
-        <div className="flex items-center justify-between gap-spacing-3 min-h-9">
-          <span className="text-sm text-[#667085] flex-shrink-0">Name</span>
-          <span className="text-sm font-medium text-[#101828]">{contact.name}</span>
-        </div>
-      )}
-
-      {/* Phone fields */}
-      {phoneFields.map((pf) => {
-        const val = contact[pf.key] as string;
-        if (!val.trim()) return null;
-        const status = contact[statusKey(pf.key)] as FieldStatus;
-        return (
-          <ContactFieldRow
-            key={pf.key}
-            type="phone"
-            label={pf.label}
-            value={val}
-            status={status}
-            onMarkBad={() => markStatus(pf.key, 'bad')}
-            onMarkGood={() => markStatus(pf.key, 'good')}
-            onDelete={() => deleteField(pf.key)}
-          />
-        );
-      })}
-
-      {/* Email fields */}
-      {emailFields.map((ef) => {
-        const val = contact[ef.key] as string;
-        if (!val.trim()) return null;
-        const status = contact[statusKey(ef.key)] as FieldStatus;
-        return (
-          <ContactFieldRow
-            key={ef.key}
-            type="email"
-            label={ef.label}
-            value={val}
-            status={status}
-            onMarkBad={() => markStatus(ef.key, 'bad')}
-            onMarkGood={() => markStatus(ef.key, 'good')}
-            onDelete={() => deleteField(ef.key)}
-          />
-        );
-      })}
-
-      {/* Address */}
-      {hasAddress && (
-        <ContactFieldRow
-          type="address"
-          label="Address"
-          value={[contact.address, contact.city, contact.state, contact.zip].filter(Boolean).join(', ')}
-          status="good"
-          onDelete={() => onChange({ ...contact, address: '', city: '', state: '', zip: '' })}
-        />
-      )}
-    </div>
-  );
-}
-
-/* ────────────────────────────────────────────────────────
-   EditMode — all 11 fields as inputs
-   ──────────────────────────────────────────────────────── */
-function EditMode({
-  form,
-  onChange,
-}: {
-  form: SecondaryContact;
-  onChange: (next: SecondaryContact) => void;
-}) {
-  const handleField = (field: keyof SecondaryContact, value: string) => {
-    onChange({ ...form, [field]: value });
-  };
-
-  const inputClass =
-    'h-9 w-full px-spacing-3 border border-[#E4E7EC] rounded-1 text-sm text-[#101828] placeholder:text-[#98a2b3] focus:outline-none focus:border-[#3e60c9] focus:ring-1 focus:ring-[#3e60c9]';
-
-  return (
-    <div className="space-y-spacing-3">
-      {FIELDS.map((field) => (
-        <FieldRow key={field.key} label={field.label}>
-          <input
-            type={field.inputType}
-            inputMode={field.inputMode}
-            value={form[field.key] as string}
-            onChange={(e) => handleField(field.key, e.target.value)}
-            placeholder={field.placeholder}
-            className={inputClass}
-          />
-        </FieldRow>
-      ))}
-    </div>
-  );
-}
-
-/* ────────────────────────────────────────────────────────
-   SecondaryContactCard — mirrors ContactInfoSection chrome
+   SecondaryContactCard — display-only + Edit link → dialog
    ──────────────────────────────────────────────────────── */
 export function SecondaryContactCard() {
   const [contact, setContact] = useState<SecondaryContact>(INITIAL_DATA);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editForm, setEditForm] = useState<SecondaryContact>(INITIAL_DATA);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [autoFocusField, setAutoFocusField] = useState<string | undefined>(
+    undefined,
+  );
   const [open, setOpen] = useState(true);
   const { attributes, listeners } = useDragHandle();
 
-  const handleStartEdit = () => {
-    setEditForm(contact);
-    setIsEditing(true);
-  };
-
-  const handleDone = () => {
-    setContact(editForm);
-    setIsEditing(false);
+  const handleSave = (values: Record<string, string>) => {
+    setContact((prev) => ({
+      ...prev,
+      name: values.name ?? '',
+      primary: values.primary ?? '',
+      alt: values.alt ?? '',
+      office: values.office ?? '',
+      fax: values.fax ?? '',
+      email: values.email ?? '',
+      altEmail: values.altEmail ?? '',
+      address: values.address ?? '',
+      city: values.city ?? '',
+      state: values.state ?? '',
+      zip: values.zip ?? '',
+    }));
     toast.success('Secondary contact updated');
   };
 
-  const handleCancel = () => {
-    setIsEditing(false);
+  const openDialog = (field?: string) => {
+    setAutoFocusField(field);
+    setDialogOpen(true);
+  };
+
+  // Build display rows — only populated fields
+  const rows: { label: string; value: string }[] = [];
+  if (contact.name) rows.push({ label: 'Name', value: contact.name });
+  if (contact.primary)
+    rows.push({ label: 'Primary', value: contact.primary });
+  if (contact.alt) rows.push({ label: 'Alt', value: contact.alt });
+  if (contact.office)
+    rows.push({ label: 'Office', value: contact.office });
+  if (contact.fax) rows.push({ label: 'Fax', value: contact.fax });
+  if (contact.email) rows.push({ label: 'Email', value: contact.email });
+  if (contact.altEmail)
+    rows.push({ label: 'Alt Email', value: contact.altEmail });
+  if (contact.address) {
+    rows.push({ label: 'Address', value: contact.address });
+    const line2 = [contact.city, contact.state, contact.zip]
+      .filter(Boolean)
+      .join(', ');
+    if (line2) rows.push({ label: '', value: line2 });
+  }
+
+  const isEmpty = rows.length === 0;
+
+  const initialValues: Record<string, string> = {
+    name: contact.name,
+    primary: contact.primary,
+    alt: contact.alt,
+    office: contact.office,
+    fax: contact.fax,
+    email: contact.email,
+    altEmail: contact.altEmail,
+    address: contact.address,
+    city: contact.city,
+    state: contact.state,
+    zip: contact.zip,
   };
 
   return (
@@ -327,36 +182,15 @@ export function SecondaryContactCard() {
             </h3>
           </button>
 
-          {/* Edit / Cancel+Done controls */}
-          <div className="ml-spacing-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200">
-            {isEditing ? (
-              <div className="flex items-center gap-spacing-2">
-                <button
-                  type="button"
-                  onClick={handleCancel}
-                  className="text-sm text-[#667085] hover:text-[#101828] transition cursor-pointer bg-transparent border-none p-0"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  onClick={handleDone}
-                  className="h-7 px-spacing-3 inline-flex items-center bg-[#3e60c9] hover:bg-[#3840a9] text-white rounded-1 text-sm font-semibold transition cursor-pointer border-none"
-                >
-                  Done
-                </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={handleStartEdit}
-                className="inline-flex items-center gap-spacing-1 text-text-3 font-semibold text-text-link hover:text-text-link-hover transition cursor-pointer bg-transparent border-none p-0"
-              >
-                <Pencil className="w-3.5 h-3.5" />
-                Edit
-              </button>
-            )}
-          </div>
+          {/* Edit link */}
+          <button
+            type="button"
+            onClick={() => openDialog()}
+            className="ml-spacing-3 inline-flex items-center gap-spacing-1 text-text-3 font-normal text-blue-100 underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 rounded-1 cursor-pointer bg-transparent border-none p-0"
+          >
+            <Pencil className="w-3.5 h-3.5" />
+            Edit
+          </button>
 
           <div className="flex-1" />
 
@@ -367,28 +201,59 @@ export function SecondaryContactCard() {
             onClick={() => setOpen((prev) => !prev)}
           >
             {open ? (
-              <ChevronUp className="w-4 h-4 text-text-secondary shrink-0 transition-transform duration-200" aria-hidden="true" />
+              <ChevronUp className="w-4 h-4 text-text-secondary shrink-0 transition-transform duration-200" />
             ) : (
-              <ChevronDown className="w-4 h-4 text-text-secondary shrink-0 transition-transform duration-200" aria-hidden="true" />
+              <ChevronDown className="w-4 h-4 text-text-secondary shrink-0 transition-transform duration-200" />
             )}
           </button>
         </div>
 
         {/* Body */}
+        {/**
+         * PROTECTED — Right-column contact cards render in display-only mode.
+         * Empty fields are hidden (established pattern from task #160).
+         * Editing happens via the Edit link in the card header, which opens
+         * ContactEditDialog with all fields (populated + empty as placeholders).
+         *
+         * Do NOT reintroduce inline input fields or a "Done" button.
+         * The dialog is the single edit affordance for these cards.
+         */}
         {open && (
-          <div className="px-spacing-5 py-spacing-4">
-            {isEditing ? (
-              <EditMode form={editForm} onChange={setEditForm} />
+          <div className="px-spacing-5 py-spacing-4 space-y-spacing-2">
+            {isEmpty ? (
+              <div className="text-sm text-text-muted italic">
+                No secondary contact yet.{' '}
+                <button
+                  type="button"
+                  onClick={() => openDialog('name')}
+                  className="text-blue-100 underline hover:no-underline cursor-pointer bg-transparent border-none p-0"
+                >
+                  Add one
+                </button>
+                .
+              </div>
             ) : (
-              <DefaultMode
-                contact={contact}
-                onChange={setContact}
-                onStartEdit={handleStartEdit}
-              />
+              rows.map((row, i) => (
+                <DisplayRow
+                  key={`${row.label || 'row'}-${i}`}
+                  label={row.label}
+                  value={row.value}
+                />
+              ))
             )}
           </div>
         )}
       </div>
+
+      <ContactEditDialog
+        isOpen={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        onSave={handleSave}
+        title="Secondary Contact"
+        initialValues={initialValues}
+        fields={SECONDARY_CONTACT_FIELDS}
+        autoFocusField={autoFocusField}
+      />
     </TooltipProvider>
   );
 }
