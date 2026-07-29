@@ -84,7 +84,7 @@ export function LeadHeader() {
         {/* Avatar + Name — name is a button that opens the Contact Edit dialog */}
         <div className="group flex items-center gap-spacing-3 flex-1 min-w-0">
           {/* Lock icon */}
-          <Lock className="w-4 h-4 text-text-muted shrink-0" strokeWidth={2.25} />
+          <Lock className="w-4 h-4 text-text-muted shrink-0 translate-y-[1px]" strokeWidth={2.25} />
 
           {/* Name — click-to-edit, opens Contact Info dialog focused on First Name */}
           <h1 className="text-text-7 font-semibold text-text-default whitespace-nowrap min-w-0">
