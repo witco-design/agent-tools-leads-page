@@ -260,6 +260,41 @@ export function ContactInfoCard() {
     .filter(Boolean)
     .join(', ');
   const hasAddressLine2 = contactInfo.addressLine2.trim() !== '';
+  const fullAddress = [contactInfo.street, contactInfo.addressLine2, cityStateZip].filter(Boolean).join(', ');
+
+  const renderAddressMenuContent = () => (
+    <DropdownMenuContent align="end" className="w-[180px]">
+      <DropdownMenuItem
+        onClick={() =>
+          window.open(
+            `https://maps.google.com/?q=${encodeURIComponent(fullAddress)}`,
+            '_blank',
+          )
+        }
+      >
+        <MapPin className="w-4 h-4 mr-spacing-2" aria-hidden="true" />
+        See On Map
+      </DropdownMenuItem>
+      <DropdownMenuItem onClick={() => openContactDialog('street')}>
+        <Pencil className="w-4 h-4 mr-spacing-2" />
+        Edit
+      </DropdownMenuItem>
+      <DropdownMenuItem
+        onClick={() => navigator.clipboard.writeText(fullAddress)}
+      >
+        <Copy className="w-4 h-4 mr-spacing-2" />
+        Copy
+      </DropdownMenuItem>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem
+        onClick={() => deleteField('address')}
+        className="text-[#ec423d] focus:bg-[#ffe0e4]"
+      >
+        <Trash2 className="w-4 h-4 mr-spacing-2" />
+        Delete
+      </DropdownMenuItem>
+    </DropdownMenuContent>
+  );
 
   return (
     <div
@@ -267,134 +302,90 @@ export function ContactInfoCard() {
       className="bg-white border border-[#E4E7EC] rounded-3 overflow-hidden"
     >
       {/**
-       * PROTECTED — Top contact strip uses a single grid with 4 rows × 3 columns.
-       * All three columns share the same row track heights so labels cross-align
-       * across columns (Primary=Online=Urgency in row 1, Email=Contacted=Status in row 2,
-       * Address=Login=Type in row 3, city/state/zip=IP=Timeframe in row 4).
+       * PROTECTED — Top contact strip uses a single 4-row × 3-column grid.
+       * Every cell is a uniform flex row: `flex items-center justify-between gap-spacing-3 min-h-9`.
+       * All cells are 36px height. All cells use items-center.
        *
-       * Do NOT revert to separate per-column stacks. Do NOT change the row count
-       * without updating all three columns.
+       * Address is SPLIT INTO TWO CELLS:
+       *   r3c1: Address label + street value (aligns with Login/Type at r3)
+       *   r4c1: empty label slot + city/state/zip value (aligns with IP/Timeframe at r4)
        *
-       * Address value spans rows 3-4 as a single multi-line cell.
+       * DO NOT combine the address into a single cell — that was the previous bug.
+       * DO NOT use items-baseline on any cell — items-center is uniform across the grid.
+       * DO NOT change min-h-9 on any cell — uniform row height is required for cross-column alignment.
+       *
+       * The street cell (r3c1) has the chevron. The city/state/zip cell (r4c1) does NOT.
+       * Both share the same underlying address field state and open the same edit dialog.
        */}
       <div className="grid grid-cols-1 gap-y-spacing-3 p-spacing-5 xl:grid-cols-[minmax(180px,1fr)_1px_minmax(220px,1fr)_1px_minmax(200px,1fr)] xl:grid-rows-[auto_auto_auto_auto] xl:gap-x-spacing-5">
         {renderContactRow('primary', 'Primary', 'xl:col-start-1 xl:row-start-1')}
         {renderContactRow('email', 'Email', 'xl:col-start-1 xl:row-start-2')}
 
             {/**
-             * PROTECTED — Top section address display.
-             * Right-aligns all address lines to match Primary and Email row alignment.
-             * Truncates each line with ellipsis if too long (native tooltip on hover
-             * reveals full value via the title attribute).
-             *
-             * Line count is dynamic:
-             *   - 2 lines: street + city/state/zip (Address 2 empty)
-             *   - 3 lines: street + Address 2 + city/state/zip (Address 2 populated)
-             *
-             * If you add more optional address components (e.g., country), follow
-             * the same conditional-render pattern — hide if empty, insert in
-             * geographic order (street → sub-unit → city → region → country).
-             */}
-            {/**
-             * PROTECTED — Address row typographic consistency.
-             *
-             * The label + entire value chain (wrapper div → button → inner flex-col → text spans)
-             * MUST all declare text-sm leading-5 explicitly.
-             *
-             * Without explicit metrics on the wrapper elements, they inherit browser default
-             * 16px / 24px from <button>. items-baseline then resolves against the wrapper's
-             * inflated metrics rather than the actual text metrics, causing subtle vertical drift.
-             *
-             * Do not remove text-sm leading-5 from any of the wrapper elements.
-             * If you refactor, verify every ancestor of the text spans still has these classes.
+             * PROTECTED — Address is SPLIT INTO TWO CELLS.
+             * r3c1: Address label + street (aligns with Login/Type at row 3)
+             * r4c1: empty label slot + city/state/zip (aligns with IP/Timeframe at row 4)
+             * Both cells open the same address field menu.
+             * The street cell has the chevron; the city/state/zip cell does NOT.
+             * If Address Line 2 is populated, it stacks inside r3c1 alongside street.
              */}
             {hasAddress && (
-              <div className="flex items-baseline justify-between gap-spacing-3 min-h-9 xl:col-start-1 xl:row-start-3 xl:row-span-2 xl:self-start">
-                <span className="text-sm leading-5 text-text-muted flex-shrink-0">
+              <div className="flex items-center justify-between gap-spacing-3 min-h-9 xl:col-start-1 xl:row-start-3">
+                <span className="text-sm text-text-muted flex-shrink-0">
                   Address
                 </span>
-                {/**
-                 * PROTECTED — Field menu trigger.
-                 * Both the value text AND the chevron open the same field menu.
-                 * The menu contains action items (See on Map/Copy/etc.) plus Edit as the last item.
-                 * Edit opens the ContactEditDialog with the Address field auto-focused.
-                 *
-                 * Do NOT reintroduce a direct-to-dialog click on the value.
-                 * The unified menu is intentional — one row, one interaction model,
-                 * multiple actions surfaced via the menu.
-                 */}
-                <div className="flex-1 min-w-0 flex justify-end text-sm leading-5">
+                <div className="flex-1 min-w-0 flex justify-end">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button
                         type="button"
-                        className="inline-flex items-start gap-spacing-2 rounded-1 px-1 -mx-1 hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full text-sm leading-5"
+                        className="inline-flex items-center gap-spacing-2 rounded-1 px-1 -mx-1 hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full"
                         aria-label="Address actions"
                       >
-                        <div className="flex flex-col items-end gap-0.5 min-w-0 text-sm leading-5">
+                        <div className="flex flex-col items-end gap-0.5 min-w-0">
                           <span
-                            className="max-w-full truncate text-sm leading-5 font-medium text-blue-100 text-left"
+                            className="max-w-full truncate text-sm font-medium text-blue-100 text-left"
                             title={contactInfo.street}
                           >
                             {contactInfo.street}
                           </span>
                           {hasAddressLine2 && (
                             <span
-                              className="max-w-full truncate text-sm leading-5 font-medium text-blue-100 text-left"
+                              className="max-w-full truncate text-sm font-medium text-blue-100 text-left"
                               title={contactInfo.addressLine2}
                             >
                               {contactInfo.addressLine2}
-                            </span>
-                          )}
-                          {cityStateZip && (
-                            <span
-                              className="max-w-full truncate text-sm leading-5 font-medium text-blue-100 text-left"
-                              title={cityStateZip}
-                            >
-                              {cityStateZip}
                             </span>
                           )}
                         </div>
                         <ChevronDown className="w-4 h-4 flex-shrink-0 text-blue-100" />
                       </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-[180px]">
-                      <DropdownMenuItem
-                        onClick={() =>
-                          window.open(
-                            `https://maps.google.com/?q=${encodeURIComponent(
-                              [contactInfo.street, contactInfo.addressLine2, cityStateZip].filter(Boolean).join(', '),
-                            )}`,
-                            '_blank',
-                          )
-                        }
+                    {renderAddressMenuContent()}
+                  </DropdownMenu>
+                </div>
+              </div>
+            )}
+            {hasAddress && cityStateZip && (
+              <div className="flex items-center justify-between gap-spacing-3 min-h-9 xl:col-start-1 xl:row-start-4">
+                <span className="text-sm text-text-muted flex-shrink-0" aria-hidden="true">&nbsp;</span>
+                <div className="flex-1 min-w-0 flex justify-end">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        type="button"
+                        className="inline-flex items-center gap-spacing-2 rounded-1 px-1 -mx-1 hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full"
+                        aria-label="Address actions"
                       >
-                        <MapPin className="w-4 h-4 mr-spacing-2" aria-hidden="true" />
-                        See On Map
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => openContactDialog('street')}>
-                        <Pencil className="w-4 h-4 mr-spacing-2" />
-                        Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() =>
-                          navigator.clipboard.writeText(
-                            [contactInfo.street, contactInfo.addressLine2, cityStateZip].filter(Boolean).join(', '),
-                          )
-                        }
-                      >
-                        <Copy className="w-4 h-4 mr-spacing-2" />
-                        Copy
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem
-                        onClick={() => deleteField('address')}
-                        className="text-[#ec423d] focus:bg-[#ffe0e4]"
-                      >
-                        <Trash2 className="w-4 h-4 mr-spacing-2" />
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
+                        <span
+                          className="max-w-full truncate text-sm font-medium text-blue-100 text-left"
+                          title={cityStateZip}
+                        >
+                          {cityStateZip}
+                        </span>
+                      </button>
+                    </DropdownMenuTrigger>
+                    {renderAddressMenuContent()}
                   </DropdownMenu>
                 </div>
               </div>
