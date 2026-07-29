@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
-import { Phone, PhoneCall, PhoneOff, Search, Heart, Eye, Pin, Mail, MailOpen, CalendarCheck, CalendarClock, PencilLine, Droplets, FileText, Clipboard, Calendar, BookmarkPlus, MessageSquare, MessageCircle, MessagesSquare, MousePointerClick, Globe, Play, SquareCheck as CheckSquare, BarChart3, DollarSign, Users, Shield, ShieldCheck, UserCheck, ArrowRightLeft, UserPlus, Upload, Home, Ellipsis as MoreHorizontal, ChevronDown, Check, Sparkles, Mic } from 'lucide-react';
+import { useState } from 'react';
+import { CallDetailDialog } from './CallDetailDialog';
+import { Phone, PhoneCall, PhoneOff, Search, Heart, Eye, Pin, Mail, MailOpen, CalendarCheck, CalendarClock, PencilLine, Droplets, FileText, Clipboard, Calendar, BookmarkPlus, MessageSquare, MessageCircle, MessagesSquare, MousePointerClick, Globe, Play, SquareCheck as CheckSquare, BarChart3, DollarSign, Users, Shield, ShieldCheck, UserCheck, ArrowRightLeft, UserPlus, Upload, Home, Ellipsis as MoreHorizontal, ChevronDown, Check, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   DropdownMenu,
@@ -111,10 +112,28 @@ export interface InsetData {
   fields: Record<string, string>;
 }
 
+export interface TranscriptLine {
+  speakerName: string;
+  speakerInitials: string;
+  speakerColor: string;
+  text: string;
+}
+
+export interface CoachingData {
+  agentName: string;
+  agentTalkPct: number;
+  customerName: string;
+  customerTalkPct: number;
+  feedback: string[];
+}
+
 export interface AiInsightData {
   summary: string;
+  nextStep?: string;
+  transcript?: TranscriptLine[];
   transcriptUrl?: string;
   recordingUrl?: string;
+  coaching?: CoachingData;
 }
 
 export interface ActivityItemData {
@@ -287,27 +306,11 @@ export function ActivityItem({
 }: ActivityItemProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
-  const [aiExpanded, setAiExpanded] = useState(false);
-  const [needsExpand, setNeedsExpand] = useState(false);
-  const summaryRef = useRef<HTMLParagraphElement>(null);
+  const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const { bg, icon: Icon, color } = getIconConfig(item.type);
   const isSystem = item.actor.name === 'System';
 
-  useEffect(() => {
-    if (summaryRef.current) {
-      setNeedsExpand(summaryRef.current.scrollHeight > summaryRef.current.clientHeight);
-    }
-  }, [item.aiInsight?.summary, isExpanded]);
-
   const isCallType = item.type === 'call' || item.type === 'called_contact_made' || item.type === 'called_no_answer' || item.type === 'called_left_voicemail';
-
-  const handleViewTranscript = (url: string) => {
-    console.log('[Activity] View transcript:', url);
-  };
-
-  const handleAccessRecording = (url: string) => {
-    console.log('[Activity] Access recording:', url);
-  };
 
   // For follow-ups with createdAt, show relative time; otherwise show absolute time
   const displayTime = item.createdAt
@@ -440,6 +443,26 @@ export function ActivityItem({
               }`}
             />
           </button>
+
+          {/**
+           * PROTECTED — Geek AI Insights button on call activities.
+           * Only renders when activity.type === 'call' AND activity.aiInsight exists.
+           * Purple/10 bg, Purple/40 border, Purple/120 text — matches AI brand color language.
+           * Compact h-7 to fit alongside pin + expand controls in the activity item.
+           *
+           * Do NOT increase button size — the compact form is intentional.
+           * Do NOT add the button to non-call activities.
+           */}
+          {isCallType && item.aiInsight && (
+            <button
+              type="button"
+              onClick={() => setDetailDialogOpen(true)}
+              className="inline-flex items-center gap-spacing-2 h-7 px-spacing-2 rounded-1 bg-purple-10 border border-purple-40 text-purple-120 hover:bg-purple-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 transition text-text-3 font-medium"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-purple-100" aria-hidden="true" />
+              Geek AI Insights
+            </button>
+          )}
         </div>
       </div>
 
@@ -531,60 +554,7 @@ export function ActivityItem({
                 </div>
               )}
 
-              {/* Geek AI Insight block — call types only */}
-              {isCallType && item.aiInsight && (
-                <div className="mt-spacing-3 p-spacing-4 bg-purple-10 rounded-2 border border-purple-30">
-                  <div className="flex items-center gap-spacing-2 mb-spacing-2">
-                    <Sparkles className="w-4 h-4 text-purple-100 shrink-0" aria-hidden="true" />
-                    <span className="text-text-3 font-semibold text-text-default">
-                      Geek AI Insight Summary
-                    </span>
-                  </div>
 
-                  <p
-                    ref={summaryRef}
-                    className={`text-text-3 text-text-default leading-relaxed ${aiExpanded ? '' : 'line-clamp-2'}`}
-                  >
-                    {item.aiInsight.summary}
-                  </p>
-
-                  {needsExpand && (
-                    <button
-                      type="button"
-                      onClick={() => setAiExpanded((v) => !v)}
-                      className="mt-spacing-1 mb-spacing-5 text-text-3 font-normal text-purple-110 underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 rounded-1 cursor-pointer"
-                      aria-expanded={aiExpanded}
-                    >
-                      {aiExpanded ? 'Show less' : 'Read more'}
-                    </button>
-                  )}
-
-                  {(item.aiInsight.transcriptUrl || item.aiInsight.recordingUrl) && (
-                    <div className="flex gap-spacing-2 mt-spacing-3">
-                      {item.aiInsight.transcriptUrl && (
-                        <button
-                          type="button"
-                          onClick={() => handleViewTranscript(item.aiInsight!.transcriptUrl!)}
-                          className="h-8 px-spacing-3 inline-flex items-center gap-spacing-2 bg-[#f6f6ff] hover:bg-[#ebeaff] active:bg-[#dedcff] border border-[#c3c0f1] text-[#2d2684] rounded-1 text-text-3 font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 cursor-pointer"
-                        >
-                          <FileText className="w-4 h-4 shrink-0" aria-hidden="true" />
-                          View Transcript
-                        </button>
-                      )}
-                      {item.aiInsight.recordingUrl && (
-                        <button
-                          type="button"
-                          onClick={() => handleAccessRecording(item.aiInsight!.recordingUrl!)}
-                          className="h-8 px-spacing-3 inline-flex items-center gap-spacing-2 bg-[#f6f6ff] hover:bg-[#ebeaff] active:bg-[#dedcff] border border-[#c3c0f1] text-[#2d2684] rounded-1 text-text-3 font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 cursor-pointer"
-                        >
-                          <Mic className="w-4 h-4 shrink-0" aria-hidden="true" />
-                          Access Recording
-                        </button>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
           </div>
 
@@ -640,6 +610,14 @@ export function ActivityItem({
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
+
+      {isCallType && item.aiInsight && (
+        <CallDetailDialog
+          isOpen={detailDialogOpen}
+          onClose={() => setDetailDialogOpen(false)}
+          activity={item}
+        />
+      )}
     </>
   );
 }

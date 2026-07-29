@@ -359,7 +359,28 @@ export const page1Items: ActivityItemData[] = [
     time: '4:18pm',
     aiInsight: {
       summary: 'Initial buyer consultation. Camille is a first-time buyer relocating from SF for tech job in San Jose. Pre-approved at $750K with 25% down. Looking for 3BR/2BA townhome, walkable neighborhood, good schools (planning kids in 2-3 years). Strong communicator, prefers texts during work hours, calls evenings and weekends.',
-      transcriptUrl: '#stub-transcript-p1-1',
+      nextStep: 'Send curated list of 3BR townhomes in San Jose/Santa Clara within budget. Schedule Saturday showings for top 3 properties.',
+      transcript: [
+        { speakerName: 'Kevin McCarthy', speakerInitials: 'KM', speakerColor: '#3830a5', text: 'Hi Camille, thanks for taking the time today. I wanted to check in on where you are with pre-approval.' },
+        { speakerName: 'Camille Dubois', speakerInitials: 'CD', speakerColor: '#4172dc', text: "Yeah, we're all set. Got the Letter of Intent from our lender last week. I'm excited to start looking at properties." },
+        { speakerName: 'Kevin McCarthy', speakerInitials: 'KM', speakerColor: '#3830a5', text: "That's great news. What are you looking for specifically?" },
+        { speakerName: 'Camille Dubois', speakerInitials: 'CD', speakerColor: '#4172dc', text: 'We want a 3-bedroom townhome, ideally in San Jose or Santa Clara area. Budget\'s around $650K to $750K.' },
+        { speakerName: 'Kevin McCarthy', speakerInitials: 'KM', speakerColor: '#3830a5', text: 'Perfect. I have some great listings that match. Let me put together a curated list and we can schedule showings for this weekend.' },
+        { speakerName: 'Camille Dubois', speakerInitials: 'CD', speakerColor: '#4172dc', text: 'That would be amazing. Saturday works best for us.' },
+      ],
+      recordingUrl: '#stub-recording-p1-1',
+      coaching: {
+        agentName: 'Kevin McCarthy',
+        agentTalkPct: 42,
+        customerName: 'Camille Dubois',
+        customerTalkPct: 58,
+        feedback: [
+          'Strong opening — quickly established purpose and got to the pre-approval question. Efficient use of time.',
+          'Good active listening. You let Camille articulate her needs before jumping to solutions.',
+          'Consider asking one more open-ended question about must-have features (e.g., yard size, commute distance) before committing to showings. This helps narrow the property list.',
+          "Nice assumptive close on scheduling showings. Could strengthen by proposing 2-3 specific time slots rather than asking 'when works?'",
+        ],
+      },
     },
   },
 
