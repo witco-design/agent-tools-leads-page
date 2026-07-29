@@ -351,7 +351,7 @@ export function ActivityHistoryCard() {
       <div data-component="ActivityHistoryCard" className="bg-bg-card rounded-3 border border-border-default overflow-hidden">
         {/* ── BAR 1: Title bar ─────────────────────────────────── */}
         <div className="px-spacing-5 py-spacing-3 flex items-center justify-between">
-          <h3 className="text-text-5 font-semibold text-text-default">
+          <h3 className="text-text-4 font-semibold text-text-default">
             Activity History
           </h3>
           <button

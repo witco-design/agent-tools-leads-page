@@ -139,20 +139,29 @@ export function RobinAISummaryCard() {
                 </div>
               )}
 
-              {/* Expand button — HOVER ONLY */}
+              {/**
+               * PROTECTED — Hover Expand affordance.
+               * Icon-only on hover (no text label). Native tooltip via title="Expand".
+               * aria-label preserves accessibility for screen readers.
+               *
+               * Do NOT add a text label back — the pattern is intentionally minimal.
+               * If discoverability becomes an issue in user testing, add a Radix Tooltip
+               * with 400ms delay rather than an always-visible label.
+               */}
               {!isGenerating && (
                 <div className="absolute bottom-spacing-2 right-spacing-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150">
                   <button
                     type="button"
                     onClick={() => setDialogOpen(true)}
+                    title="Expand"
+                    aria-label="Expand"
                     className={cn(
-                      'inline-flex items-center gap-spacing-1 text-text-3 font-normal transition rounded-1',
+                      'inline-flex items-center justify-center p-1 rounded-1 transition',
                       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-                      'text-purple-110 hover:text-purple-120 focus-visible:ring-purple-60',
+                      'text-purple-110 hover:text-purple-120 hover:bg-purple-20/50 focus-visible:ring-purple-60',
                     )}
                   >
-                    <Expand className="w-3.5 h-3.5" aria-hidden="true" />
-                    <span>Expand</span>
+                    <Expand className="w-4 h-4" aria-hidden="true" />
                   </button>
                 </div>
               )}
