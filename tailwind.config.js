@@ -369,6 +369,10 @@ module.exports = {
           '60%': { transform: 'scale(1.25)', opacity: '1' },
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
+        'shimmer': {
+          '0%': { backgroundPosition: '200% 0' },
+          '100%': { backgroundPosition: '-200% 0' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -380,6 +384,7 @@ module.exports = {
         'chat-pulse': 'chat-pulse 0.8s ease-in-out 4',
         'dot-pulse': 'dot-pulse 1.5s ease-in-out infinite',
         'badge-burst': 'badge-burst 0.35s ease-out forwards',
+        'shimmer': 'shimmer 1.4s ease-in-out infinite',
       }
     }
   },
