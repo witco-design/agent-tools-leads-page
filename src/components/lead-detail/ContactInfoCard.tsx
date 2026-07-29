@@ -287,9 +287,19 @@ export function ContactInfoCard() {
              * the same conditional-render pattern — hide if empty, insert in
              * geographic order (street → sub-unit → city → region → country).
              */}
+            {/**
+             * PROTECTED — Address row uses items-baseline (NOT items-start or items-center).
+             * items-baseline aligns the label's text baseline with the first line of the
+             * multi-line address value. items-start aligns bounding-box tops (looks off by 1-2px
+             * because button padding differs from label). items-center centers on row height
+             * (looks off because the row is 2-3 lines tall while the label is 1 line).
+             *
+             * Do not change to items-start or items-center — the label will drift out of
+             * alignment with the street address line.
+             */}
             {hasAddress && (
-              <div className="flex items-start justify-between gap-spacing-3 min-h-9">
-                <span className="text-sm text-text-muted flex-shrink-0 pt-0.5">
+              <div className="flex items-baseline justify-between gap-spacing-3 min-h-9">
+                <span className="text-sm text-text-muted flex-shrink-0">
                   Address
                 </span>
                 {/**
