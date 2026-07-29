@@ -22,6 +22,7 @@ interface SecondaryContact {
   email: string;
   altEmail: string;
   address: string;
+  addressLine2: string;
   city: string;
   state: string;
   zip: string;
@@ -39,6 +40,7 @@ const SECONDARY_CONTACT_FIELDS: FieldConfig[] = [
   { key: 'email', label: 'Email', type: 'email' },
   { key: 'altEmail', label: 'Alt Email', type: 'email' },
   { key: 'address', label: 'Address', type: 'text', placeholder: 'Street address' },
+  { key: 'addressLine2', label: 'Address 2', type: 'text', placeholder: 'Suite, unit, floor, etc. (optional)' },
   { key: 'city', label: 'City', type: 'text' },
   { key: 'state', label: 'State/Province', type: 'text' },
   { key: 'zip', label: 'Zip/Postal', type: 'text' },
@@ -56,6 +58,7 @@ const INITIAL_DATA: SecondaryContact = {
   email: 'tom.dubois@email.com',
   altEmail: '',
   address: '',
+  addressLine2: '',
   city: '',
   state: '',
   zip: '',
@@ -96,6 +99,7 @@ export function SecondaryContactCard() {
       email: values.email ?? '',
       altEmail: values.altEmail ?? '',
       address: values.address ?? '',
+      addressLine2: values.addressLine2 ?? '',
       city: values.city ?? '',
       state: values.state ?? '',
       zip: values.zip ?? '',
@@ -122,6 +126,8 @@ export function SecondaryContactCard() {
     rows.push({ label: 'Alt Email', value: contact.altEmail });
   if (contact.address) {
     rows.push({ label: 'Address', value: contact.address });
+    if (contact.addressLine2)
+      rows.push({ label: 'Address 2', value: contact.addressLine2 });
     const line2 = [contact.city, contact.state, contact.zip]
       .filter(Boolean)
       .join(', ');
@@ -139,6 +145,7 @@ export function SecondaryContactCard() {
     email: contact.email,
     altEmail: contact.altEmail,
     address: contact.address,
+    addressLine2: contact.addressLine2,
     city: contact.city,
     state: contact.state,
     zip: contact.zip,

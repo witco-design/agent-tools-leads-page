@@ -256,11 +256,12 @@ export function ContactInfoCard() {
     );
   };
 
-  // Address composite — street + city/state/zip on two lines
+  // Address composite — street + (optional Line 2) + city/state/zip
   const hasAddress = contactInfo.street.trim() !== '';
-  const addressLine2 = [contactInfo.city, contactInfo.state, contactInfo.zip]
+  const cityStateZip = [contactInfo.city, contactInfo.state, contactInfo.zip]
     .filter(Boolean)
     .join(', ');
+  const hasAddressLine2 = contactInfo.addressLine2.trim() !== '';
 
   return (
     <div
@@ -274,27 +275,52 @@ export function ContactInfoCard() {
             {renderContactRow('primary', 'Primary')}
             {renderContactRow('email', 'Email')}
 
-            {/* Address — 2 lines, click-to-edit */}
+            {/**
+             * PROTECTED — Top section address display.
+             * Right-aligns all address lines to match Primary and Email row alignment.
+             * Truncates each line with ellipsis if too long (native tooltip on hover
+             * reveals full value via the title attribute).
+             *
+             * Line count is dynamic:
+             *   - 2 lines: street + city/state/zip (Address 2 empty)
+             *   - 3 lines: street + Address 2 + city/state/zip (Address 2 populated)
+             *
+             * If you add more optional address components (e.g., country), follow
+             * the same conditional-render pattern — hide if empty, insert in
+             * geographic order (street → sub-unit → city → region → country).
+             */}
             {hasAddress && (
               <div className="flex items-start justify-between gap-spacing-3 min-h-9">
                 <span className="text-sm text-text-muted flex-shrink-0 pt-0.5">
                   Address
                 </span>
-                <div className="flex-1 flex flex-col gap-0.5 min-w-0">
+                <div className="flex-1 min-w-0 flex flex-col items-end gap-0.5">
                   <button
                     type="button"
                     onClick={() => openContactDialog('street')}
-                    className="text-sm font-medium text-blue-100 hover:underline text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-40 focus-visible:ring-offset-2 rounded-1"
+                    className="max-w-full truncate text-sm font-medium text-blue-100 hover:underline text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-40 focus-visible:ring-offset-2 rounded-1"
+                    title={contactInfo.street}
                   >
                     {contactInfo.street}
                   </button>
-                  {addressLine2 && (
+                  {hasAddressLine2 && (
                     <button
                       type="button"
-                      onClick={() => openContactDialog('street')}
-                      className="text-sm font-medium text-blue-100 hover:underline text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-40 focus-visible:ring-offset-2 rounded-1"
+                      onClick={() => openContactDialog('addressLine2')}
+                      className="max-w-full truncate text-sm font-medium text-blue-100 hover:underline text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-40 focus-visible:ring-offset-2 rounded-1"
+                      title={contactInfo.addressLine2}
                     >
-                      {addressLine2}
+                      {contactInfo.addressLine2}
+                    </button>
+                  )}
+                  {cityStateZip && (
+                    <button
+                      type="button"
+                      onClick={() => openContactDialog('city')}
+                      className="max-w-full truncate text-sm font-medium text-blue-100 hover:underline text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-40 focus-visible:ring-offset-2 rounded-1"
+                      title={cityStateZip}
+                    >
+                      {cityStateZip}
                     </button>
                   )}
                 </div>
@@ -314,7 +340,7 @@ export function ContactInfoCard() {
                       onClick={() =>
                         window.open(
                           `https://maps.google.com/?q=${encodeURIComponent(
-                            [contactInfo.street, addressLine2].filter(Boolean).join(', '),
+                            [contactInfo.street, contactInfo.addressLine2, cityStateZip].filter(Boolean).join(', '),
                           )}`,
                           '_blank',
                         )
@@ -330,7 +356,7 @@ export function ContactInfoCard() {
                     <DropdownMenuItem
                       onClick={() =>
                         navigator.clipboard.writeText(
-                          [contactInfo.street, addressLine2].filter(Boolean).join(', '),
+                          [contactInfo.street, contactInfo.addressLine2, cityStateZip].filter(Boolean).join(', '),
                         )
                       }
                     >

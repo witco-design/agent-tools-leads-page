@@ -22,6 +22,7 @@ const CONTACT_INFO_FIELDS: FieldConfig[] = [
   { key: 'fax', label: 'Fax', type: 'tel' },
   { key: 'email', label: 'Email', type: 'email', placeholder: 'name@example.com' },
   { key: 'street', label: 'Address', type: 'text', placeholder: 'Street address' },
+  { key: 'addressLine2', label: 'Address 2', type: 'text', placeholder: 'Suite, unit, floor, etc. (optional)' },
   { key: 'city', label: 'City', type: 'text' },
   { key: 'state', label: 'State/Province', type: 'text' },
   { key: 'zip', label: 'Zip/Postal', type: 'text' },
@@ -63,6 +64,8 @@ export function ContactInfoSection() {
     rows.push({ label: 'Email', value: contactInfo.email });
   if (contactInfo.street) {
     rows.push({ label: 'Address', value: contactInfo.street });
+    if (contactInfo.addressLine2)
+      rows.push({ label: 'Address 2', value: contactInfo.addressLine2 });
     const line2 = [contactInfo.city, contactInfo.state, contactInfo.zip]
       .filter(Boolean)
       .join(', ');
@@ -81,6 +84,7 @@ export function ContactInfoSection() {
       fax: values.fax ?? '',
       email: values.email ?? '',
       street: values.street ?? '',
+      addressLine2: values.addressLine2 ?? '',
       city: values.city ?? '',
       state: values.state ?? '',
       zip: values.zip ?? '',
@@ -96,6 +100,7 @@ export function ContactInfoSection() {
     fax: contactInfo.fax,
     email: contactInfo.email,
     street: contactInfo.street,
+    addressLine2: contactInfo.addressLine2,
     city: contactInfo.city,
     state: contactInfo.state,
     zip: contactInfo.zip,

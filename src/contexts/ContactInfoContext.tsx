@@ -22,6 +22,7 @@ export interface ContactInfo {
   email: string;
   emailStatus: FieldStatus;
   street: string;
+  addressLine2: string;
   city: string;
   state: string;
   zip: string;

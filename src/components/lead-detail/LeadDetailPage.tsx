@@ -41,6 +41,7 @@ const INITIAL_CONTACT_INFO: ContactInfo = {
   email: 'cdubois@realgeeks.com',
   emailStatus: 'good',
   street: '123 Fake Address Street',
+  addressLine2: '',
   city: 'Mountain View',
   state: 'CA',
   zip: '94041',
