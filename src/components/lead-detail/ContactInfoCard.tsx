@@ -288,18 +288,21 @@ export function ContactInfoCard() {
              * geographic order (street → sub-unit → city → region → country).
              */}
             {/**
-             * PROTECTED — Address row uses items-baseline (NOT items-start or items-center).
-             * items-baseline aligns the label's text baseline with the first line of the
-             * multi-line address value. items-start aligns bounding-box tops (looks off by 1-2px
-             * because button padding differs from label). items-center centers on row height
-             * (looks off because the row is 2-3 lines tall while the label is 1 line).
+             * PROTECTED — Address row typographic consistency.
              *
-             * Do not change to items-start or items-center — the label will drift out of
-             * alignment with the street address line.
+             * The label + entire value chain (wrapper div → button → inner flex-col → text spans)
+             * MUST all declare text-sm leading-5 explicitly.
+             *
+             * Without explicit metrics on the wrapper elements, they inherit browser default
+             * 16px / 24px from <button>. items-baseline then resolves against the wrapper's
+             * inflated metrics rather than the actual text metrics, causing subtle vertical drift.
+             *
+             * Do not remove text-sm leading-5 from any of the wrapper elements.
+             * If you refactor, verify every ancestor of the text spans still has these classes.
              */}
             {hasAddress && (
               <div className="flex items-baseline justify-between gap-spacing-3 min-h-9">
-                <span className="text-sm text-text-muted flex-shrink-0">
+                <span className="text-sm leading-5 text-text-muted flex-shrink-0">
                   Address
                 </span>
                 {/**
@@ -312,24 +315,24 @@ export function ContactInfoCard() {
                  * The unified menu is intentional — one row, one interaction model,
                  * multiple actions surfaced via the menu.
                  */}
-                <div className="flex-1 min-w-0 flex justify-end">
+                <div className="flex-1 min-w-0 flex justify-end text-sm leading-5">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button
                         type="button"
-                        className="inline-flex items-start gap-spacing-2 rounded-1 px-1 -mx-1 hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full"
+                        className="inline-flex items-start gap-spacing-2 rounded-1 px-1 -mx-1 hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full text-sm leading-5"
                         aria-label="Address actions"
                       >
-                        <div className="flex flex-col items-end gap-0.5 min-w-0">
+                        <div className="flex flex-col items-end gap-0.5 min-w-0 text-sm leading-5">
                           <span
-                            className="max-w-full truncate text-sm font-medium text-blue-100 text-left"
+                            className="max-w-full truncate text-sm leading-5 font-medium text-blue-100 text-left"
                             title={contactInfo.street}
                           >
                             {contactInfo.street}
                           </span>
                           {hasAddressLine2 && (
                             <span
-                              className="max-w-full truncate text-sm font-medium text-blue-100 text-left"
+                              className="max-w-full truncate text-sm leading-5 font-medium text-blue-100 text-left"
                               title={contactInfo.addressLine2}
                             >
                               {contactInfo.addressLine2}
@@ -337,7 +340,7 @@ export function ContactInfoCard() {
                           )}
                           {cityStateZip && (
                             <span
-                              className="max-w-full truncate text-sm font-medium text-blue-100 text-left"
+                              className="max-w-full truncate text-sm leading-5 font-medium text-blue-100 text-left"
                               title={cityStateZip}
                             >
                               {cityStateZip}
