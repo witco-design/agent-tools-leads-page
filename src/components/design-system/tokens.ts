@@ -39,7 +39,7 @@ export const colorScales = {
 
 export const semanticAliases = {
   Background: [
-    { name: 'bg-app', value: '#f5fcff', resolvedFrom: 'blue.10', usage: 'Outer page shell background' },
+    { name: 'bg-app', value: '#fcfcfd', resolvedFrom: 'gray.10', usage: 'Outer page shell background' },
     { name: 'bg-card', value: '#ffffff', resolvedFrom: 'ink.white', usage: 'Card & content surfaces' },
     { name: 'bg-canvas', value: '#ffffff', resolvedFrom: 'ink.white', usage: 'Alias for bg-card' },
     { name: 'bg-muted', value: '#fcfcfd', resolvedFrom: 'gray.10', usage: 'Subdued input backgrounds' },

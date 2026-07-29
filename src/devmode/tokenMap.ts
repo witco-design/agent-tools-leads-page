@@ -68,7 +68,7 @@ for (const [family, shades] of Object.entries(COLOR_SCALE)) {
 }
 
 const SEMANTIC_COLORS: Record<string, { token: string; value: string }> = {
-  'bg-bg-app': { token: 'Background/app', value: '#f5fcff' },
+  'bg-bg-app': { token: 'Background/app', value: '#fcfcfd' },
   'bg-bg-card': { token: 'Background/card', value: '#ffffff' },
   'bg-bg-muted': { token: 'Background/muted', value: '#fcfcfd' },
   'text-text-default': { token: 'Text/default', value: '#101828' },

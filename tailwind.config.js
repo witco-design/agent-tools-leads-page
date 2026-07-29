@@ -132,7 +132,7 @@ module.exports = {
          * ───────────────────────────────────────────────────────────── */
 
         // Surfaces
-        'bg-app':    '#f5fcff',  // outer shell background (blue.10)
+        'bg-app':    '#fcfcfd',  // outer shell background (gray.10)
         'bg-card':   '#FFFFFF',  // card / panel surfaces
         'bg-canvas': '#FFFFFF',  // alias — same as bg-card (design system term)
         'bg-muted':  '#fcfcfd',  // gray.10 — subtle row bg / hover
