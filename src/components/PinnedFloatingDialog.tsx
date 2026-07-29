@@ -14,6 +14,7 @@
  * rather than opening a centered modal, for consistency.
  */
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -48,9 +49,20 @@ export function PinnedFloatingDialog({
     return () => window.removeEventListener('keydown', handler);
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isOpen || typeof document === 'undefined') return null;
 
-  return (
+  /**
+   * PROTECTED — Portal to document.body.
+   * position:fixed respects transformed ancestors, and .page-content
+   * (or an animation wrapper) has a transform that would trap fixed positioning
+   * inside that container. Portaling to body escapes that trap and makes the
+   * dialog truly viewport-anchored.
+   *
+   * If you refactor this dialog to be a child of some other element,
+   * verify the ancestor chain has NO transform / filter / will-change / perspective
+   * properties, or the fixed positioning will break again.
+   */
+  return createPortal(
     <div
       role="dialog"
       aria-label={title}
@@ -87,6 +99,7 @@ export function PinnedFloatingDialog({
       <div className="flex-1 overflow-y-auto px-spacing-4 py-spacing-4 text-text-3 text-text-default leading-relaxed">
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

@@ -77,11 +77,19 @@ export function ImportantNotesCard() {
             )}
           </div>
           <div className="flex justify-end pt-spacing-2">
+            {/*
+             * PROTECTED — Expand button styling.
+             * Icon + colored text, NO underline (at rest or hover).
+             * Hover feedback is via color darkening only.
+             *
+             * If you want to add visual affordance later, prefer background hover
+             * (e.g., subtle bg-blue-10/50 on hover) over underline.
+             */}
             <button
               type="button"
               onClick={() => setDialogOpen(true)}
               className={cn(
-                'inline-flex items-center gap-spacing-1 text-text-3 font-normal underline hover:no-underline transition rounded-1',
+                'inline-flex items-center gap-spacing-1 text-text-3 font-normal transition rounded-1',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
                 'text-blue-100 hover:text-blue-110 focus-visible:ring-blue-60',
               )}

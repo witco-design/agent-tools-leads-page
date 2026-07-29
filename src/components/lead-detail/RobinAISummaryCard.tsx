@@ -120,11 +120,19 @@ export function RobinAISummaryCard() {
         {/* Footer with Expand */}
         {!isGenerating && (
           <div className="flex justify-end px-spacing-5 pb-spacing-4 pt-spacing-2">
+            {/*
+             * PROTECTED — Expand button styling.
+             * Icon + colored text, NO underline (at rest or hover).
+             * Hover feedback is via color darkening only.
+             *
+             * If you want to add visual affordance later, prefer background hover
+             * (e.g., subtle bg-purple-10/50 on hover) over underline.
+             */}
             <button
               type="button"
               onClick={() => setDialogOpen(true)}
               className={cn(
-                'inline-flex items-center gap-spacing-1 text-text-3 font-normal underline hover:no-underline transition rounded-1',
+                'inline-flex items-center gap-spacing-1 text-text-3 font-normal transition rounded-1',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
                 'text-purple-110 hover:text-purple-120 focus-visible:ring-purple-60',
               )}
