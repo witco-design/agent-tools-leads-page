@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import { Maximize2, Pencil } from 'lucide-react';
+import { Expand, Pencil, StickyNote } from 'lucide-react';
 import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
 import { CollapsibleCard } from './CollapsibleCard';
 import { ImportantNotesModal } from './ImportantNotesModal';
+import { PinnedFloatingDialog } from '@/components/PinnedFloatingDialog';
 
 const NOTE_CONTENT = `Camille is a first-time buyer in California, pre-approved up to $750K. Spouse is in tech, looking for a 3-bedroom in the Bay Area within 30 miles of San Jose. Prefers move-in-ready, open to townhomes.
 
@@ -14,15 +16,24 @@ Budget headroom up to $800K if exceptional property.`;
 
 export function ImportantNotesCard() {
   const [notesModalOpen, setNotesModalOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [noteText, setNoteText] = useState(NOTE_CONTENT);
-  const noteRef = useRef<HTMLParagraphElement>(null);
-  const [isOverflowing, setIsOverflowing] = useState(false);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isScrollable, setIsScrollable] = useState(false);
+  const [atBottom, setAtBottom] = useState(false);
 
   useEffect(() => {
-    if (noteRef.current) {
-      setIsOverflowing(noteRef.current.scrollHeight > noteRef.current.clientHeight);
-    }
+    const el = scrollRef.current;
+    if (!el) return;
+    setIsScrollable(el.scrollHeight > el.clientHeight);
   }, [noteText]);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 4;
+    setAtBottom(nearBottom);
+  };
 
   return (
     <>
@@ -40,32 +51,58 @@ export function ImportantNotesCard() {
           </button>
         }
       >
+        {/**
+         * PROTECTED — Standardized card layout for Notes + AI Insights.
+         * Content area is a fixed 200px scrollable region with a fade gradient
+         * at the bottom (only visible while scrollable + not scrolled to bottom).
+         * Expand button sits in a footer strip below the scroll area, aligned right.
+         *
+         * If the 200px content height needs to change, change it in BOTH cards.
+         * The whole point is visual parity between the two.
+         */}
         <div className="rounded-1 bg-orange-10 p-spacing-3">
           <div className="relative">
-            <p
-              ref={noteRef}
-              className="text-text-3 font-normal text-text-default whitespace-pre-line leading-relaxed max-h-[215px] overflow-hidden"
+            <div
+              ref={scrollRef}
+              onScroll={handleScroll}
+              className="max-h-[200px] overflow-y-auto pr-spacing-3 text-text-3 font-normal text-text-default whitespace-pre-line leading-relaxed"
             >
               {noteText}
-            </p>
-            {isOverflowing && (
-              <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-orange-10 to-transparent pointer-events-none" />
+            </div>
+            {isScrollable && !atBottom && (
+              <div
+                className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none"
+                style={{ background: 'linear-gradient(to top, #fef5dd, transparent)' }}
+              />
             )}
           </div>
-          {isOverflowing && (
-            <div className="flex justify-end mt-spacing-2">
-              <button
-                type="button"
-                onClick={() => setNotesModalOpen(true)}
-                className="inline-flex items-center gap-1 text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
-              >
-                <Maximize2 className="w-3.5 h-3.5" />
-                <span>Expand</span>
-              </button>
-            </div>
-          )}
+          <div className="flex justify-end pt-spacing-2">
+            <button
+              type="button"
+              onClick={() => setDialogOpen(true)}
+              className={cn(
+                'inline-flex items-center gap-spacing-1 text-text-3 font-normal underline hover:no-underline transition rounded-1',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+                'text-blue-100 hover:text-blue-110 focus-visible:ring-blue-60',
+              )}
+            >
+              <Expand className="w-3.5 h-3.5" aria-hidden="true" />
+              <span>Expand</span>
+            </button>
+          </div>
         </div>
       </CollapsibleCard>
+
+      {/* Pinned floating dialog — full notes view */}
+      <PinnedFloatingDialog
+        isOpen={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        title="Important Notes"
+        icon={<StickyNote className="w-4 h-4 text-orange-100" aria-hidden="true" />}
+        accentColor="orange"
+      >
+        <p className="whitespace-pre-line">{noteText}</p>
+      </PinnedFloatingDialog>
 
       {/* Unified view/edit modal */}
       <ImportantNotesModal
