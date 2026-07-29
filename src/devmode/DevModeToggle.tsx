@@ -29,9 +29,9 @@ export function DevModeToggle() {
         aria-pressed={active}
         // PROTECTED — Position tracks --sidebar-width set by Sidebar.tsx.
         // Do not replace this with a hardcoded left-[Npx] class; that breaks
-        // when the sidebar collapses. Change the fallback (220px) only if the
+        // when the sidebar collapses. Change the fallback (184px) only if the
         // expanded sidebar width changes in Sidebar.tsx.
-        style={{ left: 'calc(var(--sidebar-width, 220px) + 16px)' }}
+        style={{ left: 'calc(var(--sidebar-width, 184px) + 16px)' }}
         className={`fixed bottom-4 z-50 h-10 w-10 inline-flex items-center justify-center rounded-full shadow-lg transition-[left] duration-200 cursor-pointer ${
           active
             ? 'bg-[#3e60c9] text-white hover:bg-[#3840a9]'

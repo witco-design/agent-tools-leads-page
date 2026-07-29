@@ -95,7 +95,7 @@ export default function LeadDetailPage() {
         <main
           className="min-h-screen pt-20 p-spacing-8"
           style={{
-            marginLeft: collapsed ? 72 : 220,
+            marginLeft: collapsed ? 72 : 184,
             marginRight: devModeActive ? 380 : 0,
             transition: 'margin-left 180ms ease, margin-right 200ms ease',
           }}

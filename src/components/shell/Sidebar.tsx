@@ -163,7 +163,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   // hardcoding a pixel value. Do not remove; change the pixel values here
   // if the sidebar widths ever change, not in the consumers.
   useEffect(() => {
-    document.documentElement.style.setProperty('--sidebar-width', `${collapsed ? 72 : 220}px`);
+    document.documentElement.style.setProperty('--sidebar-width', `${collapsed ? 72 : 184}px`);
   }, [collapsed]);
 
   const toggleSubmenu = useCallback((label: string) => {
@@ -216,7 +216,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
         data-state={collapsed ? 'collapsed' : 'expanded'}
         className="fixed top-14 bottom-0 left-0 z-20 flex flex-col"
         style={{
-          width: collapsed ? 72 : 220,
+          width: collapsed ? 72 : 184,
           background: '#3E60C9',
           transition: 'width 180ms ease',
         }}
