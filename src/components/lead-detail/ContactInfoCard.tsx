@@ -123,17 +123,10 @@ export function ContactInfoCard() {
       );
   };
 
-  /**
-   * PROTECTED — Click-to-edit on top strip values.
-   * Each field value in the top contact strip is a button that opens
-   * the ContactEditDialog with that field auto-focused.
-   *
-   * The per-field chevron menu (Call/Text/Copy/Edit) is separate and
-   * still functional. Edit in that menu ALSO opens the dialog — same
-   * end result, discoverable via two paths.
-   *
-   * Do not remove the value-text click trigger — it's the primary
-   * (fastest) edit path for power users.
+/**
+   * Renders a contact row (Primary, Email) in the top strip.
+   * The value text AND chevron are a single unified menu trigger —
+   * see the PROTECTED marker inside the JSX for details.
    */
   const renderContactRow = (field: EditableField, label: string) => {
     const valueKey = FIELD_TO_CONTACT_KEY[field];
@@ -159,32 +152,37 @@ export function ContactInfoCard() {
       >
         <span className="text-sm text-text-muted flex-shrink-0">{label}</span>
 
-        <div className="min-w-0 flex items-center justify-end gap-spacing-2 flex-1">
-          {/* Click-to-edit value text */}
-          <button
-            type="button"
-            onClick={() => openContactDialog(FIELD_TO_DIALOG_KEY[field])}
-            className={`text-sm font-medium truncate whitespace-nowrap text-left transition hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-40 focus-visible:ring-offset-2 rounded-1 ${
-              fieldStatus === 'bad'
-                ? 'text-[#ec423d]'
-                : 'text-blue-100'
-            }`}
-            title={value}
-          >
-            {fieldStatus === 'bad' && (
-              <AlertTriangle className="w-4 h-4 text-[#f48a3c] inline mr-spacing-1 flex-shrink-0" />
-            )}
-            {value}
-          </button>
-
-          {/* Chevron menu — Call/Text/Copy/Edit */}
+        {/**
+         * PROTECTED — Field menu trigger.
+         * Both the value text AND the chevron open the same field menu.
+         * The menu contains action items (Call/Text/Copy/etc.) plus Edit as the last item.
+         * Edit opens the ContactEditDialog with this field auto-focused.
+         *
+         * Do NOT reintroduce a direct-to-dialog click on the value.
+         * The unified menu is intentional — one row, one interaction model,
+         * multiple actions surfaced via the menu.
+         */}
+        <div className="min-w-0 flex-1 flex justify-end">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
                 type="button"
-                className="inline-flex items-center"
+                className="inline-flex items-center gap-spacing-2 rounded-1 px-1 -mx-1 hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full"
                 aria-label={`${label} actions`}
               >
+                <span
+                  className={`text-sm font-medium truncate whitespace-nowrap text-left ${
+                    fieldStatus === 'bad'
+                      ? 'text-[#ec423d]'
+                      : 'text-blue-100'
+                  }`}
+                  title={value}
+                >
+                  {fieldStatus === 'bad' && (
+                    <AlertTriangle className="w-4 h-4 text-[#f48a3c] inline mr-spacing-1 flex-shrink-0" />
+                  )}
+                  {value}
+                </span>
                 <ChevronDown
                   className={`w-4 h-4 flex-shrink-0 transition ${
                     fieldStatus === 'bad'
@@ -294,85 +292,90 @@ export function ContactInfoCard() {
                 <span className="text-sm text-text-muted flex-shrink-0 pt-0.5">
                   Address
                 </span>
-                <div className="flex-1 min-w-0 flex flex-col items-end gap-0.5">
-                  <button
-                    type="button"
-                    onClick={() => openContactDialog('street')}
-                    className="max-w-full truncate text-sm font-medium text-blue-100 hover:underline text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-40 focus-visible:ring-offset-2 rounded-1"
-                    title={contactInfo.street}
-                  >
-                    {contactInfo.street}
-                  </button>
-                  {hasAddressLine2 && (
-                    <button
-                      type="button"
-                      onClick={() => openContactDialog('addressLine2')}
-                      className="max-w-full truncate text-sm font-medium text-blue-100 hover:underline text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-40 focus-visible:ring-offset-2 rounded-1"
-                      title={contactInfo.addressLine2}
-                    >
-                      {contactInfo.addressLine2}
-                    </button>
-                  )}
-                  {cityStateZip && (
-                    <button
-                      type="button"
-                      onClick={() => openContactDialog('city')}
-                      className="max-w-full truncate text-sm font-medium text-blue-100 hover:underline text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-40 focus-visible:ring-offset-2 rounded-1"
-                      title={cityStateZip}
-                    >
-                      {cityStateZip}
-                    </button>
-                  )}
-                </div>
-                {/* Chevron menu for address */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button
-                      type="button"
-                      className="inline-flex items-center pt-0.5"
-                      aria-label="Address actions"
-                    >
-                      <ChevronDown className="w-4 h-4 flex-shrink-0 text-blue-100" />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-[180px]">
-                    <DropdownMenuItem
-                      onClick={() =>
-                        window.open(
-                          `https://maps.google.com/?q=${encodeURIComponent(
+                {/**
+                 * PROTECTED — Field menu trigger.
+                 * Both the value text AND the chevron open the same field menu.
+                 * The menu contains action items (See on Map/Copy/etc.) plus Edit as the last item.
+                 * Edit opens the ContactEditDialog with the Address field auto-focused.
+                 *
+                 * Do NOT reintroduce a direct-to-dialog click on the value.
+                 * The unified menu is intentional — one row, one interaction model,
+                 * multiple actions surfaced via the menu.
+                 */}
+                <div className="flex-1 min-w-0 flex justify-end">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        type="button"
+                        className="inline-flex items-start gap-spacing-2 rounded-1 px-1 -mx-1 hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full"
+                        aria-label="Address actions"
+                      >
+                        <div className="flex flex-col items-end gap-0.5 min-w-0">
+                          <span
+                            className="max-w-full truncate text-sm font-medium text-blue-100 text-left"
+                            title={contactInfo.street}
+                          >
+                            {contactInfo.street}
+                          </span>
+                          {hasAddressLine2 && (
+                            <span
+                              className="max-w-full truncate text-sm font-medium text-blue-100 text-left"
+                              title={contactInfo.addressLine2}
+                            >
+                              {contactInfo.addressLine2}
+                            </span>
+                          )}
+                          {cityStateZip && (
+                            <span
+                              className="max-w-full truncate text-sm font-medium text-blue-100 text-left"
+                              title={cityStateZip}
+                            >
+                              {cityStateZip}
+                            </span>
+                          )}
+                        </div>
+                        <ChevronDown className="w-4 h-4 flex-shrink-0 text-blue-100" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-[180px]">
+                      <DropdownMenuItem
+                        onClick={() =>
+                          window.open(
+                            `https://maps.google.com/?q=${encodeURIComponent(
+                              [contactInfo.street, contactInfo.addressLine2, cityStateZip].filter(Boolean).join(', '),
+                            )}`,
+                            '_blank',
+                          )
+                        }
+                      >
+                        <MapPin className="w-4 h-4 mr-spacing-2" aria-hidden="true" />
+                        See On Map
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => openContactDialog('street')}>
+                        <Pencil className="w-4 h-4 mr-spacing-2" />
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() =>
+                          navigator.clipboard.writeText(
                             [contactInfo.street, contactInfo.addressLine2, cityStateZip].filter(Boolean).join(', '),
-                          )}`,
-                          '_blank',
-                        )
-                      }
-                    >
-                      <MapPin className="w-4 h-4 mr-spacing-2" aria-hidden="true" />
-                      See On Map
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => openContactDialog('street')}>
-                      <Pencil className="w-4 h-4 mr-spacing-2" />
-                      Edit
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() =>
-                        navigator.clipboard.writeText(
-                          [contactInfo.street, contactInfo.addressLine2, cityStateZip].filter(Boolean).join(', '),
-                        )
-                      }
-                    >
-                      <Copy className="w-4 h-4 mr-spacing-2" />
-                      Copy
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={() => deleteField('address')}
-                      className="text-[#ec423d] focus:bg-[#ffe0e4]"
-                    >
-                      <Trash2 className="w-4 h-4 mr-spacing-2" />
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                          )
+                        }
+                      >
+                        <Copy className="w-4 h-4 mr-spacing-2" />
+                        Copy
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onClick={() => deleteField('address')}
+                        className="text-[#ec423d] focus:bg-[#ffe0e4]"
+                      >
+                        <Trash2 className="w-4 h-4 mr-spacing-2" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
             )}
           </div>
