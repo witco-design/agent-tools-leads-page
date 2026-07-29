@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Sparkles, Expand } from 'lucide-react';
+import { Sparkles, Expand, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PinnedFloatingDialog } from '@/components/PinnedFloatingDialog';
 
@@ -27,6 +27,7 @@ export function RobinAISummaryCard() {
     return () => clearTimeout(timer);
   }, []);
 
+  const [collapsed, setCollapsed] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -54,92 +55,108 @@ export function RobinAISummaryCard() {
 
   return (
     <>
-      <div data-component="GeekAIInsightsCard" className="bg-[#f6f6ff] border border-[#c3c0f1] rounded-3 overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center gap-spacing-2 px-spacing-5 py-spacing-2">
-          <Sparkles className="w-5 h-5 text-[#746ec0] shrink-0" aria-hidden="true" />
-          <h2 className="text-base font-semibold text-text-default">
-            Geek AI Insights
-          </h2>
+      {/**
+       * PROTECTED — Geek AI Insights card structure.
+       *
+       * Matches Important Notes card pattern:
+       *   - White outer card (bg-white, border, rounded)
+       *   - Header (white bg, sparkle icon + title + collapse chevron)
+       *   - Tinted inner content area (bg-purple-10, rounded, padded)
+       *   - Shimmer skeleton renders inside the tinted area while isGenerating
+       *   - Real content replaces shimmer after generation completes
+       *   - Fade gradient at bottom of scroll (only when scrollable + not at bottom)
+       *   - Expand button in bottom-right, HOVER-ONLY visibility (opacity-0 group-hover:opacity-100)
+       *
+       * Do NOT put purple background on the outer card — the whole point is that
+       * chrome stays neutral (white) and color lives inside the tinted area.
+       *
+       * Do NOT add an Edit button to the header — AI content is not user-editable.
+       * Only the collapse chevron sits on the right side of the header.
+       *
+       * Do NOT make Expand always-visible — hover-only matches Important Notes.
+       */}
+      <div data-component="GeekAIInsightsCard" className="bg-white border border-border-default rounded-3 overflow-hidden">
+        {/* Header — matches CollapsibleCard header padding/height */}
+        <div className={`flex items-center justify-between px-spacing-5 py-spacing-3 ${!collapsed ? 'border-b border-border-default' : ''}`}>
+          <div className="flex items-center gap-spacing-2">
+            <Sparkles className="w-4 h-4 text-purple-100 shrink-0" aria-hidden="true" />
+            <h3 className="text-text-4 font-semibold text-text-default">Geek AI Insights</h3>
+          </div>
+          <button
+            type="button"
+            onClick={() => setCollapsed((prev) => !prev)}
+            aria-label={collapsed ? 'Expand card' : 'Collapse card'}
+            className="cursor-pointer bg-transparent border-none p-0"
+          >
+            <ChevronDown
+              className={`w-4 h-4 text-text-secondary shrink-0 transition-transform duration-200 ${!collapsed ? 'rotate-180' : ''}`}
+            />
+          </button>
         </div>
 
-        {/* Divider */}
-        <div className="border-t border-purple-30 opacity-50" />
+        {/* Collapsible content */}
+        {!collapsed && (
+          <div className="px-spacing-5 py-spacing-4">
+            {/* Tinted inner content area — purple bg */}
+            <div className="relative rounded-1 bg-purple-10 p-spacing-3 group">
+              {isGenerating ? (
+                <div className="space-y-spacing-3">
+                  {/* First paragraph — 3 lines */}
+                  <div className="space-y-2">
+                    <div className="h-4 w-full rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
+                    <div className="h-4 w-11/12 rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
+                    <div className="h-4 w-3/4 rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
+                  </div>
 
-        {/**
-         * PROTECTED — Standardized card layout for Notes + AI Insights.
-         * Content area is a fixed 200px scrollable region with a fade gradient
-         * at the bottom (only visible while scrollable + not scrolled to bottom).
-         * Expand button sits in a footer strip below the scroll area, aligned right.
-         *
-         * If the 200px content height needs to change, change it in BOTH cards.
-         * The whole point is visual parity between the two.
-         */}
-        <div className="px-spacing-5 py-spacing-4">
-          {isGenerating ? (
-            <div className="space-y-spacing-3">
-              {/* First paragraph — 3 lines */}
-              <div className="space-y-2">
-                <div className="h-4 w-full rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
-                <div className="h-4 w-11/12 rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
-                <div className="h-4 w-3/4 rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
-              </div>
+                  {/* YOUR NEXT STEP heading placeholder — narrower bar */}
+                  <div className="h-3 w-32 rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
 
-              {/* YOUR NEXT STEP heading placeholder — narrower bar */}
-              <div className="h-3 w-32 rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
+                  {/* Second paragraph — 2 lines */}
+                  <div className="space-y-2">
+                    <div className="h-4 w-full rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
+                    <div className="h-4 w-4/5 rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
+                  </div>
+                </div>
+              ) : (
+                <div className="relative">
+                  <div
+                    ref={scrollRef}
+                    onScroll={handleScroll}
+                    className="max-h-[200px] overflow-y-auto pr-spacing-3 text-text-3 text-text-default leading-relaxed animate-fade-in"
+                  >
+                    <p>{SUMMARY_TEXT}</p>
+                    <p className="mt-spacing-3 text-text-2 font-semibold text-purple-110 uppercase tracking-wide">
+                      Your Next Step
+                    </p>
+                    <p className="mt-spacing-2">{NEXT_STEP_TEXT}</p>
+                  </div>
+                  {isScrollable && !atBottom && (
+                    <div
+                      className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none"
+                      style={{ background: 'linear-gradient(to top, #f6f6ff, transparent)' }}
+                    />
+                  )}
+                </div>
+              )}
 
-              {/* Second paragraph — 2 lines */}
-              <div className="space-y-2">
-                <div className="h-4 w-full rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
-                <div className="h-4 w-4/5 rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
-              </div>
-            </div>
-          ) : (
-            <div className="relative">
-              <div
-                ref={scrollRef}
-                onScroll={handleScroll}
-                className="max-h-[200px] overflow-y-auto pr-spacing-3 text-text-3 text-text-default leading-relaxed animate-fade-in"
-              >
-                <p>{SUMMARY_TEXT}</p>
-                <p className="mt-spacing-3 text-xs font-semibold uppercase tracking-wide text-purple-60">
-                  Your Next Step
-                </p>
-                <p className="mt-spacing-2">{NEXT_STEP_TEXT}</p>
-              </div>
-              {isScrollable && !atBottom && (
-                <div
-                  className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none"
-                  style={{ background: 'linear-gradient(to top, #f6f6ff, transparent)' }}
-                />
+              {/* Expand button — HOVER ONLY */}
+              {!isGenerating && (
+                <div className="absolute bottom-spacing-2 right-spacing-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150">
+                  <button
+                    type="button"
+                    onClick={() => setDialogOpen(true)}
+                    className={cn(
+                      'inline-flex items-center gap-spacing-1 text-text-3 font-normal transition rounded-1',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+                      'text-purple-110 hover:text-purple-120 focus-visible:ring-purple-60',
+                    )}
+                  >
+                    <Expand className="w-3.5 h-3.5" aria-hidden="true" />
+                    <span>Expand</span>
+                  </button>
+                </div>
               )}
             </div>
-          )}
-        </div>
-
-        {/* Footer with Expand */}
-        {!isGenerating && (
-          <div className="flex justify-end px-spacing-5 pb-spacing-4 pt-spacing-2">
-            {/*
-             * PROTECTED — Expand button styling.
-             * Icon + colored text, NO underline (at rest or hover).
-             * Hover feedback is via color darkening only.
-             *
-             * If you want to add visual affordance later, prefer background hover
-             * (e.g., subtle bg-purple-10/50 on hover) over underline.
-             */}
-            <button
-              type="button"
-              onClick={() => setDialogOpen(true)}
-              className={cn(
-                'inline-flex items-center gap-spacing-1 text-text-3 font-normal transition rounded-1',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-                'text-purple-110 hover:text-purple-120 focus-visible:ring-purple-60',
-              )}
-            >
-              <Expand className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>Expand</span>
-            </button>
           </div>
         )}
       </div>

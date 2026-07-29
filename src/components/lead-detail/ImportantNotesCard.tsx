@@ -55,12 +55,12 @@ export function ImportantNotesCard() {
          * PROTECTED — Standardized card layout for Notes + AI Insights.
          * Content area is a fixed 200px scrollable region with a fade gradient
          * at the bottom (only visible while scrollable + not scrolled to bottom).
-         * Expand button sits in a footer strip below the scroll area, aligned right.
+         * Expand button is HOVER-ONLY, positioned bottom-right of the tinted area.
          *
          * If the 200px content height needs to change, change it in BOTH cards.
          * The whole point is visual parity between the two.
          */}
-        <div className="rounded-1 bg-orange-10 p-spacing-3">
+        <div className="relative rounded-1 bg-orange-10 p-spacing-3 group">
           <div className="relative">
             <div
               ref={scrollRef}
@@ -76,15 +76,14 @@ export function ImportantNotesCard() {
               />
             )}
           </div>
-          <div className="flex justify-end pt-spacing-2">
-            {/*
-             * PROTECTED — Expand button styling.
-             * Icon + colored text, NO underline (at rest or hover).
-             * Hover feedback is via color darkening only.
-             *
-             * If you want to add visual affordance later, prefer background hover
-             * (e.g., subtle bg-blue-10/50 on hover) over underline.
-             */}
+          {/*
+           * PROTECTED — Expand button styling.
+           * HOVER-ONLY visibility: opacity-0 group-hover:opacity-100.
+           * focus-within also reveals it for keyboard accessibility.
+           * Icon + colored text, NO underline (at rest or hover).
+           * Hover feedback is via color darkening only.
+           */}
+          <div className="absolute bottom-spacing-2 right-spacing-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150">
             <button
               type="button"
               onClick={() => setDialogOpen(true)}
