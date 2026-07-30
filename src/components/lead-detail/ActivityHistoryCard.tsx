@@ -264,7 +264,7 @@ export function ActivityHistoryCard() {
 
   // Log Activity save handler
   const handleLogActivitySave = useCallback(
-    (activity: { type: string; direction: string; timestamp: Date; notes: string; notifyRecipient: string }) => {
+    (activity: { type: string; direction: string; timestamp: Date; notes: string; notifyMe: boolean }) => {
       const today = activity.timestamp.toISOString().slice(0, 10);
       const nowTime = formatTime(activity.timestamp);
       const typeLabel =
