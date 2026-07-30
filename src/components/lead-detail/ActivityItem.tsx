@@ -444,29 +444,24 @@ export function ActivityItem({
             />
           </button>
 
-          {/**
-           * PROTECTED — Geek AI Insights button on call activities.
-           * Only renders when activity.type === 'call' AND activity.aiInsight exists.
-           * Purple/10 bg, Purple/40 border, Purple/120 text — matches AI brand color language.
-           * Compact h-7 to fit alongside pin + expand controls in the activity item.
-           *
-           * Do NOT increase button size — the compact form is intentional.
-           * Do NOT add the button to non-call activities.
-           */}
-          {isCallType && item.aiInsight && (
-            <button
-              type="button"
-              onClick={() => setDetailDialogOpen(true)}
-              className="inline-flex items-center gap-spacing-2 h-7 px-spacing-2 rounded-1 bg-purple-10 border border-purple-40 text-purple-120 hover:bg-purple-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 transition text-text-3 font-medium"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-purple-100" aria-hidden="true" />
-              Geek AI Insights
-            </button>
-          )}
         </div>
       </div>
 
       {/* TITLE + BODY (expanded) */}
+      {/* Geek AI Insights button — bottom of activity item, right-aligned */}
+      {isCallType && item.aiInsight && (
+        <div className="flex justify-end mt-spacing-3">
+          <button
+            type="button"
+            onClick={() => setDetailDialogOpen(true)}
+            className="inline-flex items-center gap-spacing-2 h-7 px-spacing-2 rounded-1 bg-purple-10 border border-purple-40 text-purple-120 hover:bg-purple-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 transition text-text-3 font-medium"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-purple-100" aria-hidden="true" />
+            Geek AI Insights
+          </button>
+        </div>
+      )}
+
       {isExpanded && (
         <div className="ml-11 pt-spacing-3">
           <div className="flex items-start gap-spacing-3">

@@ -4,7 +4,6 @@ import {
   MessageSquare,
   Mic,
   GraduationCap,
-  Phone,
   Search,
   Download,
 } from 'lucide-react';
@@ -61,24 +60,19 @@ export function CallDetailDialog({ isOpen, onClose, activity }: CallDetailDialog
 
         {/* Header — always visible above tabs */}
         <div className="flex items-center justify-between px-spacing-5 py-spacing-4 border-b border-border-default shrink-0 pr-spacing-12">
-          <div className="flex items-center gap-spacing-3">
-            <div className="flex items-center justify-center w-8 h-8 rounded-1 bg-green-10">
-              <Phone className="w-4 h-4 text-green-100" aria-hidden="true" />
+          <div>
+            <div className="text-text-4 font-semibold text-text-default">
+              Call with {contactName}
             </div>
-            <div>
-              <div className="text-text-4 font-semibold text-text-default">
-                Call with {contactName}
-              </div>
-              <div className="text-text-3 text-text-muted">
-                {activity.timestamp} · {formatDuration(duration)}
-              </div>
+            <div className="text-text-3 text-text-muted">
+              {activity.timestamp} · {formatDuration(duration)}
             </div>
           </div>
         </div>
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col min-h-0">
-          <TabsList className="flex border-b border-border-default px-spacing-5 gap-spacing-4 bg-transparent h-auto p-0">
+          <TabsList className="flex justify-start border-b border-border-default px-spacing-5 gap-spacing-4 bg-transparent h-auto p-0">
             <TabsTrigger
               value="summary"
               className="inline-flex items-center gap-spacing-2 px-0 py-spacing-3 border-b-2 border-transparent text-text-3 font-medium text-text-muted transition-colors rounded-none data-[state=active]:border-blue-100 data-[state=active]:text-text-default data-[state=active]:shadow-none hover:text-text-default"
@@ -110,7 +104,7 @@ export function CallDetailDialog({ isOpen, onClose, activity }: CallDetailDialog
           </TabsList>
 
           {/* Tab content — scrollable */}
-          <div className="flex-1 overflow-y-auto px-spacing-5 py-spacing-4 max-h-[60vh]">
+          <div className="flex-1 overflow-y-auto px-spacing-5 py-spacing-4 min-h-[480px] max-h-[70vh]">
             <TabsContent value="summary" className="mt-0">
               <div className="space-y-spacing-4">
                 <p className="text-text-3 text-text-default leading-relaxed">

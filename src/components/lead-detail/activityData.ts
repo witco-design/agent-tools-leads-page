@@ -80,8 +80,33 @@ export const pinnedItem: ActivityItemData = {
   pinned: true,
   aiInsight: {
     summary: 'Discussed pre-approval status and timeline. Camille confirmed she has lender Letter of Intent, ready to view properties next weekend. Wants 3BR townhomes in San Jose/Santa Clara, $650-750K. Spouse just accepted a promotion at Google — strong motivation to close before year-end. Preferred contact: texts during work hours, calls evenings and weekends.',
-    transcriptUrl: '#stub-transcript-pinned-1',
-    recordingUrl: '#stub-recording-pinned-1',
+    nextStep: 'Send curated list of 3BR townhomes in San Jose/Santa Clara within budget. Schedule Saturday showings for top 3 properties. Follow up via text on Tuesday if no response.',
+    transcript: [
+      { speakerName: 'Kevin McCarthy', speakerInitials: 'KM', speakerColor: '#3830a5', text: 'Hi Camille, thanks for taking the time today. I wanted to check in on where you are with the pre-approval process.' },
+      { speakerName: 'Camille Dubois', speakerInitials: 'CD', speakerColor: '#4172dc', text: "Yeah, we're all set. Got the Letter of Intent from our lender last week. I'm excited to start looking at properties." },
+      { speakerName: 'Kevin McCarthy', speakerInitials: 'KM', speakerColor: '#3830a5', text: "That's fantastic news. And what kind of budget are we working with?" },
+      { speakerName: 'Camille Dubois', speakerInitials: 'CD', speakerColor: '#4172dc', text: "We're pre-approved up to $750K, but we'd like to stay in the $650 to $750K range for the down payment strategy we're planning." },
+      { speakerName: 'Kevin McCarthy', speakerInitials: 'KM', speakerColor: '#3830a5', text: 'Understood. What are you looking for specifically? Property type, area, must-haves?' },
+      { speakerName: 'Camille Dubois', speakerInitials: 'CD', speakerColor: '#4172dc', text: 'We want a 3-bedroom townhome, ideally in San Jose or Santa Clara. Close to Google would be great since my husband just got a promotion there. We\'re looking to move in before the end of the year.' },
+      { speakerName: 'Kevin McCarthy', speakerInitials: 'KM', speakerColor: '#3830a5', text: "Congrats on the promotion! I have some great listings that match. What's the best way to reach you for property showings and updates?" },
+      { speakerName: 'Camille Dubois', speakerInitials: 'CD', speakerColor: '#4172dc', text: 'Texts during work hours, and calls in the evenings or weekends. That works best for our schedule.' },
+      { speakerName: 'Kevin McCarthy', speakerInitials: 'KM', speakerColor: '#3830a5', text: "Perfect. I'll put together a curated list this afternoon and text you the top three. We can schedule Saturday showings if any of them catch your eye." },
+      { speakerName: 'Camille Dubois', speakerInitials: 'CD', speakerColor: '#4172dc', text: 'Sounds great. Looking forward to it. Thanks Kevin.' },
+    ],
+    recordingUrl: '/samples/call-recording.mp3',
+    coaching: {
+      agentName: 'Kevin McCarthy',
+      agentTalkPct: 42,
+      customerName: 'Camille Dubois',
+      customerTalkPct: 58,
+      feedback: [
+        'Strong opening — quickly established purpose and moved to the pre-approval question. Efficient use of time in the first 60 seconds.',
+        'Good active listening. You let Camille articulate her needs before offering solutions. This built rapport and gave you specific criteria to work with.',
+        'Consider asking one or two more open-ended discovery questions about must-have features (yard size, garage, HOA preferences) before committing to specific listings. This helps narrow the property list and shows deeper consultative selling.',
+        "Nice assumptive close on scheduling Saturday showings. Could strengthen by proposing 2-3 specific time slots rather than asking 'when works?' — reduces cognitive load for the client.",
+        "Great catch on the spouse's promotion motivation. Referencing this in follow-up communications will reinforce the urgency angle and personalize your outreach.",
+      ],
+    },
   },
 };
 
