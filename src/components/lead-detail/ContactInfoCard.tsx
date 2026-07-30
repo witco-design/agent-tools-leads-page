@@ -303,73 +303,51 @@ export function ContactInfoCard() {
     >
       {/**
        * PROTECTED — Top contact strip uses a single 4-row × 3-column grid.
-       * Every cell is a uniform flex row: `flex items-center justify-between gap-spacing-3 min-h-9`.
-       * All cells are 36px height. All cells use items-center.
+       * Row 3 uses items-start + xl:items-baseline so the multi-line address cell
+       * can grow while labels cross-align by baseline.
        *
-       * Address is SPLIT INTO TWO CELLS:
-       *   r3c1: Address label + street value (aligns with Login/Type at r3)
-       *   r4c1: empty label slot + city/state/zip value (aligns with IP/Timeframe at r4)
+       * Address is a SINGLE cell at r3c1 containing all lines (street, optional
+       * Line 2, city/state/zip) stacked tightly in a flex-col value column.
+       * Row 4 left column is empty (no r4c1 cell).
        *
-       * DO NOT combine the address into a single cell — that was the previous bug.
-       * DO NOT use items-baseline on any cell — items-center is uniform across the grid.
-       * DO NOT change min-h-9 on any cell — uniform row height is required for cross-column alignment.
-       *
-       * The street cell (r3c1) has the chevron. The city/state/zip cell (r4c1) does NOT.
-       * Both share the same underlying address field state and open the same edit dialog.
+       * DO NOT split the address into r3c1 + r4c1 — city/state/zip must stay
+       * inside the address cell for visual grouping and tight line-spacing.
+       * DO NOT use items-center on the address cell — items-start is required
+       * for label to align with the FIRST line of the multi-line value.
        */}
-      <div className="grid grid-cols-1 gap-y-spacing-3 p-spacing-5 xl:grid-cols-[minmax(180px,1fr)_1px_minmax(220px,1fr)_1px_minmax(200px,1fr)] xl:grid-rows-[auto_auto_auto_auto] xl:gap-x-spacing-5">
+      <div className="grid grid-cols-1 gap-y-spacing-3 p-spacing-5 xl:grid-cols-[minmax(180px,1fr)_1px_minmax(220px,1fr)_1px_minmax(200px,1fr)] xl:grid-rows-[auto_auto_auto_auto] xl:gap-x-spacing-5 xl:items-baseline">
         {renderContactRow('primary', 'Primary', 'xl:col-start-1 xl:row-start-1')}
         {renderContactRow('email', 'Email', 'xl:col-start-1 xl:row-start-2')}
 
             {/**
-             * PROTECTED — Address is SPLIT INTO TWO CELLS.
-             * r3c1: Address label + street (aligns with Login/Type at row 3)
-             * r4c1: empty label slot + city/state/zip (aligns with IP/Timeframe at row 4)
-             * Both cells open the same address field menu.
-             * The street cell has the chevron; the city/state/zip cell does NOT.
-             * If Address Line 2 is populated, it stacks inside r3c1 alongside street.
+             * PROTECTED — Address is a SINGLE grid cell containing all lines.
+             *
+             * Structure:
+             *   - Cell at r3c1 with `flex items-start`
+             *   - Label spans on left, value column (flex-col items-end gap-0) on right
+             *   - Value column stacks: street → (optional Line 2) → city/state/zip
+             *   - All value lines are 14px/20px (text-sm leading-5), tightly spaced (gap-0)
+             *
+             * Alignment:
+             *   - Grid uses `align-items: baseline` so row-3 labels cross-align (Address baseline
+             *     = Login baseline = Type baseline).
+             *   - Cell's first-baseline is the label / street line's baseline.
+             *   - City/state/zip flows below street with tight line-spacing, extending
+             *     the cell's height beyond row 4's normal position.
+             *
+             * Do NOT split into r3c1 + r4c1 — city/state/zip must be inside the address cell
+             * to maintain the visual grouping and tight line-spacing.
+             *
+             * Do NOT use items-center or items-baseline on this cell — items-start is required
+             * for label to align with the FIRST line of the multi-line value.
              */}
             {hasAddress && (
-              <div className="flex items-center justify-between gap-spacing-3 min-h-9 xl:col-start-1 xl:row-start-3">
-                <span className="text-sm text-text-muted flex-shrink-0">
+              <div className="flex items-start gap-spacing-3 xl:col-start-1 xl:row-start-3">
+                <span className="w-24 text-sm leading-5 text-text-muted flex-shrink-0">
                   Address
                 </span>
-                <div className="flex-1 min-w-0 flex justify-end">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button
-                        type="button"
-                        className="inline-flex items-center gap-spacing-2 rounded-1 px-1 -mx-1 hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full"
-                        aria-label="Address actions"
-                      >
-                        <div className="flex flex-col items-end gap-0.5 min-w-0">
-                          <span
-                            className="max-w-full truncate text-sm font-medium text-blue-100 text-left"
-                            title={contactInfo.street}
-                          >
-                            {contactInfo.street}
-                          </span>
-                          {hasAddressLine2 && (
-                            <span
-                              className="max-w-full truncate text-sm font-medium text-blue-100 text-left"
-                              title={contactInfo.addressLine2}
-                            >
-                              {contactInfo.addressLine2}
-                            </span>
-                          )}
-                        </div>
-                        <ChevronDown className="w-4 h-4 flex-shrink-0 text-blue-100" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    {renderAddressMenuContent()}
-                  </DropdownMenu>
-                </div>
-              </div>
-            )}
-            {hasAddress && cityStateZip && (
-              <div className="flex items-center justify-between gap-spacing-3 min-h-9 xl:col-start-1 xl:row-start-4">
-                <span className="text-sm text-text-muted flex-shrink-0" aria-hidden="true">&nbsp;</span>
-                <div className="flex-1 min-w-0 flex justify-end">
+                <div className="flex-1 min-w-0 flex flex-col items-end gap-0">
+                  {/* Line 1: street with chevron menu */}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button
@@ -379,14 +357,57 @@ export function ContactInfoCard() {
                       >
                         <span
                           className="max-w-full truncate text-sm font-medium text-blue-100 text-left"
-                          title={cityStateZip}
+                          title={contactInfo.street}
                         >
-                          {cityStateZip}
+                          {contactInfo.street}
                         </span>
+                        <ChevronDown className="w-4 h-4 flex-shrink-0 text-blue-100" />
                       </button>
                     </DropdownMenuTrigger>
                     {renderAddressMenuContent()}
                   </DropdownMenu>
+
+                  {/* Line 2 (optional): Address Line 2 — no chevron */}
+                  {hasAddressLine2 && (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button
+                          type="button"
+                          className="inline-flex items-center rounded-1 px-1 -mx-1 hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full"
+                          aria-label="Address actions"
+                        >
+                          <span
+                            className="max-w-full truncate text-sm font-medium text-blue-100 text-left"
+                            title={contactInfo.addressLine2}
+                          >
+                            {contactInfo.addressLine2}
+                          </span>
+                        </button>
+                      </DropdownMenuTrigger>
+                      {renderAddressMenuContent()}
+                    </DropdownMenu>
+                  )}
+
+                  {/* Line 3 (or 2): city/state/zip — no chevron */}
+                  {cityStateZip && (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button
+                          type="button"
+                          className="inline-flex items-center rounded-1 px-1 -mx-1 hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full"
+                          aria-label="Address actions"
+                        >
+                          <span
+                            className="max-w-full truncate text-sm font-medium text-blue-100 text-left"
+                            title={cityStateZip}
+                          >
+                            {cityStateZip}
+                          </span>
+                        </button>
+                      </DropdownMenuTrigger>
+                      {renderAddressMenuContent()}
+                    </DropdownMenu>
+                  )}
                 </div>
               </div>
             )}
@@ -430,13 +451,13 @@ export function ContactInfoCard() {
             </div>
 
             {/* Login — row 3 */}
-            <div className="flex items-center justify-between gap-spacing-3 min-h-9 xl:col-start-3 xl:row-start-3">
-              <span className="text-sm text-text-muted flex-shrink-0">
+            <div className="flex items-start justify-between gap-spacing-3 min-h-9 xl:col-start-3 xl:row-start-3">
+              <span className="text-sm leading-5 text-text-muted flex-shrink-0">
                 Login
               </span>
               <div className="min-w-0 flex items-center justify-end gap-spacing-2 flex-1">
                 <span
-                  className="text-sm text-text-default truncate whitespace-nowrap"
+                  className="text-sm leading-5 text-text-default truncate whitespace-nowrap"
                   title="14 days ago"
                 >
                   14 days ago
@@ -522,8 +543,8 @@ export function ContactInfoCard() {
             </div>
 
             {/* Type — row 3 */}
-            <div className="flex items-center justify-between gap-spacing-3 min-h-9 xl:col-start-5 xl:row-start-3">
-              <span className="text-sm text-text-muted flex-shrink-0">
+            <div className="flex items-start justify-between gap-spacing-3 min-h-9 xl:col-start-5 xl:row-start-3">
+              <span className="text-sm leading-5 text-text-muted flex-shrink-0">
                 Type
               </span>
               <div className="min-w-0 max-w-[160px] flex-1">
