@@ -203,7 +203,7 @@ Defined in `LeadDetailPage.tsx` `INITIAL_CONTACT_INFO`, consumed via `ContactInf
 - Name: **Camille Dubois** (firstName/lastName)
 - Primary: (415) 555-0142 · Alt: (415) 555-0188 · Office/Fax: empty
 - Email: cdubois@realgeeks.com
-- Address: 123 Fake Address Street, Mountain View, CA 94041 (addressLine2 empty)
+- Address: 123 Malcolm Street, Unit 3, Atlanta, GA 30019 (addressLine2 populated)
 
 ### Secondary Contact
 In `SecondaryContactCard.tsx`: **Tom Dubois**, (214) 555-8832, tom.dubois@email.com (hardcoded demo).
@@ -240,7 +240,9 @@ In `SecondaryContactCard.tsx`: **Tom Dubois**, (214) 555-8832, tom.dubois@email.
 
 ## 8. Recent Changes (latest session)
 
-- **Address recombine into single grid cell** — applied. Removed the r4c1 split; r3c1 now holds label + a `flex-col items-end gap-0` value column stacking street → (optional Line 2) → city/state/zip, all `text-sm leading-5`; grid uses `xl:items-baseline`; Login/Type row-3 cells changed to `items-start`. Row 4 left column is empty. Needs DOM verification (see §9).
+- **Address recombine into single grid cell** — applied (prior session). r3c1 holds label + a `flex-col items-end gap-0` value column stacking street → (optional Line 2) → city/state/zip, all `text-sm leading-5`; grid uses `xl:items-baseline`. Row 4 left column is empty.
+- **Top contact strip: demo address + truncation + uniform row heights** — applied. (a) Demo address changed to shorter reference data: `123 Malcolm Street / Unit 3 / Atlanta, GA 30019` (populates Address Line 2 so all 3 lines render). (b) Removed `truncate` + `max-w-full` from all 3 address value spans; replaced with `whitespace-nowrap` so lines stay on one line without clipping. (c) All 12 content cells changed to `items-start min-h-[60px]` (was `items-center min-h-9` for most) so every grid row is a uniform 60px regardless of content height. Dividers left unchanged.
+- **Field-menu triggers verified intact** — Primary, Email, and all 3 Address lines render as `<button>` inside `DropdownMenuTrigger`; chevron only on street (line 1). No fix was needed.
 - **CallDetailDialog cleanups** — applied: (a) "Geek AI Insights" button relocated from top-right action cluster to a new right-aligned row at the bottom of call activity items (`mt-spacing-3`); (b) tabs left-aligned (`justify-start`); (c) green phone-icon avatar removed from header; (d) content area `min-h-[480px] max-h-[70vh]` for stable sizing; (e) `pinnedItem` `aiInsight` fully populated with nextStep/transcript/recordingUrl/coaching.
 - **Geek AI Insights card structure** — applied (white outer + purple-tinted inner + shimmer + hover-only Expand). Predates this session but verified intact.
 - **Sidebar width 184px expanded / 72px collapsed**, broadcast via `--sidebar-width` on `document.documentElement` — applied (`Sidebar.tsx`).
@@ -251,9 +253,8 @@ In `SecondaryContactCard.tsx`: **Tom Dubois**, (214) 555-8832, tom.dubois@email.
 
 ## 9. Known Issues / Ongoing Debugging
 
-- **Cross-column baseline alignment (top strip):** verify in DevTools that Address label `getBoundingClientRect().top` === Login label === Type label (row 3). The `xl:items-baseline` + `items-start` + `text-sm leading-5` chain is intended to achieve this but has **not been pixel-verified** this session.
-- **Middle column row spacing:** after the address recombine, row 3 grows to fit a 2–3 line address, so the gap between Login and IP is larger than between Contacted and Login. Accepted trade-off (documented in the recombine task).
-- **Address Line 2 rendering:** `addressLine2` is empty in demo data, so the conditional Line 2 line has **not been visually verified** stacking tight between street and city/state/zip.
+- **Cross-column baseline alignment (top strip):** `xl:items-baseline` + `items-start min-h-[60px]` + `text-sm leading-5` should produce uniform 60px rows with top-aligned labels. Not pixel-verified in DevTools this session — needs DOM check that row-3 label baselines (Address/Login/Type) align.
+- **Address Line 2 now populated:** demo data has `addressLine2: 'Unit 3'`, so the conditional Line 2 line renders. Visually confirmed in code that it stacks between street and city/state/zip with `gap-0` + `leading-5`. Needs browser verification that all 3 lines fit without wrapping or truncation in the ~150px value column.
 - **`act-006` call activity** has only a stub `aiInsight` (no transcript/coaching arrays) → its CallDetailDialog Transcript/Recording/Coaching tabs will show empty states. Not a regression; the demo was only fully populated for `pinnedItem` and `p1-1`.
 - **`/samples/call-recording.mp3`** does not exist in the repo; the Recording tab's audio player will render but media won't play.
 - **Pre-existing TS error** in `ActivityHistoryCard.tsx` (`notifyRecipient`/`notifyMe` prop mismatch) — **fixed this session**. `npm run build` now passes cleanly.

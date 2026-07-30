@@ -40,11 +40,11 @@ const INITIAL_CONTACT_INFO: ContactInfo = {
   faxStatus: 'good',
   email: 'cdubois@realgeeks.com',
   emailStatus: 'good',
-  street: '123 Fake Address Street',
-  addressLine2: '',
-  city: 'Mountain View',
-  state: 'CA',
-  zip: '94041',
+  street: '123 Malcolm Street',
+  addressLine2: 'Unit 3',
+  city: 'Atlanta',
+  state: 'GA',
+  zip: '30019',
 };
 
 export default function LeadDetailPage() {
