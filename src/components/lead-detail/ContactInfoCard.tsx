@@ -373,7 +373,7 @@ export function ContactInfoCard() {
                       <DropdownMenuTrigger asChild>
                         <button
                           type="button"
-                          className="inline-flex items-center rounded-1 px-1 -mx-1 hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full"
+                          className="inline-flex items-center rounded-1 px-1 -ml-1 mr-[20px] hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full"
                           aria-label="Address actions"
                         >
                           <span
@@ -394,7 +394,7 @@ export function ContactInfoCard() {
                       <DropdownMenuTrigger asChild>
                         <button
                           type="button"
-                          className="inline-flex items-center rounded-1 px-1 -mx-1 hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full"
+                          className="inline-flex items-center rounded-1 px-1 -ml-1 mr-[20px] hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full"
                           aria-label="Address actions"
                         >
                           <span
