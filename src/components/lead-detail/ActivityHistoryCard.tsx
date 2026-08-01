@@ -12,6 +12,7 @@ import {
   Home,
   Activity,
   X,
+  History,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatTime, formatDateTimeWithYear } from '@/utils/formatDate';
@@ -351,9 +352,12 @@ export function ActivityHistoryCard() {
       <div data-component="ActivityHistoryCard" className="bg-bg-card rounded-3 border border-border-default overflow-hidden">
         {/* ── BAR 1: Title bar ─────────────────────────────────── */}
         <div className="px-spacing-5 py-spacing-3 flex items-center justify-between">
-          <h3 className="text-text-4 font-semibold text-text-default">
-            Activity History
-          </h3>
+          <div className="flex items-center gap-spacing-2">
+            <History className="w-4 h-4 text-blue-100 shrink-0" />
+            <h3 className="text-text-4 font-semibold text-text-default">
+              Activity History
+            </h3>
+          </div>
           <button
             type="button"
             aria-label={activityOpen ? 'Collapse Activity History' : 'Expand Activity History'}
