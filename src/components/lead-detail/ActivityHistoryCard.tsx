@@ -465,7 +465,7 @@ export function ActivityHistoryCard() {
         <div className="mt-0">
           <button
             type="button"
-            className="w-full flex items-center px-spacing-5 py-spacing-3 border-b border-border-default cursor-pointer hover:bg-bg-muted/50 transition-colors"
+            className={`w-full flex items-center px-spacing-5 py-spacing-3 ${pinnedOpen && filteredPinnedItems.length > 0 ? 'border-b border-border-default' : ''} cursor-pointer hover:bg-bg-muted/50 transition-colors`}
             onClick={() => setPinnedOpen((prev) => !prev)}
           >
             <span className="text-text-3 font-semibold text-text-default">
@@ -502,7 +502,7 @@ export function ActivityHistoryCard() {
             {dateGroups.map((group) => (
               <div key={group.date}>
                 {/* Date heading */}
-                <div className="px-spacing-5 py-spacing-3 border-b border-border-default">
+                <div className="px-spacing-5 py-spacing-3 border-t border-b border-border-default">
                   <span className="text-text-3 font-semibold text-text-secondary uppercase tracking-wide">
                     {group.label}
                   </span>
