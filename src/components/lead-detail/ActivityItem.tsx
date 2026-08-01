@@ -569,7 +569,7 @@ export function ActivityItem({
 
       {/* Geek AI Insights button — bottom of activity item, right-aligned */}
       {isCallType && item.aiInsight && (
-        <div className="flex justify-end mt-spacing-3">
+        <div className="flex justify-start ml-11 mt-spacing-3">
           <button
             type="button"
             onClick={() => setDetailDialogOpen(true)}
