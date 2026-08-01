@@ -40,7 +40,7 @@ const SECONDARY_CONTACT_FIELDS: FieldConfig[] = [
   { key: 'email', label: 'Email', type: 'email' },
   { key: 'altEmail', label: 'Alt Email', type: 'email' },
   { key: 'address', label: 'Address', type: 'text', placeholder: 'Street address' },
-  { key: 'addressLine2', label: 'Address 2', type: 'text', placeholder: 'Suite, unit, floor, etc. (optional)' },
+  { key: 'addressLine2', label: 'Apt, suite, etc.', type: 'text', placeholder: 'Suite, unit, floor, etc. (optional)' },
   { key: 'city', label: 'City', type: 'text' },
   { key: 'state', label: 'State/Province', type: 'text' },
   { key: 'zip', label: 'Zip/Postal', type: 'text' },
@@ -70,7 +70,7 @@ const INITIAL_DATA: SecondaryContact = {
 function DisplayRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center min-h-9">
-      <span className="w-24 text-sm text-text-muted flex-shrink-0">{label}</span>
+      <span className="w-28 text-sm text-text-muted flex-shrink-0">{label}</span>
       <span className="flex-1 text-sm text-text-default">{value}</span>
     </div>
   );
@@ -127,11 +127,13 @@ export function SecondaryContactCard() {
   if (contact.address) {
     rows.push({ label: 'Address', value: contact.address });
     if (contact.addressLine2)
-      rows.push({ label: 'Address 2', value: contact.addressLine2 });
-    const line2 = [contact.city, contact.state, contact.zip]
-      .filter(Boolean)
-      .join(', ');
-    if (line2) rows.push({ label: '', value: line2 });
+      rows.push({ label: 'Apt, suite, etc.', value: contact.addressLine2 });
+    if (contact.city)
+      rows.push({ label: 'City', value: contact.city });
+    if (contact.state)
+      rows.push({ label: 'State', value: contact.state });
+    if (contact.zip)
+      rows.push({ label: 'Zip', value: contact.zip });
   }
 
   const isEmpty = rows.length === 0;

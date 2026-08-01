@@ -22,7 +22,7 @@ const CONTACT_INFO_FIELDS: FieldConfig[] = [
   { key: 'fax', label: 'Fax', type: 'tel' },
   { key: 'email', label: 'Email', type: 'email', placeholder: 'name@example.com' },
   { key: 'street', label: 'Address', type: 'text', placeholder: 'Street address' },
-  { key: 'addressLine2', label: 'Address 2', type: 'text', placeholder: 'Suite, unit, floor, etc. (optional)' },
+  { key: 'addressLine2', label: 'Apt, suite, etc.', type: 'text', placeholder: 'Suite, unit, floor, etc. (optional)' },
   { key: 'city', label: 'City', type: 'text' },
   { key: 'state', label: 'State/Province', type: 'text' },
   { key: 'zip', label: 'Zip/Postal', type: 'text' },
@@ -31,7 +31,7 @@ const CONTACT_INFO_FIELDS: FieldConfig[] = [
 function DisplayRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center min-h-9">
-      <span className="w-24 text-sm text-text-muted flex-shrink-0">{label}</span>
+      <span className="w-28 text-sm text-text-muted flex-shrink-0">{label}</span>
       <span className="flex-1 text-sm text-text-default">{value}</span>
     </div>
   );
@@ -65,11 +65,13 @@ export function ContactInfoSection() {
   if (contactInfo.street) {
     rows.push({ label: 'Address', value: contactInfo.street });
     if (contactInfo.addressLine2)
-      rows.push({ label: 'Address 2', value: contactInfo.addressLine2 });
-    const line2 = [contactInfo.city, contactInfo.state, contactInfo.zip]
-      .filter(Boolean)
-      .join(', ');
-    if (line2) rows.push({ label: '', value: line2 });
+      rows.push({ label: 'Apt, suite, etc.', value: contactInfo.addressLine2 });
+    if (contactInfo.city)
+      rows.push({ label: 'City', value: contactInfo.city });
+    if (contactInfo.state)
+      rows.push({ label: 'State', value: contactInfo.state });
+    if (contactInfo.zip)
+      rows.push({ label: 'Zip', value: contactInfo.zip });
   }
 
   const isEmpty = rows.length === 0;
@@ -195,13 +197,9 @@ export function ContactInfoSection() {
                 .
               </div>
             ) : (
-              rows.map((row, i) =>
-                row.label ? (
-                  <DisplayRow key={`${row.label}-${i}`} label={row.label} value={row.value} />
-                ) : (
-                  <DisplayRow key={`addr-line2-${i}`} label="" value={row.value} />
-                ),
-              )
+              rows.map((row, i) => (
+                <DisplayRow key={`${row.label || 'row'}-${i}`} label={row.label} value={row.value} />
+              ))
             )}
           </div>
         )}
