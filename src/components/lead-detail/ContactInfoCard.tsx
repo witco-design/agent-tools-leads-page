@@ -171,7 +171,7 @@ export function ContactInfoCard() {
                 aria-label={`${label} actions`}
               >
                 <span
-                  className={`text-sm font-medium truncate whitespace-nowrap text-left ${
+                  className={`text-sm font-medium text-left min-w-0 ${
                     fieldStatus === 'bad'
                       ? 'text-[#ec423d]'
                       : 'text-blue-100'
@@ -315,7 +315,7 @@ export function ContactInfoCard() {
        * DO NOT use items-center on the address cell — items-start is required
        * for label to align with the FIRST line of the multi-line value.
        */}
-      <div className="grid grid-cols-1 gap-y-spacing-1 p-spacing-5 xl:grid-cols-[minmax(180px,1fr)_1px_minmax(220px,1fr)_1px_minmax(200px,1fr)] xl:grid-rows-[auto_auto_auto_auto] xl:gap-x-spacing-5 xl:items-baseline">
+      <div className="grid grid-cols-1 gap-y-spacing-1 p-spacing-5 xl:grid-cols-[minmax(240px,1fr)_1px_minmax(220px,1fr)_1px_minmax(200px,1fr)] xl:grid-rows-[auto_auto_auto_auto] xl:gap-x-spacing-5 xl:items-baseline">
         {renderContactRow('primary', 'Primary', 'xl:col-start-1 xl:row-start-1')}
         {renderContactRow('email', 'Email', 'xl:col-start-1 xl:row-start-2')}
 
@@ -356,7 +356,7 @@ export function ContactInfoCard() {
                         aria-label="Address actions"
                       >
                         <span
-                          className="text-sm font-medium leading-5 text-blue-100 text-left whitespace-nowrap"
+                          className="text-sm font-medium leading-5 text-blue-100 text-left min-w-0"
                           title={contactInfo.street}
                         >
                           {contactInfo.street}
@@ -377,7 +377,7 @@ export function ContactInfoCard() {
                           aria-label="Address actions"
                         >
                           <span
-                            className="text-sm font-medium leading-5 text-blue-100 text-left whitespace-nowrap"
+                            className="text-sm font-medium leading-5 text-blue-100 text-left min-w-0"
                             title={contactInfo.addressLine2}
                           >
                             {contactInfo.addressLine2}
@@ -398,7 +398,7 @@ export function ContactInfoCard() {
                           aria-label="Address actions"
                         >
                           <span
-                            className="text-sm font-medium leading-5 text-blue-100 text-left whitespace-nowrap"
+                            className="text-sm font-medium leading-5 text-blue-100 text-left min-w-0"
                             title={cityStateZip}
                           >
                             {cityStateZip}
