@@ -65,7 +65,7 @@ export function ImportantNotesCard() {
             <div
               ref={scrollRef}
               onScroll={handleScroll}
-              className="max-h-[200px] overflow-y-auto pr-spacing-3 text-text-3 font-normal text-text-default whitespace-pre-line leading-relaxed"
+              className="max-h-[200px] overflow-y-auto pr-spacing-3 notes-scroll text-text-3 font-normal text-text-default whitespace-pre-line leading-relaxed"
             >
               {noteText}
             </div>
@@ -85,7 +85,7 @@ export function ImportantNotesCard() {
            * If discoverability becomes an issue in user testing, add a Radix Tooltip
            * with 400ms delay rather than an always-visible label.
            */}
-          <div className="absolute bottom-spacing-2 right-spacing-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150">
+          <div className="absolute bottom-spacing-2 right-spacing-4 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150">
             <button
               type="button"
               onClick={() => setDialogOpen(true)}

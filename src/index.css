@@ -42,6 +42,8 @@
     --color-success-text: #45ac86; /* green.70 */
     --color-warning-bg:   #fef5dd; /* orange.10 */
     --color-warning-text: #f48a3c; /* orange.70 */
+    --color-orange-50:    #f6af58; /* orange.50 */
+    --color-orange-70:    #f48a3c; /* orange.70 */
     --color-error-bg:     #fffafb; /* red.10 */
     --color-error-text:   #ec423d; /* red.70 */
 
@@ -184,6 +186,19 @@
 .ai-summary-scroll {
   scrollbar-width: thin;
   scrollbar-color: rgba(96, 89, 183, 0.25) transparent;
+}
+
+/* Important Notes card scrollbar — orange thumb, scoped to this card only */
+.notes-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-orange-50);
+  border-radius: 4px;
+}
+.notes-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-orange-70);
+}
+.notes-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-orange-50) transparent;
 }
 
 /* ── Chat Support — on-load button pulse (4× scale + blue glow) ── */
