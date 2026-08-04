@@ -75,28 +75,28 @@ export function CallDetailDialog({ isOpen, onClose, activity }: CallDetailDialog
           <TabsList className="flex justify-start border-b border-border-default px-spacing-5 gap-spacing-4 bg-transparent h-auto p-0">
             <TabsTrigger
               value="summary"
-              className="inline-flex items-center justify-center gap-spacing-2 w-[120px] px-0 py-spacing-3 border-b-2 border-transparent text-text-3 font-medium text-text-muted transition-colors rounded-none data-[state=active]:border-blue-100 data-[state=active]:text-text-default data-[state=active]:shadow-none hover:text-text-default"
+              className="inline-flex items-center gap-spacing-2 px-0 py-spacing-3 border-b-2 border-transparent text-text-3 font-medium text-text-muted transition-colors rounded-none data-[state=active]:border-blue-100 data-[state=active]:text-text-default data-[state=active]:shadow-none hover:text-text-default"
             >
               <Sparkles className="w-4 h-4 text-purple-100" aria-hidden="true" />
               Summary
             </TabsTrigger>
             <TabsTrigger
               value="transcript"
-              className="inline-flex items-center justify-center gap-spacing-2 w-[120px] px-0 py-spacing-3 border-b-2 border-transparent text-text-3 font-medium text-text-muted transition-colors rounded-none data-[state=active]:border-blue-100 data-[state=active]:text-text-default data-[state=active]:shadow-none hover:text-text-default"
+              className="inline-flex items-center gap-spacing-2 px-0 py-spacing-3 border-b-2 border-transparent text-text-3 font-medium text-text-muted transition-colors rounded-none data-[state=active]:border-blue-100 data-[state=active]:text-text-default data-[state=active]:shadow-none hover:text-text-default"
             >
               <MessageSquare className="w-4 h-4" aria-hidden="true" />
               Transcript
             </TabsTrigger>
             <TabsTrigger
               value="recording"
-              className="inline-flex items-center justify-center gap-spacing-2 w-[120px] px-0 py-spacing-3 border-b-2 border-transparent text-text-3 font-medium text-text-muted transition-colors rounded-none data-[state=active]:border-blue-100 data-[state=active]:text-text-default data-[state=active]:shadow-none hover:text-text-default"
+              className="inline-flex items-center gap-spacing-2 px-0 py-spacing-3 border-b-2 border-transparent text-text-3 font-medium text-text-muted transition-colors rounded-none data-[state=active]:border-blue-100 data-[state=active]:text-text-default data-[state=active]:shadow-none hover:text-text-default"
             >
               <Mic className="w-4 h-4" aria-hidden="true" />
               Recording
             </TabsTrigger>
             <TabsTrigger
               value="coaching"
-              className="inline-flex items-center justify-center gap-spacing-2 w-[120px] px-0 py-spacing-3 border-b-2 border-transparent text-text-3 font-medium text-text-muted transition-colors rounded-none data-[state=active]:border-blue-100 data-[state=active]:text-text-default data-[state=active]:shadow-none hover:text-text-default"
+              className="inline-flex items-center gap-spacing-2 px-0 py-spacing-3 border-b-2 border-transparent text-text-3 font-medium text-text-muted transition-colors rounded-none data-[state=active]:border-blue-100 data-[state=active]:text-text-default data-[state=active]:shadow-none hover:text-text-default"
             >
               <GraduationCap className="w-4 h-4" aria-hidden="true" />
               Coaching
