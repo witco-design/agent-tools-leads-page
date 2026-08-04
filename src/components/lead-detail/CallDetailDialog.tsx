@@ -104,7 +104,7 @@ export function CallDetailDialog({ isOpen, onClose, activity }: CallDetailDialog
           </TabsList>
 
           {/* Tab content — scrollable */}
-          <div className="flex-1 overflow-y-auto px-spacing-5 py-spacing-4 min-h-[480px] max-h-[70vh]">
+          <div className="overflow-y-auto px-spacing-5 py-spacing-4 h-[70vh] min-h-[480px] max-h-[600px]">
             <TabsContent value="summary" className="mt-0">
               <div className="space-y-spacing-4">
                 <p className="text-text-3 text-text-default leading-relaxed">
