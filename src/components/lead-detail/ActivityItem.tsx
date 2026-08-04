@@ -576,7 +576,7 @@ export function ActivityItem({
             className="inline-flex items-center gap-spacing-2 h-7 px-spacing-2 rounded-1 bg-purple-10 border border-purple-40 text-purple-120 hover:bg-purple-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-60 focus-visible:ring-offset-2 transition text-text-3 font-medium"
           >
             <Sparkles className="w-3.5 h-3.5 text-purple-100" aria-hidden="true" />
-            Geek AI Insights
+            Insights & Transcript
           </button>
         </div>
       )}
