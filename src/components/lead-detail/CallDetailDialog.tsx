@@ -1,12 +1,5 @@
 import { useState } from 'react';
-import {
-  Sparkles,
-  MessageSquare,
-  Mic,
-  GraduationCap,
-  Search,
-  Download,
-} from 'lucide-react';
+import { Sparkles, MessageSquare, Mic, GraduationCap, Search, Download, CircleCheck as CheckCircle2, Lightbulb, Check } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -237,8 +230,85 @@ function TranscriptTab({ transcript }: { transcript?: TranscriptLine[] }) {
 }
 
 function CoachingTab({ coaching }: { coaching: CoachingData }) {
+  const skillScores = [
+    { label: 'Rapport', value: 90 },
+    { label: 'Discovery', value: 72 },
+    { label: 'Objection handling', value: 78 },
+    { label: 'Closing', value: 80 },
+    { label: 'Next steps', value: 85 },
+  ];
+
+  const strengths = [
+    {
+      lead: 'Strong opening',
+      text: ' — quickly established purpose and moved to the pre-approval question. Efficient use of time in the first 60 seconds.',
+    },
+    {
+      lead: 'Good active listening.',
+      text: ' You let Camille articulate her needs before offering solutions. This built rapport and gave you specific criteria to work with.',
+    },
+    {
+      lead: 'Great catch on the spouse\'s promotion motivation.',
+      text: ' Referencing this in follow-up communications will reinforce the urgency angle and personalize your outreach.',
+    },
+  ];
+
+  const opportunities = [
+    {
+      lead: 'Ask more discovery questions.',
+      text: ' One or two more open-ended questions about must-have features (yard size, garage, HOA preferences) before committing to specific listings — narrows the property list and shows deeper consultative selling.',
+    },
+    {
+      lead: 'Strengthen the close.',
+      text: ' Propose 2–3 specific showing times rather than asking "when works?" — reduces cognitive load for the client.',
+    },
+  ];
+
+  const metrics = [
+    { label: 'Questions asked', value: '7' },
+    { label: 'Longest monologue', value: '0:52' },
+    { label: 'Discovery covered', value: '4 / 6' },
+    { label: 'Talk pace', value: '155 wpm' },
+  ];
+
   return (
     <div className="space-y-spacing-6">
+      {/* Call score */}
+      <div>
+        <div className="text-text-3 font-semibold text-text-default mb-spacing-3">
+          Call score
+        </div>
+        <div className="border border-border-default rounded-2 p-spacing-4 flex flex-col sm:flex-row sm:items-center gap-spacing-4">
+          <div className="flex items-center gap-spacing-3 flex-shrink-0">
+            <div className="bg-green-10 text-green-100 rounded-2 px-spacing-3 py-spacing-2 flex flex-col items-center">
+              <span className="text-text-7 font-bold leading-none">B+</span>
+              <span className="text-text-2 text-green-100 font-semibold mt-1">
+                82<span className="text-green-70 font-normal">/100</span>
+              </span>
+            </div>
+            <span className="text-text-2 text-text-muted">Call score</span>
+          </div>
+          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-x-spacing-6 gap-y-spacing-2">
+            {skillScores.map((skill) => (
+              <div key={skill.label} className="flex items-center gap-spacing-3">
+                <span className="text-text-3 text-text-muted w-28 flex-shrink-0">
+                  {skill.label}
+                </span>
+                <div className="h-1.5 rounded-round bg-gray-30 overflow-hidden flex-1">
+                  <div
+                    className="h-full bg-blue-100 rounded-round"
+                    style={{ width: `${skill.value}%` }}
+                  />
+                </div>
+                <span className="text-text-3 font-semibold text-text-default w-8 text-right">
+                  {skill.value}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Talk-time ratio */}
       <div>
         <div className="text-text-3 font-semibold text-text-default mb-spacing-3">
@@ -256,6 +326,10 @@ function CoachingTab({ coaching }: { coaching: CoachingData }) {
                 style={{ width: `${coaching.agentTalkPct}%` }}
               />
             </div>
+            <div className="flex items-center gap-spacing-1 mt-spacing-2 text-text-2 text-green-100">
+              <Check className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
+              <span>Agent talk-time within the 40–45% listen-first range</span>
+            </div>
           </div>
 
           <div>
@@ -271,19 +345,57 @@ function CoachingTab({ coaching }: { coaching: CoachingData }) {
             </div>
           </div>
         </div>
+
+        {/* Metrics strip */}
+        <div className="flex flex-wrap gap-x-spacing-4 gap-y-spacing-2 mt-spacing-4 pt-spacing-3 border-t border-border-default">
+          {metrics.map((m, i) => (
+            <div
+              key={m.label}
+              className={`flex items-center gap-spacing-1 text-text-3 ${
+                i > 0 ? 'sm:border-l sm:border-border-default sm:pl-spacing-4' : ''
+              }`}
+            >
+              <span className="text-text-muted">{m.label}</span>
+              <span className="font-semibold text-text-default">{m.value}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* AI feedback bullets */}
-      <div>
-        <div className="text-text-3 font-semibold text-text-default mb-spacing-3">
-          AI feedback
+      {/* Strengths */}
+      <div className="border-l-2 border-green-40 pl-spacing-4">
+        <div className="flex items-center gap-spacing-2 mb-spacing-3">
+          <CheckCircle2 className="w-4 h-4 text-green-100 flex-shrink-0" aria-hidden="true" />
+          <span className="text-text-4 font-semibold text-text-default">Strengths</span>
+          <span className="text-text-3 text-text-muted">(3)</span>
         </div>
         <ul className="space-y-spacing-3">
-          {coaching.feedback.map((item, i) => (
+          {strengths.map((item, i) => (
             <li key={i} className="flex gap-spacing-3">
-              <Sparkles className="w-4 h-4 text-purple-100 flex-shrink-0 mt-0.5" aria-hidden="true" />
+              <CheckCircle2 className="w-4 h-4 text-green-100 flex-shrink-0 mt-0.5" aria-hidden="true" />
               <div className="text-text-3 text-text-default leading-relaxed">
-                {item}
+                <span className="font-semibold">{item.lead}</span>
+                {item.text}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Coaching opportunities */}
+      <div className="border-l-2 border-orange-40 pl-spacing-4">
+        <div className="flex items-center gap-spacing-2 mb-spacing-3">
+          <Lightbulb className="w-4 h-4 text-orange-100 flex-shrink-0" aria-hidden="true" />
+          <span className="text-text-4 font-semibold text-text-default">Coaching opportunities</span>
+          <span className="text-text-3 text-text-muted">(2)</span>
+        </div>
+        <ul className="space-y-spacing-3">
+          {opportunities.map((item, i) => (
+            <li key={i} className="flex gap-spacing-3">
+              <Lightbulb className="w-4 h-4 text-orange-100 flex-shrink-0 mt-0.5" aria-hidden="true" />
+              <div className="text-text-3 text-text-default leading-relaxed">
+                <span className="font-semibold">{item.lead}</span>
+                {item.text}
               </div>
             </li>
           ))}
