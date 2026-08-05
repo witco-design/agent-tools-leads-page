@@ -19,7 +19,7 @@ export function VersionToggle() {
       style={{
         left: 'calc(var(--sidebar-width, 184px) + 16px + 40px + 8px)',
       }}
-      className="fixed bottom-4 z-50 h-10 inline-flex items-center rounded-full bg-white border border-border-default shadow-lg overflow-hidden transition-[left] duration-200"
+      className="fixed bottom-4 z-50 h-10 inline-flex items-center gap-1 p-1 rounded-full bg-[#101828] shadow-lg transition-[left] duration-200"
     >
       {SEGMENTS.map((seg) => {
         const active = version === seg.value;
@@ -30,10 +30,10 @@ export function VersionToggle() {
             onClick={() => setVersion(seg.value)}
             aria-pressed={active}
             className={cn(
-              'h-10 px-spacing-3 text-text-3 font-semibold rounded-1 transition-colors cursor-pointer',
+              'h-8 px-3 rounded-full text-sm font-semibold transition-colors cursor-pointer',
               active
                 ? 'bg-blue-100 text-white'
-                : 'text-text-muted hover:text-text-default',
+                : 'text-white/60 hover:text-white',
             )}
           >
             {seg.label}
