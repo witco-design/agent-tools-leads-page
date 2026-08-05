@@ -12,6 +12,7 @@ import { ActivityHistoryCard } from './ActivityHistoryCard';
 import { RightColumn } from './RightColumn';
 import { LeadSignalTagsCard } from './LeadSignalTagsCard';
 import { ActivityFilterProvider } from './ActivityFilterContext';
+import { useVersion } from '@/contexts/VersionContext';
 import {
   ContactInfoProvider,
   type ContactInfo,
@@ -57,6 +58,9 @@ export default function LeadDetailPage() {
     const timer = setTimeout(() => setIsLoading(false), LOADING_MS);
     return () => clearTimeout(timer);
   }, []);
+
+  const { version } = useVersion();
+  const isV1 = version === 'V1';
 
   return (
     <ContactInfoProvider initial={INITIAL_CONTACT_INFO}>
@@ -126,9 +130,9 @@ export default function LeadDetailPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] items-start gap-spacing-4 mt-spacing-10">
                   {/* Left column: Data Snapshot → Robin AI → Activity History */}
                   <div className="flex flex-col gap-spacing-4 min-w-0 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both" style={{ animationDelay: '120ms' }}>
-                    <LeadSignalTagsCard />
+                    {!isV1 && <LeadSignalTagsCard />}
                     <ContactInfoCard />
-                    <RobinAISummaryCard />
+                    {!isV1 && <RobinAISummaryCard />}
                     <ActivityHistoryCard />
                   </div>
                   {/* Right column */}

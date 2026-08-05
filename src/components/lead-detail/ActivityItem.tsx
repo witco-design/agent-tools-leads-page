@@ -20,6 +20,7 @@ import {
   AlertDialogAction,
 } from '@/components/ui/alert-dialog';
 import { cn } from '@/lib/utils';
+import { useVersion } from '@/contexts/VersionContext';
 import { TruncatedText } from './TruncatedText';
 
 // ── Types ──────────────────────────────────────────────────────
@@ -307,6 +308,7 @@ export function ActivityItem({
   const [isExpanded, setIsExpanded] = useState(true);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
+  const { version } = useVersion();
   const { bg, icon: Icon, color } = getIconConfig(item.type);
   const isSystem = item.actor.name === 'System';
 
@@ -568,7 +570,7 @@ export function ActivityItem({
       )}
 
       {/* Geek AI Insights button — bottom of activity item, right-aligned */}
-      {isCallType && item.aiInsight && (
+      {isCallType && item.aiInsight && version === 'V2' && (
         <div className="flex justify-start ml-11 mt-spacing-3">
           <button
             type="button"
