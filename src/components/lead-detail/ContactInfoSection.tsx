@@ -150,7 +150,7 @@ export function ContactInfoSection() {
           <button
             type="button"
             onClick={() => openContactDialog()}
-            className="ml-spacing-3 inline-flex items-center gap-spacing-1 text-text-3 font-normal text-blue-100 underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 rounded-1 cursor-pointer bg-transparent border-none p-0"
+            className="ml-spacing-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200 inline-flex items-center gap-spacing-1 text-text-3 font-normal text-blue-100 underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 rounded-1 cursor-pointer bg-transparent border-none p-0"
           >
             <Pencil className="w-3.5 h-3.5" />
             Edit
