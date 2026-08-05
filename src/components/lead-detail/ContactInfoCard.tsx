@@ -171,7 +171,7 @@ export function ContactInfoCard() {
                 aria-label={`${label} actions`}
               >
                 <span
-                  className={`text-sm font-medium text-left min-w-0 ${
+                  className={`text-sm font-medium text-left min-w-0 truncate ${
                     fieldStatus === 'bad'
                       ? 'text-[#ec423d]'
                       : 'text-blue-100'
@@ -356,7 +356,7 @@ export function ContactInfoCard() {
                         aria-label="Address actions"
                       >
                         <span
-                          className="text-sm font-medium leading-5 text-blue-100 text-left min-w-0"
+                          className="text-sm font-medium leading-5 text-blue-100 text-left min-w-0 truncate"
                           title={contactInfo.street}
                         >
                           {contactInfo.street}
@@ -377,7 +377,7 @@ export function ContactInfoCard() {
                           aria-label="Address actions"
                         >
                           <span
-                            className="text-sm font-medium leading-5 text-blue-100 text-left min-w-0"
+                            className="text-sm font-medium leading-5 text-blue-100 text-left min-w-0 truncate"
                             title={contactInfo.addressLine2}
                           >
                             {contactInfo.addressLine2}
@@ -398,7 +398,7 @@ export function ContactInfoCard() {
                           aria-label="Address actions"
                         >
                           <span
-                            className="text-sm font-medium leading-5 text-blue-100 text-left min-w-0"
+                            className="text-sm font-medium leading-5 text-blue-100 text-left min-w-0 truncate"
                             title={cityStateZip}
                           >
                             {cityStateZip}
