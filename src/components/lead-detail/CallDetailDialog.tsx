@@ -214,7 +214,7 @@ function TranscriptTab({ transcript }: { transcript?: TranscriptLine[] }) {
         {filteredLines.map((line, i) => (
           <div key={i} className="flex gap-spacing-3">
             <div
-              className="flex items-center justify-center w-8 h-8 rounded-1 flex-shrink-0"
+              className="flex items-center justify-center w-8 h-8 rounded-round flex-shrink-0"
               style={{ backgroundColor: line.speakerColor }}
             >
               <span className="text-text-2 font-semibold text-white">{line.speakerInitials}</span>
