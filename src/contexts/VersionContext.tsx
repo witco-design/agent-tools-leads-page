@@ -10,7 +10,7 @@ interface VersionContextValue {
 const VersionContext = createContext<VersionContextValue | undefined>(undefined);
 
 export function VersionProvider({ children }: { children: ReactNode }) {
-  const [version, setVersion] = useState<Version>('V2');
+  const [version, setVersion] = useState<Version>('V1');
   return (
     <VersionContext.Provider value={{ version, setVersion }}>
       {children}
