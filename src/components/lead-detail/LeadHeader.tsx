@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Phone, MessageSquare, Mail, MessagesSquare, LogIn, Ellipsis as MoreHorizontal, Pencil, Video, Lock, Bookmark, Ligature as FileSignature, Clock as Unlock, TriangleAlert as AlertTriangle, ChevronLeft, ChevronRight, List } from 'lucide-react';
+import { Phone, MessageSquare, Mail, MessagesSquare, LogIn, Ellipsis as MoreHorizontal, Pencil, Video, Lock, Bookmark, Ligature as FileSignature, Clock as Unlock, TriangleAlert as AlertTriangle, ChevronLeft, ChevronRight, List, Waves } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Tooltip,
@@ -151,6 +151,14 @@ export function LeadHeader() {
               <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]">
                 <Unlock className="w-4 h-4 mr-spacing-2 text-[#475467]" />
                 <span className="text-sm text-[#101828]">Unlock site photos</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]"
+                onClick={() => toast.success('Lead sent to the Pond. Agent unassigned.')}
+              >
+                <Waves className="w-4 h-4 mr-spacing-2 text-[#475467]" />
+                <span className="text-sm text-[#101828]">Send to Pond</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
