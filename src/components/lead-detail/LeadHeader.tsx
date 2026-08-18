@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { TruncatedText } from './TruncatedText';
 import { useContactInfo } from '@/contexts/ContactInfoContext';
