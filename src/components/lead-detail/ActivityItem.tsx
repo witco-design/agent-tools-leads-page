@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CallDetailDialog } from './CallDetailDialog';
-import { Phone, PhoneCall, PhoneOff, Search, Heart, Eye, Pin, Mail, MailOpen, CalendarCheck, CalendarClock, PencilLine, Droplets, FileText, Clipboard, Calendar, BookmarkPlus, MessageSquare, MessageCircle, MessagesSquare, MousePointerClick, Globe, Play, SquareCheck as CheckSquare, BarChart3, DollarSign, Users, Shield, ShieldCheck, UserCheck, ArrowRightLeft, UserPlus, Upload, Home, Ellipsis as MoreHorizontal, ChevronDown, Check, Sparkles } from 'lucide-react';
+import { Phone, PhoneCall, PhoneOff, Search, Heart, Eye, Pin, Mail, MailOpen, CalendarCheck, CalendarClock, PencilLine, Droplets, FileText, Clipboard, Calendar, BookmarkPlus, MessageSquare, MessageCircle, MessagesSquare, MousePointerClick, Globe, Play, SquareCheck as CheckSquare, BarChart3, DollarSign, Users, Shield, ShieldCheck, UserCheck, ArrowRightLeft, ArrowLeftRight, ArrowRight, UserPlus, Upload, Home, Ellipsis as MoreHorizontal, ChevronDown, Check, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   DropdownMenu,
@@ -81,6 +81,7 @@ export type ActivityType =
   | 'imported'
   | 'was_assigned'
   | 'round_robin'
+  | 'reassignment'
   // Transactions
   | 'buyer_consult_set'
   | 'buyer_consult_held'
@@ -156,6 +157,7 @@ export interface ActivityItemData {
   inset?: InsetData;
   createdAt?: string; // Relative creation time for follow-ups, e.g. "2 days ago"
   aiInsight?: AiInsightData; // Call-only: AI-generated insight from Geek AI
+  reassignment?: { from: string; to: string; reason?: string };
 }
 
 // ── Icon config ────────────────────────────────────────────────
@@ -256,6 +258,8 @@ function getIconConfig(type: ActivityType) {
       return { bg: 'bg-gray-40', icon: UserCheck, color: 'text-gray-90' };
     case 'round_robin':
       return { bg: 'bg-gray-40', icon: ArrowRightLeft, color: 'text-gray-90' };
+    case 'reassignment':
+      return { bg: 'bg-purple-20', icon: ArrowLeftRight, color: 'text-purple-110' };
 
     // ── Transactions ──
     case 'buyer_consult_set':
@@ -534,6 +538,20 @@ export function ActivityItem({
                   {item.properties.map((prop, i) => (
                     <PropertyCard key={i} property={prop} />
                   ))}
+                </div>
+              )}
+
+              {/* Body: reassignment handoff */}
+              {item.reassignment && (
+                <div className="mt-spacing-2">
+                  <div className="text-text-3 text-text-default">
+                    <span className="font-medium">{item.reassignment.from}</span>
+                    <ArrowRight className="inline w-3.5 h-3.5 mx-spacing-1 text-text-muted align-[-2px]" />
+                    <span className="font-medium">{item.reassignment.to}</span>
+                  </div>
+                  {item.reassignment.reason && (
+                    <p className="text-text-3 text-text-muted pt-spacing-1">{item.reassignment.reason}</p>
+                  )}
                 </div>
               )}
 

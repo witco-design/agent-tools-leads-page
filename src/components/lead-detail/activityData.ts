@@ -114,6 +114,21 @@ export const pinnedItem: ActivityItemData = {
 export const page1Items: ActivityItemData[] = [
   // ── Nov 12 (Today) ──
   {
+    id: 'act-reassignment',
+    type: 'reassignment',
+    actor: { name: 'Sarah Chen', avatarInitials: 'SC' },
+    typeLabel: 'reassigned lead',
+    title: 'Lead reassigned',
+    timestamp: 'Nov 12, 2025 at 9:15am',
+    date: '2025-11-12',
+    time: '9:15am',
+    reassignment: {
+      from: 'Kevin McCarthy',
+      to: 'Jon Scharer',
+      reason: 'Reassigned after 48h no response',
+    },
+  },
+  {
     id: 'act-001',
     type: 'note',
     actor: { name: 'Jon Scharer', avatarInitials: 'JS' },
