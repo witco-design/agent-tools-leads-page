@@ -10,6 +10,7 @@ import {
   Copy,
   Flag,
   Trash2,
+  Gauge,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -65,6 +66,8 @@ const FIELD_TO_DIALOG_KEY: Record<EditableField, string> = {
 export function ContactInfoCard() {
   const { contactInfo, updateContactInfo, openContactDialog } =
     useContactInfo();
+
+  const [snapshotOpen, setSnapshotOpen] = useState(true);
 
   /* ── About dropdowns ── */
   const [urgency, setUrgency] = useState('none');
@@ -299,8 +302,29 @@ export function ContactInfoCard() {
   return (
     <div
       data-component="LeadDataSnapshotCard"
-      className="bg-white border border-[#E4E7EC] rounded-3 overflow-hidden"
+      className="bg-bg-card border border-border-default rounded-3 overflow-hidden"
     >
+      {/* ── Snapshot header ── */}
+      <div className="px-spacing-5 py-spacing-3 flex items-center justify-between">
+        <div className="flex items-center gap-spacing-2">
+          <Gauge className="w-4 h-4 text-blue-100 shrink-0" />
+          <h3 className="text-text-4 font-semibold text-text-default">Snapshot</h3>
+        </div>
+        <button
+          type="button"
+          aria-label={snapshotOpen ? 'Collapse Snapshot' : 'Expand Snapshot'}
+          className="p-spacing-1 hover:bg-bg-muted rounded-1 transition-colors cursor-pointer"
+          onClick={() => setSnapshotOpen((prev) => !prev)}
+        >
+          <ChevronDown
+            className={`w-5 h-5 text-text-secondary transition-transform duration-200 ${snapshotOpen ? 'rotate-180' : ''}`}
+          />
+        </button>
+      </div>
+
+      {snapshotOpen && (
+      <>
+      <div className="border-t border-border-default" />
       {/**
        * PROTECTED — Top contact strip uses a single 4-row × 3-column grid.
        * Row 3 uses items-start + xl:items-baseline so the multi-line address cell
@@ -586,6 +610,8 @@ export function ContactInfoCard() {
             </div>
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 }
