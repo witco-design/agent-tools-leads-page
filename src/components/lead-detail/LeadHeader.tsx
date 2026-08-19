@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Phone, MessageSquare, Mail, MessagesSquare, LogIn, Ellipsis as MoreHorizontal, Pencil, Video, Lock, Bookmark, Ligature as FileSignature, Clock as Unlock, TriangleAlert as AlertTriangle, ChevronLeft, ChevronRight, List, Waves } from 'lucide-react';
+import { Phone, MessageSquare, Mail, MessagesSquare, LogIn, Ellipsis as MoreHorizontal, Pencil, Video, Lock, Bookmark, ScrollText as FileSignature, Clock as Unlock, TriangleAlert as AlertTriangle, ChevronLeft, ChevronRight, List, Save as Waves } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Tooltip,
