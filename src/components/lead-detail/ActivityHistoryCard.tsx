@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import { Search, Plus, ChevronDown, Phone, MessageSquare, MessagesSquare, Mail, FileText, Heart, Hop as Home, Activity, X, Factory as History } from 'lucide-react';
+import { Search, Plus, ChevronDown, Phone, MessageSquare, MessagesSquare, Mail, FileText, Heart, Hop as Home, Activity, X, History } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatTime, formatDateTimeWithYear } from '@/utils/formatDate';
 import {
