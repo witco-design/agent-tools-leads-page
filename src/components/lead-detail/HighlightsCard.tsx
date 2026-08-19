@@ -2,6 +2,7 @@ import { CollapsibleCard } from './CollapsibleCard';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { TruncatedText } from './TruncatedText';
 import { ChannelIcon } from './ChannelIcon';
+import { TIME_ZONE } from './leadConstants';
 
 export function HighlightsCard() {
   return (
@@ -83,7 +84,7 @@ export function HighlightsCard() {
               Time Zone
             </span>
             <span className="text-text-3 font-normal text-text-default min-w-0">
-              <TruncatedText>Pacific Time (PT)</TruncatedText>
+              <TruncatedText>{TIME_ZONE}</TruncatedText>
             </span>
           </div>
         </div>

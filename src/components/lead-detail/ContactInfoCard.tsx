@@ -11,6 +11,7 @@ import {
   Flag,
   Trash2,
   Gauge,
+  Clock,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -32,6 +33,7 @@ import {
   type ContactInfo,
   type FieldStatus,
 } from '@/contexts/ContactInfoContext';
+import { TIME_ZONE } from './leadConstants';
 
 /** Fields that can be inline-edited in the top contact strip */
 type EditableField = 'primary' | 'email' | 'address';
@@ -475,19 +477,19 @@ export function ContactInfoCard() {
               </div>
             </div>
 
-            {/* Login — row 3 */}
+            {/* Time Zone — row 3 */}
             <div className="flex items-start justify-between gap-spacing-3 xl:min-h-[40px]">
               <span className="text-sm leading-5 text-text-muted flex-shrink-0">
-                Login
+                Time Zone
               </span>
               <div className="min-w-0 flex items-center justify-end gap-spacing-2 flex-1">
                 <span
                   className="text-sm leading-5 text-text-default truncate whitespace-nowrap"
-                  title="14 days ago"
+                  title={TIME_ZONE}
                 >
-                  14 days ago
+                  {TIME_ZONE}
                 </span>
-                <Globe className="w-4 h-4 flex-shrink-0 text-text-secondary" />
+                <Clock className="w-4 h-4 flex-shrink-0 text-text-secondary" />
               </div>
             </div>
 
