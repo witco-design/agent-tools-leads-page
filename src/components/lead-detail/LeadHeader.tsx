@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Phone, MessageSquare, Mail, MessagesSquare, LogIn, Ellipsis as MoreHorizontal, Pencil, Video, Lock, Bookmark, ScrollText as FileSignature, Clock as Unlock, TriangleAlert as AlertTriangle, ChevronLeft, ChevronRight, List, Save as Waves } from 'lucide-react';
+import { Phone, MessageSquare, Mail, MessagesSquare, LogIn, Ellipsis as MoreHorizontal, Pencil, Video, Lock, Bookmark, ScrollText as FileSignature, LockOpen as Unlock, TriangleAlert as AlertTriangle, ChevronLeft, ChevronRight, List, WavesHorizontal } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Tooltip,
@@ -158,7 +158,7 @@ export function LeadHeader() {
                 className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]"
                 onClick={() => toast.success('Lead sent to the Pond. Agent unassigned.')}
               >
-                <Waves className="w-4 h-4 mr-spacing-2 text-[#475467]" />
+                <WavesHorizontal className="w-4 h-4 mr-spacing-2 text-[#475467]" />
                 <span className="text-sm text-[#101828]">Send to Pond</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
