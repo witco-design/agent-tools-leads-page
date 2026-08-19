@@ -11,7 +11,6 @@ import {
   Flag,
   Trash2,
   Gauge,
-  Clock,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -489,7 +488,6 @@ export function ContactInfoCard() {
                 >
                   {TIME_ZONE}
                 </span>
-                <Clock className="w-4 h-4 flex-shrink-0 text-text-secondary" />
               </div>
             </div>
 
