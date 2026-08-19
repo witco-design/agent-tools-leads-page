@@ -318,7 +318,7 @@ export function ContactInfoCard() {
           onClick={() => setSnapshotOpen((prev) => !prev)}
         >
           <ChevronDown
-            className={`w-5 h-5 text-text-secondary transition-transform duration-200 ${snapshotOpen ? 'rotate-180' : ''}`}
+            className={`w-4 h-4 text-text-secondary transition-transform duration-200 ${snapshotOpen ? 'rotate-180' : ''}`}
           />
         </button>
       </div>

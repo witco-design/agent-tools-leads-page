@@ -1,19 +1,5 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import {
-  Search,
-  Plus,
-  ChevronDown,
-  Phone,
-  MessageSquare,
-  MessagesSquare,
-  Mail,
-  FileText,
-  Heart,
-  Home,
-  Activity,
-  X,
-  History,
-} from 'lucide-react';
+import { Search, Plus, ChevronDown, Phone, MessageSquare, MessagesSquare, Mail, FileText, Heart, Hop as Home, Activity, X, Factory as History } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatTime, formatDateTimeWithYear } from '@/utils/formatDate';
 import {
@@ -365,7 +351,7 @@ export function ActivityHistoryCard() {
             onClick={() => setActivityOpen((prev) => !prev)}
           >
             <ChevronDown
-              className={`w-5 h-5 text-text-secondary transition-transform duration-200 ${activityOpen ? 'rotate-180' : ''}`}
+              className={`w-4 h-4 text-text-secondary transition-transform duration-200 ${activityOpen ? 'rotate-180' : ''}`}
             />
           </button>
         </div>
