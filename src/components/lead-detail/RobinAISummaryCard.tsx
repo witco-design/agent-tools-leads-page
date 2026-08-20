@@ -13,13 +13,12 @@ const RECOMMENDED_ACTIONS: InsightAction[] = [
   { label: 'Chat', detail: "She's online now, so start a chat while she's actively browsing." },
   { label: 'Text', detail: 'Send a personalized text within 24 hours so her momentum doesn\'t fade.' },
   { label: 'Email', detail: 'She asked for 3BR townhomes, so email curated listings ($650-750K) today.' },
-  { label: 'Call', detail: 'She wants Saturday showings, so call this week to lock them in.' },
 ];
 
 const LABEL_CLASS =
   'text-text-2 font-semibold uppercase tracking-wide text-purple-100';
 const ACTION_BTN_CLASS =
-  'inline-flex items-center justify-center h-6 px-spacing-2 rounded-1 bg-purple-110 text-white text-text-2 font-semibold hover:bg-purple-120 active:bg-purple-120 focus:outline-none focus:ring-2 focus:ring-purple-40 focus:ring-offset-1 transition-colors cursor-pointer shrink-0';
+  'inline-flex items-center justify-center h-6 w-16 px-spacing-2 rounded-1 bg-purple-110 text-white text-text-2 font-semibold hover:bg-purple-120 active:bg-purple-120 focus:outline-none focus:ring-2 focus:ring-purple-40 focus:ring-offset-1 transition-colors cursor-pointer shrink-0';
 
 export function RobinAISummaryCard() {
   /**
