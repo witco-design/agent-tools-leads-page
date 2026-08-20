@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Phone,
   Globe,
@@ -32,7 +32,7 @@ import {
   type ContactInfo,
   type FieldStatus,
 } from '@/contexts/ContactInfoContext';
-import { TIME_ZONE } from './leadConstants';
+import { LEAD_TIMEZONE, formatLocalTime } from './leadConstants';
 
 /** Fields that can be inline-edited in the top contact strip */
 type EditableField = 'primary' | 'email' | 'address';
@@ -69,6 +69,13 @@ export function ContactInfoCard() {
     useContactInfo();
 
   const [snapshotOpen, setSnapshotOpen] = useState(true);
+
+  const [localTime, setLocalTime] = useState(() => formatLocalTime(LEAD_TIMEZONE));
+  useEffect(() => {
+    setLocalTime(formatLocalTime(LEAD_TIMEZONE));
+    const id = setInterval(() => setLocalTime(formatLocalTime(LEAD_TIMEZONE)), 60_000);
+    return () => clearInterval(id);
+  }, []);
 
   /* ── About dropdowns ── */
   const [urgency, setUrgency] = useState('none');
@@ -476,17 +483,17 @@ export function ContactInfoCard() {
               </div>
             </div>
 
-            {/* Time Zone — row 3 */}
+            {/* Local Time — row 3 */}
             <div className="flex items-start justify-between gap-spacing-3 xl:min-h-[40px]">
               <span className="text-sm leading-5 text-text-muted flex-shrink-0">
-                Time Zone
+                Local Time
               </span>
               <div className="min-w-0 flex items-center justify-end gap-spacing-2 flex-1">
                 <span
                   className="text-sm leading-5 text-text-default truncate whitespace-nowrap"
-                  title={TIME_ZONE}
+                  title={localTime}
                 >
-                  {TIME_ZONE}
+                  {localTime}
                 </span>
               </div>
             </div>
