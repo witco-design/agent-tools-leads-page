@@ -5,15 +5,21 @@ import { PinnedFloatingDialog } from '@/components/PinnedFloatingDialog';
 import { useLeadActions } from './LeadActionsContext';
 
 const SUMMARY_TEXT =
-  'Camille is a high-intent first-time buyer, actively searching with 14 visits and 3 favorites in the past 2 weeks, and a lender Letter of Intent already in hand. Her spouse\'s new role at Google adds urgency to close before year-end.';
+  'Camille is a high-intent first-time buyer: 14 visits and 3 favorites in 2 weeks, with a lender Letter of Intent in hand. Her spouse\'s new Google role adds urgency to close before year-end.';
 const NEXT_STEPS_TEXT =
   "She's online right now and has asked for curated 3BR townhomes and Saturday showings. Engagement is peaking, so reach out today while she's active, lead with listings that match her criteria, and lock in showings before momentum fades.";
 
-const RECOMMENDED_ACTIONS: { label: string; detail: string }[] = [
-  { label: 'Chat', detail: " with Camille now, she's online" },
-  { label: 'Text', detail: ' a personalized note within 24h' },
-  { label: 'Email', detail: ' a curated list of 3BR townhomes, $650-750K' },
-  { label: 'Call', detail: ' to lock in Saturday showings' },
+const WHY_NOW_BULLETS: string[] = [
+  'Engagement is peaking, and she\'s online right now',
+  'She\'s asked for curated 3BR townhomes and Saturday showings',
+  'Act within 24 hours before momentum fades',
+];
+
+const RECOMMENDED_ACTIONS: { label: string; detail: string; timing: string; now?: boolean }[] = [
+  { label: 'Chat', detail: " with Camille now, she's online", timing: 'Now', now: true },
+  { label: 'Text', detail: ' a personalized note', timing: '24h' },
+  { label: 'Email', detail: ' a curated list of 3BR townhomes, $650-750K', timing: 'Today' },
+  { label: 'Call', detail: ' to lock in Saturday showings', timing: 'This week' },
 ];
 
 const LINK_CLASS =
@@ -133,28 +139,35 @@ export function RobinAISummaryCard() {
                   </div>
                 </div>
               ) : (
-                <div className="relative">
-                  <div
-                    ref={scrollRef}
-                    onScroll={handleScroll}
-                    className="max-h-[200px] overflow-y-auto pr-spacing-3 text-text-3 text-text-default leading-relaxed animate-fade-in"
-                  >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-spacing-4">
-                      {/* Left column — Summary + Next Steps */}
-                      <div className="space-y-spacing-3">
-                        <p>{SUMMARY_TEXT}</p>
-                        <div>
-                          <div className={LABEL_CLASS}>NEXT STEPS</div>
-                          <p className="pt-spacing-1">{NEXT_STEPS_TEXT}</p>
-                        </div>
-                      </div>
+                <div
+                  ref={scrollRef}
+                  className="text-text-3 text-text-default leading-relaxed animate-fade-in"
+                >
+                  {/* Full-width summary lead */}
+                  <p>{SUMMARY_TEXT}</p>
 
-                      {/* Right column — Recommended Actions */}
-                      <div className="md:border-l md:border-purple-20 md:pl-spacing-4">
-                        <div className={LABEL_CLASS}>RECOMMENDED ACTIONS</div>
-                        <ul className="space-y-spacing-2 pt-spacing-2">
-                          {RECOMMENDED_ACTIONS.map((action) => (
-                            <li key={action.label} className="flex items-start gap-spacing-2">
+                  {/* Two columns — Why now + Recommended actions */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-spacing-4 pt-spacing-3">
+                    {/* Left — Why now */}
+                    <div>
+                      <div className={LABEL_CLASS}>WHY NOW</div>
+                      <ul className="space-y-spacing-1 pt-spacing-2">
+                        {WHY_NOW_BULLETS.map((bullet) => (
+                          <li key={bullet} className="flex items-start gap-spacing-2 text-text-3 text-text-default">
+                            <span className="w-1.5 h-1.5 rounded-round bg-purple-100 shrink-0 mt-[7px]" />
+                            {bullet}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Right — Recommended actions with timing chips */}
+                    <div>
+                      <div className={LABEL_CLASS}>RECOMMENDED ACTIONS</div>
+                      <ul className="space-y-spacing-2 pt-spacing-2">
+                        {RECOMMENDED_ACTIONS.map((action) => (
+                          <li key={action.label} className="flex items-start justify-between gap-spacing-2">
+                            <span className="flex items-start gap-spacing-2 text-text-3 text-text-default">
                               <Check className="w-4 h-4 text-green-100 shrink-0 mt-[2px]" aria-hidden="true" />
                               <span>
                                 <button
@@ -166,18 +179,20 @@ export function RobinAISummaryCard() {
                                 </button>
                                 {action.detail}
                               </span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                            </span>
+                            <span
+                              className={cn(
+                                'shrink-0 text-text-1 font-medium px-spacing-2 py-[2px] rounded-round',
+                                action.now ? 'bg-green-20 text-green-110' : 'bg-purple-20 text-purple-120',
+                              )}
+                            >
+                              {action.timing}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
-                  {isScrollable && !atBottom && (
-                    <div
-                      className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none"
-                      style={{ background: 'linear-gradient(to top, #f6f6ff, transparent)' }}
-                    />
-                  )}
                 </div>
               )}
 
