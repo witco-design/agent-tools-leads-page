@@ -134,7 +134,7 @@ export default function LeadDetailPage() {
                   <div className="flex flex-col gap-spacing-4 min-w-0 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both" style={{ animationDelay: '120ms' }}>
                     {!isV1 && <LeadSignalTagsCard />}
                     <ContactInfoCard />
-                    {!isV1 && <RobinAISummaryCard />}
+                    <RobinAISummaryCard />
                     <ActivityHistoryCard />
                   </div>
                   {/* Right column */}
