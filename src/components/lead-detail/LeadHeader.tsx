@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Phone, MessageSquare, Mail, MessagesSquare, LogIn, Ellipsis as MoreHorizontal, Pencil, Video, Lock, Bookmark, ScrollText as FileSignature, LockOpen as Unlock, TriangleAlert as AlertTriangle, ChevronLeft, ChevronRight, List, WavesHorizontal } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { TruncatedText } from './TruncatedText';
 import { useContactInfo } from '@/contexts/ContactInfoContext';
+import { useLeadActions } from './LeadActionsContext';
 
 interface ActionButton {
   label: string;
@@ -40,6 +41,7 @@ const actionButtons: ActionButton[] = [
 
 export function LeadHeader() {
   const { contactInfo, openContactDialog } = useContactInfo();
+  const { registerOpenAction } = useLeadActions();
 
   const leadName = `${contactInfo.firstName} ${contactInfo.lastName}`.trim();
 
@@ -77,6 +79,10 @@ export function LeadHeader() {
         break;
     }
   };
+
+  useEffect(() => {
+    registerOpenAction(openModal);
+  }, [registerOpenAction]);
 
   return (
     <TooltipProvider delayDuration={200}>

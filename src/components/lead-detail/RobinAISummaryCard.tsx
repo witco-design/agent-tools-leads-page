@@ -1,12 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
-import { Sparkles, Expand, ChevronDown } from 'lucide-react';
+import { Sparkles, Expand, ChevronDown, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PinnedFloatingDialog } from '@/components/PinnedFloatingDialog';
+import { useLeadActions } from './LeadActionsContext';
 
 const SUMMARY_TEXT =
-  'Camille has been actively searching for properties with 14 visits over the past 2 weeks.';
-const NEXT_STEP_TEXT =
-  "Consider sending a personalized text within the next 24 hours. Camille's recent engagement (14 visits, 3 favorited properties) suggests strong interest worth nurturing before momentum fades.";
+  'Camille is a high-intent first-time buyer, actively searching with 14 visits and 3 favorites in the past 2 weeks, and a lender Letter of Intent already in hand. Her spouse\'s new role at Google adds urgency to close before year-end.';
+const NEXT_STEPS_TEXT =
+  "She's online right now and has asked for curated 3BR townhomes and Saturday showings. Engagement is peaking, so reach out today while she's active, lead with listings that match her criteria, and lock in showings before momentum fades.";
+
+const RECOMMENDED_ACTIONS: { label: string; detail: string }[] = [
+  { label: 'Chat', detail: " with Camille now, she's online" },
+  { label: 'Text', detail: ' a personalized note within 24h' },
+  { label: 'Email', detail: ' a curated list of 3BR townhomes, $650-750K' },
+  { label: 'Call', detail: ' to lock in Saturday showings' },
+];
+
+const LINK_CLASS =
+  'text-blue-100 underline hover:no-underline font-medium cursor-pointer bg-transparent border-none p-0';
+const LABEL_CLASS =
+  'text-text-2 font-semibold uppercase tracking-wide text-purple-100';
 
 export function RobinAISummaryCard() {
   /**
@@ -33,6 +46,8 @@ export function RobinAISummaryCard() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isScrollable, setIsScrollable] = useState(false);
   const [atBottom, setAtBottom] = useState(false);
+
+  const { openAction } = useLeadActions();
 
   /**
    * PROTECTED — Measures whether the AI insight content overflows 200px
@@ -124,11 +139,38 @@ export function RobinAISummaryCard() {
                     onScroll={handleScroll}
                     className="max-h-[200px] overflow-y-auto pr-spacing-3 text-text-3 text-text-default leading-relaxed animate-fade-in"
                   >
-                    <p>{SUMMARY_TEXT}</p>
-                    <p className="mt-spacing-3 text-text-2 font-semibold text-purple-110 uppercase tracking-wide">
-                      Your Next Step
-                    </p>
-                    <p className="mt-spacing-2">{NEXT_STEP_TEXT}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-spacing-4">
+                      {/* Left column — Summary + Next Steps */}
+                      <div className="space-y-spacing-3">
+                        <p>{SUMMARY_TEXT}</p>
+                        <div>
+                          <div className={LABEL_CLASS}>NEXT STEPS</div>
+                          <p className="pt-spacing-1">{NEXT_STEPS_TEXT}</p>
+                        </div>
+                      </div>
+
+                      {/* Right column — Recommended Actions */}
+                      <div className="md:border-l md:border-purple-20 md:pl-spacing-4">
+                        <div className={LABEL_CLASS}>RECOMMENDED ACTIONS</div>
+                        <ul className="space-y-spacing-2 pt-spacing-2">
+                          {RECOMMENDED_ACTIONS.map((action) => (
+                            <li key={action.label} className="flex items-start gap-spacing-2">
+                              <Check className="w-4 h-4 text-green-100 shrink-0 mt-[2px]" aria-hidden="true" />
+                              <span>
+                                <button
+                                  type="button"
+                                  onClick={() => openAction(action.label)}
+                                  className={LINK_CLASS}
+                                >
+                                  {action.label}
+                                </button>
+                                {action.detail}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                   {isScrollable && !atBottom && (
                     <div
@@ -180,9 +222,29 @@ export function RobinAISummaryCard() {
       >
         <p>{SUMMARY_TEXT}</p>
         <p className="mt-spacing-4 text-text-2 font-semibold text-purple-110 uppercase tracking-wide">
-          YOUR NEXT STEP
+          NEXT STEPS
         </p>
-        <p className="mt-spacing-2">{NEXT_STEP_TEXT}</p>
+        <p className="mt-spacing-2">{NEXT_STEPS_TEXT}</p>
+        <p className="mt-spacing-4 text-text-2 font-semibold text-purple-110 uppercase tracking-wide">
+          RECOMMENDED ACTIONS
+        </p>
+        <ul className="mt-spacing-2 space-y-spacing-2">
+          {RECOMMENDED_ACTIONS.map((action) => (
+            <li key={action.label} className="flex items-start gap-spacing-2">
+              <Check className="w-4 h-4 text-green-100 shrink-0 mt-[2px]" aria-hidden="true" />
+              <span>
+                <button
+                  type="button"
+                  onClick={() => openAction(action.label)}
+                  className={LINK_CLASS}
+                >
+                  {action.label}
+                </button>
+                {action.detail}
+              </span>
+            </li>
+          ))}
+        </ul>
       </PinnedFloatingDialog>
     </>
   );

@@ -12,6 +12,7 @@ import { ActivityHistoryCard } from './ActivityHistoryCard';
 import { RightColumn } from './RightColumn';
 import { LeadSignalTagsCard } from './LeadSignalTagsCard';
 import { ActivityFilterProvider } from './ActivityFilterContext';
+import { LeadActionsProvider } from './LeadActionsContext';
 import { useVersion } from '@/contexts/VersionContext';
 import {
   ContactInfoProvider,
@@ -64,6 +65,7 @@ export default function LeadDetailPage() {
 
   return (
     <ContactInfoProvider initial={INITIAL_CONTACT_INFO}>
+    <LeadActionsProvider>
     <ActivityFilterProvider>
       <div className="min-h-screen w-full overflow-x-hidden bg-bg-app">
         {/* Header — fixed, full viewport width, z-30 */}
@@ -214,6 +216,7 @@ export default function LeadDetailPage() {
         </DialogContent>
       </Dialog>
     </ActivityFilterProvider>
+    </LeadActionsProvider>
     </ContactInfoProvider>
   );
 }
