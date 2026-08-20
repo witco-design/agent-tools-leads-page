@@ -35,10 +35,10 @@ export function HighlightsCard() {
           </div>
           <div className="flex items-center py-spacing-1">
             <span className="text-text-3 font-normal text-text-secondary flex-1">
-              Location
+              IP Location
             </span>
             <span className="text-text-3 font-normal text-text-default min-w-0">
-              <TruncatedText>California</TruncatedText>
+              <TruncatedText>San Jose, CA</TruncatedText>
             </span>
           </div>
           <div className="flex items-center py-spacing-1">

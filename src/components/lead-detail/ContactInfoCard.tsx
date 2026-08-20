@@ -498,15 +498,15 @@ export function ContactInfoCard() {
               </div>
             </div>
 
-            {/* IP — row 4 */}
+            {/* Location — row 4 */}
             <div className="flex items-start justify-between gap-spacing-3 xl:min-h-[40px]">
-              <span className="text-sm text-text-muted flex-shrink-0">IP</span>
+              <span className="text-sm text-text-muted flex-shrink-0">Location</span>
               <div className="min-w-0 flex items-center justify-end flex-1">
                 <span
                   className="text-sm text-text-default truncate whitespace-nowrap"
-                  title="San Jose, CA"
+                  title="California"
                 >
-                  San Jose, CA
+                  California
                 </span>
               </div>
             </div>
