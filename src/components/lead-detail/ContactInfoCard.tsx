@@ -504,9 +504,9 @@ export function ContactInfoCard() {
               <div className="min-w-0 flex items-center justify-end flex-1">
                 <span
                   className="text-sm text-text-default truncate whitespace-nowrap"
-                  title="California"
+                  title="San Jose, CA"
                 >
-                  California
+                  San Jose, CA
                 </span>
               </div>
             </div>
