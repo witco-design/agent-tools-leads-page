@@ -11,34 +11,34 @@ const NEXT_STEPS_TEXT =
 
 interface InsightPair {
   why: string;
-  action: { label: string; detail: string; timing: string; now?: boolean };
+  action: { label: string; detail: string };
 }
 
 const INSIGHT_PAIRS: InsightPair[] = [
   {
     why: "She's online right now",
-    action: { label: 'Chat', detail: ' with Camille', timing: 'Now', now: true },
+    action: { label: 'Chat', detail: "Reach her now while she's online" },
   },
   {
     why: 'Keeps momentum before it fades',
-    action: { label: 'Text', detail: ' a personalized note', timing: '24h' },
+    action: { label: 'Text', detail: 'Send a personalized note within 24h' },
   },
   {
-    why: 'She asked for 3BR townhomes in her budget',
-    action: { label: 'Email', detail: ' curated listings, $650-750K', timing: 'Today' },
+    why: 'She asked for listings in her budget',
+    action: { label: 'Email', detail: 'Share curated 3BR townhomes ($650-750K) today' },
   },
   {
-    why: 'She wants Saturday showings',
-    action: { label: 'Call', detail: ' to schedule showings', timing: 'This week' },
+    why: 'She wants showings scheduled',
+    action: { label: 'Call', detail: 'Lock in Saturday showings this week' },
   },
 ];
 
 const RECOMMENDED_ACTIONS = INSIGHT_PAIRS.map((p) => ({ ...p.action }));
 
-const LINK_CLASS =
-  'text-blue-100 underline hover:no-underline font-medium cursor-pointer bg-transparent border-none p-0';
 const LABEL_CLASS =
   'text-text-2 font-semibold uppercase tracking-wide text-purple-100';
+const ACTION_BTN_CLASS =
+  'inline-flex items-center justify-center h-6 px-spacing-2 rounded-1 bg-purple-110 text-white text-text-2 font-semibold hover:bg-purple-120 active:bg-purple-120 focus:outline-none focus:ring-2 focus:ring-purple-40 focus:ring-offset-1 transition-colors cursor-pointer shrink-0';
 
 export function RobinAISummaryCard() {
   /**
@@ -159,42 +159,32 @@ export function RobinAISummaryCard() {
                   {/* Full-width summary lead */}
                   <p>{SUMMARY_TEXT}</p>
 
-                  {/* Paired two-column grid — each row = one reason + its action */}
+                  {/* Paired two-column grid — Actions (left) ↔ Why (right), row-aligned */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-spacing-4 gap-y-spacing-2 items-start pt-spacing-3">
-                    <div className={`${LABEL_CLASS} hidden md:block`}>WHY</div>
                     <div className={`${LABEL_CLASS} hidden md:block`}>RECOMMENDED ACTIONS</div>
+                    <div className={`${LABEL_CLASS} hidden md:block`}>WHY</div>
 
                     {INSIGHT_PAIRS.map((pair) => (
                       <div key={pair.action.label} className="contents">
-                        {/* Why */}
+                        {/* Action (left) */}
+                        <div className="flex items-start justify-between gap-spacing-3">
+                          <span className="flex items-start gap-spacing-2 text-text-3 text-text-default">
+                            <Check className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" aria-hidden="true" />
+                            <span>{pair.action.detail}</span>
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => openAction(pair.action.label)}
+                            className={ACTION_BTN_CLASS}
+                          >
+                            {pair.action.label}
+                          </button>
+                        </div>
+
+                        {/* Why (right) */}
                         <div className="flex items-start gap-spacing-2 text-text-3 text-text-default">
                           <span className="w-1.5 h-1.5 rounded-round bg-purple-100 shrink-0 mt-[7px]" />
                           {pair.why}
-                        </div>
-
-                        {/* Action */}
-                        <div className="flex items-start justify-between gap-spacing-2">
-                          <span className="flex items-start gap-spacing-2 text-text-3 text-text-default">
-                            <Check className="w-4 h-4 text-green-100 shrink-0 mt-[2px]" aria-hidden="true" />
-                            <span>
-                              <button
-                                type="button"
-                                onClick={() => openAction(pair.action.label)}
-                                className={LINK_CLASS}
-                              >
-                                {pair.action.label}
-                              </button>
-                              {pair.action.detail}
-                            </span>
-                          </span>
-                          <span
-                            className={cn(
-                              'shrink-0 text-text-1 font-medium px-spacing-2 py-[2px] rounded-round',
-                              pair.action.now ? 'bg-green-20 text-green-110' : 'bg-purple-20 text-purple-120',
-                            )}
-                          >
-                            {pair.action.timing}
-                          </span>
                         </div>
                       </div>
                     ))}
@@ -252,16 +242,16 @@ export function RobinAISummaryCard() {
         <ul className="mt-spacing-2 space-y-spacing-2">
           {RECOMMENDED_ACTIONS.map((action) => (
             <li key={action.label} className="flex items-start gap-spacing-2">
-              <Check className="w-4 h-4 text-green-100 shrink-0 mt-[2px]" aria-hidden="true" />
+              <Check className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" aria-hidden="true" />
               <span>
+                {action.detail}
                 <button
                   type="button"
                   onClick={() => openAction(action.label)}
-                  className={LINK_CLASS}
+                  className={cn(ACTION_BTN_CLASS, 'ml-spacing-2')}
                 >
                   {action.label}
                 </button>
-                {action.detail}
               </span>
             </li>
           ))}
