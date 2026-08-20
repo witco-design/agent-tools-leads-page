@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import { Search, Plus, ChevronDown, Phone, MessageSquare, MessagesSquare, Mail, FileText, Heart, Hop as Home, Activity, X, History } from 'lucide-react';
+import { Search, Plus, ChevronDown, Phone, MessageSquare, MessagesSquare, Mail, FileText, Heart, Hop as Home, Activity, MessageCircle, X, Factory as History } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatTime, formatDateTimeWithYear } from '@/utils/formatDate';
 import {
@@ -28,7 +28,8 @@ import { LogActivityDialog } from './LogActivityDialog';
 
 // ── Content-type filter categories ─────────────────────────────
 const CONTENT_FILTER_CATEGORIES = [
-  { key: 'all', label: 'All', icon: Activity, types: null },
+  { key: 'all', label: 'All Activity', icon: Activity, types: null },
+  { key: 'communications', label: 'All Communications', icon: MessageCircle, types: ['call', 'called_contact_made', 'called_no_answer', 'called_left_voicemail', 'follow_up', 'follow_up_completed', 'email', 'email_sent', 'email_opened', 'email_clicked', 'email_bounced', 'shared_property_via_email', 'sms', 'text', 'sent_text_message_to', 'received_text_message_from', 'opted_in_to_texting', 'chat', 'assistant_conversation_started', 'received_chat_message_from'] },
   { key: 'phone', label: 'Phone', icon: Phone, types: ['call', 'called_contact_made', 'called_no_answer', 'called_left_voicemail', 'follow_up', 'follow_up_completed'] },
   { key: 'email', label: 'Email', icon: Mail, types: ['email', 'email_sent', 'email_opened', 'email_clicked', 'email_bounced', 'shared_property_via_email'] },
   { key: 'sms', label: 'SMS', icon: MessageSquare, types: ['sms', 'text', 'sent_text_message_to', 'received_text_message_from', 'opted_in_to_texting'] },
@@ -392,7 +393,7 @@ export function ActivityHistoryCard() {
                   return (
                     <>
                       <Icon className="w-4 h-4 text-text-secondary" />
-                      <span>{active?.label ?? 'All'}</span>
+                      <span>{active?.label ?? 'All Activity'}</span>
                       <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-spacing-1 rounded-round bg-[#ebf8ff] text-[#3e60c9] text-xs font-semibold">{categoryCounts[filterKey] ?? 0}</span>
                     </>
                   );
