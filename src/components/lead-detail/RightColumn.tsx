@@ -38,9 +38,9 @@ import { SortableCard } from './SortableCard';
 
 // ── Default orderings ──────────────────────────────────────────
 const INFO_DEFAULT_ORDER = [
+  'highlights',
   'important-notes',
   'activity-stats',
-  'highlights',
   'contact-info',
   'search-criteria',
   'important-dates',
