@@ -107,6 +107,10 @@ export function LeadHeader() {
         </div>
 
         {/* Action pill buttons */}
+        {/* PROTECTED: header action buttons (Call/Text/Email/Chat/Login as Lead + More)
+            use rounded-round (pill/circle) per Design Director direction.
+            Do NOT revert to rounded-1 (4px) — they were locked at 4px before and
+            intentionally flipped back to fully rounded. */}
         <div className="flex items-center gap-spacing-2 flex-shrink-0">
           {actionButtons.map((btn) => {
             const Icon = btn.icon;
@@ -115,7 +119,7 @@ export function LeadHeader() {
                 <TooltipTrigger asChild>
                   <button
                     onClick={() => openModal(btn.label)}
-                    className="inline-flex items-center h-8 w-8 xl:w-auto xl:px-spacing-3 rounded-1 justify-center xl:justify-start xl:gap-spacing-1 bg-blue-100 text-white text-text-3 font-semibold hover:bg-blue-110 active:bg-blue-120 focus:outline-none focus:ring-2 focus:ring-blue-40 focus:ring-offset-2 focus:ring-offset-white transition-colors duration-150 cursor-pointer"
+                    className="inline-flex items-center h-8 w-8 xl:w-auto xl:px-spacing-3 rounded-round justify-center xl:justify-start xl:gap-spacing-1 bg-blue-100 text-white text-text-3 font-semibold hover:bg-blue-110 active:bg-blue-120 focus:outline-none focus:ring-2 focus:ring-blue-40 focus:ring-offset-2 focus:ring-offset-white transition-colors duration-150 cursor-pointer"
                   >
                     <Icon className="w-4 h-4" />
                     <span className="hidden xl:inline">{btn.label}</span>
@@ -131,7 +135,7 @@ export function LeadHeader() {
           {/* More button — DropdownMenu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="inline-flex items-center justify-center w-8 h-8 rounded-1 border border-border-default bg-white text-icon-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring focus:ring-offset-2 focus:ring-offset-white transition-colors duration-150 cursor-pointer">
+              <button className="inline-flex items-center justify-center w-8 h-8 rounded-round border border-border-default bg-white text-icon-default hover:bg-bg-muted focus:outline-none focus:ring-2 focus:ring-focus-ring focus:ring-offset-2 focus:ring-offset-white transition-colors duration-150 cursor-pointer">
                 <MoreHorizontal className="w-4 h-4" />
               </button>
             </DropdownMenuTrigger>
