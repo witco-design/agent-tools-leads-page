@@ -9,31 +9,17 @@ const SUMMARY_TEXT =
 const NEXT_STEPS_TEXT =
   "She's online right now and has asked for curated 3BR townhomes and Saturday showings. Engagement is peaking, so reach out today while she's active, lead with listings that match her criteria, and lock in showings before momentum fades.";
 
-interface InsightPair {
-  why: string;
-  action: { label: string; detail: string };
+interface InsightAction {
+  label: string;
+  detail: string;
 }
 
-const INSIGHT_PAIRS: InsightPair[] = [
-  {
-    why: "She's online right now",
-    action: { label: 'Chat', detail: "Reach her now while she's online" },
-  },
-  {
-    why: 'Keeps momentum before it fades',
-    action: { label: 'Text', detail: 'Send a personalized note within 24h' },
-  },
-  {
-    why: 'She asked for listings in her budget',
-    action: { label: 'Email', detail: 'Share curated 3BR townhomes ($650-750K) today' },
-  },
-  {
-    why: 'She wants showings scheduled',
-    action: { label: 'Call', detail: 'Lock in Saturday showings this week' },
-  },
+const RECOMMENDED_ACTIONS: InsightAction[] = [
+  { label: 'Chat', detail: "She's online now, so start a chat while she's actively browsing." },
+  { label: 'Text', detail: 'Send a personalized text within 24 hours so her momentum doesn\'t fade.' },
+  { label: 'Email', detail: 'She asked for 3BR townhomes, so email curated listings ($650-750K) today.' },
+  { label: 'Call', detail: 'She wants Saturday showings, so call this week to lock them in.' },
 ];
-
-const RECOMMENDED_ACTIONS = INSIGHT_PAIRS.map((p) => ({ ...p.action }));
 
 const LABEL_CLASS =
   'text-text-2 font-semibold uppercase tracking-wide text-purple-100';
@@ -159,35 +145,26 @@ export function RobinAISummaryCard() {
                   {/* Full-width summary lead */}
                   <p>{SUMMARY_TEXT}</p>
 
-                  {/* Paired two-column grid — Actions (left) ↔ Why (right), row-aligned */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-spacing-4 gap-y-spacing-2 items-start pt-spacing-3">
-                    <div className={`${LABEL_CLASS} hidden md:block`}>RECOMMENDED ACTIONS</div>
-                    <div className={`${LABEL_CLASS} hidden md:block`}>WHY</div>
-
-                    {INSIGHT_PAIRS.map((pair) => (
-                      <div key={pair.action.label} className="contents">
-                        {/* Action (left) */}
-                        <div className="flex items-start justify-between gap-spacing-3">
-                          <span className="flex items-start gap-spacing-2 text-text-3 text-text-default">
+                  {/* Recommended Actions — single-column contextual list */}
+                  <div className="pt-spacing-3">
+                    <div className={LABEL_CLASS}>RECOMMENDED ACTIONS</div>
+                    <ul className="space-y-spacing-2 pt-spacing-2">
+                      {RECOMMENDED_ACTIONS.map((action) => (
+                        <li key={action.label} className="flex items-start justify-between gap-spacing-3">
+                          <span className="flex items-start gap-spacing-2 text-text-3 text-text-default flex-1 min-w-0">
                             <Check className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" aria-hidden="true" />
-                            <span>{pair.action.detail}</span>
+                            <span>{action.detail}</span>
                           </span>
                           <button
                             type="button"
-                            onClick={() => openAction(pair.action.label)}
+                            onClick={() => openAction(action.label)}
                             className={ACTION_BTN_CLASS}
                           >
-                            {pair.action.label}
+                            {action.label}
                           </button>
-                        </div>
-
-                        {/* Why (right) */}
-                        <div className="flex items-start gap-spacing-2 text-text-3 text-text-default">
-                          <span className="w-1.5 h-1.5 rounded-round bg-purple-100 shrink-0 mt-[7px]" />
-                          {pair.why}
-                        </div>
-                      </div>
-                    ))}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
               )}
