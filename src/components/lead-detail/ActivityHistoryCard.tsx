@@ -340,6 +340,7 @@ export function ActivityHistoryCard() {
         {/* ── BAR 1: Title bar ─────────────────────────────────── */}
         <div className="px-spacing-5 py-spacing-3 flex items-center justify-between">
           <div className="flex items-center gap-spacing-2">
+            {/* PROTECTED: Activity History icon must be lucide `History` (clock + rewind). Do not change to Factory or any other icon. */}
             <History className="w-4 h-4 text-blue-100 shrink-0" />
             <h3 className="text-text-4 font-semibold text-text-default">
               Activity History
