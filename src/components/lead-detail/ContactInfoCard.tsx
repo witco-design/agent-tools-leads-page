@@ -467,10 +467,10 @@ export function ContactInfoCard() {
               </div>
             </div>
 
-            {/* Contacted — row 2 */}
+            {/* Last Contacted — row 2 */}
             <div className="flex items-start justify-between gap-spacing-3 xl:min-h-[40px]">
               <span className="text-sm text-text-muted flex-shrink-0">
-                Contacted
+                Last Contacted
               </span>
               <div className="min-w-0 flex items-center justify-end gap-spacing-2 flex-1">
                 <span
