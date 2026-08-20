@@ -1,14 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
-import { Sparkles, Expand, ChevronDown, Check } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { PinnedFloatingDialog } from '@/components/PinnedFloatingDialog';
+import { Sparkles, ChevronDown, Check } from 'lucide-react';
 import { useLeadActions } from './LeadActionsContext';
 
 const SUMMARY_TEXT =
   'Camille is a high-intent first-time buyer: 14 visits and 3 favorites in 2 weeks, with a lender Letter of Intent in hand. Her spouse\'s new Google role adds urgency to close before year-end.';
-const NEXT_STEPS_TEXT =
-  "She's online right now and has asked for curated 3BR townhomes and Saturday showings. Engagement is peaking, so reach out today while she's active, lead with listings that match her criteria, and lock in showings before momentum fades.";
-
 interface InsightAction {
   label: string;
   detail: string;
@@ -46,7 +41,6 @@ export function RobinAISummaryCard() {
   }, []);
 
   const [collapsed, setCollapsed] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isScrollable, setIsScrollable] = useState(false);
@@ -118,7 +112,7 @@ export function RobinAISummaryCard() {
         {!collapsed && (
           <div className="px-spacing-5 py-spacing-4">
             {/* Tinted inner content area — purple bg */}
-            <div className="relative rounded-1 bg-purple-10 p-spacing-3 group">
+            <div className="relative rounded-1 bg-purple-10 p-spacing-3">
               {isGenerating ? (
                 <div className="space-y-spacing-3">
                   {/* First paragraph — 3 lines */}
@@ -148,9 +142,9 @@ export function RobinAISummaryCard() {
                   {/* Recommended Actions — single-column contextual list */}
                   <div className="pt-spacing-3">
                     <div className={LABEL_CLASS}>RECOMMENDED ACTIONS</div>
-                    <ul className="space-y-spacing-2 pt-spacing-2">
+                    <ul className="divide-y divide-purple-20 pt-spacing-2">
                       {RECOMMENDED_ACTIONS.map((action) => (
-                        <li key={action.label} className="flex items-start justify-between gap-spacing-3">
+                        <li key={action.label} className="flex items-start justify-between gap-spacing-3 py-spacing-2">
                           <span className="flex items-start gap-spacing-2 text-text-3 text-text-default flex-1 min-w-0">
                             <Check className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" aria-hidden="true" />
                             <span>{action.detail}</span>
@@ -169,71 +163,10 @@ export function RobinAISummaryCard() {
                 </div>
               )}
 
-              {/**
-               * PROTECTED — Hover Expand affordance.
-               * Icon-only on hover (no text label). Native tooltip via title="Expand".
-               * aria-label preserves accessibility for screen readers.
-               *
-               * Do NOT add a text label back — the pattern is intentionally minimal.
-               * If discoverability becomes an issue in user testing, add a Radix Tooltip
-               * with 400ms delay rather than an always-visible label.
-               */}
-              {!isGenerating && (
-                <div className="absolute bottom-spacing-2 right-spacing-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150">
-                  <button
-                    type="button"
-                    onClick={() => setDialogOpen(true)}
-                    title="Expand"
-                    aria-label="Expand"
-                    className={cn(
-                      'inline-flex items-center justify-center p-1 rounded-1 transition',
-                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-                      'text-purple-110 hover:text-purple-120 hover:bg-purple-20/50 focus-visible:ring-purple-60',
-                    )}
-                  >
-                    <Expand className="w-4 h-4" aria-hidden="true" />
-                  </button>
-                </div>
-              )}
             </div>
           </div>
         )}
       </div>
-
-      {/* Pinned floating dialog — full AI insights view */}
-      <PinnedFloatingDialog
-        isOpen={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        title="Geek AI Insights"
-        icon={<Sparkles className="w-4 h-4 text-purple-100" aria-hidden="true" />}
-        accentColor="purple"
-      >
-        <p>{SUMMARY_TEXT}</p>
-        <p className="mt-spacing-4 text-text-2 font-semibold text-purple-110 uppercase tracking-wide">
-          NEXT STEPS
-        </p>
-        <p className="mt-spacing-2">{NEXT_STEPS_TEXT}</p>
-        <p className="mt-spacing-4 text-text-2 font-semibold text-purple-110 uppercase tracking-wide">
-          RECOMMENDED ACTIONS
-        </p>
-        <ul className="mt-spacing-2 space-y-spacing-2">
-          {RECOMMENDED_ACTIONS.map((action) => (
-            <li key={action.label} className="flex items-start gap-spacing-2">
-              <Check className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" aria-hidden="true" />
-              <span>
-                {action.detail}
-                <button
-                  type="button"
-                  onClick={() => openAction(action.label)}
-                  className={cn(ACTION_BTN_CLASS, 'ml-spacing-2')}
-                >
-                  {action.label}
-                </button>
-              </span>
-            </li>
-          ))}
-        </ul>
-      </PinnedFloatingDialog>
     </>
   );
 }
