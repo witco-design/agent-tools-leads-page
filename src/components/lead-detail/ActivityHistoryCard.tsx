@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import { Search, Plus, ChevronDown, Phone, MessageSquare, MessagesSquare, Mail, FileText, Heart, Hop as Home, Activity, MessageCircle, X, Factory as History } from 'lucide-react';
+import { Search, Plus, ChevronDown, Phone, MessageSquare, MessagesSquare, Mail, FileText, Heart, Hop as Home, Activity, MessageCircle, X, Factory as HistoryIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatTime, formatDateTimeWithYear } from '@/utils/formatDate';
 import {
@@ -340,8 +340,8 @@ export function ActivityHistoryCard() {
         {/* ── BAR 1: Title bar ─────────────────────────────────── */}
         <div className="px-spacing-5 py-spacing-3 flex items-center justify-between">
           <div className="flex items-center gap-spacing-2">
-            {/* PROTECTED: Activity History icon must be lucide `History` (clock + rewind). Do not change to Factory or any other icon. */}
-            <History className="w-4 h-4 text-blue-100 shrink-0" />
+            {/* PROTECTED: Activity History icon = lucide History, imported as HistoryIcon to avoid the global `History` name collision. Do NOT change to Factory or rename the import. */}
+            <HistoryIcon className="w-4 h-4 text-blue-100 shrink-0" />
             <h3 className="text-text-4 font-semibold text-text-default">
               Activity History
             </h3>
