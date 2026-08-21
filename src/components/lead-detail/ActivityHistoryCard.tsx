@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import { Search, Plus, ChevronDown, Phone, MessageSquare, MessagesSquare, Mail, FileText, Heart, Hop as Home, Activity, MessageCircle, X, Factory as HistoryIcon } from 'lucide-react';
+import { Search, Plus, ChevronDown, Phone, MessageSquare, MessagesSquare, Mail, FileText, Heart, Hop as Home, Activity, MessageCircle, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatTime, formatDateTimeWithYear } from '@/utils/formatDate';
 import {
@@ -340,8 +340,24 @@ export function ActivityHistoryCard() {
         {/* ── BAR 1: Title bar ─────────────────────────────────── */}
         <div className="px-spacing-5 py-spacing-3 flex items-center justify-between">
           <div className="flex items-center gap-spacing-2">
-            {/* PROTECTED: Activity History icon = lucide History, imported as HistoryIcon to avoid the global `History` name collision. Do NOT change to Factory or rename the import. */}
-            <HistoryIcon className="w-4 h-4 text-blue-100 shrink-0" />
+            {/* PROTECTED: Activity History icon = lucide "History" glyph, INLINED as raw SVG on purpose.
+                It kept reverting to <Factory/> when using a lucide-react import (name collides with the global `History`).
+                Do NOT replace this with an icon component. Keep it inline. */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-4 h-4 text-blue-100 shrink-0"
+              aria-hidden="true"
+            >
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
+              <path d="M12 7v5l4 2" />
+            </svg>
             <h3 className="text-text-4 font-semibold text-text-default">
               Activity History
             </h3>
