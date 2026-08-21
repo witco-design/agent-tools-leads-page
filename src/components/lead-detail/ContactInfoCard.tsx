@@ -524,7 +524,7 @@ export function ContactInfoCard() {
               </span>
               <div className="min-w-0 max-w-[160px] flex-1">
                 <Select value={urgency} onValueChange={handleUrgency}>
-                  <SelectTrigger className="h-9 w-full px-3 bg-white border border-[#E4E7EC] rounded-1 text-sm font-medium text-text-default hover:bg-[#F9FAFB] focus:outline-none focus:ring-1 focus:ring-[#3E60C9] focus:border-[#3E60C9] transition">
+                  <SelectTrigger className="-mt-2 h-9 w-full px-3 bg-white border border-[#E4E7EC] rounded-1 text-sm font-medium text-text-default hover:bg-[#F9FAFB] focus:outline-none focus:ring-1 focus:ring-[#3E60C9] focus:border-[#3E60C9] transition">
                     <SelectValue placeholder="None" />
                   </SelectTrigger>
                   <SelectContent>
@@ -550,7 +550,7 @@ export function ContactInfoCard() {
               </span>
               <div className="min-w-0 max-w-[160px] flex-1">
                 <Select value={status} onValueChange={handleStatus}>
-                  <SelectTrigger className="h-9 w-full px-3 bg-white border border-[#E4E7EC] rounded-1 text-sm font-medium text-text-default hover:bg-[#F9FAFB] focus:outline-none focus:ring-1 focus:ring-[#3E60C9] focus:border-[#3E60C9] transition">
+                  <SelectTrigger className="-mt-2 h-9 w-full px-3 bg-white border border-[#E4E7EC] rounded-1 text-sm font-medium text-text-default hover:bg-[#F9FAFB] focus:outline-none focus:ring-1 focus:ring-[#3E60C9] focus:border-[#3E60C9] transition">
                     <SelectValue placeholder="Nurture" />
                   </SelectTrigger>
                   <SelectContent>
@@ -583,7 +583,7 @@ export function ContactInfoCard() {
               </span>
               <div className="min-w-0 max-w-[160px] flex-1">
                 <Select value={type} onValueChange={handleType}>
-                  <SelectTrigger className="h-9 w-full px-3 bg-white border border-[#E4E7EC] rounded-1 text-sm font-medium text-text-default hover:bg-[#F9FAFB] focus:outline-none focus:ring-1 focus:ring-[#3E60C9] focus:border-[#3E60C9] transition">
+                  <SelectTrigger className="-mt-2 h-9 w-full px-3 bg-white border border-[#E4E7EC] rounded-1 text-sm font-medium text-text-default hover:bg-[#F9FAFB] focus:outline-none focus:ring-1 focus:ring-[#3E60C9] focus:border-[#3E60C9] transition">
                     <SelectValue placeholder="Buyer" />
                   </SelectTrigger>
                   <SelectContent>
@@ -602,7 +602,7 @@ export function ContactInfoCard() {
               </span>
               <div className="min-w-0 max-w-[160px] flex-1">
                 <Select value={timeframe} onValueChange={handleTimeframe}>
-                  <SelectTrigger className="h-9 w-full px-3 bg-white border border-[#E4E7EC] rounded-1 text-sm font-medium text-text-default hover:bg-[#F9FAFB] focus:outline-none focus:ring-1 focus:ring-[#3E60C9] focus:border-[#3E60C9] transition">
+                  <SelectTrigger className="-mt-2 h-9 w-full px-3 bg-white border border-[#E4E7EC] rounded-1 text-sm font-medium text-text-default hover:bg-[#F9FAFB] focus:outline-none focus:ring-1 focus:ring-[#3E60C9] focus:border-[#3E60C9] transition">
                     <SelectValue placeholder="30 Days" />
                   </SelectTrigger>
                   <SelectContent>
