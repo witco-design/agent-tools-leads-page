@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CallDetailDialog } from './CallDetailDialog';
-import { Phone, PhoneCall, PhoneOff, Search, Heart, Eye, Pin, Mail, MailOpen, CalendarCheck, CalendarClock, PencilLine, Droplets, FileText, Clipboard, Calendar, BookmarkPlus, MessageSquare, MessageCircle, MessagesSquare, MousePointerClick, Globe, Play, SquareCheck as CheckSquare, BarChart3, DollarSign, Users, Shield, ShieldCheck, UserCheck, ArrowRightLeft, ArrowLeftRight, ArrowRight, UserPlus, Upload, Home, Ellipsis as MoreHorizontal, ChevronDown, Check, Sparkles } from 'lucide-react';
+import { Phone, PhoneCall, PhoneOff, Search, Heart, Eye, Pin, Mail, MailOpen, CalendarCheck, CalendarClock, PencilLine, Droplets, FileText, Clipboard, Calendar, BookmarkPlus, MessageSquare, MessageCircle, MessagesSquare, MousePointerClick, Globe, Play, SquareCheck as CheckSquare, ChartBar as BarChart3, DollarSign, Users, Shield, ShieldCheck, UserCheck, ArrowRightLeft, ArrowLeftRight, ArrowRight, UserPlus, Upload, Hop as Home, Ellipsis as MoreHorizontal, ChevronDown, Check, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   DropdownMenu,
@@ -20,7 +20,6 @@ import {
   AlertDialogAction,
 } from '@/components/ui/alert-dialog';
 import { cn } from '@/lib/utils';
-import { useVersion } from '@/contexts/VersionContext';
 import { TruncatedText } from './TruncatedText';
 
 // ── Types ──────────────────────────────────────────────────────
@@ -312,7 +311,6 @@ export function ActivityItem({
   const [isExpanded, setIsExpanded] = useState(true);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
-  const { version } = useVersion();
   const { bg, icon: Icon, color } = getIconConfig(item.type);
   const isSystem = item.actor.name === 'System';
 
@@ -588,7 +586,7 @@ export function ActivityItem({
       )}
 
       {/* Geek AI Insights button — bottom of activity item, right-aligned */}
-      {isCallType && item.aiInsight && version === 'V2' && (
+      {isCallType && item.aiInsight && (
         <div className="flex justify-start ml-11 mt-spacing-3">
           <button
             type="button"
