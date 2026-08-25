@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Sparkles, MessageSquare, Mic, GraduationCap, Search, Download, CircleCheck as CheckCircle2, Lightbulb, Check } from 'lucide-react';
+import { useVersion } from '@/contexts/VersionContext';
 import {
   Dialog,
   DialogContent,
@@ -38,10 +39,14 @@ function formatDuration(seconds: number): string {
  * Do NOT convert to pinned floating pattern. Do NOT remove the scrim.
  */
 export function CallDetailDialog({ isOpen, onClose, activity }: CallDetailDialogProps) {
+  const { version } = useVersion();
   const [activeTab, setActiveTab] = useState('summary');
   const ai = activity.aiInsight;
 
   if (!ai) return null;
+
+  const showCoaching = version === 'V2';
+  const safeActiveTab = !showCoaching && activeTab === 'coaching' ? 'summary' : activeTab;
 
   const contactName = activity.title?.replace(/^.*?called\s+/i, '').replace(/^.*?logged a call.*?$/i, 'Camille Dubois') || 'Camille Dubois';
   const duration = 428;
@@ -64,7 +69,7 @@ export function CallDetailDialog({ isOpen, onClose, activity }: CallDetailDialog
         </div>
 
         {/* Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col min-h-0">
+        <Tabs value={safeActiveTab} onValueChange={setActiveTab} className="flex-1 flex flex-col min-h-0">
           <TabsList className="flex justify-start border-b border-border-default px-spacing-5 gap-spacing-4 bg-transparent h-auto p-0">
             <TabsTrigger
               value="summary"
@@ -87,6 +92,7 @@ export function CallDetailDialog({ isOpen, onClose, activity }: CallDetailDialog
               <Mic className="w-4 h-4" aria-hidden="true" />
               Recording
             </TabsTrigger>
+            {showCoaching && (
             <TabsTrigger
               value="coaching"
               className="inline-flex items-center justify-center gap-spacing-2 w-[120px] px-0 py-spacing-3 border-b-2 border-transparent text-text-3 font-medium text-text-muted transition-colors rounded-none data-[state=active]:border-blue-100 data-[state=active]:text-text-default data-[state=active]:shadow-none hover:text-text-default"
@@ -94,6 +100,7 @@ export function CallDetailDialog({ isOpen, onClose, activity }: CallDetailDialog
               <GraduationCap className="w-4 h-4" aria-hidden="true" />
               Coaching
             </TabsTrigger>
+            )}
           </TabsList>
 
           {/* Tab content — scrollable */}
@@ -107,11 +114,25 @@ export function CallDetailDialog({ isOpen, onClose, activity }: CallDetailDialog
                 {ai.nextStep && (
                   <div className="rounded-2 bg-purple-10 p-spacing-4">
                     <p className="text-text-2 font-semibold text-purple-110 uppercase tracking-wide mb-spacing-2">
-                      Your Next Step
+                      Next Step
                     </p>
                     <p className="text-text-3 text-text-default leading-relaxed">
-                      {ai.nextStep}
+                      Today, text Camille a shortlist of 3BR townhomes in San Jose/Santa Clara ($650-750K) and propose Saturday showing times.
                     </p>
+                    <ul className="space-y-spacing-1 pt-spacing-2">
+                      <li className="flex items-start gap-spacing-2 text-text-3 text-text-default">
+                        <Check className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" />
+                        <span>She confirmed her lender Letter of Intent on the call, so she's ready to tour.</span>
+                      </li>
+                      <li className="flex items-start gap-spacing-2 text-text-3 text-text-default">
+                        <Check className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" />
+                        <span>She asked to view next weekend, so lock in Saturday showings while intent is high.</span>
+                      </li>
+                      <li className="flex items-start gap-spacing-2 text-text-3 text-text-default">
+                        <Check className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" />
+                        <span>She prefers texts during work hours, so lead with a text rather than a call.</span>
+                      </li>
+                    </ul>
                   </div>
                 )}
               </div>
@@ -159,6 +180,7 @@ export function CallDetailDialog({ isOpen, onClose, activity }: CallDetailDialog
               </div>
             </TabsContent>
 
+            {showCoaching && (
             <TabsContent value="coaching" className="mt-0">
               {ai.coaching ? (
                 <CoachingTab coaching={ai.coaching} />
@@ -168,6 +190,7 @@ export function CallDetailDialog({ isOpen, onClose, activity }: CallDetailDialog
                 </div>
               )}
             </TabsContent>
+            )}
           </div>
         </Tabs>
       </DialogContent>
