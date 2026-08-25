@@ -1,24 +1,125 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Sparkles, ChevronDown, Check } from 'lucide-react';
 import { useLeadActions } from './LeadActionsContext';
+import { useVersion } from '@/contexts/VersionContext';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
 
 const SUMMARY_TEXT =
   'Camille is a high-intent first-time buyer: 14 visits and 3 favorites in 2 weeks, with a lender Letter of Intent in hand. Her spouse\'s new Google role adds urgency to close before year-end.';
-interface InsightAction {
-  label: string;
-  detail: string;
-}
 
-const RECOMMENDED_ACTIONS: InsightAction[] = [
-  { label: 'Chat', detail: "She's online now, so start a chat while she's actively browsing." },
-  { label: 'Text', detail: 'Send a personalized text within 24 hours so her momentum doesn\'t fade.' },
-  { label: 'Email', detail: 'She asked for 3BR townhomes, so email curated listings ($650-750K) today.' },
+const NEXT_STEP_FIRST_LINE =
+  'In 2 days, Geek AI will email Camille a curated list of 3BR townhomes in her budget ($650-750K).';
+
+const NEXT_STEP_REASONS: string[] = [
+  'She asked for curated listings and is browsing actively',
+  'Email suits a detailed list she can review on her own time',
+  'Timed before the weekend so she\'s ready for Saturday showings',
 ];
 
 const LABEL_CLASS =
   'text-text-2 font-semibold uppercase tracking-wide text-purple-100';
-const ACTION_BTN_CLASS =
-  'inline-flex items-center justify-center h-6 w-16 px-spacing-2 rounded-1 bg-purple-110 text-white text-text-2 font-semibold hover:bg-purple-120 active:bg-purple-120 focus:outline-none focus:ring-2 focus:ring-purple-40 focus:ring-offset-1 transition-colors cursor-pointer shrink-0';
+
+const TAKE_OVER_BTN_CLASS =
+  'inline-flex items-center justify-center h-7 px-spacing-3 rounded-1 bg-purple-110 text-white text-text-2 font-semibold hover:bg-purple-120 active:bg-purple-120 focus:outline-none focus:ring-2 focus:ring-purple-40 focus:ring-offset-1 transition-colors cursor-pointer shrink-0';
+
+type FeedbackChoice = 'love' | 'needs-work' | null;
+
+function FeedbackModal({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  const [choice, setChoice] = useState<FeedbackChoice>(null);
+  const [text, setText] = useState('');
+
+  useEffect(() => {
+    if (!open) {
+      setChoice(null);
+      setText('');
+    }
+  }, [open]);
+
+  const handleSubmit = () => onOpenChange(false);
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle>How are you enjoying Geek AI Insights?</DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-spacing-4 py-spacing-1">
+          <div className="flex gap-spacing-3">
+            <button
+              type="button"
+              onClick={() => setChoice('love')}
+              className={`flex-1 h-10 rounded-1 px-spacing-3 text-text-3 font-medium transition-colors cursor-pointer ${
+                choice === 'love'
+                  ? 'border border-purple-100 bg-purple-10 text-purple-120'
+                  : 'border border-border-default text-text-default hover:bg-bg-muted'
+              }`}
+            >
+              <span className="mr-spacing-1">&#128515;</span> Love it
+            </button>
+            <button
+              type="button"
+              onClick={() => setChoice('needs-work')}
+              className={`flex-1 h-10 rounded-1 px-spacing-3 text-text-3 font-medium transition-colors cursor-pointer ${
+                choice === 'needs-work'
+                  ? 'border border-purple-100 bg-purple-10 text-purple-120'
+                  : 'border border-border-default text-text-default hover:bg-bg-muted'
+              }`}
+            >
+              <span className="mr-spacing-1">&#128533;</span> Needs work
+            </button>
+          </div>
+
+          <div className="space-y-spacing-1">
+            <label
+              htmlFor="geek-ai-feedback-text"
+              className="text-text-3 text-text-muted"
+            >
+              Tell us more (optional)
+            </label>
+            <textarea
+              id="geek-ai-feedback-text"
+              rows={3}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              className="border border-border-default rounded-1 p-spacing-2 text-text-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-40 focus:border-purple-100"
+            />
+          </div>
+        </div>
+
+        <DialogFooter>
+          <button
+            type="button"
+            onClick={() => onOpenChange(false)}
+            className="h-8 px-spacing-4 rounded-1 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="h-8 px-spacing-4 rounded-1 bg-purple-110 text-white text-text-3 font-semibold hover:bg-purple-120 active:bg-purple-120 transition-colors cursor-pointer"
+          >
+            Submit
+          </button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 export function RobinAISummaryCard() {
   /**
@@ -40,31 +141,10 @@ export function RobinAISummaryCard() {
   }, []);
 
   const [collapsed, setCollapsed] = useState(false);
-
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [isScrollable, setIsScrollable] = useState(false);
-  const [atBottom, setAtBottom] = useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   const { openAction } = useLeadActions();
-
-  /**
-   * PROTECTED — Measures whether the AI insight content overflows 200px
-   * to decide whether the fade gradient renders.
-   *
-   * Must run AFTER isGenerating flips to false — otherwise the ref
-   * measures the skeleton, not the real content.
-   */
-  useEffect(() => {
-    if (!scrollRef.current || isGenerating) return;
-    const el = scrollRef.current;
-    setIsScrollable(el.scrollHeight > el.clientHeight);
-  }, [isGenerating]);
-
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const el = e.currentTarget;
-    const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 4;
-    setAtBottom(nearBottom);
-  };
+  const { version } = useVersion();
 
   return (
     <>
@@ -131,41 +211,68 @@ export function RobinAISummaryCard() {
                   </div>
                 </div>
               ) : (
-                <div
-                  ref={scrollRef}
-                  className="text-text-3 text-text-default leading-relaxed animate-fade-in"
-                >
+                <div className="text-text-3 text-text-default leading-relaxed animate-fade-in">
                   {/* Full-width summary lead */}
                   <p>{SUMMARY_TEXT}</p>
 
-                  {/* Recommended Actions — single-column contextual list */}
+                  {/* Next Steps — the AI's single next lead touch */}
                   <div className="pt-spacing-3">
-                    <div className={LABEL_CLASS}>RECOMMENDED ACTIONS</div>
-                    <ul className="divide-y divide-purple-20 pt-spacing-2">
-                      {RECOMMENDED_ACTIONS.map((action) => (
-                        <li key={action.label} className="flex items-start justify-between gap-spacing-3 py-spacing-2">
-                          <span className="flex items-start gap-spacing-2 text-text-3 text-text-default flex-1 min-w-0">
-                            <Check className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" aria-hidden="true" />
-                            <span>{action.detail}</span>
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => openAction(action.label)}
-                            className={ACTION_BTN_CLASS}
-                          >
-                            {action.label}
-                          </button>
+                    <div className={LABEL_CLASS}>NEXT STEPS</div>
+
+                    {/* First line + (V2 only) Take over button */}
+                    <div className="flex items-start justify-between gap-spacing-3 pt-spacing-2">
+                      <p className="text-text-3 text-text-default flex-1">
+                        {NEXT_STEP_FIRST_LINE}
+                      </p>
+                      {version === 'V2' && (
+                        <button
+                          type="button"
+                          onClick={() => openAction('Email')}
+                          className={TAKE_OVER_BTN_CLASS}
+                        >
+                          Take over
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Three "why" checklist items */}
+                    <ul className="space-y-spacing-1 pt-spacing-2">
+                      {NEXT_STEP_REASONS.map((reason) => (
+                        <li
+                          key={reason}
+                          className="flex items-start gap-spacing-2 text-text-3 text-text-default"
+                        >
+                          <Check
+                            className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]"
+                            aria-hidden="true"
+                          />
+                          <span>{reason}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
+
+                  {/* Feedback link */}
+                  <div className="pt-spacing-3">
+                    <button
+                      type="button"
+                      onClick={() => setFeedbackOpen(true)}
+                      className="text-text-2 text-text-muted underline hover:text-text-default cursor-pointer"
+                    >
+                      How are you enjoying this feature?
+                    </button>
+                  </div>
                 </div>
               )}
-
             </div>
           </div>
         )}
       </div>
+
+      {createPortal(
+        <FeedbackModal open={feedbackOpen} onOpenChange={setFeedbackOpen} />,
+        document.body,
+      )}
     </>
   );
 }
