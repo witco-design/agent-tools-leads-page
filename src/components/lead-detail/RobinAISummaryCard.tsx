@@ -216,22 +216,21 @@ export function RobinAISummaryCard() {
                   <div className="pt-spacing-3">
                     <div className={LABEL_CLASS}>NEXT STEPS</div>
 
-                    {/* First line + (V2 only) inline Take over link */}
-                    <p className="text-text-3 text-text-default leading-relaxed pt-spacing-2">
-                      {NEXT_STEP_FIRST_LINE}
+                    {/* First line + (V2 only) Take over button pinned right */}
+                    <div className="flex items-start justify-between gap-spacing-3 pt-spacing-2">
+                      <p className="text-text-3 text-text-default leading-relaxed flex-1">
+                        {NEXT_STEP_FIRST_LINE}
+                      </p>
                       {version === 'V2' && (
-                        <>
-                          {' '}
-                          <button
-                            type="button"
-                            onClick={() => openAction('Email')}
-                            className="inline font-semibold text-purple-110 hover:text-purple-120 underline underline-offset-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-40 rounded-[2px]"
-                          >
-                            Take over
-                          </button>
-                        </>
+                        <button
+                          type="button"
+                          onClick={() => openAction('Email')}
+                          className="inline-flex items-center justify-center h-7 px-spacing-3 rounded-1 bg-purple-110 text-white text-text-2 font-semibold hover:bg-purple-120 active:bg-purple-120 focus:outline-none focus:ring-2 focus:ring-purple-40 focus:ring-offset-1 transition-colors cursor-pointer shrink-0"
+                        >
+                          Take over
+                        </button>
                       )}
-                    </p>
+                    </div>
 
                     {/* Three "why" checklist items */}
                     <ul className="space-y-spacing-1 pt-spacing-2">
