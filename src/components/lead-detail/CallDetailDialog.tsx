@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Sparkles, MessageSquare, Mic, GraduationCap, Search, Download, CircleCheck as CheckCircle2, Lightbulb, Check, Info } from 'lucide-react';
 import { useVersion } from '@/contexts/VersionContext';
 import {
@@ -258,6 +258,9 @@ function TranscriptTab({ transcript }: { transcript?: TranscriptLine[] }) {
 }
 
 function CoachingTab({ coaching }: { coaching: CoachingData }) {
+  const overallScore = 82;
+  const grade = 'B+';
+
   const skillScores = [
     { label: 'Rapport', value: 90 },
     { label: 'Discovery', value: 72 },
@@ -265,6 +268,24 @@ function CoachingTab({ coaching }: { coaching: CoachingData }) {
     { label: 'Closing', value: 80 },
     { label: 'Next steps', value: 85 },
   ];
+
+  const tier =
+    overallScore >= 80
+      ? { colorClass: 'text-green-100', pillClass: 'bg-green-10 text-green-100', headline: 'This was a strong call', word: 'Strong' }
+      : overallScore >= 65
+        ? { colorClass: 'text-orange-100', pillClass: 'bg-orange-10 text-orange-100', headline: 'This call was solid', word: 'Solid' }
+        : { colorClass: 'text-red-100', pillClass: 'bg-red-10 text-red-100', headline: 'This call needs work', word: 'Needs work' };
+
+  const legend = [...skillScores].sort((a, b) => b.value - a.value);
+  const topOpportunity = [...skillScores].sort((a, b) => a.value - b.value)[0];
+  const tipsRef = useRef<HTMLDivElement>(null);
+
+  const dotColor = (v: number) =>
+    v >= 80 ? 'bg-green-100' : v >= 70 ? 'bg-orange-100' : 'bg-red-100';
+
+  const angle = (180 - (overallScore / 100) * 180) * (Math.PI / 180);
+  const dotCx = 100 + 88 * Math.cos(angle);
+  const dotCy = 100 - 88 * Math.sin(angle);
 
   const strengths = [
     {
@@ -301,38 +322,68 @@ function CoachingTab({ coaching }: { coaching: CoachingData }) {
 
   return (
     <div className="space-y-spacing-6">
-      {/* Call score */}
+      {/* Call score — health-score hero */}
       <div>
         <div className="text-text-3 font-semibold text-text-default mb-spacing-3">
           Call score
         </div>
-        <div className="border border-border-default rounded-2 p-spacing-4 flex flex-col sm:flex-row sm:items-center gap-spacing-4">
-          <div className="flex items-center gap-spacing-3 flex-shrink-0">
-            <div className="bg-green-10 text-green-100 rounded-2 px-spacing-3 py-spacing-2 flex flex-col items-center">
-              <span className="text-text-7 font-bold leading-none">B+</span>
-              <span className="text-text-2 text-green-100 font-semibold mt-1">
-                82<span className="text-green-70 font-normal">/100</span>
-              </span>
-            </div>
-            <span className="text-text-2 text-text-muted">Call score</span>
-          </div>
-          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-x-spacing-6 gap-y-spacing-2">
-            {skillScores.map((skill) => (
-              <div key={skill.label} className="flex items-center gap-spacing-3">
-                <span className="text-text-3 text-text-muted w-28 flex-shrink-0">
-                  {skill.label}
-                </span>
-                <div className="h-1.5 rounded-round bg-gray-30 overflow-hidden flex-1">
-                  <div
-                    className="h-full bg-blue-100 rounded-round"
-                    style={{ width: `${skill.value}%` }}
-                  />
+        <div className="border border-border-default rounded-2 p-spacing-5">
+          <h3 className="text-text-6 font-bold text-text-default mb-spacing-5">{tier.headline}</h3>
+          <div className="flex flex-col sm:flex-row gap-spacing-6">
+            {/* LEFT: semicircle gauge + dimension legend */}
+            <div className="flex flex-col items-center gap-spacing-4 shrink-0">
+              <div className="relative w-[200px] h-[124px]">
+                <svg viewBox="0 0 200 110" className="w-[200px] h-[110px]" role="img" aria-label={`Call score ${overallScore} out of 100, grade ${grade}`}>
+                  <path d="M 12 100 A 88 88 0 0 1 188 100" fill="none" stroke="var(--gray-30, #E4E7EC)" strokeWidth="14" strokeLinecap="round" pathLength={100} />
+                  <path d="M 12 100 A 88 88 0 0 1 188 100" fill="none" className={tier.colorClass} stroke="currentColor" strokeWidth="14" strokeLinecap="round" pathLength={100} strokeDasharray={`${overallScore} 100`} />
+                  <circle cx={dotCx} cy={dotCy} r="7" fill="white" className={tier.colorClass} stroke="currentColor" strokeWidth="4" />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-end pb-[6px] gap-1 pointer-events-none">
+                  <span className="text-text-7 font-bold text-text-default leading-none">{overallScore}</span>
+                  <span className={`${tier.pillClass} rounded-round px-spacing-2 py-[2px] text-text-2 font-semibold`}>{grade}</span>
                 </div>
-                <span className="text-text-3 font-semibold text-text-default w-8 text-right">
-                  {skill.value}
-                </span>
+                <div className="absolute left-[6px] bottom-[6px] text-text-1 text-text-muted">0</div>
+                <div className="absolute right-[2px] bottom-[6px] text-text-1 text-text-muted">100</div>
               </div>
-            ))}
+
+              <ul className="grid grid-cols-2 gap-x-spacing-4 gap-y-spacing-2 w-full">
+                {legend.map((skill) => (
+                  <li key={skill.label} className="flex items-center gap-spacing-2 text-text-2 text-text-default">
+                    <span className={`w-2 h-2 rounded-round ${dotColor(skill.value)} shrink-0`} />
+                    <span className="flex-1">{skill.label}</span>
+                    <span className="font-semibold">{skill.value}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* RIGHT: verdict line, meta, top opportunity, tips, CTA */}
+            <div className="flex-1 flex flex-col gap-spacing-3">
+              <div className="flex items-center gap-spacing-2 flex-wrap">
+                <span className="text-text-4 font-semibold text-text-default">This call's coaching score is</span>
+                <span className={`${tier.pillClass} rounded-round px-spacing-2 py-[2px] text-text-2 font-semibold`}>{tier.word}</span>
+                <Info className="w-4 h-4 text-text-muted" aria-hidden="true" />
+              </div>
+              <p className="text-text-2 text-text-muted">Nov 5, 2025 at 2:17pm · 7:08 · Kevin McCarthy</p>
+
+              <div>
+                <p className="text-text-3 font-semibold text-text-default">Top opportunity</p>
+                <p className="text-text-3 text-text-default mt-spacing-1">{topOpportunity.label} ({topOpportunity.value}) — surface timeline and motivations earlier in the call to qualify faster.</p>
+              </div>
+
+              <div className="flex items-center gap-spacing-2 text-text-3 text-text-default">
+                <Lightbulb className="w-4 h-4 text-purple-100 shrink-0" aria-hidden="true" />
+                <span><span className="font-semibold">2</span> coaching tips available</span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => tipsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                className="inline-flex items-center justify-center h-9 px-spacing-4 rounded-1 border border-blue-100 text-blue-100 hover:bg-blue-10 font-semibold text-text-3 transition-colors cursor-pointer w-fit"
+              >
+                View coaching tips
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -391,7 +442,7 @@ function CoachingTab({ coaching }: { coaching: CoachingData }) {
       </div>
 
       {/* Strengths */}
-      <div className="border-l-2 border-green-40 pl-spacing-4">
+      <div ref={tipsRef} className="border-l-2 border-green-40 pl-spacing-4 scroll-mt-spacing-4">
         <div className="flex items-center gap-spacing-2 mb-spacing-3">
           <CheckCircle2 className="w-4 h-4 text-green-100 flex-shrink-0" aria-hidden="true" />
           <span className="text-text-4 font-semibold text-text-default">Strengths</span>
