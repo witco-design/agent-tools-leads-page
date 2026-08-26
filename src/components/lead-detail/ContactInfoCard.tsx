@@ -347,9 +347,10 @@ export function ContactInfoCard() {
        * DO NOT use items-center on the address cell — items-start is required
        * for label to align with the FIRST line of the multi-line value.
        */}
-      <div className="@container grid grid-cols-1 gap-y-spacing-3 p-spacing-5 @[720px]:grid-cols-[minmax(240px,1fr)_1px_minmax(220px,1fr)_1px_minmax(200px,1fr)] @[720px]:grid-rows-[auto_auto_auto_auto] @[720px]:gap-x-spacing-5 @[720px]:items-baseline">
-        {renderContactRow('primary', 'Primary', '@[720px]:col-start-1 @[720px]:row-start-1')}
-        {renderContactRow('email', 'Email', '@[720px]:col-start-1 @[720px]:row-start-2')}
+      <div className="@container">
+      <div className="grid grid-cols-1 gap-y-spacing-3 p-spacing-5 @[760px]:grid-cols-[minmax(240px,1fr)_1px_minmax(220px,1fr)_1px_minmax(200px,1fr)] @[760px]:grid-rows-[auto_auto_auto_auto] @[760px]:gap-x-spacing-5 @[760px]:items-baseline">
+        {renderContactRow('primary', 'Primary', '@[760px]:col-start-1 @[760px]:row-start-1')}
+        {renderContactRow('email', 'Email', '@[760px]:col-start-1 @[760px]:row-start-2')}
 
             {/**
              * PROTECTED — Address is a SINGLE grid cell containing all lines.
@@ -374,7 +375,7 @@ export function ContactInfoCard() {
              * for label to align with the FIRST line of the multi-line value.
              */}
             {hasAddress && (
-              <div className="flex items-start gap-spacing-3 @[720px]:min-h-[40px] @[720px]:col-start-1 @[720px]:row-start-3">
+              <div className="flex items-start gap-spacing-3 @[760px]:min-h-[40px] @[760px]:col-start-1 @[760px]:row-start-3">
                 <span className="w-24 text-sm leading-5 text-text-muted flex-shrink-0">
                   Address
                 </span>
@@ -444,13 +445,13 @@ export function ContactInfoCard() {
               </div>
             )}
 
-        {/* Divider 1 — horizontal on mobile, vertical spanning all rows on @[720px] */}
-        <div className="h-px my-spacing-3 @[720px]:my-0 @[720px]:h-auto @[720px]:w-px @[720px]:self-stretch bg-border-default @[720px]:col-start-2 @[720px]:row-start-1 @[720px]:row-span-4" />
+        {/* Divider 1 — horizontal on mobile, vertical spanning all rows on @[760px] */}
+        <div className="h-px my-spacing-3 @[760px]:my-0 @[760px]:h-auto @[760px]:w-px @[760px]:self-stretch bg-border-default @[760px]:col-start-2 @[760px]:row-start-1 @[760px]:row-span-4" />
 
         {/* ── COLUMN 2: Highlights ── */}
-        <div className="@[720px]:col-start-3 @[720px]:row-start-1 @[720px]:row-span-4 flex flex-col gap-y-spacing-3 justify-start">
+        <div className="@[760px]:col-start-3 @[760px]:row-start-1 @[760px]:row-span-4 flex flex-col gap-y-spacing-3 justify-start">
         {/* Online — row 1 */}
-        <div className="flex items-start justify-between gap-spacing-3 @[720px]:min-h-[40px]">
+        <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm text-text-muted flex-shrink-0">
                 Online
               </span>
@@ -468,7 +469,7 @@ export function ContactInfoCard() {
             </div>
 
             {/* Last Contacted — row 2 */}
-            <div className="flex items-start justify-between gap-spacing-3 @[720px]:min-h-[40px]">
+            <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm text-text-muted flex-shrink-0">
                 Last Contacted
               </span>
@@ -484,7 +485,7 @@ export function ContactInfoCard() {
             </div>
 
             {/* Local Time — row 3 */}
-            <div className="flex items-start justify-between gap-spacing-3 @[720px]:min-h-[40px]">
+            <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm leading-5 text-text-muted flex-shrink-0">
                 Local Time
               </span>
@@ -499,7 +500,7 @@ export function ContactInfoCard() {
             </div>
 
             {/* Location — row 4 */}
-            <div className="flex items-start justify-between gap-spacing-3 @[720px]:min-h-[40px]">
+            <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm text-text-muted flex-shrink-0">Location</span>
               <div className="min-w-0 flex items-center justify-end flex-1">
                 <span
@@ -512,13 +513,13 @@ export function ContactInfoCard() {
             </div>
         </div>
 
-        {/* Divider 2 — horizontal on mobile, vertical spanning all rows on @[720px] */}
-        <div className="h-px my-spacing-3 @[720px]:my-0 @[720px]:h-auto @[720px]:w-px @[720px]:self-stretch bg-border-default @[720px]:col-start-4 @[720px]:row-start-1 @[720px]:row-span-4" />
+        {/* Divider 2 — horizontal on mobile, vertical spanning all rows on @[760px] */}
+        <div className="h-px my-spacing-3 @[760px]:my-0 @[760px]:h-auto @[760px]:w-px @[760px]:self-stretch bg-border-default @[760px]:col-start-4 @[760px]:row-start-1 @[760px]:row-span-4" />
 
         {/* ── COLUMN 3: About ── */}
-        <div className="@[720px]:col-start-5 @[720px]:row-start-1 @[720px]:row-span-4 flex flex-col gap-y-spacing-3 justify-start">
+        <div className="@[760px]:col-start-5 @[760px]:row-start-1 @[760px]:row-span-4 flex flex-col gap-y-spacing-3 justify-start">
         {/* Urgency — row 1 */}
-        <div className="flex items-start justify-between gap-spacing-3 @[720px]:min-h-[40px]">
+        <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm text-text-muted flex-shrink-0">
                 Urgency
               </span>
@@ -544,7 +545,7 @@ export function ContactInfoCard() {
             </div>
 
             {/* Status — row 2 */}
-            <div className="flex items-start justify-between gap-spacing-3 @[720px]:min-h-[40px]">
+            <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm text-text-muted flex-shrink-0">
                 Status
               </span>
@@ -577,7 +578,7 @@ export function ContactInfoCard() {
             </div>
 
             {/* Type — row 3 */}
-            <div className="flex items-start justify-between gap-spacing-3 @[720px]:min-h-[40px]">
+            <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm leading-5 text-text-muted flex-shrink-0">
                 Type
               </span>
@@ -596,7 +597,7 @@ export function ContactInfoCard() {
             </div>
 
             {/* Timeframe — row 4 */}
-            <div className="flex items-start justify-between gap-spacing-3 @[720px]:min-h-[40px]">
+            <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm text-text-muted flex-shrink-0">
                 Timeframe
               </span>
@@ -616,6 +617,7 @@ export function ContactInfoCard() {
               </div>
             </div>
         </div>
+      </div>
       </div>
       </>
       )}
