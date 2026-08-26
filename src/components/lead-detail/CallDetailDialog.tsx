@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Sparkles, MessageSquare, Mic, GraduationCap, Search, Download, CircleCheck as CheckCircle2, Lightbulb, Check } from 'lucide-react';
+import { Sparkles, MessageSquare, Mic, GraduationCap, Search, Download, CircleCheck as CheckCircle2, Lightbulb, Check, Info } from 'lucide-react';
 import { useVersion } from '@/contexts/VersionContext';
 import {
   Dialog,
@@ -176,6 +176,11 @@ export function CallDetailDialog({ isOpen, onClose, activity }: CallDetailDialog
                       Recorded {activity.timestamp}
                     </div>
                   </div>
+
+                  <p className="flex items-start gap-spacing-2 mt-spacing-3 text-text-2 text-text-muted">
+                    <Info className="w-4 h-4 shrink-0 mt-[1px]" aria-hidden="true" />
+                    <span>Call recordings are available for 14 days after the call, then automatically deleted. Download a copy to keep it beyond that.</span>
+                  </p>
                 </div>
               </div>
             </TabsContent>
