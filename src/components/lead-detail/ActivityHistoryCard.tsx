@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import { Search, Plus, ChevronDown, Phone, MessageSquare, MessagesSquare, Mail, FileText, Heart, Hop as Home, Activity, MessageCircle, X } from 'lucide-react';
+import { Search, Plus, ChevronDown, Phone, MessageSquare, MessagesSquare, Mail, FileText, Heart, Activity, MessageCircle, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatTime, formatDateTimeWithYear } from '@/utils/formatDate';
 import {
@@ -26,6 +26,27 @@ import {
 import { useActivityFilter } from './ActivityFilterContext';
 import { LogActivityDialog } from './LogActivityDialog';
 
+// PROTECTED: Properties filter icon = lucide "Home" (house), INLINED as raw SVG on purpose.
+// It kept reverting to <Hop/> when using a lucide-react import. Do NOT replace this with an icon component. Keep it inline.
+function HouseIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+      <polyline points="9 22 9 12 15 12 15 22" />
+    </svg>
+  );
+}
+
 // ── Content-type filter categories ─────────────────────────────
 const CONTENT_FILTER_CATEGORIES = [
   { key: 'all', label: 'All Activity', icon: Activity, types: null },
@@ -37,8 +58,7 @@ const CONTENT_FILTER_CATEGORIES = [
   { key: 'notes', label: 'Notes', icon: FileText, types: ['note', 'created_a_followup_for', 'completed_a_followup_for', 'important_date_added'] },
   { key: 'searches', label: 'Searches', icon: Search, types: ['search', 'search_performed', 'saved_search', 'saved_search_added'] },
   { key: 'favorites', label: 'Favorites', icon: Heart, types: ['favorited', 'favorite_property_added'] },
-  /* PROTECTED: Properties filter icon = lucide "Home" (house). Do not swap to Hop/Globe/other. */
-  { key: 'properties', label: 'Properties', icon: Home, types: ['view', 'viewed', 'property_viewed', 'visited', 'video_played', 'market_report_viewed', 'tour_requested', 'valuation_inquired', 'opted_in_lender_tcpa'] },
+  { key: 'properties', label: 'Properties', icon: HouseIcon, types: ['view', 'viewed', 'property_viewed', 'visited', 'video_played', 'market_report_viewed', 'tour_requested', 'valuation_inquired', 'opted_in_lender_tcpa'] },
 ] as const;
 
 // (Log activity types moved into LogActivityDialog)
