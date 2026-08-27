@@ -151,10 +151,6 @@ export function LeadHeader() {
                 <span className="text-sm text-[#101828]">Send Agreement</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]">
-                <Mail className="w-4 h-4 mr-spacing-2 text-[#475467]" />
-                <span className="text-sm text-[#101828]">Send Postcard</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="px-spacing-3 py-spacing-2 cursor-pointer focus:bg-[#F9FAFB]">
                 <Video className="w-4 h-4 mr-spacing-2 text-[#475467]" />
                 <span className="text-sm text-[#101828]">Send BombBomb</span>
               </DropdownMenuItem>
