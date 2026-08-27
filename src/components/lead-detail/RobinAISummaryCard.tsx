@@ -190,21 +190,35 @@ export function RobinAISummaryCard() {
             {/* Tinted inner content area — purple bg */}
             <div className="relative rounded-1 bg-purple-10 p-spacing-3">
               {isGenerating ? (
-                <div className="space-y-spacing-3">
-                  {/* First paragraph — 3 lines */}
-                  <div className="space-y-2">
+                <div className="text-text-3 leading-relaxed">
+                  {/* Summary — 2 lines */}
+                  <div className="space-y-2 mb-spacing-3">
                     <div className="h-4 w-full rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
-                    <div className="h-4 w-11/12 rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
-                    <div className="h-4 w-3/4 rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
+                    <div className="h-4 w-[65%] rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
                   </div>
 
-                  {/* YOUR NEXT STEP heading placeholder — narrower bar */}
-                  <div className="h-3 w-32 rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
+                  {/* NEXT STEPS label */}
+                  <div className="h-3 w-[90px] rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
 
-                  {/* Second paragraph — 2 lines */}
-                  <div className="space-y-2">
-                    <div className="h-4 w-full rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
-                    <div className="h-4 w-4/5 rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
+                  {/* Action line */}
+                  <div className="h-4 w-[85%] rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer mt-spacing-2" />
+
+                  {/* Three checklist rows */}
+                  <ul className="space-y-spacing-1 pt-spacing-2">
+                    {[['70%'], ['58%'], ['64%']].map(([w], i) => (
+                      <li key={i} className="flex items-center gap-spacing-2">
+                        <div className="w-4 h-4 rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer shrink-0" />
+                        <div
+                          className="h-3 rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer"
+                          style={{ width: w }}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Feedback link */}
+                  <div className="pt-spacing-3">
+                    <div className="h-3 w-[170px] rounded-1 bg-gradient-to-r from-purple-20 via-purple-30 to-purple-20 bg-[length:200%_100%] animate-shimmer" />
                   </div>
                 </div>
               ) : (
