@@ -226,6 +226,22 @@ export function RobinAISummaryCard() {
                   {/* Full-width summary lead */}
                   <p>{SUMMARY_TEXT}</p>
 
+                  {/* Three "why" checklist items */}
+                  <ul className="space-y-spacing-1 pt-spacing-2">
+                    {NEXT_STEP_REASONS.map((reason) => (
+                      <li
+                        key={reason}
+                        className="flex items-start gap-spacing-2 text-text-3 text-text-default"
+                      >
+                        <Check
+                          className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]"
+                          aria-hidden="true"
+                        />
+                        <span>{reason}</span>
+                      </li>
+                    ))}
+                  </ul>
+
                   {/* Next Steps — the AI's single next lead touch */}
                   <div className="pt-spacing-3">
                     <div className={LABEL_CLASS}>NEXT STEPS</div>
@@ -246,22 +262,6 @@ export function RobinAISummaryCard() {
                         </>
                       )}
                     </p>
-
-                    {/* Three "why" checklist items */}
-                    <ul className="space-y-spacing-1 pt-spacing-2">
-                      {NEXT_STEP_REASONS.map((reason) => (
-                        <li
-                          key={reason}
-                          className="flex items-start gap-spacing-2 text-text-3 text-text-default"
-                        >
-                          <Check
-                            className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]"
-                            aria-hidden="true"
-                          />
-                          <span>{reason}</span>
-                        </li>
-                      ))}
-                    </ul>
                   </div>
 
                   {/* Feedback link */}
