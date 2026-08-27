@@ -112,30 +112,20 @@ export function CallDetailDialog({ isOpen, onClose, activity }: CallDetailDialog
                 </p>
 
                 {ai.nextStep && (
-                  <>
-                    <ul className="space-y-spacing-1 pt-spacing-2 mt-spacing-3">
-                      <li className="flex items-start gap-spacing-2 text-text-3 text-text-default">
-                        <Check className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" />
-                        <span>She confirmed her lender Letter of Intent on the call, so she's ready to tour.</span>
-                      </li>
-                      <li className="flex items-start gap-spacing-2 text-text-3 text-text-default">
-                        <Check className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" />
-                        <span>She asked to view next weekend, so lock in Saturday showings while intent is high.</span>
-                      </li>
-                      <li className="flex items-start gap-spacing-2 text-text-3 text-text-default">
-                        <Check className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" />
-                        <span>She prefers texts during work hours, so lead with a text rather than a call.</span>
-                      </li>
-                    </ul>
-                    <div className="rounded-2 bg-purple-10 p-spacing-4">
-                      <p className="text-text-2 font-semibold text-purple-110 uppercase tracking-wide mb-spacing-2">
-                        Next Step
-                      </p>
-                      <p className="text-text-3 text-text-default leading-relaxed">
-                        Today, text Camille a shortlist of 3BR townhomes in San Jose/Santa Clara ($650-750K) and propose Saturday showing times.
-                      </p>
-                    </div>
-                  </>
+                  <ul className="space-y-spacing-1 pt-spacing-2 mt-spacing-3">
+                    <li className="flex items-start gap-spacing-2 text-text-3 text-text-default">
+                      <Check className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" />
+                      <span>She confirmed her lender Letter of Intent on the call, so she's ready to tour.</span>
+                    </li>
+                    <li className="flex items-start gap-spacing-2 text-text-3 text-text-default">
+                      <Check className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" />
+                      <span>She asked to view next weekend, so lock in Saturday showings while intent is high.</span>
+                    </li>
+                    <li className="flex items-start gap-spacing-2 text-text-3 text-text-default">
+                      <Check className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" />
+                      <span>She prefers texts during work hours, so lead with a text rather than a call.</span>
+                    </li>
+                  </ul>
                 )}
               </div>
             </TabsContent>
