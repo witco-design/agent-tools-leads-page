@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Sparkles, ChevronDown, Check } from 'lucide-react';
 import { useLeadActions } from './LeadActionsContext';
@@ -8,7 +8,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from '@/components/ui/dialog';
 
 const SUMMARY_TEXT =
@@ -26,8 +25,6 @@ const NEXT_STEP_REASONS: string[] = [
 const LABEL_CLASS =
   'text-text-2 font-semibold uppercase tracking-wide text-purple-100';
 
-type FeedbackChoice = 'love' | 'needs-work' | null;
-
 function FeedbackModal({
   open,
   onOpenChange,
@@ -35,84 +32,26 @@ function FeedbackModal({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
-  const [choice, setChoice] = useState<FeedbackChoice>(null);
-  const [text, setText] = useState('');
-
-  useEffect(() => {
-    if (!open) {
-      setChoice(null);
-      setText('');
-    }
-  }, [open]);
-
-  const handleSubmit = () => onOpenChange(false);
+  const closeFeedback = () => onOpenChange(false);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md p-6">
         <DialogHeader>
-          <DialogTitle>How are you enjoying Geek AI Insights?</DialogTitle>
+          <DialogTitle className="text-text-5 font-semibold">Feedback</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-spacing-4 py-spacing-1">
-          <div className="flex gap-spacing-3">
-            <button
-              type="button"
-              onClick={() => setChoice('love')}
-              className={`flex-1 h-10 rounded-1 px-spacing-3 text-text-3 font-medium transition-colors cursor-pointer ${
-                choice === 'love'
-                  ? 'border border-purple-100 bg-purple-10 text-purple-120'
-                  : 'border border-border-default text-text-default hover:bg-bg-muted'
-              }`}
-            >
-              <span className="mr-spacing-1">&#128515;</span> Love it
-            </button>
-            <button
-              type="button"
-              onClick={() => setChoice('needs-work')}
-              className={`flex-1 h-10 rounded-1 px-spacing-3 text-text-3 font-medium transition-colors cursor-pointer ${
-                choice === 'needs-work'
-                  ? 'border border-purple-100 bg-purple-10 text-purple-120'
-                  : 'border border-border-default text-text-default hover:bg-bg-muted'
-              }`}
-            >
-              <span className="mr-spacing-1">&#128533;</span> Needs work
-            </button>
-          </div>
+        <p className="text-text-3 text-text-default">This link will redirect to a Google Form.</p>
 
-          <div className="space-y-spacing-1">
-            <label
-              htmlFor="geek-ai-feedback-text"
-              className="text-text-3 text-text-muted"
-            >
-              Tell us more (optional)
-            </label>
-            <textarea
-              id="geek-ai-feedback-text"
-              rows={3}
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              className="border border-border-default rounded-1 p-spacing-2 text-text-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-40 focus:border-purple-100"
-            />
-          </div>
+        <div className="flex justify-end pt-spacing-2">
+          <button
+            type="button"
+            onClick={closeFeedback}
+            className="inline-flex items-center justify-center h-9 px-spacing-4 rounded-1 bg-blue-100 text-white font-semibold text-text-3 hover:bg-blue-110 transition-colors cursor-pointer"
+          >
+            Close
+          </button>
         </div>
-
-        <DialogFooter>
-          <button
-            type="button"
-            onClick={() => onOpenChange(false)}
-            className="h-8 px-spacing-4 rounded-1 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            onClick={handleSubmit}
-            className="h-8 px-spacing-4 rounded-1 bg-purple-110 text-white text-text-3 font-semibold hover:bg-purple-120 active:bg-purple-120 transition-colors cursor-pointer"
-          >
-            Submit
-          </button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
