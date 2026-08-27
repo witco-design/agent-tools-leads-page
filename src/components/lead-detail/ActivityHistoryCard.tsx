@@ -123,7 +123,6 @@ const DATE_JUMPER_THRESHOLD = 100;
 
 // ── Main component ─────────────────────────────────────────────
 export function ActivityHistoryCard() {
-  const [activityOpen, setActivityOpen] = useState(true);
   const [pinnedOpen, setPinnedOpen] = useState(true);
   const [pinnedItems, setPinnedItems] = useState<ActivityItemData[]>([
     pinnedItem,
@@ -383,20 +382,8 @@ export function ActivityHistoryCard() {
               Activity History
             </h3>
           </div>
-          <button
-            type="button"
-            aria-label={activityOpen ? 'Collapse Activity History' : 'Expand Activity History'}
-            className="p-spacing-1 hover:bg-bg-muted rounded-1 transition-colors cursor-pointer"
-            onClick={() => setActivityOpen((prev) => !prev)}
-          >
-            <ChevronDown
-              className={`w-4 h-4 text-text-secondary transition-transform duration-200 ${activityOpen ? 'rotate-180' : ''}`}
-            />
-          </button>
         </div>
 
-        {activityOpen && (
-          <>
         {/* Hairline between title and toolbar */}
         <div className="border-t border-border-default" />
 
@@ -609,8 +596,6 @@ export function ActivityHistoryCard() {
               </div>
             )}
           </div>
-        )}
-          </>
         )}
       </div>
 
