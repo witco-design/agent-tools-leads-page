@@ -37,6 +37,7 @@ const CONTENT_FILTER_CATEGORIES = [
   { key: 'notes', label: 'Notes', icon: FileText, types: ['note', 'created_a_followup_for', 'completed_a_followup_for', 'important_date_added'] },
   { key: 'searches', label: 'Searches', icon: Search, types: ['search', 'search_performed', 'saved_search', 'saved_search_added'] },
   { key: 'favorites', label: 'Favorites', icon: Heart, types: ['favorited', 'favorite_property_added'] },
+  /* PROTECTED: Properties filter icon = lucide "Home" (house). Do not swap to Hop/Globe/other. */
   { key: 'properties', label: 'Properties', icon: Home, types: ['view', 'viewed', 'property_viewed', 'visited', 'video_played', 'market_report_viewed', 'tour_requested', 'valuation_inquired', 'opted_in_lender_tcpa'] },
 ] as const;
 
