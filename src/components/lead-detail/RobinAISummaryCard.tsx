@@ -243,7 +243,7 @@ export function RobinAISummaryCard() {
                   </ul>
 
                   {/* Next Steps — the AI's single next lead touch */}
-                  <div className="pt-spacing-3">
+                  <div className="pt-spacing-5">
                     <div className={LABEL_CLASS}>NEXT STEPS</div>
 
                     {/* First line + (V2 only) inline Take over link */}
