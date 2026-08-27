@@ -98,10 +98,12 @@ export function LeadHeader() {
           <h1 className="text-text-7 font-semibold text-text-default whitespace-nowrap min-w-0 m-0 leading-none">
             <button
               type="button"
+              aria-label="Edit name"
               onClick={() => openContactDialog('firstName')}
-              className="text-left hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-40 focus-visible:ring-offset-2 rounded-1"
+              className="inline-flex items-center gap-spacing-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-40 focus-visible:ring-offset-2 rounded-1"
             >
               <TruncatedText fullText={leadName}>{leadName}</TruncatedText>
+              <Pencil className="w-4 h-4 text-text-muted shrink-0 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150" aria-hidden="true" />
             </button>
           </h1>
         </div>
