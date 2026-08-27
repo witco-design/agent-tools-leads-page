@@ -1,6 +1,10 @@
 import { Skeleton } from '@/components/ui/skeleton';
+import { useVersion } from '@/contexts/VersionContext';
 
 export function LeadDetailPageSkeleton() {
+  const { version } = useVersion();
+  const isV1 = version === 'V1';
+
   return (
     <>
       {/* === FLOATING LEAD HEADER === */}
@@ -30,15 +34,17 @@ export function LeadDetailPageSkeleton() {
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-spacing-4 mt-spacing-10">
         {/* ============ LEFT COLUMN ============ */}
         <div className="flex flex-col gap-spacing-4">
-          {/* Tags container skeleton */}
-          <div className="bg-white border border-[#E4E7EC] rounded-3 p-spacing-3">
-            <div className="flex items-center gap-spacing-2">
-              <Skeleton className="h-7 w-24 rounded-round" />
-              <Skeleton className="h-7 w-32 rounded-round" />
-              <Skeleton className="h-7 w-28 rounded-round" />
-              <Skeleton className="h-7 w-24 rounded-round" />
+          {/* Tags container skeleton — V2 only (matches LeadSignalTagsCard gating) */}
+          {!isV1 && (
+            <div className="bg-white border border-[#E4E7EC] rounded-3 p-spacing-3">
+              <div className="flex items-center gap-spacing-2">
+                <Skeleton className="h-7 w-24 rounded-round" />
+                <Skeleton className="h-7 w-32 rounded-round" />
+                <Skeleton className="h-7 w-28 rounded-round" />
+                <Skeleton className="h-7 w-24 rounded-round" />
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Data container skeleton (3 columns) */}
           <div className="bg-white border border-[#E4E7EC] rounded-3 overflow-hidden">
@@ -145,8 +151,8 @@ export function LeadDetailPageSkeleton() {
 
           {/* Section card stubs (4 cards) */}
           {[
-            { headerWidth: 'w-32', bodyRows: 1, bodyType: 'note' as const },
             { headerWidth: 'w-28', bodyRows: 7, bodyType: 'rows' as const },
+            { headerWidth: 'w-32', bodyRows: 1, bodyType: 'note' as const },
             { headerWidth: 'w-24', bodyRows: 6, bodyType: 'rows' as const },
             { headerWidth: 'w-28', bodyRows: 4, bodyType: 'rows' as const },
           ].map((section, i) => (
