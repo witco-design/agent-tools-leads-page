@@ -328,7 +328,7 @@ function CoachingTab({ coaching }: { coaching: CoachingData }) {
         </div>
         <div className="border border-border-default rounded-2 p-spacing-5">
           <h3 className="text-text-6 font-bold text-text-default mb-spacing-5">{tier.headline}</h3>
-          <div className="flex flex-col sm:flex-row gap-spacing-6">
+          <div className="flex flex-col sm:flex-row gap-spacing-10">
             {/* LEFT: semicircle gauge + dimension legend */}
             <div className="flex flex-col items-center gap-spacing-4 shrink-0">
               <div className="relative w-[200px] h-[124px]">
