@@ -392,35 +392,41 @@ function CoachingTab({ coaching }: { coaching: CoachingData }) {
         <div className="text-text-3 font-semibold text-text-default mb-spacing-3">
           Talk time
         </div>
-        <div className="space-y-spacing-3">
-          <div>
-            <div className="flex justify-between text-text-3 text-text-default mb-spacing-1">
-              <span>{coaching.agentName}</span>
-              <span className="text-text-muted">{coaching.agentTalkPct}%</span>
-            </div>
-            <div className="h-2 rounded-1 bg-gray-30 overflow-hidden">
-              <div
-                className="h-full bg-blue-100 transition-all duration-300"
-                style={{ width: `${coaching.agentTalkPct}%` }}
-              />
-            </div>
-            <div className="flex items-center gap-spacing-1 mt-spacing-2 text-text-2 text-green-100">
-              <Check className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
-              <span>Agent talk-time within the 40–45% listen-first range</span>
-            </div>
+        <div className="space-y-spacing-2">
+          {/* Legend — agent (blue) left, lead (green) right */}
+          <div className="flex items-center justify-between text-text-3 text-text-default">
+            <span className="flex items-center gap-spacing-2">
+              <span className="w-2 h-2 rounded-round bg-blue-100 shrink-0" />
+              {coaching.agentName} <span className="text-text-muted">· Agent</span>
+              <span className="font-semibold">{coaching.agentTalkPct}%</span>
+            </span>
+            <span className="flex items-center gap-spacing-2">
+              <span className="w-2 h-2 rounded-round bg-green-100 shrink-0" />
+              {coaching.customerName}
+              <span className="font-semibold">{coaching.customerTalkPct}%</span>
+            </span>
           </div>
 
-          <div>
-            <div className="flex justify-between text-text-3 text-text-default mb-spacing-1">
-              <span>{coaching.customerName}</span>
-              <span className="text-text-muted">{coaching.customerTalkPct}%</span>
-            </div>
-            <div className="h-2 rounded-1 bg-gray-30 overflow-hidden">
-              <div
-                className="h-full bg-green-100 transition-all duration-300"
-                style={{ width: `${coaching.customerTalkPct}%` }}
-              />
-            </div>
+          {/* Single stacked 100% bar: blue = agent, green = lead */}
+          <div
+            className="flex h-3 w-full rounded-1 overflow-hidden bg-gray-30"
+            role="img"
+            aria-label={`Talk time: agent ${coaching.agentTalkPct}%, lead ${coaching.customerTalkPct}%`}
+          >
+            <div
+              className="h-full bg-blue-100 transition-all duration-300"
+              style={{ width: `${coaching.agentTalkPct}%` }}
+            />
+            <div
+              className="h-full bg-green-100 transition-all duration-300"
+              style={{ width: `${coaching.customerTalkPct}%` }}
+            />
+          </div>
+
+          {/* Listen-first check line */}
+          <div className="flex items-center gap-spacing-2 text-text-3 text-green-100">
+            <Check className="w-4 h-4 shrink-0" aria-hidden="true" />
+            <span>Agent talk-time within the 40–45% listen-first range</span>
           </div>
         </div>
 
