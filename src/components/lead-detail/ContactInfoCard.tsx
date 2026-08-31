@@ -10,7 +10,7 @@ import {
   Copy,
   Flag,
   Trash2,
-  Crop,
+  Zap,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -315,7 +315,7 @@ export function ContactInfoCard() {
       {/* ── Snapshot header ── */}
       <div className="px-spacing-5 py-spacing-3 flex items-center justify-between">
         <div className="flex items-center gap-spacing-2">
-          <Crop className="w-4 h-4 text-blue-100 shrink-0" />
+          <Zap className="w-4 h-4 text-blue-100 shrink-0" />
           <h3 className="text-text-4 font-semibold text-text-default">Snapshot</h3>
         </div>
         <button

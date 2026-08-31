@@ -519,7 +519,7 @@ export function ActivityHistoryCard() {
               <div key={group.date}>
                 {/* Date heading */}
                 <div className="px-spacing-5 py-spacing-3 border-t border-b border-border-default">
-                  <span className="text-text-3 font-semibold text-text-secondary uppercase tracking-wide">
+                  <span className="text-text-3 font-semibold text-text-secondary">
                     {group.label}
                   </span>
                 </div>
