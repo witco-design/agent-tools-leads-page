@@ -67,7 +67,7 @@ export default function LeadDetailPage() {
     <ContactInfoProvider initial={INITIAL_CONTACT_INFO}>
     <LeadActionsProvider>
     <ActivityFilterProvider>
-      <div className="min-h-screen w-full overflow-x-hidden bg-blue-100/7">
+      <div className="min-h-screen w-full overflow-x-hidden bg-[#f1f5fd]">
         {/* Header — fixed, full viewport width, z-30 */}
         <div
           className="fixed top-0 left-0 z-30 transition-all duration-200"
