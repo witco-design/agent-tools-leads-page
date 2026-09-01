@@ -250,7 +250,7 @@ export function SecondaryContactCard() {
                 icon={UserPlus}
                 title="No secondary contact"
                 subtitle="Add a spouse, assistant, or other contact associated with this lead."
-                action={{ label: 'Add Contact', onClick: () => openDialog('name') }}
+                action={{ label: 'Add secondary contact', onClick: () => openDialog('name') }}
               />
             ) : isEmpty ? (
               <div className="space-y-spacing-3">

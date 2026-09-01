@@ -19,8 +19,8 @@ export function ActivityStatsCard() {
       {emptyMode ? (
         <EmptyState
           icon={BarChart3}
-          title="No activity stats yet"
-          subtitle="Searches, visits, and property views will appear here as the lead engages with the website."
+          title="No activity to measure yet"
+          subtitle="Searches, visits, and saved properties will tally here."
         />
       ) : (
       <div className="space-y-spacing-1">

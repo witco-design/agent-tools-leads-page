@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { ArrowRight, UserCog } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { CollapsibleCard } from './CollapsibleCard';
 import { SectionActionButton } from './SectionActionButton';
-import { EmptyState } from './EmptyState';
 import { useVersion } from '@/contexts/VersionContext';
 import {
   Select,
@@ -41,7 +40,7 @@ const LENDER_MAP: Record<string, string> = {
 
 export function LeadAssignmentCard() {
   const { emptyMode } = useVersion();
-  const [agent, setAgent] = useState('jon-scharer');
+  const [agent, setAgent] = useState(emptyMode ? 'unassigned' : 'jon-scharer');
   const [lender, setLender] = useState('unassigned');
   const [pondOpen, setPondOpen] = useState(false);
 
@@ -71,13 +70,6 @@ export function LeadAssignmentCard() {
           </div>
         }
       >
-        {emptyMode ? (
-          <EmptyState
-            icon={UserCog}
-            title="No assignment yet"
-            subtitle="Agent and lender assignments will appear here once this lead is assigned."
-          />
-        ) : (
         <div className="space-y-spacing-3">
           <div className="flex items-center gap-spacing-2">
             <span className="text-text-3 font-normal text-text-secondary w-[60px] shrink-0">
@@ -115,7 +107,6 @@ export function LeadAssignmentCard() {
             </div>
           </div>
         </div>
-        )}
       </CollapsibleCard>
 
       <AlertDialog open={pondOpen} onOpenChange={setPondOpen}>

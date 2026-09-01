@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { Pencil, Radio } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 import { toast } from 'sonner';
 import { CollapsibleCard } from './CollapsibleCard';
-import { EmptyState } from './EmptyState';
 import { SectionActionButton } from './SectionActionButton';
 import { useVersion } from '@/contexts/VersionContext';
 import {
@@ -42,6 +41,7 @@ export function SourceCard() {
       <CollapsibleCard
         title="Source"
         rightAction={
+          emptyMode ? undefined : (
           <SectionActionButton
             label="Edit"
             icon={Pencil}
@@ -49,14 +49,18 @@ export function SourceCard() {
             variant="link"
             onClick={() => setEditOpen(true)}
           />
+          )
         }
       >
         {emptyMode ? (
-          <EmptyState
-            icon={Radio}
-            title="No source tracked"
-            subtitle="The lead source will appear here once it is captured from the website or imported."
-          />
+          <div className="flex items-center gap-spacing-2">
+            <span className="text-text-3 font-normal text-text-secondary w-[60px] shrink-0">
+              Source
+            </span>
+            <span className="text-text-3 font-normal text-text-muted">
+              No source recorded
+            </span>
+          </div>
         ) : (
         <div className="flex items-center gap-spacing-2">
           <span className="text-text-3 font-normal text-text-secondary w-[60px] shrink-0">

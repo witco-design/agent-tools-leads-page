@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
-import { ExternalLink, SlidersHorizontal } from 'lucide-react';
+import { ExternalLink, SearchCheck } from 'lucide-react';
 import { toast } from 'sonner';
 import { CollapsibleCard } from './CollapsibleCard';
 import { EmptyState } from './EmptyState';
@@ -92,7 +92,7 @@ export function SearchCriteriaCard() {
   return (
     <CollapsibleCard
       title="Search Criteria"
-      footer={
+      footer={emptyMode ? undefined : (
         <div className="flex justify-end">
           <SectionActionButton
             label="See Search Results"
@@ -102,13 +102,14 @@ export function SearchCriteriaCard() {
             onClick={() => toast('Running search on website with current criteria…')}
           />
         </div>
-      }
+      )}
     >
       {emptyMode ? (
         <EmptyState
-          icon={SlidersHorizontal}
-          title="No search criteria"
-          subtitle="Search criteria will appear here once the lead starts searching for properties on the website."
+          icon={SearchCheck}
+          title="No search criteria set"
+          subtitle="Add price, location, and beds/baths to match listings."
+          action={{ label: 'Add criteria', onClick: () => toast('Add search criteria') }}
         />
       ) : (
       <div className="space-y-spacing-3">

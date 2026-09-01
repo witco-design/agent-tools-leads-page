@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Expand, Pencil, StickyNote, FileText } from 'lucide-react';
+import { Expand, Pencil, StickyNote, NotebookPen } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { CollapsibleCard } from './CollapsibleCard';
@@ -58,10 +58,10 @@ export function ImportantNotesCard() {
       >
         {emptyMode ? (
           <EmptyState
-            icon={FileText}
-            title="No important notes"
-            subtitle="Notes will appear here once you add context about this lead's needs and preferences."
-            action={{ label: 'Add Notes', onClick: () => setNotesModalOpen(true) }}
+            icon={NotebookPen}
+            title="No notes yet"
+            subtitle="Jot down context so the team stays in sync."
+            action={{ label: 'Add note', onClick: () => setNotesModalOpen(true) }}
           />
         ) : (
         <>

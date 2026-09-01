@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Ellipsis as MoreHorizontal, Calendar } from 'lucide-react';
+import { Ellipsis as MoreHorizontal, CalendarDays } from 'lucide-react';
 import { toast } from 'sonner';
 import { CollapsibleCard } from './CollapsibleCard';
 import { EmptyState } from './EmptyState';
@@ -250,20 +250,20 @@ export function ImportantDatesCard() {
       <CollapsibleCard
         title="Important Dates"
         countBadge={emptyMode ? 0 : dates.length}
-        footer={
+        footer={emptyMode ? undefined : (
           <SectionActionButton
             label="Add Date"
             variant="link"
             onClick={() => setAddOpen(true)}
           />
-        }
+        )}
       >
         {emptyMode ? (
           <EmptyState
-            icon={Calendar}
+            icon={CalendarDays}
             title="No important dates"
-            subtitle="Add birthdays, anniversaries, or closing dates to track key milestones."
-            action={{ label: 'Add Date', onClick: () => setAddOpen(true) }}
+            subtitle="Track birthdays, closing dates, and anniversaries."
+            action={{ label: 'Add date', onClick: () => setAddOpen(true) }}
           />
         ) : (
         <div className="space-y-spacing-3">

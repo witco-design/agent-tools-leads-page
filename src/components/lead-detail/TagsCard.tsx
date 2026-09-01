@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Plus, X, Tag } from 'lucide-react';
+import { Plus, X, Tags } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -60,9 +60,9 @@ export function TagsCard() {
       <CollapsibleCard data-component="LeadSignalTagsCard" title="Custom Tags" countBadge={emptyMode ? 0 : tags.length}>
         {emptyMode ? (
           <EmptyState
-            icon={Tag}
-            title="No custom tags"
-            subtitle="Tags help you categorize and filter leads. Add one below."
+            icon={Tags}
+            title="No tags yet"
+            subtitle="Tag this lead to group and filter them."
             action={{ label: 'Add tag', onClick: () => inputRef.current?.focus() }}
           />
         ) : (

@@ -1,7 +1,7 @@
 import { CollapsibleCard } from './CollapsibleCard';
 import { EmptyState } from './EmptyState';
 import { useVersion } from '@/contexts/VersionContext';
-import { Sparkles } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { TruncatedText } from './TruncatedText';
 import { ChannelIcon } from './ChannelIcon';
@@ -13,9 +13,9 @@ export function HighlightsCard() {
       <CollapsibleCard id="highlights" data-component="HighlightsCard" title="Highlights">
         {emptyMode ? (
           <EmptyState
-            icon={Sparkles}
-            title="No highlights yet"
-            subtitle="Lead activity highlights will appear here as the lead engages with your website and listings."
+            icon={Star}
+            title="Nothing to highlight yet"
+            subtitle="Key milestones and lead details will surface here."
           />
         ) : (
         <div className="space-y-spacing-3">

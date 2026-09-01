@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pencil, ChevronUp, ChevronDown, GripVertical, User } from 'lucide-react';
+import { Pencil, ChevronUp, ChevronDown, GripVertical, UserRound } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -191,7 +191,8 @@ export function ContactInfoSection() {
             </h3>
           </button>
 
-          {/* Edit link */}
+          {/* Edit link — hidden in empty mode */}
+          {!emptyMode && (
           <SectionActionButton
             label="Edit"
             icon={Pencil}
@@ -200,6 +201,7 @@ export function ContactInfoSection() {
             onClick={() => openContactDialog()}
             className="ml-spacing-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 rounded-1"
           />
+          )}
 
           <div className="flex-1" />
 
@@ -231,10 +233,10 @@ export function ContactInfoSection() {
           <div className="px-spacing-5 py-spacing-4 space-y-spacing-2">
             {emptyMode ? (
               <EmptyState
-                icon={User}
-                title="No contact info"
-                subtitle="Contact details will appear here once added. Click Edit to add information."
-                action={{ label: 'Edit', onClick: () => openContactDialog() }}
+                icon={UserRound}
+                title="No contact details yet"
+                subtitle="Add a name, phone, email, or address for this lead."
+                action={{ label: 'Add details', onClick: () => openContactDialog() }}
               />
             ) : isEmpty ? (
               <div className="text-sm text-text-muted italic">
