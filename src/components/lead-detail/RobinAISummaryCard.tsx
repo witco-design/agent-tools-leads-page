@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Sparkles, ChevronDown, Check } from 'lucide-react';
 import { useLeadActions } from './LeadActionsContext';
 import { useVersion } from '@/contexts/VersionContext';
+import { EmptyState } from './EmptyState';
 import {
   Dialog,
   DialogContent,
@@ -80,7 +81,7 @@ export function RobinAISummaryCard() {
   const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   const { openAction } = useLeadActions();
-  const { version } = useVersion();
+  const { version, emptyMode } = useVersion();
 
   return (
     <>
@@ -128,7 +129,13 @@ export function RobinAISummaryCard() {
           <div className="px-spacing-5 py-spacing-4">
             {/* Tinted inner content area — purple bg */}
             <div className="relative rounded-1 bg-purple-10 p-spacing-3">
-              {isGenerating ? (
+              {emptyMode ? (
+                <EmptyState
+                  icon={Sparkles}
+                  title="No AI insights yet"
+                  subtitle="Geek AI insights will appear here once the lead has enough activity for analysis."
+                />
+              ) : isGenerating ? (
                 <div className="text-text-3 leading-relaxed">
                   {/* Summary — 2 lines */}
                   <div className="space-y-2 mb-spacing-3">

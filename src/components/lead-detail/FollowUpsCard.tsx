@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { Pencil, AlarmClock, Video, Mail, ArrowRight } from 'lucide-react';
+import { Pencil, AlarmClock, Video, Mail, ArrowRight, SquareCheck as CheckSquare } from 'lucide-react';
 import { toast } from 'sonner';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { CollapsibleCard } from './CollapsibleCard';
 import { SectionActionButton } from './SectionActionButton';
+import { EmptyState } from './EmptyState';
+import { useVersion } from '@/contexts/VersionContext';
 import {
   Dialog,
   DialogContent,
@@ -54,6 +56,7 @@ const initialFollowUps: FollowUpItem[] = [
 ];
 
 export function FollowUpsCard() {
+  const { emptyMode } = useVersion();
   const [followUps, setFollowUps] = useState<FollowUpItem[]>(initialFollowUps);
 
   // Add dialog
@@ -151,6 +154,15 @@ export function FollowUpsCard() {
           </div>
         }
       >
+        {emptyMode ? (
+          <EmptyState
+            icon={CheckSquare}
+            title="No follow-ups"
+            subtitle="Follow-ups will appear here as you schedule reminders to stay in touch with this lead."
+            ctaLabel="Add Followup"
+            onCtaClick={() => setAddOpen(true)}
+          />
+        ) : (
         <div>
           {followUps.map((item) => (
             <div
@@ -216,6 +228,7 @@ export function FollowUpsCard() {
             </div>
           ))}
         </div>
+        )}
       </CollapsibleCard>
 
       {/* Add Follow-up Dialog */}

@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { Expand, Pencil, StickyNote } from 'lucide-react';
+import { Expand, Pencil, StickyNote, FileText } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { CollapsibleCard } from './CollapsibleCard';
 import { SectionActionButton } from './SectionActionButton';
+import { EmptyState } from './EmptyState';
+import { useVersion } from '@/contexts/VersionContext';
 import { ImportantNotesModal } from './ImportantNotesModal';
 import { PinnedFloatingDialog } from '@/components/PinnedFloatingDialog';
 
@@ -16,6 +18,7 @@ Key priorities: walkable neighborhoods, good schools (no kids yet but planning),
 Budget headroom up to $800K if exceptional property.`;
 
 export function ImportantNotesCard() {
+  const { emptyMode } = useVersion();
   const [notesModalOpen, setNotesModalOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [noteText, setNoteText] = useState(NOTE_CONTENT);
@@ -42,15 +45,28 @@ export function ImportantNotesCard() {
         data-component="ImportantNotesCard"
         title="Important Notes"
         rightAction={
-          <SectionActionButton
-            label="Edit"
-            icon={Pencil}
-            iconPosition="before"
-            variant="link"
-            onClick={() => setNotesModalOpen(true)}
-          />
+          emptyMode ? undefined : (
+            <SectionActionButton
+              label="Edit"
+              icon={Pencil}
+              iconPosition="before"
+              variant="link"
+              onClick={() => setNotesModalOpen(true)}
+            />
+          )
         }
       >
+        {emptyMode ? (
+          <EmptyState
+            icon={FileText}
+            title="No important notes"
+            subtitle="Notes will appear here once you add context about this lead's needs and preferences."
+            ctaLabel="Add Notes"
+            ctaIcon={Pencil}
+            onCtaClick={() => setNotesModalOpen(true)}
+          />
+        ) : (
+        <>
         {/**
          * PROTECTED — Standardized card layout for Notes + AI Insights.
          * Content area is a fixed 200px scrollable region with a fade gradient
@@ -101,6 +117,8 @@ export function ImportantNotesCard() {
             </button>
           </div>
         </div>
+        </>
+        )}
       </CollapsibleCard>
 
       {/* Pinned floating dialog — full notes view */}

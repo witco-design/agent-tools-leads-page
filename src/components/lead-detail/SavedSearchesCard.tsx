@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { ArrowRight, Info } from 'lucide-react';
+import { ArrowRight, Info, Search, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 import { CollapsibleCard } from './CollapsibleCard';
+import { EmptyState } from './EmptyState';
+import { SectionActionButton } from './SectionActionButton';
+import { useVersion } from '@/contexts/VersionContext';
 import { TruncatedText } from './TruncatedText';
 import {
   Dialog,
@@ -39,6 +42,7 @@ const initialSearches: SavedSearch[] = [
 ];
 
 export function SavedSearchesCard() {
+  const { emptyMode } = useVersion();
   const [searches, setSearches] = useState<SavedSearch[]>(initialSearches);
   const [detailOpen, setDetailOpen] = useState(false);
   const [detailSearch, setDetailSearch] = useState<SavedSearch | null>(null);
@@ -118,15 +122,20 @@ export function SavedSearchesCard() {
           </HoverCard>
         }
         footer={
-          <button
-            type="button"
+          <SectionActionButton
+            label="+ Add Saved Search"
+            variant="link"
             onClick={() => setAddOpen(true)}
-            className="text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
-          >
-            + Add Saved Search
-          </button>
+          />
         }
       >
+        {emptyMode ? (
+          <EmptyState
+            icon={Search}
+            title="No saved searches"
+            subtitle="Saved searches will appear here as the lead browses and saves property searches on the website."
+          />
+        ) : (
         <div>
           {/* Saved search rows */}
           {searches.map((search) => (
@@ -143,6 +152,7 @@ export function SavedSearchesCard() {
             </button>
           ))}
         </div>
+        )}
       </CollapsibleCard>
 
       {/* Saved Search Detail */}

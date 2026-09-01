@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Ellipsis as MoreHorizontal } from 'lucide-react';
+import { Ellipsis as MoreHorizontal, Calendar } from 'lucide-react';
 import { toast } from 'sonner';
 import { CollapsibleCard } from './CollapsibleCard';
+import { EmptyState } from './EmptyState';
+import { SectionActionButton } from './SectionActionButton';
+import { useVersion } from '@/contexts/VersionContext';
 import {
   Dialog,
   DialogContent,
@@ -201,6 +204,7 @@ function DateDialog({
 }
 
 export function ImportantDatesCard() {
+  const { emptyMode } = useVersion();
   const [dates, setDates] = useState<DateItem[]>(INITIAL_DATES);
   const [addOpen, setAddOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
@@ -245,17 +249,24 @@ export function ImportantDatesCard() {
     <>
       <CollapsibleCard
         title="Important Dates"
-        countBadge={dates.length}
+        countBadge={emptyMode ? 0 : dates.length}
         footer={
-          <button
-            type="button"
+          <SectionActionButton
+            label="Add Date"
+            variant="link"
             onClick={() => setAddOpen(true)}
-            className="text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
-          >
-            Add Date
-          </button>
+          />
         }
       >
+        {emptyMode ? (
+          <EmptyState
+            icon={Calendar}
+            title="No important dates"
+            subtitle="Add birthdays, anniversaries, or closing dates to track key milestones."
+            ctaLabel="Add Date"
+            onCtaClick={() => setAddOpen(true)}
+          />
+        ) : (
         <div className="space-y-spacing-3">
           {sorted.map((item) => (
             <div key={item.id} className="group grid grid-cols-[100px_1fr_auto] gap-x-spacing-2 items-start">
@@ -296,6 +307,7 @@ export function ImportantDatesCard() {
             </div>
           ))}
         </div>
+        )}
       </CollapsibleCard>
 
       <DateDialog

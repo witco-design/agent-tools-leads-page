@@ -7,15 +7,12 @@ const SEGMENTS: { label: string; value: Version }[] = [
 ];
 
 export function VersionToggle() {
-  const { version, setVersion } = useVersion();
+  const { version, setVersion, emptyMode, setEmptyMode } = useVersion();
 
   return (
     <div
       role="group"
       aria-label="Experience version"
-      // Tracks --sidebar-width (broadcast by Sidebar.tsx) plus the DevMode
-      // button width (40px) and the gap (8px) so this toggle sits just to
-      // the right of the DevMode button and moves with it on collapse/expand.
       style={{
         left: 'calc(var(--sidebar-width, 184px) + 16px + 40px + 8px)',
       }}
@@ -40,6 +37,21 @@ export function VersionToggle() {
           </button>
         );
       })}
+
+      {/* Empty toggle — on/off, not part of V1/V2 group */}
+      <button
+        type="button"
+        onClick={() => setEmptyMode(!emptyMode)}
+        aria-pressed={emptyMode}
+        className={cn(
+          'h-8 px-3 rounded-full text-sm font-semibold transition-colors cursor-pointer',
+          emptyMode
+            ? 'bg-blue-100 text-white'
+            : 'text-white/60 hover:text-white',
+        )}
+      >
+        Empty
+      </button>
     </div>
   );
 }

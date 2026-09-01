@@ -1,12 +1,23 @@
 import { CollapsibleCard } from './CollapsibleCard';
+import { EmptyState } from './EmptyState';
+import { useVersion } from '@/contexts/VersionContext';
+import { Sparkles } from 'lucide-react';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { TruncatedText } from './TruncatedText';
 import { ChannelIcon } from './ChannelIcon';
 
 export function HighlightsCard() {
+  const { emptyMode } = useVersion();
   return (
     <TooltipProvider delayDuration={200}>
       <CollapsibleCard id="highlights" data-component="HighlightsCard" title="Highlights">
+        {emptyMode ? (
+          <EmptyState
+            icon={Sparkles}
+            title="No highlights yet"
+            subtitle="Lead activity highlights will appear here as the lead engages with your website and listings."
+          />
+        ) : (
         <div className="space-y-spacing-3">
           <div className="flex items-center py-spacing-1">
             <span className="text-text-3 font-normal text-text-secondary flex-1">
@@ -50,6 +61,7 @@ export function HighlightsCard() {
             </span>
           </div>
         </div>
+        )}
       </CollapsibleCard>
     </TooltipProvider>
   );

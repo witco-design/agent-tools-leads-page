@@ -1,4 +1,7 @@
 import { CollapsibleCard } from './CollapsibleCard';
+import { EmptyState } from './EmptyState';
+import { useVersion } from '@/contexts/VersionContext';
+import { ChartBar as BarChart3 } from 'lucide-react';
 
 const stats = [
   { label: 'Searches', value: '3' },
@@ -10,8 +13,16 @@ const stats = [
 ];
 
 export function ActivityStatsCard() {
+  const { emptyMode } = useVersion();
   return (
     <CollapsibleCard data-component="ActivityStatsCard" title="Activity Stats">
+      {emptyMode ? (
+        <EmptyState
+          icon={BarChart3}
+          title="No activity stats yet"
+          subtitle="Searches, visits, and property views will appear here as the lead engages with the website."
+        />
+      ) : (
       <div className="space-y-spacing-1">
         {/* INTENTIONAL: rows are display-only. Do not add onClick, hover, or selected-state styling.
             Feed-filter coupling was explicitly removed. Use the feed toolbar filter pill instead. */}
@@ -25,6 +36,7 @@ export function ActivityStatsCard() {
           </div>
         ))}
       </div>
+      )}
     </CollapsibleCard>
   );
 }

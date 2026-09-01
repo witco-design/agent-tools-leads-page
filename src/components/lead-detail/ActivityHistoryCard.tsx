@@ -25,6 +25,9 @@ import {
 } from './activityData';
 import { useActivityFilter } from './ActivityFilterContext';
 import { LogActivityDialog } from './LogActivityDialog';
+import { EmptyState } from './EmptyState';
+import { useVersion } from '@/contexts/VersionContext';
+import { Activity as ActivityIcon } from 'lucide-react';
 
 // PROTECTED: Properties filter icon = lucide "Home" (house), INLINED as raw SVG on purpose.
 // It kept reverting to <Hop/> when using a lucide-react import. Do NOT replace this with an icon component. Keep it inline.
@@ -123,6 +126,7 @@ const DATE_JUMPER_THRESHOLD = 100;
 
 // ── Main component ─────────────────────────────────────────────
 export function ActivityHistoryCard() {
+  const { emptyMode } = useVersion();
   const [pinnedOpen, setPinnedOpen] = useState(true);
   const [pinnedItems, setPinnedItems] = useState<ActivityItemData[]>([
     pinnedItem,
@@ -388,6 +392,7 @@ export function ActivityHistoryCard() {
         <div className="border-t border-border-default" />
 
         {/* ── BAR 2: Toolbar ──────────────────────────────────── */}
+        {emptyMode ? null : (
         <div className="px-spacing-5 py-spacing-3 flex flex-wrap items-center gap-spacing-2">
           {/* Add Note button */}
           <button
@@ -473,11 +478,13 @@ export function ActivityHistoryCard() {
             )}
           </div>
         </div>
+        )}
 
         {/* Hairline between toolbar and content */}
-        <div className="border-t border-border-default" />
+        {emptyMode ? null : <div className="border-t border-border-default" />}
 
         {/* ── Pinned Section ──────────────────────────────────── */}
+        {emptyMode ? null : (
         <div className="mt-0">
           <button
             type="button"
@@ -511,9 +518,16 @@ export function ActivityHistoryCard() {
             </div>
           )}
         </div>
+        )}
 
         {/* ── Historical Timeline (date-grouped) ──────────────── */}
-        {!hasNoHistoricalResults ? (
+        {emptyMode ? (
+          <EmptyState
+            icon={ActivityIcon}
+            title="No activity yet"
+            subtitle="Calls, emails, texts, and notes will appear here as the lead engages with your outreach."
+          />
+        ) : !hasNoHistoricalResults ? (
           <div role="region" aria-label="Activity history" aria-live="polite">
             {dateGroups.map((group) => (
               <div key={group.date}>
@@ -556,7 +570,7 @@ export function ActivityHistoryCard() {
         )}
 
         {/* ── Show more / Date jumper ──────────────────────────── */}
-        {!hasNoHistoricalResults && hasMore && (
+        {emptyMode ? null : !hasNoHistoricalResults && hasMore && (
           <div className="px-spacing-5 py-spacing-4 border-t border-border-default">
             {visibleCount < DATE_JUMPER_THRESHOLD ? (
               <button

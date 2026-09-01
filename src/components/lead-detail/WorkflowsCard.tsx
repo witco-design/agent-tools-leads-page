@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Play, X } from 'lucide-react';
+import { Play, X, GitBranch } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatDateWithYear } from '@/utils/formatDate';
 import {
@@ -30,6 +30,8 @@ import {
 import { CollapsibleCard } from './CollapsibleCard';
 import { TruncatedText } from './TruncatedText';
 import { SectionActionButton } from './SectionActionButton';
+import { EmptyState } from './EmptyState';
+import { useVersion } from '@/contexts/VersionContext';
 
 interface WorkflowItem {
   id: string;
@@ -52,6 +54,7 @@ const availableWorkflows = [
 ];
 
 export function WorkflowsCard() {
+  const { emptyMode } = useVersion();
   const [workflows, setWorkflows] = useState<WorkflowItem[]>(initialWorkflows);
   const [selectedWorkflow, setSelectedWorkflow] = useState<string>('');
   const [detailOpen, setDetailOpen] = useState(false);
@@ -109,16 +112,19 @@ export function WorkflowsCard() {
         title="Workflows"
         infoTooltip="A drip campaign is an automated chain of texts, emails or follow ups"
         titleAction={
-          <SectionActionButton
-            label="Opt out"
-            icon={X}
-            iconPosition="before"
-            variant="destructive"
-            onClick={() => setOptOutConfirmOpen(true)}
-          />
+          emptyMode ? undefined : (
+            <SectionActionButton
+              label="Opt out"
+              icon={X}
+              iconPosition="before"
+              variant="destructive"
+              onClick={() => setOptOutConfirmOpen(true)}
+            />
+          )
         }
         footer={
-          <div className="flex items-center gap-2">
+          emptyMode ? undefined : (
+            <div className="flex items-center gap-2">
             <Select value={selectedWorkflow} onValueChange={setSelectedWorkflow}>
               <SelectTrigger className="flex-1 h-9">
                 <SelectValue placeholder="Select a Workflow" />
@@ -146,8 +152,16 @@ export function WorkflowsCard() {
               <span>Start</span>
             </button>
           </div>
+          )
         }
       >
+        {emptyMode ? (
+          <EmptyState
+            icon={GitBranch}
+            title="No active workflows"
+            subtitle="Workflows will appear here as the lead is enrolled in automated drip campaigns."
+          />
+        ) : (
         <div className="space-y-spacing-2">
           {/* Existing workflows */}
           {workflows.map((workflow) => (
@@ -179,6 +193,7 @@ export function WorkflowsCard() {
             </div>
           )}
         </div>
+        )}
       </CollapsibleCard>
 
       {/* Workflow Detail Dialog */}

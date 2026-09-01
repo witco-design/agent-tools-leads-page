@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import { Bell } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { CollapsibleCard } from './CollapsibleCard';
+import { EmptyState } from './EmptyState';
+import { useVersion } from '@/contexts/VersionContext';
 
 interface OptOutState {
   allContact: boolean;
@@ -12,6 +15,7 @@ interface OptOutState {
 }
 
 export function SmsEmailOptOutsCard() {
+  const { emptyMode } = useVersion();
   const [optOuts, setOptOuts] = useState<OptOutState>({
     allContact: true,
     crmEmail: true,
@@ -83,6 +87,13 @@ export function SmsEmailOptOutsCard() {
 
   return (
     <CollapsibleCard title="SMS/Email Opt Outs" infoTooltip="On (purple) means opted in. Off (gray) means opted out.">
+      {emptyMode ? (
+        <EmptyState
+          icon={Bell}
+          title="No opt-out preferences"
+          subtitle="SMS and email opt-out settings will appear here once preferences are configured."
+        />
+      ) : (
       <div className="space-y-spacing-4">
         {optOutItems.map((item) => (
           <div
@@ -119,6 +130,7 @@ export function SmsEmailOptOutsCard() {
           </div>
         ))}
       </div>
+      )}
     </CollapsibleCard>
   );
 }

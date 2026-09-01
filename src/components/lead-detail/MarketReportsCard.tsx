@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { ChartBar as BarChart3, Plus } from 'lucide-react';
 import { CollapsibleCard } from './CollapsibleCard';
+import { EmptyState } from './EmptyState';
+import { SectionActionButton } from './SectionActionButton';
+import { useVersion } from '@/contexts/VersionContext';
 import {
   Dialog,
   DialogContent,
@@ -25,6 +29,7 @@ interface MarketReport {
 }
 
 export function MarketReportsCard() {
+  const { emptyMode } = useVersion();
   const [reports, setReports] = useState<MarketReport[]>([]);
   const [addOpen, setAddOpen] = useState(false);
   const [reportName, setReportName] = useState('');
@@ -52,16 +57,20 @@ export function MarketReportsCard() {
       <CollapsibleCard
         title="Market Reports"
         footer={
-          <button
-            type="button"
+          <SectionActionButton
+            label="+ Add Report"
+            variant="link"
             onClick={() => setAddOpen(true)}
-            className="text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
-          >
-            + Add Report
-          </button>
+          />
         }
       >
-        {reports.length === 0 ? (
+        {emptyMode ? (
+          <EmptyState
+            icon={BarChart3}
+            title="No market reports"
+            subtitle="Market reports will appear here as the lead subscribes to area updates."
+          />
+        ) : reports.length === 0 ? (
           <div className="bg-bg-muted rounded-1 p-3">
             <p className="text-text-3 text-text-muted">No Market Report</p>
           </div>

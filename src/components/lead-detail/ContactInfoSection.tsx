@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pencil, ChevronUp, ChevronDown, GripVertical } from 'lucide-react';
+import { Pencil, ChevronUp, ChevronDown, GripVertical, User } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -14,6 +14,8 @@ import {
 import { ContactEditDialog, type FieldConfig } from '@/components/ContactEditDialog';
 import { ContactFieldMenu, type MenuField } from '@/components/contact/ContactFieldMenu';
 import { SectionActionButton } from './SectionActionButton';
+import { EmptyState } from './EmptyState';
+import { useVersion } from '@/contexts/VersionContext';
 import { AddressDisplayBlock } from '@/components/contact/AddressDisplayBlock';
 
 const CONTACT_INFO_FIELDS: FieldConfig[] = [
@@ -68,6 +70,7 @@ function MenuRow({
 }
 
 export function ContactInfoSection() {
+  const { emptyMode } = useVersion();
   const {
     contactInfo,
     updateContactInfo,
@@ -226,7 +229,16 @@ export function ContactInfoSection() {
          */}
         {open && (
           <div className="px-spacing-5 py-spacing-4 space-y-spacing-2">
-            {isEmpty ? (
+            {emptyMode ? (
+              <EmptyState
+                icon={User}
+                title="No contact info"
+                subtitle="Contact details will appear here once added. Click Edit to add information."
+                ctaLabel="Edit"
+                ctaIcon={Pencil}
+                onCtaClick={() => openContactDialog()}
+              />
+            ) : isEmpty ? (
               <div className="text-sm text-text-muted italic">
                 No contact information yet.{' '}
                 <button

@@ -1,7 +1,10 @@
 import { useState, useRef, useCallback } from 'react';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, SlidersHorizontal } from 'lucide-react';
 import { toast } from 'sonner';
 import { CollapsibleCard } from './CollapsibleCard';
+import { EmptyState } from './EmptyState';
+import { SectionActionButton } from './SectionActionButton';
+import { useVersion } from '@/contexts/VersionContext';
 import {
   Select,
   SelectContent,
@@ -67,6 +70,7 @@ function toSlug(str: string) {
 }
 
 export function SearchCriteriaCard() {
+  const { emptyMode } = useVersion();
   const [values, setValues] = useState<Record<string, string>>(() => {
     const init: Record<string, string> = {};
     fields.forEach((f) => {
@@ -90,17 +94,23 @@ export function SearchCriteriaCard() {
       title="Search Criteria"
       footer={
         <div className="flex justify-end">
-          <button
-            type="button"
+          <SectionActionButton
+            label="See Search Results"
+            icon={ExternalLink}
+            iconPosition="after"
+            variant="link"
             onClick={() => toast('Running search on website with current criteria…')}
-            className="inline-flex items-center gap-1.5 text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
-          >
-            <span>See Search Results</span>
-            <ExternalLink className="w-3.5 h-3.5" />
-          </button>
+          />
         </div>
       }
     >
+      {emptyMode ? (
+        <EmptyState
+          icon={SlidersHorizontal}
+          title="No search criteria"
+          subtitle="Search criteria will appear here once the lead starts searching for properties on the website."
+        />
+      ) : (
       <div className="space-y-spacing-3">
         {fields.map((field) => (
           <div key={field.stateKey} className="flex items-center gap-spacing-2">
@@ -130,6 +140,7 @@ export function SearchCriteriaCard() {
           </div>
         ))}
       </div>
+      )}
     </CollapsibleCard>
   );
 }

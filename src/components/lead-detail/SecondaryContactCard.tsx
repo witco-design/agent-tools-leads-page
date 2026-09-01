@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pencil, Plus, ChevronUp, ChevronDown, GripVertical } from 'lucide-react';
+import { Pencil, Plus, ChevronUp, ChevronDown, GripVertical, UserPlus } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Tooltip,
@@ -10,6 +10,8 @@ import {
 import { useDragHandle } from './DragHandleContext';
 import { ContactEditDialog, type FieldConfig } from '@/components/ContactEditDialog';
 import { SectionActionButton } from './SectionActionButton';
+import { EmptyState } from './EmptyState';
+import { useVersion } from '@/contexts/VersionContext';
 
 /* ────────────────────────────────────────────────────────
    Types
@@ -81,6 +83,7 @@ function DisplayRow({ label, value }: { label: string; value: string }) {
    SecondaryContactCard — display-only + Edit link → dialog
    ──────────────────────────────────────────────────────── */
 export function SecondaryContactCard() {
+  const { emptyMode } = useVersion();
   const hasInitialContent = Object.values(INITIAL_DATA).some((v) => v.trim() !== '');
   const [contact, setContact] = useState<SecondaryContact>(INITIAL_DATA);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -194,7 +197,7 @@ export function SecondaryContactCard() {
           </button>
 
           {/* Action link: "Add" when empty (persistent), "Edit" when populated (hover-gated) */}
-          {isEmpty ? (
+          {emptyMode || isEmpty ? (
             <SectionActionButton
               label="Add"
               icon={Plus}
@@ -242,7 +245,16 @@ export function SecondaryContactCard() {
          */}
         {open && (
           <div className="px-spacing-5 py-spacing-4 space-y-spacing-2">
-            {isEmpty ? (
+            {emptyMode ? (
+              <EmptyState
+                icon={UserPlus}
+                title="No secondary contact"
+                subtitle="Add a spouse, assistant, or other contact associated with this lead."
+                ctaLabel="Add Contact"
+                ctaIcon={Plus}
+                onCtaClick={() => openDialog('name')}
+              />
+            ) : isEmpty ? (
               <div className="space-y-spacing-3">
                 <p className="text-sm text-text-muted">No secondary contact added yet.</p>
                 <SectionActionButton

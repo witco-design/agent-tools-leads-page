@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { Pencil } from 'lucide-react';
+import { Pencil, Radio } from 'lucide-react';
 import { toast } from 'sonner';
 import { CollapsibleCard } from './CollapsibleCard';
+import { EmptyState } from './EmptyState';
+import { SectionActionButton } from './SectionActionButton';
+import { useVersion } from '@/contexts/VersionContext';
 import {
   Select,
   SelectContent,
@@ -30,6 +33,7 @@ const SOURCE_OPTIONS = [
 ];
 
 export function SourceCard() {
+  const { emptyMode } = useVersion();
   const [source, setSource] = useState('listings');
   const [editOpen, setEditOpen] = useState(false);
 
@@ -38,16 +42,22 @@ export function SourceCard() {
       <CollapsibleCard
         title="Source"
         rightAction={
-          <button
-            type="button"
+          <SectionActionButton
+            label="Edit"
+            icon={Pencil}
+            iconPosition="before"
+            variant="link"
             onClick={() => setEditOpen(true)}
-            className="inline-flex items-center gap-1 text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
-          >
-            <Pencil className="w-3.5 h-3.5" />
-            <span>Edit</span>
-          </button>
+          />
         }
       >
+        {emptyMode ? (
+          <EmptyState
+            icon={Radio}
+            title="No source tracked"
+            subtitle="The lead source will appear here once it is captured from the website or imported."
+          />
+        ) : (
         <div className="flex items-center gap-spacing-2">
           <span className="text-text-3 font-normal text-text-secondary w-[60px] shrink-0">
             Source
@@ -65,6 +75,7 @@ export function SourceCard() {
             </Select>
           </div>
         </div>
+        )}
       </CollapsibleCard>
 
       <Dialog open={editOpen} onOpenChange={setEditOpen}>

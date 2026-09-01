@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { Hop as Home, Plus } from 'lucide-react';
 import { CollapsibleCard } from './CollapsibleCard';
+import { EmptyState } from './EmptyState';
+import { SectionActionButton } from './SectionActionButton';
+import { useVersion } from '@/contexts/VersionContext';
 import {
   Dialog,
   DialogContent,
@@ -16,6 +20,7 @@ interface HomeValuation {
 }
 
 export function HomeValuationReportsCard() {
+  const { emptyMode } = useVersion();
   const [reports, setReports] = useState<HomeValuation[]>([]);
   const [addOpen, setAddOpen] = useState(false);
   const [address, setAddress] = useState('');
@@ -37,16 +42,20 @@ export function HomeValuationReportsCard() {
       <CollapsibleCard
         title="Home Valuation Reports"
         footer={
-          <button
-            type="button"
+          <SectionActionButton
+            label="+ Add Report"
+            variant="link"
             onClick={() => setAddOpen(true)}
-            className="text-sm font-semibold text-[#3E60C9] hover:underline cursor-pointer"
-          >
-            + Add Report
-          </button>
+          />
         }
       >
-        {reports.length === 0 ? (
+        {emptyMode ? (
+          <EmptyState
+            icon={Home}
+            title="No valuation reports"
+            subtitle="Home valuation reports will appear here as the lead inquires about property values."
+          />
+        ) : reports.length === 0 ? (
           <div className="bg-bg-muted rounded-1 p-3">
             <p className="text-text-3 text-text-muted">No Home Valuation Reports</p>
           </div>

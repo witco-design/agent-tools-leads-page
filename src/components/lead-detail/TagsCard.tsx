@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Plus, X } from 'lucide-react';
+import { Plus, X, Tag } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -11,6 +11,9 @@ import {
   AlertDialogAction,
 } from '@/components/ui/alert-dialog';
 import { CollapsibleCard } from './CollapsibleCard';
+import { EmptyState } from './EmptyState';
+import { SectionActionButton } from './SectionActionButton';
+import { useVersion } from '@/contexts/VersionContext';
 
 type Tag = {
   id: string;
@@ -24,6 +27,7 @@ const INITIAL_TAGS: Tag[] = [
 ];
 
 export function TagsCard() {
+  const { emptyMode } = useVersion();
   const [tags, setTags] = useState<Tag[]>(INITIAL_TAGS);
   const [tagToDelete, setTagToDelete] = useState<Tag | null>(null);
   const [inputValue, setInputValue] = useState('');
@@ -53,7 +57,18 @@ export function TagsCard() {
 
   return (
     <>
-      <CollapsibleCard data-component="LeadSignalTagsCard" title="Custom Tags" countBadge={tags.length}>
+      <CollapsibleCard data-component="LeadSignalTagsCard" title="Custom Tags" countBadge={emptyMode ? 0 : tags.length}>
+        {emptyMode ? (
+          <EmptyState
+            icon={Tag}
+            title="No custom tags"
+            subtitle="Tags help you categorize and filter leads. Add one below."
+            ctaLabel="Add tag"
+            ctaIcon={Plus}
+            onCtaClick={() => inputRef.current?.focus()}
+          />
+        ) : (
+        <>
         {/* Tag chips with X delete button */}
         <div className="flex flex-wrap gap-spacing-2">
           {tags.map((tag) => (
@@ -87,6 +102,8 @@ export function TagsCard() {
             className="w-full h-9 pl-8 pr-3 border border-border-default rounded-1 text-text-3 font-normal text-text-default placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-focus-ring bg-white transition-shadow"
           />
         </div>
+        </>
+        )}
       </CollapsibleCard>
 
       {/* Delete confirmation dialog */}
