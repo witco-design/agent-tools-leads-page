@@ -234,9 +234,7 @@ export function ContactInfoSection() {
                 icon={User}
                 title="No contact info"
                 subtitle="Contact details will appear here once added. Click Edit to add information."
-                ctaLabel="Edit"
-                ctaIcon={Pencil}
-                onCtaClick={() => openContactDialog()}
+                action={{ label: 'Edit', onClick: () => openContactDialog() }}
               />
             ) : isEmpty ? (
               <div className="text-sm text-text-muted italic">

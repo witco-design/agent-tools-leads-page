@@ -263,8 +263,7 @@ export function ImportantDatesCard() {
             icon={Calendar}
             title="No important dates"
             subtitle="Add birthdays, anniversaries, or closing dates to track key milestones."
-            ctaLabel="Add Date"
-            onCtaClick={() => setAddOpen(true)}
+            action={{ label: 'Add Date', onClick: () => setAddOpen(true) }}
           />
         ) : (
         <div className="space-y-spacing-3">

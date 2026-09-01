@@ -1,47 +1,44 @@
-import type { ComponentType, ReactNode } from 'react';
-import { SectionActionButton } from './SectionActionButton';
+import type { ComponentType } from 'react';
+import { Plus } from 'lucide-react';
 
 type IconType = ComponentType<{ className?: string }>;
+
+interface EmptyStateAction {
+  label: string;
+  onClick: () => void;
+}
 
 interface EmptyStateProps {
   icon: IconType;
   title: string;
   subtitle?: string;
-  ctaLabel?: string;
-  ctaIcon?: IconType;
-  onCtaClick?: () => void;
-  children?: ReactNode;
+  action?: EmptyStateAction;
 }
 
 export function EmptyState({
   icon: Icon,
   title,
   subtitle,
-  ctaLabel,
-  ctaIcon,
-  onCtaClick,
-  children,
+  action,
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center text-center py-spacing-6 px-spacing-4 gap-spacing-2">
-      <div className="flex items-center justify-center w-9 h-9 rounded-round bg-blue-10 mb-spacing-1">
-        <Icon className="w-4 h-4 text-blue-100" />
+    <div className="flex flex-col items-center text-center gap-spacing-2 py-spacing-5 px-spacing-4">
+      <div className="w-9 h-9 rounded-round bg-bg-muted flex items-center justify-center">
+        <Icon className="w-5 h-5 text-text-muted" aria-hidden="true" />
       </div>
       <p className="text-text-3 font-semibold text-text-default">{title}</p>
       {subtitle && (
-        <p className="text-text-3 font-normal text-text-muted leading-snug max-w-[260px]">
-          {subtitle}
-        </p>
+        <p className="text-text-2 text-text-muted max-w-[260px]">{subtitle}</p>
       )}
-      {children}
-      {ctaLabel && (
-        <SectionActionButton
-          label={ctaLabel}
-          icon={ctaIcon}
-          iconPosition={ctaIcon ? 'before' : undefined}
-          variant="link"
-          onClick={onCtaClick}
-        />
+      {action && (
+        <button
+          type="button"
+          onClick={action.onClick}
+          className="inline-flex items-center gap-1.5 text-text-3 font-semibold text-text-link hover:underline cursor-pointer mt-spacing-1"
+        >
+          <Plus className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+          {action.label}
+        </button>
       )}
     </div>
   );

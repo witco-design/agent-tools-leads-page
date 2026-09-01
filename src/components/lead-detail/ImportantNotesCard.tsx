@@ -61,9 +61,7 @@ export function ImportantNotesCard() {
             icon={FileText}
             title="No important notes"
             subtitle="Notes will appear here once you add context about this lead's needs and preferences."
-            ctaLabel="Add Notes"
-            ctaIcon={Pencil}
-            onCtaClick={() => setNotesModalOpen(true)}
+            action={{ label: 'Add Notes', onClick: () => setNotesModalOpen(true) }}
           />
         ) : (
         <>

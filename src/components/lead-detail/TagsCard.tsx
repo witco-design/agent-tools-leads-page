@@ -63,9 +63,7 @@ export function TagsCard() {
             icon={Tag}
             title="No custom tags"
             subtitle="Tags help you categorize and filter leads. Add one below."
-            ctaLabel="Add tag"
-            ctaIcon={Plus}
-            onCtaClick={() => inputRef.current?.focus()}
+            action={{ label: 'Add tag', onClick: () => inputRef.current?.focus() }}
           />
         ) : (
         <>

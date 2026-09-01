@@ -159,8 +159,7 @@ export function FollowUpsCard() {
             icon={CheckSquare}
             title="No follow-ups"
             subtitle="Follow-ups will appear here as you schedule reminders to stay in touch with this lead."
-            ctaLabel="Add Followup"
-            onCtaClick={() => setAddOpen(true)}
+            action={{ label: 'Add Followup', onClick: () => setAddOpen(true) }}
           />
         ) : (
         <div>
