@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { ChartBar as BarChart3, Plus } from 'lucide-react';
+import { Newspaper } from 'lucide-react';
 import { CollapsibleCard } from './CollapsibleCard';
 import { EmptyState } from './EmptyState';
 import { SectionActionButton } from './SectionActionButton';
@@ -56,19 +56,19 @@ export function MarketReportsCard() {
     <>
       <CollapsibleCard
         title="Market Reports"
-        footer={
+        footer={emptyMode ? undefined : (
           <SectionActionButton
             label="+ Add Report"
             variant="link"
             onClick={() => setAddOpen(true)}
           />
-        }
+        )}
       >
         {emptyMode ? (
           <EmptyState
-            icon={BarChart3}
+            icon={Newspaper}
             title="No market reports"
-            subtitle="Market reports will appear here as the lead subscribes to area updates."
+            action={{ label: 'Add report', onClick: () => setAddOpen(true) }}
           />
         ) : reports.length === 0 ? (
           <div className="bg-bg-muted rounded-1 p-3">

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pencil, AlarmClock, Video, Mail, ArrowRight, SquareCheck as CheckSquare } from 'lucide-react';
+import { Pencil, AlarmClock, Video, Mail, ArrowRight, CalendarClock } from 'lucide-react';
 import { toast } from 'sonner';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
@@ -137,7 +137,7 @@ export function FollowUpsCard() {
         data-component="FollowUpItem"
         title="Follow Ups"
         infoTooltip="These are reminders for next step interactions that are important for nurturing the relationship with your lead."
-        footer={
+        footer={emptyMode ? undefined : (
           <div className="flex items-center justify-between">
             <SectionActionButton
               label="Add Followup"
@@ -152,14 +152,14 @@ export function FollowUpsCard() {
               onClick={() => toast('Scrolling to follow-ups section…')}
             />
           </div>
-        }
+        )}
       >
         {emptyMode ? (
           <EmptyState
-            icon={CheckSquare}
-            title="No follow-ups"
-            subtitle="Follow-ups will appear here as you schedule reminders to stay in touch with this lead."
-            action={{ label: 'Add Followup', onClick: () => setAddOpen(true) }}
+            icon={CalendarClock}
+            title="No follow-ups scheduled"
+            subtitle="Set a reminder so this lead doesn't go cold."
+            action={{ label: 'Add followup', onClick: () => setAddOpen(true) }}
           />
         ) : (
         <div>

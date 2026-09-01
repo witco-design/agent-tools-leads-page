@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
-import { Bell } from 'lucide-react';
+import { MailCheck } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { CollapsibleCard } from './CollapsibleCard';
 import { EmptyState } from './EmptyState';
@@ -89,9 +89,9 @@ export function SmsEmailOptOutsCard() {
     <CollapsibleCard title="SMS/Email Opt Outs" infoTooltip="On (purple) means opted in. Off (gray) means opted out.">
       {emptyMode ? (
         <EmptyState
-          icon={Bell}
-          title="No opt-out preferences"
-          subtitle="SMS and email opt-out settings will appear here once preferences are configured."
+          icon={MailCheck}
+          title="No opt-outs"
+          subtitle="This lead is opted in to all messaging."
         />
       ) : (
       <div className="space-y-spacing-4">

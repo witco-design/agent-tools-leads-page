@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Play, X, GitBranch } from 'lucide-react';
+import { Play, X, Workflow } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatDateWithYear } from '@/utils/formatDate';
 import {
@@ -123,7 +123,6 @@ export function WorkflowsCard() {
           )
         }
         footer={
-          emptyMode ? undefined : (
             <div className="flex items-center gap-2">
             <Select value={selectedWorkflow} onValueChange={setSelectedWorkflow}>
               <SelectTrigger className="flex-1 h-9">
@@ -152,14 +151,13 @@ export function WorkflowsCard() {
               <span>Start</span>
             </button>
           </div>
-          )
         }
       >
         {emptyMode ? (
           <EmptyState
-            icon={GitBranch}
+            icon={Workflow}
             title="No active workflows"
-            subtitle="Workflows will appear here as the lead is enrolled in automated drip campaigns."
+            subtitle="Start a workflow to automate follow-up."
           />
         ) : (
         <div className="space-y-spacing-2">

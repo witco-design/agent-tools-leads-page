@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { Hop as Home, Plus } from 'lucide-react';
+import { House } from 'lucide-react';
 import { CollapsibleCard } from './CollapsibleCard';
 import { EmptyState } from './EmptyState';
 import { SectionActionButton } from './SectionActionButton';
@@ -41,19 +41,19 @@ export function HomeValuationReportsCard() {
     <>
       <CollapsibleCard
         title="Home Valuation Reports"
-        footer={
+        footer={emptyMode ? undefined : (
           <SectionActionButton
             label="+ Add Report"
             variant="link"
             onClick={() => setAddOpen(true)}
           />
-        }
+        )}
       >
         {emptyMode ? (
           <EmptyState
-            icon={Home}
+            icon={House}
             title="No valuation reports"
-            subtitle="Home valuation reports will appear here as the lead inquires about property values."
+            action={{ label: 'Add report', onClick: () => setAddOpen(true) }}
           />
         ) : reports.length === 0 ? (
           <div className="bg-bg-muted rounded-1 p-3">

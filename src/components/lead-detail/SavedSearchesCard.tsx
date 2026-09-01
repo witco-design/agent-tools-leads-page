@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowRight, Info, Search, Plus } from 'lucide-react';
+import { ArrowRight, Info, Bookmark } from 'lucide-react';
 import { toast } from 'sonner';
 import { CollapsibleCard } from './CollapsibleCard';
 import { EmptyState } from './EmptyState';
@@ -121,19 +121,19 @@ export function SavedSearchesCard() {
             </HoverCardContent>
           </HoverCard>
         }
-        footer={
+        footer={emptyMode ? undefined : (
           <SectionActionButton
             label="+ Add Saved Search"
             variant="link"
             onClick={() => setAddOpen(true)}
           />
-        }
+        )}
       >
         {emptyMode ? (
           <EmptyState
-            icon={Search}
+            icon={Bookmark}
             title="No saved searches"
-            subtitle="Saved searches will appear here as the lead browses and saves property searches on the website."
+            action={{ label: 'Add saved search', onClick: () => setAddOpen(true) }}
           />
         ) : (
         <div>
