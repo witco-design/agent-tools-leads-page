@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { CollapsibleCard } from './CollapsibleCard';
+import { SectionActionButton } from './SectionActionButton';
 import {
   Dialog,
   DialogContent,
@@ -135,21 +136,18 @@ export function FollowUpsCard() {
         infoTooltip="These are reminders for next step interactions that are important for nurturing the relationship with your lead."
         footer={
           <div className="flex items-center justify-between">
-            <button
-              type="button"
+            <SectionActionButton
+              label="Add Followup"
+              variant="link"
               onClick={() => setAddOpen(true)}
-              className="text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
-            >
-              Add Followup
-            </button>
-            <button
-              type="button"
+            />
+            <SectionActionButton
+              label="See All Followups"
+              icon={ArrowRight}
+              iconPosition="after"
+              variant="link"
               onClick={() => toast('Scrolling to follow-ups section…')}
-              className="inline-flex items-center gap-1.5 text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
-            >
-              <span>See All Followups</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            />
           </div>
         }
       >
@@ -180,14 +178,14 @@ export function FollowUpsCard() {
                   <span className="text-text-3 font-semibold text-text-default truncate flex-1 min-w-0">
                     {item.title}
                   </span>
-                  <button
-                    type="button"
+                  <SectionActionButton
+                    label="Edit"
+                    icon={Pencil}
+                    iconPosition="before"
+                    variant="link"
                     onClick={() => openEdit(item)}
-                    className="inline-flex items-center gap-1 text-text-3 font-semibold text-text-link hover:underline cursor-pointer shrink-0"
-                  >
-                    <Pencil className="w-3.5 h-3.5" />
-                    <span>Edit</span>
-                  </button>
+                    className="shrink-0"
+                  />
                 </div>
 
                 {/* Description */}

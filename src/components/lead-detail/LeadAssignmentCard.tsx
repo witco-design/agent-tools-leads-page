@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { CollapsibleCard } from './CollapsibleCard';
+import { SectionActionButton } from './SectionActionButton';
 import {
   Select,
   SelectContent,
@@ -57,14 +58,13 @@ export function LeadAssignmentCard() {
         title="Lead Assignment"
         footer={
           <div className="flex justify-end">
-            <button
-              type="button"
+            <SectionActionButton
+              label="Send to Pond"
+              icon={ArrowRight}
+              iconPosition="after"
+              variant="link"
               onClick={() => setPondOpen(true)}
-              className="inline-flex items-center gap-1.5 text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
-            >
-              <span>Send to Pond</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            />
           </div>
         }
       >

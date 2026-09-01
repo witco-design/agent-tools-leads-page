@@ -13,6 +13,7 @@ import {
 } from '@/contexts/ContactInfoContext';
 import { ContactEditDialog, type FieldConfig } from '@/components/ContactEditDialog';
 import { ContactFieldMenu, type MenuField } from '@/components/contact/ContactFieldMenu';
+import { SectionActionButton } from './SectionActionButton';
 import { AddressDisplayBlock } from '@/components/contact/AddressDisplayBlock';
 
 const CONTACT_INFO_FIELDS: FieldConfig[] = [
@@ -188,14 +189,14 @@ export function ContactInfoSection() {
           </button>
 
           {/* Edit link */}
-          <button
-            type="button"
+          <SectionActionButton
+            label="Edit"
+            icon={Pencil}
+            iconPosition="before"
+            variant="link"
             onClick={() => openContactDialog()}
-            className="ml-spacing-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200 inline-flex items-center gap-spacing-1 text-text-3 font-normal text-blue-100 underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 rounded-1 cursor-pointer bg-transparent border-none p-0"
-          >
-            <Pencil className="w-3.5 h-3.5" />
-            Edit
-          </button>
+            className="ml-spacing-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 rounded-1"
+          />
 
           <div className="flex-1" />
 

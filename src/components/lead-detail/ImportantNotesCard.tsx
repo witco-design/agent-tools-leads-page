@@ -3,6 +3,7 @@ import { Expand, Pencil, StickyNote } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { CollapsibleCard } from './CollapsibleCard';
+import { SectionActionButton } from './SectionActionButton';
 import { ImportantNotesModal } from './ImportantNotesModal';
 import { PinnedFloatingDialog } from '@/components/PinnedFloatingDialog';
 
@@ -41,14 +42,13 @@ export function ImportantNotesCard() {
         data-component="ImportantNotesCard"
         title="Important Notes"
         rightAction={
-          <button
-            type="button"
+          <SectionActionButton
+            label="Edit"
+            icon={Pencil}
+            iconPosition="before"
+            variant="link"
             onClick={() => setNotesModalOpen(true)}
-            className="inline-flex items-center gap-1 text-text-3 font-semibold text-text-link hover:underline cursor-pointer"
-          >
-            <Pencil className="w-3.5 h-3.5" />
-            <span>Edit</span>
-          </button>
+          />
         }
       >
         {/**

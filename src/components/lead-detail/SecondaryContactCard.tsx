@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/tooltip';
 import { useDragHandle } from './DragHandleContext';
 import { ContactEditDialog, type FieldConfig } from '@/components/ContactEditDialog';
+import { SectionActionButton } from './SectionActionButton';
 
 /* ────────────────────────────────────────────────────────
    Types
@@ -194,23 +195,23 @@ export function SecondaryContactCard() {
 
           {/* Action link: "Add" when empty (persistent), "Edit" when populated (hover-gated) */}
           {isEmpty ? (
-            <button
-              type="button"
+            <SectionActionButton
+              label="Add"
+              icon={Plus}
+              iconPosition="before"
+              variant="link"
               onClick={() => openDialog('name')}
-              className="ml-spacing-3 inline-flex items-center gap-spacing-1 text-text-2 font-medium text-blue-100 hover:text-blue-110 transition-colors cursor-pointer bg-transparent border-none p-0"
-            >
-              <Plus className="w-4 h-4 shrink-0" aria-hidden="true" />
-              Add
-            </button>
+              className="ml-spacing-3"
+            />
           ) : (
-            <button
-              type="button"
+            <SectionActionButton
+              label="Edit"
+              icon={Pencil}
+              iconPosition="before"
+              variant="link"
               onClick={() => openDialog()}
-              className="ml-spacing-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200 inline-flex items-center gap-spacing-1 text-text-3 font-normal text-blue-100 underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 rounded-1 cursor-pointer bg-transparent border-none p-0"
-            >
-              <Pencil className="w-3.5 h-3.5" />
-              Edit
-            </button>
+              className="ml-spacing-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 rounded-1"
+            />
           )}
 
           <div className="flex-1" />
@@ -244,14 +245,13 @@ export function SecondaryContactCard() {
             {isEmpty ? (
               <div className="space-y-spacing-3">
                 <p className="text-sm text-text-muted">No secondary contact added yet.</p>
-                <button
-                  type="button"
+                <SectionActionButton
+                  label="Add secondary contact"
+                  icon={Plus}
+                  iconPosition="before"
+                  variant="link"
                   onClick={() => openDialog('name')}
-                  className="inline-flex items-center gap-spacing-1 text-text-2 font-medium text-blue-100 hover:text-blue-110 transition-colors cursor-pointer bg-transparent border-none p-0"
-                >
-                  <Plus className="w-4 h-4 shrink-0" aria-hidden="true" />
-                  Add secondary contact
-                </button>
+                />
               </div>
             ) : (
               rows.map((row, i) => (

@@ -29,6 +29,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { CollapsibleCard } from './CollapsibleCard';
 import { TruncatedText } from './TruncatedText';
+import { SectionActionButton } from './SectionActionButton';
 
 interface WorkflowItem {
   id: string;
@@ -108,14 +109,13 @@ export function WorkflowsCard() {
         title="Workflows"
         infoTooltip="A drip campaign is an automated chain of texts, emails or follow ups"
         titleAction={
-          <button
-            type="button"
+          <SectionActionButton
+            label="Opt out"
+            icon={X}
+            iconPosition="before"
+            variant="destructive"
             onClick={() => setOptOutConfirmOpen(true)}
-            className="inline-flex items-center gap-spacing-1 text-text-2 font-medium text-error-text hover:text-red-100 transition-colors cursor-pointer bg-transparent border-none p-0"
-          >
-            <X className="w-4 h-4 shrink-0" aria-hidden="true" />
-            Opt out
-          </button>
+          />
         }
         footer={
           <div className="flex items-center gap-2">
