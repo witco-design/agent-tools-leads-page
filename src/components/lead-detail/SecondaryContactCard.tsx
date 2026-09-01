@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pencil, ChevronUp, ChevronDown, GripVertical } from 'lucide-react';
+import { Pencil, Plus, ChevronUp, ChevronDown, GripVertical } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Tooltip,
@@ -50,12 +50,12 @@ const SECONDARY_CONTACT_FIELDS: FieldConfig[] = [
    Sample data
    ──────────────────────────────────────────────────────── */
 const INITIAL_DATA: SecondaryContact = {
-  name: 'Tom Dubois',
-  primary: '(214) 555-8832',
+  name: '',
+  primary: '',
   alt: '',
   office: '',
   fax: '',
-  email: 'tom.dubois@email.com',
+  email: '',
   altEmail: '',
   address: '',
   addressLine2: '',
@@ -80,12 +80,13 @@ function DisplayRow({ label, value }: { label: string; value: string }) {
    SecondaryContactCard — display-only + Edit link → dialog
    ──────────────────────────────────────────────────────── */
 export function SecondaryContactCard() {
+  const hasInitialContent = Object.values(INITIAL_DATA).some((v) => v.trim() !== '');
   const [contact, setContact] = useState<SecondaryContact>(INITIAL_DATA);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [autoFocusField, setAutoFocusField] = useState<string | undefined>(
     undefined,
   );
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(hasInitialContent);
   const { attributes, listeners } = useDragHandle();
 
   const handleSave = (values: Record<string, string>) => {
@@ -191,15 +192,26 @@ export function SecondaryContactCard() {
             </h3>
           </button>
 
-          {/* Edit link */}
-          <button
-            type="button"
-            onClick={() => openDialog()}
-            className="ml-spacing-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200 inline-flex items-center gap-spacing-1 text-text-3 font-normal text-blue-100 underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 rounded-1 cursor-pointer bg-transparent border-none p-0"
-          >
-            <Pencil className="w-3.5 h-3.5" />
-            Edit
-          </button>
+          {/* Action link: "Add" when empty (persistent), "Edit" when populated (hover-gated) */}
+          {isEmpty ? (
+            <button
+              type="button"
+              onClick={() => openDialog('name')}
+              className="ml-spacing-3 inline-flex items-center gap-spacing-1 text-text-2 font-medium text-blue-100 hover:text-blue-110 transition-colors cursor-pointer bg-transparent border-none p-0"
+            >
+              <Plus className="w-4 h-4 shrink-0" aria-hidden="true" />
+              Add
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => openDialog()}
+              className="ml-spacing-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200 inline-flex items-center gap-spacing-1 text-text-3 font-normal text-blue-100 underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 rounded-1 cursor-pointer bg-transparent border-none p-0"
+            >
+              <Pencil className="w-3.5 h-3.5" />
+              Edit
+            </button>
+          )}
 
           <div className="flex-1" />
 
@@ -230,16 +242,16 @@ export function SecondaryContactCard() {
         {open && (
           <div className="px-spacing-5 py-spacing-4 space-y-spacing-2">
             {isEmpty ? (
-              <div className="text-sm text-text-muted italic">
-                No secondary contact yet.{' '}
+              <div className="space-y-spacing-3">
+                <p className="text-sm text-text-muted">No secondary contact added yet.</p>
                 <button
                   type="button"
                   onClick={() => openDialog('name')}
-                  className="text-blue-100 underline hover:no-underline cursor-pointer bg-transparent border-none p-0"
+                  className="inline-flex items-center gap-spacing-1 text-text-2 font-medium text-blue-100 hover:text-blue-110 transition-colors cursor-pointer bg-transparent border-none p-0"
                 >
-                  Add one
+                  <Plus className="w-4 h-4 shrink-0" aria-hidden="true" />
+                  Add secondary contact
                 </button>
-                .
               </div>
             ) : (
               rows.map((row, i) => (
