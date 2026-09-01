@@ -107,12 +107,13 @@ export function WorkflowsCard() {
       <CollapsibleCard
         title="Workflows"
         infoTooltip="A drip campaign is an automated chain of texts, emails or follow ups"
-        headerAction={
+        titleAction={
           <button
             type="button"
             onClick={() => setOptOutConfirmOpen(true)}
-            className="text-text-3 font-normal text-text-secondary hover:text-text-default transition-colors cursor-pointer bg-transparent border-none p-0"
+            className="inline-flex items-center gap-spacing-1 text-text-2 font-medium text-error-text hover:text-red-100 transition-colors cursor-pointer bg-transparent border-none p-0"
           >
+            <X className="w-4 h-4 shrink-0" aria-hidden="true" />
             Opt out
           </button>
         }
@@ -247,13 +248,13 @@ export function WorkflowsCard() {
           <AlertDialogHeader>
             <AlertDialogTitle>Opt out of all workflows?</AlertDialogTitle>
             <AlertDialogDescription>
-              This stops all drip and automated campaigns for this lead. You can re-enroll them later.
+              This stops all Workflows and eBlasts for this lead. You can re-enroll them later.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              className="bg-blue-100 text-white hover:bg-blue-110"
+              className="bg-red-100 text-white hover:bg-red-100/90 focus:ring-2 focus:ring-red-100/40"
               onClick={handleOptOut}
             >
               Opt out

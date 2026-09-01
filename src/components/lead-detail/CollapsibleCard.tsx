@@ -19,6 +19,8 @@ interface CollapsibleCardProps {
   /** Custom info slot rendered after the title (e.g. a HoverCard trigger). Takes precedence over showInfoIcon and infoTooltip. */
   infoSlot?: React.ReactNode;
   rightAction?: React.ReactNode;
+  /** Persistent action rendered right after the title/info cluster (always visible, like "Edit"). */
+  titleAction?: React.ReactNode;
   /** Persistent action rendered just before the collapse chevron (always visible). */
   headerAction?: React.ReactNode;
   footer?: React.ReactNode;
@@ -35,6 +37,7 @@ export function CollapsibleCard({
   infoTooltip,
   infoSlot,
   rightAction,
+  titleAction,
   headerAction,
   footer,
   defaultOpen = true,
@@ -100,6 +103,11 @@ export function CollapsibleCard({
           {infoSlot && (
             <div className="ml-spacing-2 shrink-0">
               {infoSlot}
+            </div>
+          )}
+          {titleAction && (
+            <div className="ml-spacing-3 shrink-0">
+              {titleAction}
             </div>
           )}
           {rightAction && (
