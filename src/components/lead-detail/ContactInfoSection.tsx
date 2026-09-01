@@ -13,6 +13,7 @@ import {
 } from '@/contexts/ContactInfoContext';
 import { ContactEditDialog, type FieldConfig } from '@/components/ContactEditDialog';
 import { ContactFieldMenu, type MenuField } from '@/components/contact/ContactFieldMenu';
+import { AddressDisplayBlock } from '@/components/contact/AddressDisplayBlock';
 
 const CONTACT_INFO_FIELDS: FieldConfig[] = [
   { key: 'firstName', label: 'First Name', type: 'text' },
@@ -33,7 +34,7 @@ function DisplayRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center min-h-9">
       <span className="w-28 text-sm text-text-muted flex-shrink-0">{label}</span>
-      <span className="flex-1 text-sm text-text-default">{value}</span>
+      <span className="flex-1 text-sm text-text-default text-right truncate">{value}</span>
     </div>
   );
 }
@@ -86,7 +87,8 @@ export function ContactInfoSection() {
 
   type Row =
     | { kind: 'plain'; label: string; value: string }
-    | { kind: 'menu'; label: string; field: MenuField; value: string; fullAddress?: string };
+    | { kind: 'menu'; label: string; field: MenuField; value: string; fullAddress?: string }
+    | { kind: 'address'; street: string; addressLine2: string; cityStateZip: string; fullAddress: string };
 
   const rows: Row[] = [];
   if (contactInfo.firstName)
@@ -104,15 +106,13 @@ export function ContactInfoSection() {
   if (contactInfo.email)
     rows.push({ kind: 'menu', label: 'Email', field: 'email', value: contactInfo.email });
   if (contactInfo.street) {
-    rows.push({ kind: 'menu', label: 'Address', field: 'address', value: contactInfo.street, fullAddress });
-    if (contactInfo.addressLine2)
-      rows.push({ kind: 'plain', label: 'Apt, suite, etc.', value: contactInfo.addressLine2 });
-    if (contactInfo.city)
-      rows.push({ kind: 'plain', label: 'City', value: contactInfo.city });
-    if (contactInfo.state)
-      rows.push({ kind: 'plain', label: 'State', value: contactInfo.state });
-    if (contactInfo.zip)
-      rows.push({ kind: 'plain', label: 'Zip', value: contactInfo.zip });
+    rows.push({
+      kind: 'address',
+      street: contactInfo.street,
+      addressLine2: contactInfo.addressLine2,
+      cityStateZip,
+      fullAddress,
+    });
   }
 
   const isEmpty = rows.length === 0;
@@ -246,6 +246,15 @@ export function ContactInfoSection() {
                     field={row.field}
                     value={row.value}
                     fullAddress={row.fullAddress}
+                  />
+                ) : row.kind === 'address' ? (
+                  <AddressDisplayBlock
+                    key={`address-${i}`}
+                    street={row.street}
+                    addressLine2={row.addressLine2}
+                    cityStateZip={row.cityStateZip}
+                    fullAddress={row.fullAddress}
+                    labelWidthClass="w-28"
                   />
                 ) : (
                   <DisplayRow

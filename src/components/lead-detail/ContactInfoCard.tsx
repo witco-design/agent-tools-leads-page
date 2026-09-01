@@ -15,6 +15,7 @@ import {
 import { useContactInfo } from '@/contexts/ContactInfoContext';
 import { LEAD_TIMEZONE, formatLocalTime } from './leadConstants';
 import { ContactFieldMenu } from '@/components/contact/ContactFieldMenu';
+import { AddressDisplayBlock } from '@/components/contact/AddressDisplayBlock';
 
 export function ContactInfoCard() {
   const { contactInfo } = useContactInfo();
@@ -111,7 +112,6 @@ export function ContactInfoCard() {
   const cityStateZip = [contactInfo.city, contactInfo.state, contactInfo.zip]
     .filter(Boolean)
     .join(', ');
-  const hasAddressLine2 = contactInfo.addressLine2.trim() !== '';
   const fullAddress = [contactInfo.street, contactInfo.addressLine2, cityStateZip].filter(Boolean).join(', ');
 
   return (
@@ -182,47 +182,13 @@ export function ContactInfoCard() {
              * for label to align with the FIRST line of the multi-line value.
              */}
             {hasAddress && (
-              <div className="flex items-start gap-spacing-3 @[760px]:min-h-[40px] @[760px]:col-start-1 @[760px]:row-start-3">
-                <span className="w-24 text-sm leading-5 text-text-muted flex-shrink-0">
-                  Address
-                </span>
-                <div className="flex-1 min-w-0 flex flex-col items-end gap-0">
-                  {/* Line 1: street with chevron menu */}
-                  <ContactFieldMenu
-                    field="address"
-                    value={contactInfo.street}
-                    fullAddress={fullAddress}
-                    valueClassName="leading-5"
-                    ariaLabel="Address"
-                  />
-
-                  {/* Line 2 (optional): Address Line 2 — no chevron */}
-                  {hasAddressLine2 && (
-                    <ContactFieldMenu
-                      field="address"
-                      value={contactInfo.addressLine2}
-                      fullAddress={fullAddress}
-                      showChevron={false}
-                      valueClassName="leading-5"
-                      triggerClassName="-ml-1 mr-[20px]"
-                      ariaLabel="Address"
-                    />
-                  )}
-
-                  {/* Line 3 (or 2): city/state/zip — no chevron */}
-                  {cityStateZip && (
-                    <ContactFieldMenu
-                      field="address"
-                      value={cityStateZip}
-                      fullAddress={fullAddress}
-                      showChevron={false}
-                      valueClassName="leading-5"
-                      triggerClassName="-ml-1 mr-[20px]"
-                      ariaLabel="Address"
-                    />
-                  )}
-                </div>
-              </div>
+              <AddressDisplayBlock
+                street={contactInfo.street}
+                addressLine2={contactInfo.addressLine2}
+                cityStateZip={cityStateZip}
+                fullAddress={fullAddress}
+                containerClass="@[760px]:min-h-[40px] @[760px]:col-start-1 @[760px]:row-start-3"
+              />
             )}
 
         {/* Divider 1 — horizontal on mobile, vertical spanning all rows on @[760px] */}
