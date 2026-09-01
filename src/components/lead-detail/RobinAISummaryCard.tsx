@@ -132,8 +132,8 @@ export function RobinAISummaryCard() {
               {emptyMode ? (
                 <EmptyState
                   icon={Sparkles}
-                  title="No AI insights yet"
-                  subtitle="Geek AI insights will appear here once the lead has enough activity for analysis."
+                  title="No insights yet"
+                  subtitle="Geek AI will summarize this lead and suggest a next step once there's some activity."
                 />
               ) : isGenerating ? (
                 <div className="text-text-3 leading-relaxed">

@@ -392,7 +392,6 @@ export function ActivityHistoryCard() {
         <div className="border-t border-border-default" />
 
         {/* ── BAR 2: Toolbar ──────────────────────────────────── */}
-        {emptyMode ? null : (
         <div className="px-spacing-5 py-spacing-3 flex flex-wrap items-center gap-spacing-2">
           {/* Add Note button */}
           <button
@@ -412,6 +411,8 @@ export function ActivityHistoryCard() {
             <span>Log Activity</span>
           </button>
 
+          {emptyMode ? null : (
+          <>
           {/* Content-type filter (reads/writes shared context) */}
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
@@ -477,8 +478,9 @@ export function ActivityHistoryCard() {
               </button>
             )}
           </div>
+          </>
+          )}
         </div>
-        )}
 
         {/* Hairline between toolbar and content */}
         {emptyMode ? null : <div className="border-t border-border-default" />}
@@ -525,7 +527,7 @@ export function ActivityHistoryCard() {
           <EmptyState
             icon={ActivityIcon}
             title="No activity yet"
-            subtitle="Calls, emails, texts, and notes will appear here as the lead engages with your outreach."
+            subtitle="Calls, texts, emails, and property views will appear here as they happen."
           />
         ) : !hasNoHistoricalResults ? (
           <div role="region" aria-label="Activity history" aria-live="polite">

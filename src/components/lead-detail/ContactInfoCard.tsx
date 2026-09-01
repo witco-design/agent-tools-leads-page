@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import {
-  Phone,
   ChevronDown,
   Zap,
 } from 'lucide-react';
@@ -13,12 +12,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useContactInfo } from '@/contexts/ContactInfoContext';
+import { useVersion } from '@/contexts/VersionContext';
 import { LEAD_TIMEZONE, formatLocalTime } from './leadConstants';
-import { ContactFieldMenu } from '@/components/contact/ContactFieldMenu';
-import { AddressDisplayBlock } from '@/components/contact/AddressDisplayBlock';
 
 export function ContactInfoCard() {
-  const { contactInfo } = useContactInfo();
+  const { contactInfo, openContactDialog } = useContactInfo();
+  const { emptyMode } = useVersion();
 
   const [snapshotOpen, setSnapshotOpen] = useState(true);
 
@@ -29,34 +28,11 @@ export function ContactInfoCard() {
     return () => clearInterval(id);
   }, []);
 
-  /* ── About dropdowns ── */
   const [urgency, setUrgency] = useState('none');
   const [status, setStatus] = useState('nurture');
   const [type, setType] = useState('buyer');
   const [timeframe, setTimeframe] = useState('30-days');
 
-  /* ── Status & delete handlers ── */
-  const markStatus = (field: EditableField, newStatus: FieldStatus) => {
-    const statusKey = FIELD_TO_STATUS_KEY[field];
-    if (statusKey) {
-      updateContactInfo({ [statusKey]: newStatus } as Partial<ContactInfo>);
-      toast(
-        `${field.charAt(0).toUpperCase() + field.slice(1)} marked as ${newStatus}`,
-      );
-    }
-  };
-
-  const deleteField = (field: EditableField) => {
-    if (field === 'address') {
-      updateContactInfo({ street: '', city: '', state: '', zip: '' });
-    } else {
-      const key = FIELD_TO_CONTACT_KEY[field];
-      updateContactInfo({ [key]: '' } as Partial<ContactInfo>);
-    }
-    toast(`${field.charAt(0).toUpperCase() + field.slice(1)} deleted`);
-  };
-
-  /* ── About handlers ── */
   const handleUrgency = (val: string) => {
     setUrgency(val);
     toast(`Urgency updated to ${val.replace(/-/g, ' ')}`);
@@ -74,45 +50,46 @@ export function ContactInfoCard() {
     toast(`Timeframe updated to ${val.replace(/-/g, ' ')}`);
   };
 
-/**
-   * Renders a contact row (Primary, Email) in the top strip.
-   * The value text AND chevron are a single unified menu trigger —
-   * see the PROTECTED marker inside the JSX for details.
-   */
   const renderContactRow = (field: 'primary' | 'email', label: string, gridClass = '') => {
     const value = contactInfo[field];
-    if (!value || value.trim() === '') return null;
+
+    if (emptyMode || !value || value.trim() === '') {
+      const addLabel = field === 'primary' ? 'Add phone number' : 'Add email';
+      return (
+        <div
+          className={`flex items-center justify-between gap-spacing-3 xl:min-h-[40px] ${gridClass}`}
+        >
+          <span className="text-sm text-text-muted flex-shrink-0">{label}</span>
+          <div className="min-w-0 flex-1 flex justify-end">
+            <button
+              type="button"
+              onClick={() => openContactDialog(field)}
+              className="text-sm text-text-link hover:underline cursor-pointer bg-transparent border-none p-0"
+            >
+              {addLabel}
+            </button>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div
-        key={field}
         className={`flex items-start justify-between gap-spacing-3 xl:min-h-[40px] ${gridClass}`}
       >
         <span className="text-sm text-text-muted flex-shrink-0">{label}</span>
-
-        {/**
-         * PROTECTED — Field menu trigger.
-         * Both the value text AND the chevron open the same field menu.
-         * The menu contains action items (Call/Text/Copy/etc.) plus Edit as the last item.
-         * Edit opens the ContactEditDialog with this field auto-focused.
-         *
-         * Do NOT reintroduce a direct-to-dialog click on the value.
-         * The unified menu is intentional — one row, one interaction model,
-         * multiple actions surfaced via the menu.
-         */}
         <div className="min-w-0 flex-1 flex justify-end">
-          <ContactFieldMenu field={field} value={value} ariaLabel={label} />
+          <span className="text-sm text-text-default truncate">{value}</span>
         </div>
       </div>
     );
   };
 
-  // Address composite — street + (optional Line 2) + city/state/zip
-  const hasAddress = contactInfo.street.trim() !== '';
   const cityStateZip = [contactInfo.city, contactInfo.state, contactInfo.zip]
     .filter(Boolean)
     .join(', ');
   const fullAddress = [contactInfo.street, contactInfo.addressLine2, cityStateZip].filter(Boolean).join(', ');
+  const hasAddress = contactInfo.street.trim() !== '';
 
   return (
     <div
@@ -140,68 +117,54 @@ export function ContactInfoCard() {
       {snapshotOpen && (
       <>
       <div className="border-t border-border-default" />
-      {/**
-       * PROTECTED — Top contact strip uses a single 4-row × 3-column grid.
-       * Row 3 uses items-start + xl:items-baseline so the multi-line address cell
-       * can grow while labels cross-align by baseline.
-       *
-       * Address is a SINGLE cell at r3c1 containing all lines (street, optional
-       * Line 2, city/state/zip) stacked tightly in a flex-col value column.
-       * Row 4 left column is empty (no r4c1 cell).
-       *
-       * DO NOT split the address into r3c1 + r4c1 — city/state/zip must stay
-       * inside the address cell for visual grouping and tight line-spacing.
-       * DO NOT use items-center on the address cell — items-start is required
-       * for label to align with the FIRST line of the multi-line value.
-       */}
       <div className="@container">
       <div className="grid grid-cols-1 gap-y-spacing-3 p-spacing-5 @[760px]:grid-cols-[minmax(240px,1fr)_1px_minmax(220px,1fr)_1px_minmax(200px,1fr)] @[760px]:grid-rows-[auto_auto_auto_auto] @[760px]:gap-x-spacing-5 @[760px]:items-baseline">
         {renderContactRow('primary', 'Primary', '@[760px]:col-start-1 @[760px]:row-start-1')}
         {renderContactRow('email', 'Email', '@[760px]:col-start-1 @[760px]:row-start-2')}
 
-            {/**
-             * PROTECTED — Address is a SINGLE grid cell containing all lines.
-             *
-             * Structure:
-             *   - Cell at r3c1 with `flex items-start`
-             *   - Label spans on left, value column (flex-col items-end gap-0) on right
-             *   - Value column stacks: street → (optional Line 2) → city/state/zip
-             *   - All value lines are 14px/20px (text-sm leading-5), tightly spaced (gap-0)
-             *
-             * Alignment:
-             *   - Grid uses `align-items: baseline` so row-3 labels cross-align (Address baseline
-             *     = Login baseline = Type baseline).
-             *   - Cell's first-baseline is the label / street line's baseline.
-             *   - City/state/zip flows below street with tight line-spacing, extending
-             *     the cell's height beyond row 4's normal position.
-             *
-             * Do NOT split into r3c1 + r4c1 — city/state/zip must be inside the address cell
-             * to maintain the visual grouping and tight line-spacing.
-             *
-             * Do NOT use items-center or items-baseline on this cell — items-start is required
-             * for label to align with the FIRST line of the multi-line value.
-             */}
-            {hasAddress && (
-              <AddressDisplayBlock
-                street={contactInfo.street}
-                addressLine2={contactInfo.addressLine2}
-                cityStateZip={cityStateZip}
-                fullAddress={fullAddress}
-                containerClass="@[760px]:min-h-[40px] @[760px]:col-start-1 @[760px]:row-start-3"
-              />
+            {/* Address — empty: muted "Add address" link; populated: full address block */}
+            {emptyMode || !hasAddress ? (
+              <div className="flex items-center justify-between gap-spacing-3 @[760px]:min-h-[40px] @[760px]:col-start-1 @[760px]:row-start-3">
+                <span className="text-sm text-text-muted flex-shrink-0">Address</span>
+                <div className="min-w-0 flex-1 flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() => openContactDialog('street')}
+                    className="text-sm text-text-link hover:underline cursor-pointer bg-transparent border-none p-0"
+                  >
+                    Add address
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px] @[760px]:col-start-1 @[760px]:row-start-3">
+                <span className="text-sm text-text-muted flex-shrink-0">Address</span>
+                <div className="min-w-0 flex-1 flex flex-col items-end gap-0 text-right">
+                  <span className="text-sm leading-5 text-text-default">{contactInfo.street}</span>
+                  {contactInfo.addressLine2 && (
+                    <span className="text-sm leading-5 text-text-default">{contactInfo.addressLine2}</span>
+                  )}
+                  {cityStateZip && (
+                    <span className="text-sm leading-5 text-text-default">{cityStateZip}</span>
+                  )}
+                </div>
+              </div>
             )}
 
-        {/* Divider 1 — horizontal on mobile, vertical spanning all rows on @[760px] */}
+        {/* Divider 1 */}
         <div className="h-px my-spacing-3 @[760px]:my-0 @[760px]:h-auto @[760px]:w-px @[760px]:self-stretch bg-border-default @[760px]:col-start-2 @[760px]:row-start-1 @[760px]:row-span-4" />
 
         {/* ── COLUMN 2: Highlights ── */}
         <div className="@[760px]:col-start-3 @[760px]:row-start-1 @[760px]:row-span-4 flex flex-col gap-y-spacing-3 justify-start">
-        {/* Online — row 1 */}
+        {/* Online */}
         <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm text-text-muted flex-shrink-0">
                 Online
               </span>
               <div className="min-w-0 flex items-center justify-end flex-1">
+                {emptyMode ? (
+                  <span className="text-sm text-text-muted">Offline</span>
+                ) : (
                 <span className="inline-flex items-center gap-spacing-2 whitespace-nowrap">
                   <span className="relative flex h-2 w-2">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success-text opacity-75"></span>
@@ -211,60 +174,58 @@ export function ContactInfoCard() {
                     Online Now
                   </span>
                 </span>
+                )}
               </div>
             </div>
 
-            {/* Last Contacted — row 2 */}
+            {/* Last Contacted */}
             <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm text-text-muted flex-shrink-0">
                 Last Contacted
               </span>
               <div className="min-w-0 flex items-center justify-end gap-spacing-2 flex-1">
-                <span
-                  className="text-sm text-text-default truncate whitespace-nowrap"
-                  title="3 days ago"
-                >
-                  3 days ago
-                </span>
-                <Phone className="w-4 h-4 flex-shrink-0 text-text-secondary" />
+                {emptyMode ? (
+                  <span className="text-sm text-text-muted">Never contacted</span>
+                ) : (
+                  <>
+                    <span className="text-sm text-text-default truncate whitespace-nowrap" title="3 days ago">
+                      3 days ago
+                    </span>
+                    {/* Phone icon intentionally omitted in empty mode */}
+                  </>
+                )}
               </div>
             </div>
 
-            {/* Local Time — row 3 */}
+            {/* Local Time */}
             <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm leading-5 text-text-muted flex-shrink-0">
                 Local Time
               </span>
               <div className="min-w-0 flex items-center justify-end gap-spacing-2 flex-1">
-                <span
-                  className="text-sm leading-5 text-text-default truncate whitespace-nowrap"
-                  title={localTime}
-                >
-                  {localTime}
+                <span className="text-sm leading-5 text-text-muted truncate whitespace-nowrap">
+                  {emptyMode ? '—' : localTime}
                 </span>
               </div>
             </div>
 
-            {/* Location — row 4 */}
+            {/* Location */}
             <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm text-text-muted flex-shrink-0">Location</span>
               <div className="min-w-0 flex items-center justify-end flex-1">
-                <span
-                  className="text-sm text-text-default truncate whitespace-nowrap"
-                  title="San Jose, CA"
-                >
-                  San Jose, CA
+                <span className="text-sm text-text-muted truncate whitespace-nowrap">
+                  {emptyMode ? '—' : 'San Jose, CA'}
                 </span>
               </div>
             </div>
         </div>
 
-        {/* Divider 2 — horizontal on mobile, vertical spanning all rows on @[760px] */}
+        {/* Divider 2 */}
         <div className="h-px my-spacing-3 @[760px]:my-0 @[760px]:h-auto @[760px]:w-px @[760px]:self-stretch bg-border-default @[760px]:col-start-4 @[760px]:row-start-1 @[760px]:row-span-4" />
 
-        {/* ── COLUMN 3: About ── */}
+        {/* ── COLUMN 3: About — dropdowns stay as-is in empty mode ── */}
         <div className="@[760px]:col-start-5 @[760px]:row-start-1 @[760px]:row-span-4 flex flex-col gap-y-spacing-3 justify-start">
-        {/* Urgency — row 1 */}
+        {/* Urgency */}
         <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm text-text-muted flex-shrink-0">
                 Urgency
@@ -290,7 +251,7 @@ export function ContactInfoCard() {
               </div>
             </div>
 
-            {/* Status — row 2 */}
+            {/* Status */}
             <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm text-text-muted flex-shrink-0">
                 Status
@@ -323,7 +284,7 @@ export function ContactInfoCard() {
               </div>
             </div>
 
-            {/* Type — row 3 */}
+            {/* Type */}
             <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm leading-5 text-text-muted flex-shrink-0">
                 Type
@@ -342,7 +303,7 @@ export function ContactInfoCard() {
               </div>
             </div>
 
-            {/* Timeframe — row 4 */}
+            {/* Timeframe */}
             <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm text-text-muted flex-shrink-0">
                 Timeframe
