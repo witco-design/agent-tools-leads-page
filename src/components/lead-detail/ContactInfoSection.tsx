@@ -12,6 +12,7 @@ import {
   type ContactInfo,
 } from '@/contexts/ContactInfoContext';
 import { ContactEditDialog, type FieldConfig } from '@/components/ContactEditDialog';
+import { ContactFieldMenu, type MenuField } from '@/components/contact/ContactFieldMenu';
 
 const CONTACT_INFO_FIELDS: FieldConfig[] = [
   { key: 'firstName', label: 'First Name', type: 'text' },
@@ -37,6 +38,33 @@ function DisplayRow({ label, value }: { label: string; value: string }) {
   );
 }
 
+/** Row that uses the shared field-action menu (matches Snapshot). */
+function MenuRow({
+  label,
+  field,
+  value,
+  fullAddress,
+}: {
+  label: string;
+  field: MenuField;
+  value: string;
+  fullAddress?: string;
+}) {
+  return (
+    <div className="flex items-center min-h-9">
+      <span className="w-28 text-sm text-text-muted flex-shrink-0">{label}</span>
+      <div className="flex-1 flex justify-end min-w-0">
+        <ContactFieldMenu
+          field={field}
+          value={value}
+          fullAddress={fullAddress}
+          ariaLabel={label}
+        />
+      </div>
+    </div>
+  );
+}
+
 export function ContactInfoSection() {
   const {
     contactInfo,
@@ -49,29 +77,42 @@ export function ContactInfoSection() {
   const [open, setOpen] = useState(true);
   const { attributes, listeners } = useDragHandle();
 
-  const rows: { label: string; value: string }[] = [];
+  const cityStateZip = [contactInfo.city, contactInfo.state, contactInfo.zip]
+    .filter(Boolean)
+    .join(', ');
+  const fullAddress = [contactInfo.street, contactInfo.addressLine2, cityStateZip]
+    .filter(Boolean)
+    .join(', ');
+
+  type Row =
+    | { kind: 'plain'; label: string; value: string }
+    | { kind: 'menu'; label: string; field: MenuField; value: string; fullAddress?: string };
+
+  const rows: Row[] = [];
   if (contactInfo.firstName)
-    rows.push({ label: 'First Name', value: contactInfo.firstName });
+    rows.push({ kind: 'plain', label: 'First Name', value: contactInfo.firstName });
   if (contactInfo.lastName)
-    rows.push({ label: 'Last Name', value: contactInfo.lastName });
+    rows.push({ kind: 'plain', label: 'Last Name', value: contactInfo.lastName });
   if (contactInfo.primary)
-    rows.push({ label: 'Primary', value: contactInfo.primary });
-  if (contactInfo.alt) rows.push({ label: 'Alt', value: contactInfo.alt });
+    rows.push({ kind: 'menu', label: 'Primary', field: 'primary', value: contactInfo.primary });
+  if (contactInfo.alt)
+    rows.push({ kind: 'menu', label: 'Alt', field: 'alt', value: contactInfo.alt });
   if (contactInfo.office)
-    rows.push({ label: 'Office', value: contactInfo.office });
-  if (contactInfo.fax) rows.push({ label: 'Fax', value: contactInfo.fax });
+    rows.push({ kind: 'plain', label: 'Office', value: contactInfo.office });
+  if (contactInfo.fax)
+    rows.push({ kind: 'plain', label: 'Fax', value: contactInfo.fax });
   if (contactInfo.email)
-    rows.push({ label: 'Email', value: contactInfo.email });
+    rows.push({ kind: 'menu', label: 'Email', field: 'email', value: contactInfo.email });
   if (contactInfo.street) {
-    rows.push({ label: 'Address', value: contactInfo.street });
+    rows.push({ kind: 'menu', label: 'Address', field: 'address', value: contactInfo.street, fullAddress });
     if (contactInfo.addressLine2)
-      rows.push({ label: 'Apt, suite, etc.', value: contactInfo.addressLine2 });
+      rows.push({ kind: 'plain', label: 'Apt, suite, etc.', value: contactInfo.addressLine2 });
     if (contactInfo.city)
-      rows.push({ label: 'City', value: contactInfo.city });
+      rows.push({ kind: 'plain', label: 'City', value: contactInfo.city });
     if (contactInfo.state)
-      rows.push({ label: 'State', value: contactInfo.state });
+      rows.push({ kind: 'plain', label: 'State', value: contactInfo.state });
     if (contactInfo.zip)
-      rows.push({ label: 'Zip', value: contactInfo.zip });
+      rows.push({ kind: 'plain', label: 'Zip', value: contactInfo.zip });
   }
 
   const isEmpty = rows.length === 0;
@@ -197,9 +238,23 @@ export function ContactInfoSection() {
                 .
               </div>
             ) : (
-              rows.map((row, i) => (
-                <DisplayRow key={`${row.label || 'row'}-${i}`} label={row.label} value={row.value} />
-              ))
+              rows.map((row, i) =>
+                row.kind === 'menu' ? (
+                  <MenuRow
+                    key={`${row.label}-${i}`}
+                    label={row.label}
+                    field={row.field}
+                    value={row.value}
+                    fullAddress={row.fullAddress}
+                  />
+                ) : (
+                  <DisplayRow
+                    key={`${row.label}-${i}`}
+                    label={row.label}
+                    value={row.value}
+                  />
+                ),
+              )
             )}
           </div>
         )}

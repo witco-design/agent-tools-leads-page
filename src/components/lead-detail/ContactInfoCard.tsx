@@ -1,15 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
   Phone,
-  Globe,
-  Mail,
-  MapPin,
-  Pencil,
-  TriangleAlert as AlertTriangle,
   ChevronDown,
-  Copy,
-  Flag,
-  Trash2,
   Zap,
 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -20,53 +12,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from '@/components/ui/dropdown-menu';
-import {
-  useContactInfo,
-  type ContactInfo,
-  type FieldStatus,
-} from '@/contexts/ContactInfoContext';
+import { useContactInfo } from '@/contexts/ContactInfoContext';
 import { LEAD_TIMEZONE, formatLocalTime } from './leadConstants';
-
-/** Fields that can be inline-edited in the top contact strip */
-type EditableField = 'primary' | 'email' | 'address';
-
-/** Map EditableField to ContactInfo keys */
-const FIELD_TO_CONTACT_KEY: Record<EditableField, keyof ContactInfo> = {
-  primary: 'primary',
-  email: 'email',
-  address: 'street',
-};
-
-/** Map EditableField to status keys in ContactInfo */
-const FIELD_TO_STATUS_KEY: Record<string, keyof ContactInfo> = {
-  primary: 'primaryStatus',
-  email: 'emailStatus',
-};
-
-/** Field type for dropdown menus */
-const FIELD_TYPE_MAP: Record<EditableField, 'phone' | 'email' | 'address'> = {
-  primary: 'phone',
-  email: 'email',
-  address: 'address',
-};
-
-/** Which dialog field key to focus when opening the contact dialog */
-const FIELD_TO_DIALOG_KEY: Record<EditableField, string> = {
-  primary: 'primary',
-  email: 'email',
-  address: 'street',
-};
+import { ContactFieldMenu } from '@/components/contact/ContactFieldMenu';
 
 export function ContactInfoCard() {
-  const { contactInfo, updateContactInfo, openContactDialog } =
-    useContactInfo();
+  const { contactInfo } = useContactInfo();
 
   const [snapshotOpen, setSnapshotOpen] = useState(true);
 
@@ -122,38 +73,13 @@ export function ContactInfoCard() {
     toast(`Timeframe updated to ${val.replace(/-/g, ' ')}`);
   };
 
-  /** Primary action for a field type */
-  const handlePrimaryAction = (field: EditableField, value: string) => {
-    const fieldType = FIELD_TYPE_MAP[field];
-    if (fieldType === 'phone') window.location.href = `tel:${value}`;
-    if (fieldType === 'email') window.location.href = `mailto:${value}`;
-    if (fieldType === 'address')
-      window.open(
-        `https://maps.google.com/?q=${encodeURIComponent(value)}`,
-        '_blank',
-      );
-  };
-
 /**
    * Renders a contact row (Primary, Email) in the top strip.
    * The value text AND chevron are a single unified menu trigger —
    * see the PROTECTED marker inside the JSX for details.
    */
-  const renderContactRow = (field: EditableField, label: string, gridClass = '') => {
-    const valueKey = FIELD_TO_CONTACT_KEY[field];
-    const value = contactInfo[valueKey] as string;
-    const fieldStatus = (FIELD_TO_STATUS_KEY[field]
-      ? (contactInfo[FIELD_TO_STATUS_KEY[field]] as FieldStatus)
-      : 'good');
-    const fieldType = FIELD_TYPE_MAP[field];
-    const primaryLabel =
-      fieldType === 'phone'
-        ? 'Call'
-        : fieldType === 'email'
-          ? 'Send Email'
-          : 'See On Map';
-
-    // Don't render if blank
+  const renderContactRow = (field: 'primary' | 'email', label: string, gridClass = '') => {
+    const value = contactInfo[field];
     if (!value || value.trim() === '') return null;
 
     return (
@@ -174,92 +100,7 @@ export function ContactInfoCard() {
          * multiple actions surfaced via the menu.
          */}
         <div className="min-w-0 flex-1 flex justify-end">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button
-                type="button"
-                className="inline-flex items-center gap-spacing-2 rounded-1 px-1 -mx-1 hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full"
-                aria-label={`${label} actions`}
-              >
-                <span
-                  className={`text-sm font-medium text-left min-w-0 truncate ${
-                    fieldStatus === 'bad'
-                      ? 'text-[#ec423d]'
-                      : 'text-blue-100'
-                  }`}
-                  title={value}
-                >
-                  {fieldStatus === 'bad' && (
-                    <AlertTriangle className="w-4 h-4 text-[#f48a3c] inline mr-spacing-1 flex-shrink-0" />
-                  )}
-                  {value}
-                </span>
-                <ChevronDown
-                  className={`w-4 h-4 flex-shrink-0 transition ${
-                    fieldStatus === 'bad'
-                      ? 'text-[#ec423d]'
-                      : 'text-blue-100'
-                  }`}
-                />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[180px]">
-              <DropdownMenuItem
-                onClick={() => handlePrimaryAction(field, value)}
-              >
-                {fieldType === 'phone' && <Phone className="w-4 h-4 mr-spacing-2" aria-hidden="true" />}
-                {fieldType === 'email' && <Mail className="w-4 h-4 mr-spacing-2" aria-hidden="true" />}
-                {fieldType === 'address' && <MapPin className="w-4 h-4 mr-spacing-2" aria-hidden="true" />}
-                {primaryLabel}
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => openContactDialog(FIELD_TO_DIALOG_KEY[field])}
-              >
-                <Pencil className="w-4 h-4 mr-spacing-2" />
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(value)}
-              >
-                <Copy className="w-4 h-4 mr-spacing-2" />
-                Copy
-              </DropdownMenuItem>
-              {/* Mark as Bad/Good — only for phone and email */}
-              {FIELD_TO_STATUS_KEY[field] && (
-                <>
-                  <DropdownMenuSeparator />
-                  {fieldStatus === 'good' ? (
-                    <DropdownMenuItem
-                      onClick={() => markStatus(field, 'bad')}
-                    >
-                      <Flag className="w-4 h-4 mr-spacing-2" />
-                      Mark as Bad
-                    </DropdownMenuItem>
-                  ) : (
-                    <DropdownMenuItem
-                      onClick={() => markStatus(field, 'good')}
-                    >
-                      <Flag className="w-4 h-4 mr-spacing-2" />
-                      Mark as Good
-                    </DropdownMenuItem>
-                  )}
-                </>
-              )}
-              {/* Delete — phone and address only, not email */}
-              {field !== 'email' && (
-                <>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={() => deleteField(field)}
-                    className="text-[#ec423d] focus:bg-[#ffe0e4]"
-                  >
-                    <Trash2 className="w-4 h-4 mr-spacing-2" />
-                    Delete
-                  </DropdownMenuItem>
-                </>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <ContactFieldMenu field={field} value={value} ariaLabel={label} />
         </div>
       </div>
     );
@@ -272,40 +113,6 @@ export function ContactInfoCard() {
     .join(', ');
   const hasAddressLine2 = contactInfo.addressLine2.trim() !== '';
   const fullAddress = [contactInfo.street, contactInfo.addressLine2, cityStateZip].filter(Boolean).join(', ');
-
-  const renderAddressMenuContent = () => (
-    <DropdownMenuContent align="end" className="w-[180px]">
-      <DropdownMenuItem
-        onClick={() =>
-          window.open(
-            `https://maps.google.com/?q=${encodeURIComponent(fullAddress)}`,
-            '_blank',
-          )
-        }
-      >
-        <MapPin className="w-4 h-4 mr-spacing-2" aria-hidden="true" />
-        See On Map
-      </DropdownMenuItem>
-      <DropdownMenuItem onClick={() => openContactDialog('street')}>
-        <Pencil className="w-4 h-4 mr-spacing-2" />
-        Edit
-      </DropdownMenuItem>
-      <DropdownMenuItem
-        onClick={() => navigator.clipboard.writeText(fullAddress)}
-      >
-        <Copy className="w-4 h-4 mr-spacing-2" />
-        Copy
-      </DropdownMenuItem>
-      <DropdownMenuSeparator />
-      <DropdownMenuItem
-        onClick={() => deleteField('address')}
-        className="text-[#ec423d] focus:bg-[#ffe0e4]"
-      >
-        <Trash2 className="w-4 h-4 mr-spacing-2" />
-        Delete
-      </DropdownMenuItem>
-    </DropdownMenuContent>
-  );
 
   return (
     <div
@@ -381,65 +188,38 @@ export function ContactInfoCard() {
                 </span>
                 <div className="flex-1 min-w-0 flex flex-col items-end gap-0">
                   {/* Line 1: street with chevron menu */}
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button
-                        type="button"
-                        className="inline-flex items-center gap-spacing-2 rounded-1 px-1 -mx-1 hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full"
-                        aria-label="Address actions"
-                      >
-                        <span
-                          className="text-sm font-medium leading-5 text-blue-100 text-left min-w-0 truncate"
-                          title={contactInfo.street}
-                        >
-                          {contactInfo.street}
-                        </span>
-                        <ChevronDown className="w-4 h-4 flex-shrink-0 text-blue-100" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    {renderAddressMenuContent()}
-                  </DropdownMenu>
+                  <ContactFieldMenu
+                    field="address"
+                    value={contactInfo.street}
+                    fullAddress={fullAddress}
+                    valueClassName="leading-5"
+                    ariaLabel="Address"
+                  />
 
                   {/* Line 2 (optional): Address Line 2 — no chevron */}
                   {hasAddressLine2 && (
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <button
-                          type="button"
-                          className="inline-flex items-center rounded-1 px-1 -ml-1 mr-[20px] hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full"
-                          aria-label="Address actions"
-                        >
-                          <span
-                            className="text-sm font-medium leading-5 text-blue-100 text-left min-w-0 truncate"
-                            title={contactInfo.addressLine2}
-                          >
-                            {contactInfo.addressLine2}
-                          </span>
-                        </button>
-                      </DropdownMenuTrigger>
-                      {renderAddressMenuContent()}
-                    </DropdownMenu>
+                    <ContactFieldMenu
+                      field="address"
+                      value={contactInfo.addressLine2}
+                      fullAddress={fullAddress}
+                      showChevron={false}
+                      valueClassName="leading-5"
+                      triggerClassName="-ml-1 mr-[20px]"
+                      ariaLabel="Address"
+                    />
                   )}
 
                   {/* Line 3 (or 2): city/state/zip — no chevron */}
                   {cityStateZip && (
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <button
-                          type="button"
-                          className="inline-flex items-center rounded-1 px-1 -ml-1 mr-[20px] hover:bg-gray-30/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 transition min-w-0 max-w-full"
-                          aria-label="Address actions"
-                        >
-                          <span
-                            className="text-sm font-medium leading-5 text-blue-100 text-left min-w-0 truncate"
-                            title={cityStateZip}
-                          >
-                            {cityStateZip}
-                          </span>
-                        </button>
-                      </DropdownMenuTrigger>
-                      {renderAddressMenuContent()}
-                    </DropdownMenu>
+                    <ContactFieldMenu
+                      field="address"
+                      value={cityStateZip}
+                      fullAddress={fullAddress}
+                      showChevron={false}
+                      valueClassName="leading-5"
+                      triggerClassName="-ml-1 mr-[20px]"
+                      ariaLabel="Address"
+                    />
                   )}
                 </div>
               </div>
