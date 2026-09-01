@@ -57,6 +57,7 @@ export function WorkflowsCard() {
   const [detailWorkflow, setDetailWorkflow] = useState<WorkflowItem | null>(null);
   const [removeConfirmOpen, setRemoveConfirmOpen] = useState(false);
   const [removeWorkflowId, setRemoveWorkflowId] = useState<string | null>(null);
+  const [optOutConfirmOpen, setOptOutConfirmOpen] = useState(false);
 
   const isWorkflowSelected = selectedWorkflow !== '';
 
@@ -95,11 +96,26 @@ export function WorkflowsCard() {
     toast.error(`Removed workflow "${wf?.name || 'Unknown'}"`);
   };
 
+  const handleOptOut = () => {
+    setWorkflows([]);
+    setOptOutConfirmOpen(false);
+    toast.success('Opted out of all workflows');
+  };
+
   return (
     <>
       <CollapsibleCard
         title="Workflows"
         infoTooltip="A drip campaign is an automated chain of texts, emails or follow ups"
+        headerAction={
+          <button
+            type="button"
+            onClick={() => setOptOutConfirmOpen(true)}
+            className="text-text-3 font-normal text-text-secondary hover:text-text-default transition-colors cursor-pointer bg-transparent border-none p-0"
+          >
+            Opt out
+          </button>
+        }
         footer={
           <div className="flex items-center gap-2">
             <Select value={selectedWorkflow} onValueChange={setSelectedWorkflow}>
@@ -220,6 +236,27 @@ export function WorkflowsCard() {
               onClick={handleRemove}
             >
               Remove
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Opt Out Confirmation */}
+      <AlertDialog open={optOutConfirmOpen} onOpenChange={setOptOutConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Opt out of all workflows?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This stops all drip and automated campaigns for this lead. You can re-enroll them later.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-blue-100 text-white hover:bg-blue-110"
+              onClick={handleOptOut}
+            >
+              Opt out
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
