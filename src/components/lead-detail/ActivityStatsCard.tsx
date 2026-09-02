@@ -23,13 +23,13 @@ export function ActivityStatsCard() {
           subtitle="Searches, visits, and saved properties will tally here."
         />
       ) : (
-      <div className="space-y-spacing-1">
+      <div>
         {/* INTENTIONAL: rows are display-only. Do not add onClick, hover, or selected-state styling.
             Feed-filter coupling was explicitly removed. Use the feed toolbar filter pill instead. */}
         {stats.map((s) => (
           <div
             key={s.label}
-            className="w-full flex items-center justify-between py-spacing-1"
+            className="w-full flex items-center justify-between -mx-spacing-5 px-spacing-5 py-spacing-2 even:bg-gray-10"
           >
             <span className="text-text-3 font-normal text-text-secondary">{s.label}</span>
             <span className="text-text-3 font-semibold text-text-default">{s.value}</span>
