@@ -14,6 +14,8 @@ import {
 import { useContactInfo } from '@/contexts/ContactInfoContext';
 import { useVersion } from '@/contexts/VersionContext';
 import { LEAD_TIMEZONE, formatLocalTime } from './leadConstants';
+import { ContactFieldMenu, type MenuField } from '@/components/contact/ContactFieldMenu';
+import { AddressDisplayBlock } from '@/components/contact/AddressDisplayBlock';
 
 export function ContactInfoCard() {
   const { contactInfo, openContactDialog } = useContactInfo();
@@ -73,13 +75,18 @@ export function ContactInfoCard() {
       );
     }
 
+    const menuField: MenuField = field;
     return (
       <div
         className={`flex items-start justify-between gap-spacing-3 xl:min-h-[40px] ${gridClass}`}
       >
         <span className="text-sm text-text-muted flex-shrink-0">{label}</span>
         <div className="min-w-0 flex-1 flex justify-end">
-          <span className="text-sm text-text-default truncate">{value}</span>
+          <ContactFieldMenu
+            field={menuField}
+            value={value}
+            ariaLabel={label}
+          />
         </div>
       </div>
     );
@@ -137,18 +144,13 @@ export function ContactInfoCard() {
                 </div>
               </div>
             ) : (
-              <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px] @[760px]:col-start-1 @[760px]:row-start-3">
-                <span className="text-sm text-text-muted flex-shrink-0">Address</span>
-                <div className="min-w-0 flex-1 flex flex-col items-end gap-0 text-right">
-                  <span className="text-sm leading-5 text-text-default">{contactInfo.street}</span>
-                  {contactInfo.addressLine2 && (
-                    <span className="text-sm leading-5 text-text-default">{contactInfo.addressLine2}</span>
-                  )}
-                  {cityStateZip && (
-                    <span className="text-sm leading-5 text-text-default">{cityStateZip}</span>
-                  )}
-                </div>
-              </div>
+              <AddressDisplayBlock
+                street={contactInfo.street}
+                addressLine2={contactInfo.addressLine2}
+                cityStateZip={cityStateZip}
+                fullAddress={fullAddress}
+                containerClass="@[760px]:min-h-[40px] @[760px]:col-start-1 @[760px]:row-start-3"
+              />
             )}
 
         {/* Divider 1 */}
