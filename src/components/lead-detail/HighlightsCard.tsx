@@ -19,7 +19,7 @@ export function HighlightsCard() {
           />
         ) : (
         <div>
-          <div className="flex items-center -mx-spacing-5 px-spacing-5 py-spacing-2 even:bg-gray-10">
+          <div className="flex items-center -mx-spacing-5 px-spacing-5 py-spacing-2 even:bg-gray-20">
             <span className="text-text-3 font-normal text-text-secondary flex-1">
               Lead Created
             </span>
@@ -27,7 +27,7 @@ export function HighlightsCard() {
               <TruncatedText>Aug 4, 10:46am</TruncatedText>
             </span>
           </div>
-          <div className="flex items-center -mx-spacing-5 px-spacing-5 py-spacing-2 even:bg-gray-10">
+          <div className="flex items-center -mx-spacing-5 px-spacing-5 py-spacing-2 even:bg-gray-20">
             <span className="text-text-3 font-normal text-text-secondary flex-1">
               Last Email Update
             </span>
@@ -35,7 +35,7 @@ export function HighlightsCard() {
               <TruncatedText>Dec 8, 11:49am</TruncatedText>
             </span>
           </div>
-          <div className="flex items-center -mx-spacing-5 px-spacing-5 py-spacing-2 even:bg-gray-10">
+          <div className="flex items-center -mx-spacing-5 px-spacing-5 py-spacing-2 even:bg-gray-20">
             <span className="text-text-3 font-normal text-text-secondary flex-1">
               Last Login
             </span>
@@ -44,7 +44,7 @@ export function HighlightsCard() {
               <ChannelIcon channel="website" />
             </span>
           </div>
-          <div className="flex items-center -mx-spacing-5 px-spacing-5 py-spacing-2 even:bg-gray-10">
+          <div className="flex items-center -mx-spacing-5 px-spacing-5 py-spacing-2 even:bg-gray-20">
             <span className="text-text-3 font-normal text-text-secondary flex-1">
               IP Location
             </span>
@@ -52,7 +52,7 @@ export function HighlightsCard() {
               <TruncatedText>San Jose, CA</TruncatedText>
             </span>
           </div>
-          <div className="flex items-center -mx-spacing-5 px-spacing-5 py-spacing-2 even:bg-gray-10">
+          <div className="flex items-center -mx-spacing-5 px-spacing-5 py-spacing-2 even:bg-gray-20">
             <span className="text-text-3 font-normal text-text-secondary flex-1">
               Avg. Price
             </span>

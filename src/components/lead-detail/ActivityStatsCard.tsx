@@ -29,10 +29,10 @@ export function ActivityStatsCard() {
         {stats.map((s) => (
           <div
             key={s.label}
-            className="w-full flex items-center justify-between -mx-spacing-5 px-spacing-5 py-spacing-2 even:bg-gray-10"
+            className="flex items-center -mx-spacing-5 px-spacing-5 py-spacing-2 even:bg-gray-20"
           >
-            <span className="text-text-3 font-normal text-text-secondary">{s.label}</span>
-            <span className="text-text-3 font-semibold text-text-default">{s.value}</span>
+            <span className="text-text-3 font-normal text-text-secondary flex-1">{s.label}</span>
+            <span className="text-text-3 font-semibold text-text-default min-w-0">{s.value}</span>
           </div>
         ))}
       </div>
