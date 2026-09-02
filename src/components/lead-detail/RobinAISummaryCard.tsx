@@ -24,7 +24,7 @@ const NEXT_STEP_REASONS: string[] = [
 ];
 
 const LABEL_CLASS =
-  'text-text-2 font-semibold uppercase tracking-wide text-purple-100';
+  'text-text-2 font-semibold text-purple-100';
 
 function FeedbackModal({
   open,
@@ -190,7 +190,7 @@ export function RobinAISummaryCard() {
 
                   {/* Next Steps — the AI's single next lead touch */}
                   <div className="pt-spacing-5">
-                    <div className={LABEL_CLASS}>YOUR NEXT STEPS</div>
+                    <div className={LABEL_CLASS}>{version === 'V2' ? "Robin\u2019s Next Step" : 'Your Next Steps'}</div>
 
                     {/* First line + (V2 only) inline Take over link */}
                     <p className="text-text-3 text-text-default leading-relaxed pt-spacing-2">
