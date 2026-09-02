@@ -24,7 +24,7 @@ const NEXT_STEP_REASONS: string[] = [
 ];
 
 const LABEL_CLASS =
-  'text-text-2 font-semibold text-purple-100';
+  'text-text-4 font-semibold text-purple-100';
 
 function FeedbackModal({
   open,
