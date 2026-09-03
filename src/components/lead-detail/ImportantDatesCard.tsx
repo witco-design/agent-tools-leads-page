@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Ellipsis as MoreHorizontal, CalendarDays } from 'lucide-react';
+import { Ellipsis as MoreHorizontal, CalendarDays, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 import { CollapsibleCard } from './CollapsibleCard';
 import { EmptyState } from './EmptyState';
@@ -251,11 +251,15 @@ export function ImportantDatesCard() {
         title="Important Dates"
         countBadge={emptyMode ? 0 : dates.length}
         footer={emptyMode ? undefined : (
-          <SectionActionButton
-            label="Add Date"
-            variant="link"
-            onClick={() => setAddOpen(true)}
-          />
+          <div className="flex justify-end">
+            <SectionActionButton
+              label="Add Date"
+              icon={Plus}
+              iconPosition="after"
+              variant="link"
+              onClick={() => setAddOpen(true)}
+            />
+          </div>
         )}
       >
         {emptyMode ? (
