@@ -218,15 +218,22 @@ export function ContactInfoCard() {
               </div>
             </div>
 
-            {/* Local Time */}
+            {/* Location */}
             <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm leading-5 text-text-muted flex-shrink-0">
-                Local Time
+                Location
               </span>
               <div className="min-w-0 flex items-center justify-end gap-spacing-2 flex-1">
-                <span className="text-sm leading-5 text-text-default truncate whitespace-nowrap">
-                  {emptyMode ? '—' : localTime}
-                </span>
+                {emptyMode ? (
+                  <span className="text-sm leading-5 text-text-default truncate whitespace-nowrap">
+                    —
+                  </span>
+                ) : (
+                  <span className="text-sm leading-5 truncate whitespace-nowrap">
+                    <span className="text-text-default">San Jose, CA</span>
+                    <span className="text-text-muted"> · {localTime}</span>
+                  </span>
+                )}
               </div>
             </div>
         </div>
