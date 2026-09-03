@@ -14,6 +14,7 @@ import {
 import { useContactInfo } from '@/contexts/ContactInfoContext';
 import { useVersion } from '@/contexts/VersionContext';
 import { LEAD_TIMEZONE, formatLocalTime } from './leadConstants';
+import { ChannelIcon } from './ChannelIcon';
 import { ContactFieldMenu, type MenuField } from '@/components/contact/ContactFieldMenu';
 import { AddressDisplayBlock } from '@/components/contact/AddressDisplayBlock';
 
@@ -199,6 +200,23 @@ export function ContactInfoCard() {
               </div>
             </div>
 
+            {/* Last Login */}
+            <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
+              <span className="text-sm text-text-muted flex-shrink-0">Last Login</span>
+              <div className="min-w-0 flex items-center justify-end gap-spacing-2 flex-1">
+                {emptyMode ? (
+                  <span className="text-sm text-text-muted">—</span>
+                ) : (
+                  <span className="inline-flex items-center gap-spacing-2 whitespace-nowrap">
+                    <span className="text-sm text-text-muted truncate whitespace-nowrap">
+                      14 days ago
+                    </span>
+                    <ChannelIcon channel="website" />
+                  </span>
+                )}
+              </div>
+            </div>
+
             {/* Local Time */}
             <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm leading-5 text-text-muted flex-shrink-0">
@@ -207,16 +225,6 @@ export function ContactInfoCard() {
               <div className="min-w-0 flex items-center justify-end gap-spacing-2 flex-1">
                 <span className="text-sm leading-5 text-text-muted truncate whitespace-nowrap">
                   {emptyMode ? '—' : localTime}
-                </span>
-              </div>
-            </div>
-
-            {/* Location */}
-            <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
-              <span className="text-sm text-text-muted flex-shrink-0">Location</span>
-              <div className="min-w-0 flex items-center justify-end flex-1">
-                <span className="text-sm text-text-muted truncate whitespace-nowrap">
-                  {emptyMode ? '—' : 'San Jose, CA'}
                 </span>
               </div>
             </div>
