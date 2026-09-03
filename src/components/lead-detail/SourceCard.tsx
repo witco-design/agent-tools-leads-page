@@ -4,31 +4,27 @@ export function SourceCard() {
   return (
     <CollapsibleCard title="Source">
       <div className="space-y-spacing-3">
-        <div className="flex items-center gap-spacing-2">
-          <span className="text-text-3 font-normal text-text-secondary w-[60px] shrink-0">
+        <div className="grid grid-cols-[100px_1fr] gap-x-spacing-2 items-start">
+          <span className="text-text-3 font-normal text-text-secondary pt-px">
             Source
           </span>
-          <span className="text-text-3 font-normal text-text-default">
+          <span className="text-text-3 text-text-default">
             Website Property Search
           </span>
         </div>
 
-        <div className="w-full">
-          <p className="text-text-3 font-normal text-text-secondary mb-spacing-1">
+        <div className="grid grid-cols-[100px_1fr] gap-x-spacing-2 items-start">
+          <span className="text-text-3 font-normal text-text-secondary pt-px">
             Details
-          </p>
-          <p className="text-text-3 font-normal text-text-default leading-snug">
-            Direct
-          </p>
-          <div className="mt-spacing-1 space-y-spacing-0.5">
-            <p className="text-text-3 font-normal text-text-muted leading-snug">
-              <span className="text-text-secondary">IP Address:</span>{' '}
-              136.226.52.173
-            </p>
-            <p className="text-text-3 font-normal text-text-muted leading-snug">
-              <span className="text-text-secondary">Google Signup:</span>{' '}
-              107783713173060314901
-            </p>
+          </span>
+          <div className="flex flex-col gap-1 min-w-0">
+            <span className="text-text-3 text-text-default">Direct</span>
+            <span className="text-text-2 text-text-muted">
+              IP Address: 136.226.52.173
+            </span>
+            <span className="text-text-2 text-text-muted">
+              Google Signup: 107783713173060314901
+            </span>
           </div>
         </div>
       </div>
