@@ -339,7 +339,7 @@ export function ActivityItem({
         <div className="flex-1 min-w-0 flex items-center gap-spacing-2 text-text-3 leading-none">
           {isSystem ? (
             <>
-              <span className="whitespace-nowrap text-text-default font-medium">
+              <span className="whitespace-nowrap text-text-default font-semibold">
                 {capitalize(item.typeLabel)}
               </span>
               <span className="text-text-muted">&middot;</span>
@@ -348,7 +348,7 @@ export function ActivityItem({
           ) : (
             <>
               <span className="whitespace-nowrap">
-                <span className="text-text-default font-medium">{capitalize(item.typeLabel)}</span>
+                <span className="text-text-default font-semibold">{capitalize(item.typeLabel)}</span>
                 {' '}
                 <span className="text-text-secondary">by</span>
                 {' '}
@@ -479,19 +479,6 @@ export function ActivityItem({
             )}
 
             <div className="flex-1 min-w-0">
-              {/* Bold title */}
-              <h4
-                className={`text-text-3 font-semibold ${
-                  item.isCompleted
-                    ? 'text-text-muted line-through'
-                    : 'text-text-default'
-                }`}
-              >
-                <TruncatedText fullText={item.title}>
-                  {item.title}
-                </TruncatedText>
-              </h4>
-
               {/* Body: note text */}
               {item.note && (
                 <div className="mt-spacing-2">
