@@ -127,7 +127,7 @@ export function ContactInfoCard() {
       <>
       <div className="border-t border-border-default" />
       <div className="@container">
-      <div className="grid grid-cols-1 gap-y-spacing-3 p-spacing-5 @[760px]:grid-cols-[minmax(240px,1fr)_1px_minmax(220px,1fr)_1px_minmax(200px,1fr)] @[760px]:grid-rows-[auto_auto_auto_auto] @[760px]:gap-x-spacing-5 @[760px]:items-baseline">
+      <div className="grid grid-cols-1 gap-y-spacing-3 p-spacing-5 @[760px]:grid-cols-[minmax(240px,1fr)_1px_minmax(220px,1fr)_1px_216px] @[760px]:grid-rows-[auto_auto_auto_auto] @[760px]:gap-x-spacing-5 @[760px]:items-baseline">
         {renderContactRow('primary', 'Primary', '@[760px]:col-start-1 @[760px]:row-start-1')}
         {renderContactRow('email', 'Email', '@[760px]:col-start-1 @[760px]:row-start-2')}
 
