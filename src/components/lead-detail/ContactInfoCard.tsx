@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   ChevronDown,
   Zap,
+  Phone,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -194,7 +195,7 @@ export function ContactInfoCard() {
                     <span className="text-sm text-text-default truncate whitespace-nowrap" title="3 days ago">
                       3 days ago
                     </span>
-                    {/* Phone icon intentionally omitted in empty mode */}
+                    <Phone className="w-3.5 h-3.5 text-text-muted shrink-0" />
                   </>
                 )}
               </div>
@@ -208,7 +209,7 @@ export function ContactInfoCard() {
                   <span className="text-sm text-text-muted">—</span>
                 ) : (
                   <span className="inline-flex items-center gap-spacing-2 whitespace-nowrap">
-                    <span className="text-sm text-text-muted truncate whitespace-nowrap">
+                    <span className="text-sm text-text-default truncate whitespace-nowrap">
                       14 days ago
                     </span>
                     <ChannelIcon channel="website" />
@@ -223,7 +224,7 @@ export function ContactInfoCard() {
                 Local Time
               </span>
               <div className="min-w-0 flex items-center justify-end gap-spacing-2 flex-1">
-                <span className="text-sm leading-5 text-text-muted truncate whitespace-nowrap">
+                <span className="text-sm leading-5 text-text-default truncate whitespace-nowrap">
                   {emptyMode ? '—' : localTime}
                 </span>
               </div>
