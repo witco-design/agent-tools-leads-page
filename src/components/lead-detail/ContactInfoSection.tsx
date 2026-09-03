@@ -231,25 +231,13 @@ export function ContactInfoSection() {
          */}
         {open && (
           <div className="px-spacing-5 py-spacing-4 space-y-spacing-2">
-            {emptyMode ? (
+            {isEmpty ? (
               <EmptyState
                 icon={UserRound}
                 title="No contact details yet"
                 subtitle="Add a name, phone, email, or address for this lead."
                 action={{ label: 'Add details', onClick: () => openContactDialog() }}
               />
-            ) : isEmpty ? (
-              <div className="text-sm text-text-muted italic">
-                No contact information yet.{' '}
-                <button
-                  type="button"
-                  onClick={() => openContactDialog()}
-                  className="text-blue-100 underline hover:no-underline cursor-pointer bg-transparent border-none p-0"
-                >
-                  Add one
-                </button>
-                .
-              </div>
             ) : (
               rows.map((row, i) =>
                 row.kind === 'menu' ? (

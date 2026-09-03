@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pencil, Plus, ChevronUp, ChevronDown, GripVertical, UserPlus } from 'lucide-react';
+import { Pencil, ChevronUp, ChevronDown, GripVertical, UserPlus } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Tooltip,
@@ -84,7 +84,6 @@ function DisplayRow({ label, value }: { label: string; value: string }) {
    ──────────────────────────────────────────────────────── */
 export function SecondaryContactCard() {
   const { emptyMode } = useVersion();
-  const hasInitialContent = Object.values(INITIAL_DATA).some((v) => v.trim() !== '');
   const [contact, setContact] = useState<SecondaryContact>(INITIAL_DATA);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [autoFocusField, setAutoFocusField] = useState<string | undefined>(
@@ -196,27 +195,16 @@ export function SecondaryContactCard() {
             </h3>
           </button>
 
-          {/* Edit link — hidden in empty mode, matches ContactInfoSection */}
-          {!emptyMode && (
-            isEmpty ? (
-              <SectionActionButton
-                label="Add"
-                icon={Plus}
-                iconPosition="before"
-                variant="link"
-                onClick={() => openDialog('name')}
-                className="ml-spacing-3"
-              />
-            ) : (
-              <SectionActionButton
-                label="Edit"
-                icon={Pencil}
-                iconPosition="before"
-                variant="link"
-                onClick={() => openDialog()}
-                className="ml-spacing-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 rounded-1"
-              />
-            )
+          {/* Edit link — shown only when there's content */}
+          {!emptyMode && !isEmpty && (
+            <SectionActionButton
+              label="Edit"
+              icon={Pencil}
+              iconPosition="before"
+              variant="link"
+              onClick={() => openDialog()}
+              className="ml-spacing-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 rounded-1"
+            />
           )}
 
           <div className="flex-1" />
@@ -247,24 +235,13 @@ export function SecondaryContactCard() {
          */}
         {open && (
           <div className="px-spacing-5 py-spacing-4 space-y-spacing-2">
-            {emptyMode ? (
+            {isEmpty ? (
               <EmptyState
                 icon={UserPlus}
                 title="No secondary contact yet"
                 subtitle="Add a spouse, partner, or co-buyer for this lead."
                 action={{ label: 'Add secondary contact', onClick: () => openDialog('name') }}
               />
-            ) : isEmpty ? (
-              <div className="space-y-spacing-3">
-                <p className="text-sm text-text-muted">No secondary contact added yet.</p>
-                <SectionActionButton
-                  label="Add secondary contact"
-                  icon={Plus}
-                  iconPosition="before"
-                  variant="link"
-                  onClick={() => openDialog('name')}
-                />
-              </div>
             ) : (
               rows.map((row, i) => (
                 <DisplayRow
