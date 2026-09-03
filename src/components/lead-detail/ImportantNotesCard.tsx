@@ -45,15 +45,13 @@ export function ImportantNotesCard() {
         data-component="ImportantNotesCard"
         title="Important Notes"
         rightAction={
-          emptyMode ? undefined : (
-            <SectionActionButton
-              label="Edit"
-              icon={Pencil}
-              iconPosition="before"
-              variant="link"
-              onClick={() => setNotesModalOpen(true)}
-            />
-          )
+          <SectionActionButton
+            label="Edit"
+            icon={Pencil}
+            iconPosition="before"
+            variant="link"
+            onClick={() => setNotesModalOpen(true)}
+          />
         }
       >
         {emptyMode ? (

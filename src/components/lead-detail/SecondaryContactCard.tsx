@@ -195,17 +195,14 @@ export function SecondaryContactCard() {
             </h3>
           </button>
 
-          {/* Edit link — shown only when there's content */}
-          {!emptyMode && !isEmpty && (
-            <SectionActionButton
-              label="Edit"
-              icon={Pencil}
-              iconPosition="before"
-              variant="link"
-              onClick={() => openDialog()}
-              className="ml-spacing-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 rounded-1"
-            />
-          )}
+          <SectionActionButton
+            label="Edit"
+            icon={Pencil}
+            iconPosition="before"
+            variant="link"
+            onClick={() => openDialog()}
+            className="ml-spacing-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 rounded-1"
+          />
 
           <div className="flex-1" />
 

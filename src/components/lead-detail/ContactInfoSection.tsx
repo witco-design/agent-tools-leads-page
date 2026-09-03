@@ -191,8 +191,6 @@ export function ContactInfoSection() {
             </h3>
           </button>
 
-          {/* Edit link — hidden in empty mode */}
-          {!emptyMode && (
           <SectionActionButton
             label="Edit"
             icon={Pencil}
@@ -201,7 +199,6 @@ export function ContactInfoSection() {
             onClick={() => openContactDialog()}
             className="ml-spacing-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-60 focus-visible:ring-offset-2 rounded-1"
           />
-          )}
 
           <div className="flex-1" />
 
