@@ -140,6 +140,30 @@ export function SearchCriteriaCard() {
             </div>
           </div>
         ))}
+
+        <div className="border-t border-border-default pt-spacing-3 space-y-spacing-3">
+          <div className="flex items-center gap-spacing-2">
+            <span className="text-text-3 font-normal text-text-secondary w-[80px] shrink-0">
+              Avg. Price
+            </span>
+            <span className="text-text-3 font-normal text-text-default flex-1 min-w-0">
+              $750,000
+            </span>
+          </div>
+          <div className="flex items-start gap-spacing-2">
+            <span className="text-text-3 font-normal text-text-secondary w-[80px] shrink-0 pt-0.5">
+              Last Saved Search
+            </span>
+            <div className="flex-1 min-w-0">
+              <p className="text-text-3 font-normal text-text-default">
+                3BR townhomes · San Jose · $650–750K
+              </p>
+              <p className="text-text-3 font-normal text-text-secondary mt-0.5">
+                Saved Nov 10
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
       )}
     </CollapsibleCard>
