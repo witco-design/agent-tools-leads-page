@@ -481,7 +481,7 @@ export function ActivityItem({
             <div className="flex-1 min-w-0">
               {/* Body: note text */}
               {item.note && (
-                <div className="mt-spacing-2">
+                <div className="mt-spacing-1">
                   <TruncatedText
                     lines={2}
                     fullText={item.note}
@@ -494,7 +494,7 @@ export function ActivityItem({
 
               {/* Body: search criteria */}
               {item.searchCriteria && (
-                <div className="mt-spacing-2">
+                <div className="mt-spacing-1">
                   <div className="border border-border-default rounded-1 p-spacing-3">
                     {item.searchCriteria.map((line, i) => (
                       <p
@@ -519,7 +519,7 @@ export function ActivityItem({
 
               {/* Body: property cards */}
               {item.properties && item.properties.length > 0 && (
-                <div className="mt-spacing-2 space-y-spacing-3">
+                <div className="mt-spacing-1 space-y-spacing-3">
                   {item.properties.map((prop, i) => (
                     <PropertyCard key={i} property={prop} />
                   ))}
@@ -528,7 +528,7 @@ export function ActivityItem({
 
               {/* Body: reassignment handoff */}
               {item.reassignment && (
-                <div className="mt-spacing-2">
+                <div className="mt-spacing-1">
                   <div className="text-text-3 text-text-default">
                     <span className="font-medium">{item.reassignment.from}</span>
                     <ArrowRight className="inline w-3.5 h-3.5 mx-spacing-1 text-text-muted align-[-2px]" />
