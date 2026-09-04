@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pencil, AlarmClock, Video, Mail, ArrowRight, CalendarClock } from 'lucide-react';
+import { Pencil, AlarmClock, Video, Mail, ArrowRight, CalendarClock, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
@@ -141,6 +141,8 @@ export function FollowUpsCard() {
           <div className="flex items-center justify-between">
             <SectionActionButton
               label="Add Followup"
+              icon={Plus}
+              iconPosition="before"
               variant="link"
               onClick={() => setAddOpen(true)}
             />
