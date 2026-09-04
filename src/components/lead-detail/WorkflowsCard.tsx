@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Play, X, Workflow } from 'lucide-react';
+import { Play, Pause, Workflow } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatDateWithYear } from '@/utils/formatDate';
 import {
@@ -17,19 +17,8 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog';
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction,
-} from '@/components/ui/alert-dialog';
 import { CollapsibleCard } from './CollapsibleCard';
 import { TruncatedText } from './TruncatedText';
-import { SectionActionButton } from './SectionActionButton';
 import { EmptyState } from './EmptyState';
 import { useVersion } from '@/contexts/VersionContext';
 
@@ -59,10 +48,6 @@ export function WorkflowsCard() {
   const [selectedWorkflow, setSelectedWorkflow] = useState<string>('');
   const [detailOpen, setDetailOpen] = useState(false);
   const [detailWorkflow, setDetailWorkflow] = useState<WorkflowItem | null>(null);
-  const [removeConfirmOpen, setRemoveConfirmOpen] = useState(false);
-  const [removeWorkflowId, setRemoveWorkflowId] = useState<string | null>(null);
-  const [optOutConfirmOpen, setOptOutConfirmOpen] = useState(false);
-
   const isWorkflowSelected = selectedWorkflow !== '';
 
   const handleStart = () => {
@@ -86,24 +71,9 @@ export function WorkflowsCard() {
     setDetailOpen(true);
   };
 
-  const confirmRemove = (id: string) => {
-    setRemoveWorkflowId(id);
-    setRemoveConfirmOpen(true);
-  };
-
-  const handleRemove = () => {
-    if (!removeWorkflowId) return;
-    const wf = workflows.find((w) => w.id === removeWorkflowId);
-    setWorkflows((prev) => prev.filter((w) => w.id !== removeWorkflowId));
-    setRemoveConfirmOpen(false);
-    setDetailOpen(false);
-    toast.error(`Removed workflow "${wf?.name || 'Unknown'}"`);
-  };
-
-  const handleOptOut = () => {
-    setWorkflows([]);
-    setOptOutConfirmOpen(false);
-    toast.success('Opted out of all workflows');
+  const handlePause = (id: string) => {
+    const wf = workflows.find((w) => w.id === id);
+    toast.success(`Paused workflow "${wf?.name || 'Unknown'}"`);
   };
 
   return (
@@ -111,17 +81,7 @@ export function WorkflowsCard() {
       <CollapsibleCard
         title="Workflows"
         infoTooltip="A drip campaign is an automated chain of texts, emails or follow ups"
-        titleAction={
-          emptyMode ? undefined : (
-            <SectionActionButton
-              label="Opt out"
-              icon={X}
-              iconPosition="before"
-              variant="destructive"
-              onClick={() => setOptOutConfirmOpen(true)}
-            />
-          )
-        }
+
         footer={
             <div className="flex items-center gap-2">
             <Select value={selectedWorkflow} onValueChange={setSelectedWorkflow}>
@@ -176,11 +136,12 @@ export function WorkflowsCard() {
               </button>
               <button
                 type="button"
-                onClick={() => confirmRemove(workflow.id)}
+                onClick={() => handlePause(workflow.id)}
                 className="opacity-0 group-hover:opacity-100 p-1 rounded-1 hover:bg-gray-50 cursor-pointer transition-all"
-                title="Remove workflow"
+                title="Pause workflow"
+                aria-label="Pause workflow"
               >
-                <X className="w-3.5 h-3.5 text-red-80" />
+                <Pause className="w-3.5 h-3.5 text-text-muted hover:text-text-default" />
               </button>
             </div>
           ))}
@@ -218,13 +179,6 @@ export function WorkflowsCard() {
           <DialogFooter>
             <button
               type="button"
-              className="h-8 px-spacing-3 rounded-1 border border-red-80 text-red-80 text-text-3 font-semibold hover:bg-red-30 transition-colors cursor-pointer"
-              onClick={() => detailWorkflow && confirmRemove(detailWorkflow.id)}
-            >
-              Remove from Lead
-            </button>
-            <button
-              type="button"
               className="h-8 px-spacing-3 rounded-1 border border-border-default bg-white text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
               onClick={() => setDetailOpen(false)}
             >
@@ -233,48 +187,6 @@ export function WorkflowsCard() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      {/* Remove Confirmation */}
-      <AlertDialog open={removeConfirmOpen} onOpenChange={setRemoveConfirmOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Remove this workflow?</AlertDialogTitle>
-            <AlertDialogDescription>
-              The lead will be removed from this workflow. You can re-add it at any time.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-red-100 text-white hover:bg-red-110"
-              onClick={handleRemove}
-            >
-              Remove
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      {/* Opt Out Confirmation */}
-      <AlertDialog open={optOutConfirmOpen} onOpenChange={setOptOutConfirmOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Opt out of all workflows?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This stops all Workflows and eBlasts for this lead. You can re-enroll them later.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-red-100 text-white hover:bg-red-100/90 focus:ring-2 focus:ring-red-100/40"
-              onClick={handleOptOut}
-            >
-              Opt out
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </>
   );
 }
