@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Phone, MessageSquare, Mail, MessagesSquare, LogIn, Ellipsis as MoreHorizontal, Pencil, Video, Lock, Bookmark, ScrollText as FileSignature, LockOpen as Unlock, TriangleAlert as AlertTriangle, ChevronLeft, ChevronRight, List, WavesHorizontal, Calendar, Activity } from 'lucide-react';
+import { Phone, MessageSquare, Mail, MessagesSquare, LogIn, Ellipsis as MoreHorizontal, Pencil, Video, Lock, Bookmark, ScrollText as FileSignature, LockOpen as Unlock, TriangleAlert as AlertTriangle, ChevronLeft, ChevronRight, List, WavesHorizontal } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Tooltip,
@@ -107,11 +107,9 @@ export function LeadHeader() {
                 <Pencil className="w-4 h-4 text-text-muted shrink-0 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150" aria-hidden="true" />
               </button>
             </h1>
-            <p className="text-text-2 text-text-muted mt-[2px] inline-flex items-center gap-1 whitespace-nowrap">
-              <Calendar className="w-3.5 h-3.5 text-text-muted shrink-0" aria-hidden="true" />
+            <p className="text-text-2 text-text-muted mt-spacing-1 whitespace-nowrap">
               <span>Created Aug 4, 2025</span>
               <span className="mx-1">·</span>
-              <Activity className="w-3.5 h-3.5 text-text-muted shrink-0" aria-hidden="true" />
               <span title="Aug 21, 2025 11:50 AM">Last active 14 days ago</span>
             </p>
           </div>
