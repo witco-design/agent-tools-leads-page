@@ -524,11 +524,15 @@ export function ActivityHistoryCard() {
 
         {/* ── Historical Timeline (date-grouped) ──────────────── */}
         {emptyMode ? (
-          <EmptyState
-            icon={ActivityIcon}
-            title="No activity yet"
-            subtitle="Calls, texts, emails, and property views will appear here as they happen."
-          />
+          <div className="px-spacing-5 py-spacing-4">
+            <div className="rounded-1 bg-bg-muted p-spacing-3">
+              <EmptyState
+                icon={ActivityIcon}
+                title="No activity yet"
+                subtitle="Calls, texts, emails, and property views will appear here as they happen."
+              />
+            </div>
+          </div>
         ) : !hasNoHistoricalResults ? (
           <div role="region" aria-label="Activity history" aria-live="polite">
             {dateGroups.map((group) => (
