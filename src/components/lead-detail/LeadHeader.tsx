@@ -89,10 +89,9 @@ export function LeadHeader() {
       {/* Lead identity + actions */}
       <div data-component="LeadHeader" className="py-spacing-2 flex items-center justify-between gap-spacing-4">
         {/* Avatar + Name — name is a button that opens the Contact Edit dialog */}
-        <div className="group flex items-start gap-spacing-3 flex-1 min-w-0">
-          {/* Lock icon — shrink-0 so it never compresses when the name is long;
-              translate-y-[1px] compensates for cap-height asymmetry in Text-7 */}
-          <Lock className="w-4 h-4 text-text-muted flex-shrink-0 mt-[3px]" strokeWidth={2.25} aria-hidden="true" />
+        <div className="group flex items-center gap-spacing-3 flex-1 min-w-0">
+          {/* Lock icon — shrink-0 so it never compresses when the name is long */}
+          <Lock className="w-4 h-4 text-text-muted flex-shrink-0" strokeWidth={2.25} aria-hidden="true" />
 
           <div className="flex flex-col min-w-0">
             {/* Name — click-to-edit, opens Contact Info dialog focused on First Name */}
