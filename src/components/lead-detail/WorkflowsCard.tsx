@@ -141,7 +141,7 @@ export function WorkflowsCard() {
                 title="Pause workflow"
                 aria-label="Pause workflow"
               >
-                <CirclePause className="w-3.5 h-3.5 text-text-muted hover:text-text-default" />
+                <CirclePause className="w-5 h-5 text-text-muted hover:text-text-default" />
               </button>
             </div>
           ))}

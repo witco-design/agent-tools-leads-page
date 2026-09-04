@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Info } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {
   DndContext,
@@ -82,38 +81,16 @@ const ENGAGEMENT_CARD_MAP: Record<string, React.FC> = {
   'sms-email-opt-outs': SmsEmailOptOutsCard,
 };
 
-// ── Subscriptions heading insertion helper ─────────────────────
-// Rendered as a static element just before saved-searches (if present)
 function renderEngagementCards(order: string[]) {
-  const elements: React.ReactNode[] = [];
-
-  for (const id of order) {
-    // Insert Subscriptions heading before saved-searches
-    if (id === 'saved-searches') {
-      elements.push(
-        <div
-          key="subscriptions-heading"
-          className="flex items-center gap-spacing-2 mt-4"
-        >
-          <h2 className="text-text-4 font-semibold text-text-default">
-            Subscriptions
-          </h2>
-          <Info className="w-3.5 h-3.5 text-icon-default" />
-        </div>,
-      );
-    }
-
+  return order.map((id) => {
     const Component = ENGAGEMENT_CARD_MAP[id];
-    if (Component) {
-      elements.push(
-        <SortableCard key={id} id={id}>
-          <Component />
-        </SortableCard>,
-      );
-    }
-  }
-
-  return elements;
+    if (!Component) return null;
+    return (
+      <SortableCard key={id} id={id}>
+        <Component />
+      </SortableCard>
+    );
+  });
 }
 
 // ── Main component ─────────────────────────────────────────────
