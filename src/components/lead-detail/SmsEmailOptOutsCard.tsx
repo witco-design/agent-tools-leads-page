@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
-import { MailCheck } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { CollapsibleCard } from './CollapsibleCard';
-import { EmptyState } from './EmptyState';
 import { useVersion } from '@/contexts/VersionContext';
 
 interface OptOutState {
@@ -23,6 +21,10 @@ export function SmsEmailOptOutsCard() {
     allTextMessages: true,
     reactiveResponses: true,
   });
+
+  const effectiveOptOuts = emptyMode
+    ? { allContact: false, crmEmail: false, eblastsWorkflow: false, allTextMessages: false, reactiveResponses: false }
+    : optOuts;
 
   // When "All Text Messages" is OFF, "Reactive Responses" auto-toggles OFF and becomes disabled
   useEffect(() => {
@@ -45,7 +47,7 @@ export function SmsEmailOptOutsCard() {
     toast(newVal ? `${OPT_OUT_LABELS[key]} opted in` : `${OPT_OUT_LABELS[key]} opted out`);
   };
 
-  const isReactiveResponsesDisabled = !optOuts.allTextMessages;
+  const isReactiveResponsesDisabled = !effectiveOptOuts.allTextMessages;
 
   const optOutItems = [
     {
@@ -87,13 +89,6 @@ export function SmsEmailOptOutsCard() {
 
   return (
     <CollapsibleCard title="SMS/Email Opt Outs" infoTooltip="On (purple) means opted in. Off (gray) means opted out.">
-      {emptyMode ? (
-        <EmptyState
-          icon={MailCheck}
-          title="No opt-outs"
-          subtitle="This lead is opted in to all messaging."
-        />
-      ) : (
       <div className="space-y-spacing-4">
         {optOutItems.map((item) => (
           <div
@@ -101,11 +96,11 @@ export function SmsEmailOptOutsCard() {
             className={`flex items-start gap-spacing-3 p-spacing-2 -mx-spacing-2 rounded-1 transition-colors ${
               item.disabled ? '' : 'hover:bg-gray-30 cursor-pointer'
             }`}
-            onClick={() => !item.disabled && toggleOptOut(item.key)}
+            onClick={() => !item.disabled && !emptyMode && toggleOptOut(item.key)}
           >
             <Switch
-              checked={optOuts[item.key]}
-              onCheckedChange={() => !item.disabled && toggleOptOut(item.key)}
+              checked={effectiveOptOuts[item.key]}
+              onCheckedChange={() => !item.disabled && !emptyMode && toggleOptOut(item.key)}
               disabled={item.disabled}
               className={`shrink-0 mt-0.5 cursor-pointer data-[state=checked]:bg-blue-100 ${
                 item.disabled ? 'opacity-50 cursor-not-allowed bg-gray-40' : ''
@@ -130,7 +125,6 @@ export function SmsEmailOptOutsCard() {
           </div>
         ))}
       </div>
-      )}
     </CollapsibleCard>
   );
 }
