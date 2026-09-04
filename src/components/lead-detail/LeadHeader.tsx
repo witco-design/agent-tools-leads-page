@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Phone, MessageSquare, Mail, MessagesSquare, LogIn, Ellipsis as MoreHorizontal, Pencil, Video, Lock, Bookmark, ScrollText as FileSignature, LockOpen as Unlock, TriangleAlert as AlertTriangle, ChevronLeft, ChevronRight, List, WavesHorizontal } from 'lucide-react';
+import { Phone, MessageSquare, Mail, MessagesSquare, LogIn, Ellipsis as MoreHorizontal, Pencil, Video, Lock, Bookmark, ScrollText as FileSignature, LockOpen as Unlock, TriangleAlert as AlertTriangle, ChevronLeft, ChevronRight, List, WavesHorizontal, Calendar, Activity } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Tooltip,
@@ -89,23 +89,32 @@ export function LeadHeader() {
       {/* Lead identity + actions */}
       <div data-component="LeadHeader" className="py-spacing-2 flex items-center justify-between gap-spacing-4">
         {/* Avatar + Name — name is a button that opens the Contact Edit dialog */}
-        <div className="group flex items-center gap-spacing-3 flex-1 min-w-0">
+        <div className="group flex items-start gap-spacing-3 flex-1 min-w-0">
           {/* Lock icon — shrink-0 so it never compresses when the name is long;
               translate-y-[1px] compensates for cap-height asymmetry in Text-7 */}
-          <Lock className="w-4 h-4 text-text-muted flex-shrink-0 translate-y-[1px]" strokeWidth={2.25} aria-hidden="true" />
+          <Lock className="w-4 h-4 text-text-muted flex-shrink-0 mt-[3px]" strokeWidth={2.25} aria-hidden="true" />
 
-          {/* Name — click-to-edit, opens Contact Info dialog focused on First Name */}
-          <h1 className="text-text-7 font-semibold text-text-default whitespace-nowrap min-w-0 m-0 leading-none">
-            <button
-              type="button"
-              aria-label="Edit name"
-              onClick={() => openContactDialog('firstName')}
-              className="inline-flex items-center gap-spacing-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-40 focus-visible:ring-offset-2 rounded-1"
-            >
-              <TruncatedText fullText={leadName}>{leadName}</TruncatedText>
-              <Pencil className="w-4 h-4 text-text-muted shrink-0 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150" aria-hidden="true" />
-            </button>
-          </h1>
+          <div className="flex flex-col min-w-0">
+            {/* Name — click-to-edit, opens Contact Info dialog focused on First Name */}
+            <h1 className="text-text-7 font-semibold text-text-default whitespace-nowrap min-w-0 m-0 leading-none">
+              <button
+                type="button"
+                aria-label="Edit name"
+                onClick={() => openContactDialog('firstName')}
+                className="inline-flex items-center gap-spacing-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-40 focus-visible:ring-offset-2 rounded-1"
+              >
+                <TruncatedText fullText={leadName}>{leadName}</TruncatedText>
+                <Pencil className="w-4 h-4 text-text-muted shrink-0 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150" aria-hidden="true" />
+              </button>
+            </h1>
+            <p className="text-text-2 text-text-muted mt-[2px] inline-flex items-center gap-1 whitespace-nowrap">
+              <Calendar className="w-3.5 h-3.5 text-text-muted shrink-0" aria-hidden="true" />
+              <span>Created Aug 4, 2025</span>
+              <span className="mx-1">·</span>
+              <Activity className="w-3.5 h-3.5 text-text-muted shrink-0" aria-hidden="true" />
+              <span title="Aug 21, 2025 11:50 AM">Last active 14 days ago</span>
+            </p>
+          </div>
         </div>
 
         {/* Action pill buttons */}
