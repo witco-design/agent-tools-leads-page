@@ -3,8 +3,6 @@ import { toast } from 'sonner';
 import { House } from 'lucide-react';
 import { CollapsibleCard } from './CollapsibleCard';
 import { EmptyState } from './EmptyState';
-import { SectionActionButton } from './SectionActionButton';
-import { useVersion } from '@/contexts/VersionContext';
 import {
   Dialog,
   DialogContent,
@@ -20,7 +18,6 @@ interface HomeValuation {
 }
 
 export function HomeValuationReportsCard() {
-  const { emptyMode } = useVersion();
   const [reports, setReports] = useState<HomeValuation[]>([]);
   const [addOpen, setAddOpen] = useState(false);
   const [address, setAddress] = useState('');
@@ -41,24 +38,13 @@ export function HomeValuationReportsCard() {
     <>
       <CollapsibleCard
         title="Home Valuation Reports"
-        footer={emptyMode ? undefined : (
-          <SectionActionButton
-            label="+ Add Report"
-            variant="link"
-            onClick={() => setAddOpen(true)}
-          />
-        )}
       >
-        {emptyMode ? (
+        {reports.length === 0 ? (
           <EmptyState
             icon={House}
             title="No valuation reports"
             action={{ label: 'Add report', onClick: () => setAddOpen(true) }}
           />
-        ) : reports.length === 0 ? (
-          <div className="bg-bg-muted rounded-1 p-3">
-            <p className="text-text-3 text-text-muted">No Home Valuation Reports</p>
-          </div>
         ) : (
           <div className="space-y-spacing-2">
             {reports.map((report) => (
