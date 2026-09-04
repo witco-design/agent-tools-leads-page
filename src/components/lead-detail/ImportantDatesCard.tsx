@@ -251,15 +251,13 @@ export function ImportantDatesCard() {
         title="Important Dates"
         countBadge={emptyMode ? 0 : dates.length}
         footer={emptyMode ? undefined : (
-          <div className="flex justify-end">
-            <SectionActionButton
-              label="Add Date"
-              icon={Plus}
-              iconPosition="after"
-              variant="link"
-              onClick={() => setAddOpen(true)}
-            />
-          </div>
+          <SectionActionButton
+            label="Add Date"
+            icon={Plus}
+            iconPosition="before"
+            variant="link"
+            onClick={() => setAddOpen(true)}
+          />
         )}
       >
         {emptyMode ? (
