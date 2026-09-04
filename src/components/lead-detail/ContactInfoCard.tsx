@@ -127,7 +127,7 @@ export function ContactInfoCard() {
       <>
       <div className="border-t border-border-default" />
       <div className="@container">
-      <div className="grid grid-cols-1 gap-y-spacing-3 p-spacing-5 @[760px]:grid-cols-[minmax(240px,1fr)_1px_minmax(220px,1fr)_1px_216px] @[760px]:grid-rows-[auto_auto_auto_auto] @[760px]:gap-x-spacing-5 @[760px]:items-baseline">
+      <div className="grid grid-cols-1 gap-y-spacing-3 p-spacing-5 @[760px]:grid-cols-[minmax(240px,1fr)_1px_minmax(220px,1fr)_1px_minmax(220px,1fr)] @[760px]:grid-rows-[auto_auto_auto_auto] @[760px]:gap-x-spacing-5 @[760px]:items-baseline">
         {renderContactRow('primary', 'Primary', '@[760px]:col-start-1 @[760px]:row-start-1')}
         {renderContactRow('email', 'Email', '@[760px]:col-start-1 @[760px]:row-start-2')}
 
@@ -244,11 +244,11 @@ export function ContactInfoCard() {
         {/* ── COLUMN 3: About — dropdowns stay as-is in empty mode ── */}
         <div className="@[760px]:col-start-5 @[760px]:row-start-1 @[760px]:row-span-4 flex flex-col gap-y-spacing-3 justify-start">
         {/* Urgency */}
-        <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
-              <span className="text-sm text-text-muted flex-shrink-0">
+        <div className="flex items-center gap-spacing-3 @[760px]:min-h-[40px]">
+              <span className="w-[76px] shrink-0 text-sm text-text-muted">
                 Urgency
               </span>
-              <div className="min-w-0 max-w-[160px] flex-1">
+              <div className="min-w-0 flex-1">
                 <Select value={urgency} onValueChange={handleUrgency}>
                   <SelectTrigger className="-mt-2 h-9 w-full px-3 bg-white border border-[#E4E7EC] rounded-1 text-sm font-medium text-text-default hover:bg-[#F9FAFB] focus:outline-none focus:ring-1 focus:ring-[#3E60C9] focus:border-[#3E60C9] transition">
                     <SelectValue placeholder="None" />
@@ -270,11 +270,11 @@ export function ContactInfoCard() {
             </div>
 
             {/* Status */}
-            <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
-              <span className="text-sm text-text-muted flex-shrink-0">
+            <div className="flex items-center gap-spacing-3 @[760px]:min-h-[40px]">
+              <span className="w-[76px] shrink-0 text-sm text-text-muted">
                 Status
               </span>
-              <div className="min-w-0 max-w-[160px] flex-1">
+              <div className="min-w-0 flex-1">
                 <Select value={status} onValueChange={handleStatus}>
                   <SelectTrigger className="-mt-2 h-9 w-full px-3 bg-white border border-[#E4E7EC] rounded-1 text-sm font-medium text-text-default hover:bg-[#F9FAFB] focus:outline-none focus:ring-1 focus:ring-[#3E60C9] focus:border-[#3E60C9] transition">
                     <SelectValue placeholder="Nurture" />
@@ -303,11 +303,11 @@ export function ContactInfoCard() {
             </div>
 
             {/* Type */}
-            <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
-              <span className="text-sm leading-5 text-text-muted flex-shrink-0">
+            <div className="flex items-center gap-spacing-3 @[760px]:min-h-[40px]">
+              <span className="w-[76px] shrink-0 text-sm text-text-muted">
                 Type
               </span>
-              <div className="min-w-0 max-w-[160px] flex-1">
+              <div className="min-w-0 flex-1">
                 <Select value={type} onValueChange={handleType}>
                   <SelectTrigger className="-mt-2 h-9 w-full px-3 bg-white border border-[#E4E7EC] rounded-1 text-sm font-medium text-text-default hover:bg-[#F9FAFB] focus:outline-none focus:ring-1 focus:ring-[#3E60C9] focus:border-[#3E60C9] transition">
                     <SelectValue placeholder="Buyer" />
@@ -322,11 +322,11 @@ export function ContactInfoCard() {
             </div>
 
             {/* Timeframe */}
-            <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
-              <span className="text-sm text-text-muted flex-shrink-0">
+            <div className="flex items-center gap-spacing-3 @[760px]:min-h-[40px]">
+              <span className="w-[76px] shrink-0 text-sm text-text-muted">
                 Timeframe
               </span>
-              <div className="min-w-0 max-w-[160px] flex-1">
+              <div className="min-w-0 flex-1">
                 <Select value={timeframe} onValueChange={handleTimeframe}>
                   <SelectTrigger className="-mt-2 h-9 w-full px-3 bg-white border border-[#E4E7EC] rounded-1 text-sm font-medium text-text-default hover:bg-[#F9FAFB] focus:outline-none focus:ring-1 focus:ring-[#3E60C9] focus:border-[#3E60C9] transition">
                     <SelectValue placeholder="30 Days" />
