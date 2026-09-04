@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Play, Pause, Workflow } from 'lucide-react';
+import { Play, CirclePause, Workflow } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatDateWithYear } from '@/utils/formatDate';
 import {
@@ -141,7 +141,7 @@ export function WorkflowsCard() {
                 title="Pause workflow"
                 aria-label="Pause workflow"
               >
-                <Pause className="w-3.5 h-3.5 text-text-muted hover:text-text-default" />
+                <CirclePause className="w-3.5 h-3.5 text-text-muted hover:text-text-default" />
               </button>
             </div>
           ))}
