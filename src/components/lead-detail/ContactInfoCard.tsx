@@ -167,7 +167,7 @@ export function ContactInfoCard() {
               </span>
               <div className="min-w-0 flex items-center justify-end flex-1">
                 {emptyMode ? (
-                  <span className="text-sm text-text-muted">Offline</span>
+                  <span className="text-sm text-text-muted italic">Offline</span>
                 ) : (
                 <span className="inline-flex items-center gap-spacing-2 whitespace-nowrap">
                   <span className="relative flex h-2 w-2">
@@ -189,7 +189,7 @@ export function ContactInfoCard() {
               </span>
               <div className="min-w-0 flex items-center justify-end gap-spacing-2 flex-1">
                 {emptyMode ? (
-                  <span className="text-sm text-text-muted">Never contacted</span>
+                  <span className="text-sm text-text-muted italic">Never contacted</span>
                 ) : (
                   <>
                     <span className="text-sm text-text-default truncate whitespace-nowrap" title="3 days ago">
