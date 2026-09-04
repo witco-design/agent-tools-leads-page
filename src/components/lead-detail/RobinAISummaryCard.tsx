@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Sparkles, ChevronDown, Asterisk } from 'lucide-react';
+import { Sparkles, ChevronDown, Sparkle } from 'lucide-react';
 import { useLeadActions } from './LeadActionsContext';
 import { useVersion } from '@/contexts/VersionContext';
 import { EmptyState } from './EmptyState';
@@ -179,7 +179,7 @@ export function RobinAISummaryCard() {
                         key={reason}
                         className="flex items-start gap-spacing-2 text-text-3 text-text-default"
                       >
-                        <Asterisk
+                        <Sparkle
                           className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]"
                           aria-hidden="true"
                         />
