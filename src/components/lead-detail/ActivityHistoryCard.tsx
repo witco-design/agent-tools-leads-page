@@ -525,7 +525,7 @@ export function ActivityHistoryCard() {
         {/* ── Historical Timeline (date-grouped) ──────────────── */}
         {emptyMode ? (
           <div className="px-spacing-5 py-spacing-4">
-            <div className="rounded-1 bg-bg-muted p-spacing-3">
+            <div className="rounded-1 bg-gray-20 p-spacing-3">
               <EmptyState
                 icon={ActivityIcon}
                 title="No activity yet"
