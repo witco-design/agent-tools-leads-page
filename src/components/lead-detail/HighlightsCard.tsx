@@ -1,59 +1,32 @@
 import { CollapsibleCard } from './CollapsibleCard';
-import { EmptyState } from './EmptyState';
 import { useVersion } from '@/contexts/VersionContext';
-import { Star } from 'lucide-react';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { TruncatedText } from './TruncatedText';
 
 
 export function HighlightsCard() {
   const { emptyMode } = useVersion();
+  const rows = [
+    { label: 'Lead Created', value: 'Aug 4, 10:46am' },
+    { label: 'Last Email Update', value: 'Dec 8, 11:49am' },
+    { label: 'Avg. Price', value: '$750,000' },
+    { label: 'Area', value: 'San Jose, CA' },
+  ];
   return (
     <TooltipProvider delayDuration={200}>
       <CollapsibleCard id="highlights" data-component="HighlightsCard" title="Search Insights">
-        {emptyMode ? (
-          <EmptyState
-            icon={Star}
-            title="Nothing to highlight yet"
-            subtitle="Key milestones and lead details will surface here."
-          />
-        ) : (
         <div>
-          <div className="flex items-center py-spacing-2">
-            <span className="text-text-3 font-normal text-text-secondary flex-1">
-              Lead Created
-            </span>
-            <span className="text-text-3 font-normal text-text-default min-w-0">
-              <TruncatedText>Aug 4, 10:46am</TruncatedText>
-            </span>
-          </div>
-          <div className="flex items-center py-spacing-2">
-            <span className="text-text-3 font-normal text-text-secondary flex-1">
-              Last Email Update
-            </span>
-            <span className="text-text-3 font-normal text-text-default min-w-0">
-              <TruncatedText>Dec 8, 11:49am</TruncatedText>
-            </span>
-          </div>
-          <div className="flex items-center py-spacing-2">
-            <span className="text-text-3 font-normal text-text-secondary flex-1">
-              Avg. Price
-            </span>
-            <span className="text-text-3 font-normal text-text-default min-w-0">
-              <TruncatedText>$750,000</TruncatedText>
-            </span>
-          </div>
-          <div className="flex items-center py-spacing-2">
-            <span className="text-text-3 font-normal text-text-secondary flex-1">
-              Area
-            </span>
-            <span className="text-text-3 font-normal text-text-default min-w-0">
-              <TruncatedText>San Jose, CA</TruncatedText>
-            </span>
-          </div>
-
+          {rows.map((r) => (
+            <div key={r.label} className="flex items-center py-spacing-2">
+              <span className="text-text-3 font-normal text-text-secondary flex-1">
+                {r.label}
+              </span>
+              <span className="text-text-3 font-normal text-text-muted min-w-0">
+                {emptyMode ? '—' : <TruncatedText>{r.value}</TruncatedText>}
+              </span>
+            </div>
+          ))}
         </div>
-        )}
       </CollapsibleCard>
     </TooltipProvider>
   );
