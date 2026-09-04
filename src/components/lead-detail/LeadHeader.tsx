@@ -87,9 +87,9 @@ export function LeadHeader() {
   return (
     <TooltipProvider delayDuration={200}>
       {/* Lead identity + actions */}
-      <div data-component="LeadHeader" className="py-spacing-2 flex items-center justify-between gap-spacing-4">
+      <div data-component="LeadHeader" className="py-spacing-2 flex flex-wrap items-center justify-between gap-spacing-4 gap-y-spacing-3">
         {/* Avatar + Name — name is a button that opens the Contact Edit dialog */}
-        <div className="group flex items-center gap-spacing-3 flex-1 min-w-0">
+        <div className="group flex items-center gap-spacing-3 flex-1">
           {/* Lock icon — shrink-0 so it never compresses when the name is long */}
           <Lock className="w-6 h-6 text-text-muted flex-shrink-0" strokeWidth={2.25} aria-hidden="true" />
 
