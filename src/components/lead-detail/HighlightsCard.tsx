@@ -7,7 +7,6 @@ import { TruncatedText } from './TruncatedText';
 export function HighlightsCard() {
   const { emptyMode } = useVersion();
   const rows = [
-    { label: 'Lead Created', value: 'Aug 4, 10:46am' },
     { label: 'Last Email Update', value: 'Dec 8, 11:49am' },
     { label: 'Avg. Price', value: '$750,000' },
     { label: 'Area', value: 'San Jose, CA' },
