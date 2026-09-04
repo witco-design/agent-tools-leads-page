@@ -108,8 +108,6 @@ export function LeadHeader() {
             </h1>
             <p className="text-text-2 text-text-muted mt-spacing-1 whitespace-nowrap">
               <span>Created Aug 4, 2025</span>
-              <span className="mx-1">·</span>
-              <span title="Aug 21, 2025 11:50 AM">Last active 14 days ago</span>
             </p>
           </div>
         </div>
