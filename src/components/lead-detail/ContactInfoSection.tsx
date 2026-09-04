@@ -42,6 +42,23 @@ function DisplayRow({ label, value }: { label: string; value: string }) {
   );
 }
 
+function AddRow({ label, addLabel, onClick }: { label: string; addLabel: string; onClick: () => void }) {
+  return (
+    <div className="flex items-center min-h-9">
+      <span className="w-28 text-sm text-text-muted flex-shrink-0">{label}</span>
+      <div className="flex-1 flex justify-end min-w-0">
+        <button
+          type="button"
+          onClick={onClick}
+          className="text-sm text-text-link hover:underline cursor-pointer bg-transparent border-none p-0"
+        >
+          {addLabel}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 /** Row that uses the shared field-action menu (matches Snapshot). */
 function MenuRow({
   label,
@@ -92,31 +109,40 @@ export function ContactInfoSection() {
   type Row =
     | { kind: 'plain'; label: string; value: string }
     | { kind: 'menu'; label: string; field: MenuField; value: string; fullAddress?: string }
-    | { kind: 'address'; street: string; addressLine2: string; cityStateZip: string; fullAddress: string };
+    | { kind: 'address'; street: string; addressLine2: string; cityStateZip: string; fullAddress: string }
+    | { kind: 'add'; label: string; addLabel: string; field: string };
 
   const rows: Row[] = [];
   if (contactInfo.firstName)
     rows.push({ kind: 'plain', label: 'First Name', value: contactInfo.firstName });
   if (contactInfo.lastName)
     rows.push({ kind: 'plain', label: 'Last Name', value: contactInfo.lastName });
-  if (contactInfo.primary)
-    rows.push({ kind: 'menu', label: 'Primary', field: 'primary', value: contactInfo.primary });
-  if (contactInfo.alt)
-    rows.push({ kind: 'menu', label: 'Alt', field: 'alt', value: contactInfo.alt });
-  if (contactInfo.office)
-    rows.push({ kind: 'plain', label: 'Office', value: contactInfo.office });
-  if (contactInfo.fax)
-    rows.push({ kind: 'plain', label: 'Fax', value: contactInfo.fax });
-  if (contactInfo.email)
-    rows.push({ kind: 'menu', label: 'Email', field: 'email', value: contactInfo.email });
-  if (contactInfo.street) {
-    rows.push({
-      kind: 'address',
-      street: contactInfo.street,
-      addressLine2: contactInfo.addressLine2,
-      cityStateZip,
-      fullAddress,
-    });
+
+  if (emptyMode) {
+    rows.push({ kind: 'add', label: 'Primary', addLabel: 'Add phone number', field: 'primary' });
+    rows.push({ kind: 'add', label: 'Alt', addLabel: 'Add phone number', field: 'alt' });
+    rows.push({ kind: 'add', label: 'Email', addLabel: 'Add email', field: 'email' });
+    rows.push({ kind: 'add', label: 'Address', addLabel: 'Add address', field: 'street' });
+  } else {
+    if (contactInfo.primary)
+      rows.push({ kind: 'menu', label: 'Primary', field: 'primary', value: contactInfo.primary });
+    if (contactInfo.alt)
+      rows.push({ kind: 'menu', label: 'Alt', field: 'alt', value: contactInfo.alt });
+    if (contactInfo.office)
+      rows.push({ kind: 'plain', label: 'Office', value: contactInfo.office });
+    if (contactInfo.fax)
+      rows.push({ kind: 'plain', label: 'Fax', value: contactInfo.fax });
+    if (contactInfo.email)
+      rows.push({ kind: 'menu', label: 'Email', field: 'email', value: contactInfo.email });
+    if (contactInfo.street) {
+      rows.push({
+        kind: 'address',
+        street: contactInfo.street,
+        addressLine2: contactInfo.addressLine2,
+        cityStateZip,
+        fullAddress,
+      });
+    }
   }
 
   const isEmpty = rows.length === 0;
@@ -237,7 +263,14 @@ export function ContactInfoSection() {
               />
             ) : (
               rows.map((row, i) =>
-                row.kind === 'menu' ? (
+                row.kind === 'add' ? (
+                  <AddRow
+                    key={`${row.label}-${i}`}
+                    label={row.label}
+                    addLabel={row.addLabel}
+                    onClick={() => openContactDialog(row.field)}
+                  />
+                ) : row.kind === 'menu' ? (
                   <MenuRow
                     key={`${row.label}-${i}`}
                     label={row.label}
