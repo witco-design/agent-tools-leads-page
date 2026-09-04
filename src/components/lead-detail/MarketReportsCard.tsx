@@ -56,7 +56,7 @@ export function MarketReportsCard() {
     <>
       <CollapsibleCard
         title="Market Reports"
-        footer={emptyMode ? undefined : (
+        footer={emptyMode || reports.length === 0 ? undefined : (
           <SectionActionButton
             label="+ Add Report"
             variant="link"
@@ -64,16 +64,12 @@ export function MarketReportsCard() {
           />
         )}
       >
-        {emptyMode ? (
+        {emptyMode || reports.length === 0 ? (
           <EmptyState
             icon={Newspaper}
             title="No market reports"
             action={{ label: 'Add report', onClick: () => setAddOpen(true) }}
           />
-        ) : reports.length === 0 ? (
-          <div className="bg-bg-muted rounded-1 p-3">
-            <p className="text-text-3 text-text-muted">No Market Report</p>
-          </div>
         ) : (
           <div className="space-y-spacing-2">
             {reports.map((report) => (
