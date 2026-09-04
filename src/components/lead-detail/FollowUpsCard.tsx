@@ -136,6 +136,7 @@ export function FollowUpsCard() {
       <CollapsibleCard
         data-component="FollowUpItem"
         title="Follow Ups"
+        countBadge={emptyMode ? 0 : followUps.length}
         infoTooltip="These are reminders for next step interactions that are important for nurturing the relationship with your lead."
         footer={emptyMode ? undefined : (
           <div className="flex items-center justify-between">

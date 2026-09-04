@@ -78,7 +78,7 @@ export function CollapsibleCard({
             {!infoSlot && !infoTooltip && showInfoIcon && (
               <Info className="w-3.5 h-3.5 ml-spacing-2 text-icon-default" />
             )}
-            {countBadge !== undefined && (
+            {countBadge !== undefined && countBadge > 0 && (
               <span className="ml-spacing-2 inline-flex items-center justify-center min-w-[20px] h-5 px-spacing-1 rounded-round bg-[#ebf8ff] text-[#3e60c9] text-xs font-semibold">
                 {countBadge}
               </span>

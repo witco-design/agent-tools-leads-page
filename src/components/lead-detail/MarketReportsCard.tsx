@@ -56,6 +56,7 @@ export function MarketReportsCard() {
     <>
       <CollapsibleCard
         title="Market Reports"
+        countBadge={emptyMode ? 0 : reports.length}
         footer={emptyMode || reports.length === 0 ? undefined : (
           <SectionActionButton
             label="+ Add Report"

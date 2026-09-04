@@ -80,6 +80,7 @@ export function WorkflowsCard() {
     <>
       <CollapsibleCard
         title="Workflows"
+        countBadge={emptyMode ? 0 : workflows.length}
         infoTooltip="A drip campaign is an automated chain of texts, emails or follow ups"
 
         footer={

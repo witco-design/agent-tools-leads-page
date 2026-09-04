@@ -81,7 +81,7 @@ export function SavedSearchesCard() {
     <>
       <CollapsibleCard
         title="Saved Searches"
-        countBadge={searches.length}
+        countBadge={emptyMode ? 0 : searches.length}
         infoSlot={
           <HoverCard openDelay={150} closeDelay={150}>
             <HoverCardTrigger asChild>
