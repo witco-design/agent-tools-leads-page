@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Sparkles, MessageSquare, Mic, GraduationCap, Search, Download, CircleCheck as CheckCircle2, Lightbulb, Check, Info, Asterisk } from 'lucide-react';
+import { Sparkles, MessageSquare, Mic, GraduationCap, Search, Download, CircleCheck as CheckCircle2, Lightbulb, Check, Info, Sparkle } from 'lucide-react';
 import { useVersion } from '@/contexts/VersionContext';
 import {
   Dialog,
@@ -113,15 +113,15 @@ export function CallDetailDialog({ isOpen, onClose, activity }: CallDetailDialog
 
                 <ul className="space-y-spacing-1 pt-spacing-2 mt-spacing-3">
                   <li className="flex items-start gap-spacing-2 text-text-3 text-text-default">
-                    <Asterisk className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" />
+                    <Sparkle className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" />
                     <span>She confirmed her lender Letter of Intent on the call, so she's ready to tour.</span>
                   </li>
                   <li className="flex items-start gap-spacing-2 text-text-3 text-text-default">
-                    <Asterisk className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" />
+                    <Sparkle className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" />
                     <span>She asked to view next weekend, so lock in Saturday showings while intent is high.</span>
                   </li>
                   <li className="flex items-start gap-spacing-2 text-text-3 text-text-default">
-                    <Asterisk className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" />
+                    <Sparkle className="w-4 h-4 text-purple-110 shrink-0 mt-[2px]" />
                     <span>She prefers texts during work hours, so lead with a text rather than a call.</span>
                   </li>
                 </ul>
