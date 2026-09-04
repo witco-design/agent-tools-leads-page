@@ -22,7 +22,7 @@ export function EmptyState({
   action,
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center text-center gap-spacing-2 py-spacing-5 px-spacing-4">
+    <div className="flex flex-col items-center text-center gap-spacing-2 py-spacing-3 px-spacing-4">
       <div className="w-9 h-9 rounded-round bg-bg-muted flex items-center justify-center">
         <Icon className="w-5 h-5 text-text-muted" aria-hidden="true" />
       </div>
