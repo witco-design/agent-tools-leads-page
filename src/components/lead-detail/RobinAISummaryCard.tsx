@@ -215,7 +215,7 @@ export function RobinAISummaryCard() {
                             onClick={() => {}}
                             className="inline font-semibold text-purple-110 hover:text-purple-120 underline underline-offset-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-40 rounded-[2px]"
                           >
-                            Pause this
+                            Pause Step
                           </button>
                         </>
                       )}
