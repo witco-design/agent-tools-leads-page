@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CallDetailDialog } from './CallDetailDialog';
-import { Phone, PhoneCall, PhoneOff, Search, Heart, Eye, Pin, Mail, MailOpen, CalendarCheck, CalendarClock, PencilLine, Droplets, FileText, Clipboard, Calendar, BookmarkPlus, MessageSquare, MessageCircle, MessagesSquare, MousePointerClick, Globe, Play, SquareCheck as CheckSquare, ChartBar as BarChart3, DollarSign, Users, Shield, ShieldCheck, UserCheck, ArrowRightLeft, ArrowLeftRight, ArrowRight, UserPlus, Upload, Hop as Home, Ellipsis as MoreHorizontal, ChevronDown, Check, Sparkles } from 'lucide-react';
+import { Phone, PhoneCall, PhoneOff, Search, Heart, Eye, Pin, Mail, MailOpen, CalendarCheck, CalendarClock, PencilLine, Droplets, FileText, Clipboard, Calendar, BookmarkPlus, MessageSquare, MessageCircle, MessagesSquare, MousePointerClick, Globe, Play, SquareCheck as CheckSquare, ChartBar as BarChart3, DollarSign, Users, Shield, ShieldCheck, UserCheck, ArrowRightLeft, ArrowLeftRight, ArrowRight, UserPlus, Upload, Ellipsis as MoreHorizontal, ChevronDown, Check, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   DropdownMenu,
@@ -159,6 +159,25 @@ export interface ActivityItemData {
   reassignment?: { from: string; to: string; reason?: string };
 }
 
+// ── Inline house SVG (hard-coded to prevent icon drift) ───────
+function HouseIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+      <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+    </svg>
+  );
+}
+
 // ── Icon config ────────────────────────────────────────────────
 function getIconConfig(type: ActivityType) {
   switch (type) {
@@ -227,7 +246,7 @@ function getIconConfig(type: ActivityType) {
     case 'view':
     case 'viewed':
     case 'property_viewed':
-      return { bg: 'bg-blue-20', icon: Home, color: 'text-blue-100' };
+      return { bg: 'bg-blue-20', icon: HouseIcon, color: 'text-blue-100' };
     case 'visited':
       return { bg: 'bg-gray-40', icon: Globe, color: 'text-gray-90' };
     case 'video_played':
