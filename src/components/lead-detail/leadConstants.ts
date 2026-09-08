@@ -10,5 +10,5 @@ export function formatLocalTime(tz: string): string {
   }).formatToParts(new Date());
   const get = (t: string) => parts.find((p) => p.type === t)?.value || '';
   const time = `${get('hour')}:${get('minute')}${get('dayPeriod').toLowerCase()}`;
-  return `${time} ${get('timeZoneName')}`;
+  return time;
 }

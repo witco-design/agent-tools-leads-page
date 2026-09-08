@@ -221,7 +221,7 @@ export function ContactInfoCard() {
             {/* IP Location */}
             <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm leading-5 text-text-muted flex-shrink-0">
-                IP Location
+                Browsing From
               </span>
               <div className="min-w-0 flex items-center justify-end gap-spacing-2 flex-1">
                 {emptyMode ? (
