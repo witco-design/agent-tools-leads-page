@@ -15,7 +15,6 @@ import {
 import { useContactInfo } from '@/contexts/ContactInfoContext';
 import { useVersion } from '@/contexts/VersionContext';
 import { LEAD_TIMEZONE, formatLocalTime } from './leadConstants';
-import { ChannelIcon } from './ChannelIcon';
 import { ContactFieldMenu, type MenuField } from '@/components/contact/ContactFieldMenu';
 import { AddressDisplayBlock } from '@/components/contact/AddressDisplayBlock';
 
@@ -160,14 +159,14 @@ export function ContactInfoCard() {
 
         {/* ── COLUMN 2: Highlights ── */}
         <div className="@[760px]:col-start-3 @[760px]:row-start-1 @[760px]:row-span-4 flex flex-col gap-y-spacing-3 justify-start">
-        {/* Online */}
+        {/* Last Login — combined online indicator + last-login time */}
         <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
               <span className="text-sm text-text-muted flex-shrink-0">
-                Online
+                Last Login
               </span>
               <div className="min-w-0 flex items-center justify-end flex-1">
                 {emptyMode ? (
-                  <span className="text-sm text-text-muted italic">Offline</span>
+                  <span className="text-sm text-text-muted">—</span>
                 ) : (
                 <span className="inline-flex items-center gap-spacing-2 whitespace-nowrap">
                   <span className="relative flex h-2 w-2">
@@ -201,18 +200,15 @@ export function ContactInfoCard() {
               </div>
             </div>
 
-            {/* Last Login */}
+            {/* Last Email Update */}
             <div className="flex items-start justify-between gap-spacing-3 @[760px]:min-h-[40px]">
-              <span className="text-sm text-text-muted flex-shrink-0">Last Login</span>
+              <span className="text-sm text-text-muted flex-shrink-0">Last Email Update</span>
               <div className="min-w-0 flex items-center justify-end gap-spacing-2 flex-1">
                 {emptyMode ? (
                   <span className="text-sm text-text-muted">—</span>
                 ) : (
-                  <span className="inline-flex items-center gap-spacing-2 whitespace-nowrap">
-                    <span className="text-sm text-text-default truncate whitespace-nowrap">
-                      14 days ago
-                    </span>
-                    <ChannelIcon channel="website" />
+                  <span className="text-sm text-text-default truncate whitespace-nowrap">
+                    6 days ago
                   </span>
                 )}
               </div>

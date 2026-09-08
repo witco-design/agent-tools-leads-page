@@ -19,7 +19,6 @@ import {
 // OnlineNowBanner removed — Online Status consolidated to HighlightsCard
 import { ActivityStatsCard } from './ActivityStatsCard';
 import { ImportantNotesCard } from './ImportantNotesCard';
-import { HighlightsCard } from './HighlightsCard';
 import { ContactInfoSection } from './ContactInfoSection';
 import { SearchCriteriaCard } from './SearchCriteriaCard';
 import { ImportantDatesCard } from './ImportantDatesCard';
@@ -40,7 +39,6 @@ const INFO_DEFAULT_ORDER = [
   'important-notes',
   'activity-stats',
   'contact-info',
-  'highlights',
   'search-criteria',
   'important-dates',
   'tags',
@@ -62,7 +60,6 @@ const ENGAGEMENT_DEFAULT_ORDER = [
 const INFO_CARD_MAP: Record<string, React.FC> = {
   'activity-stats': ActivityStatsCard,
   'important-notes': ImportantNotesCard,
-  highlights: HighlightsCard,
   'contact-info': ContactInfoSection,
   'search-criteria': SearchCriteriaCard,
   'important-dates': ImportantDatesCard,
