@@ -152,9 +152,23 @@ export function ContactFieldMenu({
           {status === 'bad' && (
             <AlertTriangle className="w-4 h-4 text-[#f48a3c] inline mr-spacing-1 flex-shrink-0" />
           )}
-          <span className={valueClass} title={value}>
-            {value}
-          </span>
+          {fieldType === 'email' && value.includes('@') ? (
+            <span
+              className={`inline-flex items-center min-w-0 max-w-full align-bottom ${valueClassName ?? ''}`}
+              title={value}
+            >
+              <span className={`truncate min-w-0 ${status === 'bad' ? 'text-[#ec423d]' : 'text-blue-100'} text-sm font-medium`}>
+                {value.split('@')[0]}
+              </span>
+              <span className={`shrink-0 ${status === 'bad' ? 'text-[#ec423d]' : 'text-blue-100'} text-sm font-medium`}>
+                @{value.split('@')[1]}
+              </span>
+            </span>
+          ) : (
+            <span className={valueClass} title={value}>
+              {value}
+            </span>
+          )}
           {showChevron && (
             <ChevronDown
               className={`w-4 h-4 flex-shrink-0 transition ${

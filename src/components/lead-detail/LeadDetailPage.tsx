@@ -111,10 +111,11 @@ export default function LeadDetailPage() {
 
         {/* Main content area — offset for header + sidebar + devmode panel */}
         <main
-          className="min-h-screen pt-20 p-spacing-8"
+          className="min-h-screen pt-20 p-spacing-8 pr-spacing-6"
           style={{
             marginLeft: collapsed ? 72 : 184,
             marginRight: devModeActive ? 380 : 0,
+            width: 'calc(100% - 80px)',
             transition: 'margin-left 180ms ease, margin-right 200ms ease',
           }}
         >
@@ -129,7 +130,7 @@ export default function LeadDetailPage() {
                 </div>
 
                 {/* BOTTOM TWO-COLUMN LAYOUT */}
-                <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] items-start gap-spacing-4 mt-spacing-10">
+                <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] items-start gap-spacing-4 mt-spacing-10">
                   {/* Left column: Data Snapshot → Robin AI → Activity History */}
                   <div className="flex flex-col gap-spacing-4 min-w-0 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both" style={{ animationDelay: '120ms' }}>
                     {!isV1 && <LeadSignalTagsCard />}
