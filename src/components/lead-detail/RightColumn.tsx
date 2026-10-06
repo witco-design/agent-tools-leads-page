@@ -128,8 +128,25 @@ export function RightColumn() {
     }
   };
 
+  const [showLeadBanner, setShowLeadBanner] = useState(true);
+
   return (
     <div className="space-y-spacing-4">
+      {showLeadBanner && (
+        <div className="flex items-center justify-between p-spacing-4 rounded-3 bg-green-30 border border-[#45AC86]">
+          <div className="flex flex-col">
+            <span className="text-text-3 font-semibold text-text-default">New Lead</span>
+            <span className="text-text-3 font-normal text-text-secondary">Action Needed!</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowLeadBanner(false)}
+            className="h-8 px-spacing-3 inline-flex items-center gap-spacing-2 bg-white border border-border-default rounded-1 text-text-3 font-semibold text-text-default hover:bg-bg-muted transition-colors cursor-pointer"
+          >
+            Clear
+          </button>
+        </div>
+      )}
       <Tabs defaultValue="info" className="w-full">
         <TabsList className="w-full h-auto p-0 bg-transparent rounded-none border-b border-border-default">
           <TabsTrigger
